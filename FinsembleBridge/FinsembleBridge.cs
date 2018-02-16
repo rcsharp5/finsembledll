@@ -223,6 +223,11 @@ namespace ChartIQ.Finsemble
             runtime.InterApplicationBus.publish(topic, message);
         }
 
+        public void SubscribeToChannel(string channel, Openfin.Desktop.InterAppMessageHandler callback)
+        {
+            runtime.InterApplicationBus.subscribe("*", channel, callback);
+        }
+
         /// <summary>
         /// Subscribes to the inter-application bus to listen for Linker method callbacks. 
         /// </summary>

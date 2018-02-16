@@ -61,8 +61,8 @@
   <ItemGroup>
     <Compile Include="CallbackChannel.cs" />
     <Compile Include="FinsembleBridge.cs" />
-    <Compile Include="LinkerEventArgs.cs" />
-    <Compile Include="LinkerTopic.cs" />
+    <Compile Include="Linker\LinkerEventArgs.cs" />
+    <Compile Include="Linker\Linker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
