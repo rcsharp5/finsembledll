@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Openfin.Desktop;
-using Newtonsoft.Json.Linq;
 using System.Diagnostics;
+using System.Reflection;
+using log4net;
+using Newtonsoft.Json.Linq;
+using Openfin.Desktop;
 
 namespace ChartIQ.Finsemble
 {
-    public partial class FinsembleBridge : IDisposable
+	public partial class FinsembleBridge : IDisposable
     {
         /// <summary>
         /// The logger
         /// </summary>
-        //private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Connection parameters
         /// <summary>
@@ -67,9 +65,9 @@ namespace ChartIQ.Finsemble
         /// <param name="openFinVersion">The version of the OpenFin runtime to which to connect</param>
         public FinsembleBridge(Version openFinVersion)
         {
-            /*Logger.Debug(
+            Logger.Debug(
                 "Initializing new instance of FinsembleBridge:\n" +
-                $"\tVersion: {openFinVersion}\n");*/
+                $"\tVersion: {openFinVersion}\n");
 
             OpenFinVersion = openFinVersion;
         }
@@ -79,7 +77,7 @@ namespace ChartIQ.Finsemble
         /// </summary>
         public void Connect()
         {
-            //Logger.Debug("Connect called");
+            Logger.Debug("Connect called");
             if (runtime != null)
             {
                 // Already connected
@@ -99,13 +97,13 @@ namespace ChartIQ.Finsemble
                 try
                 {
                     Exception ex = (Exception)e.ExceptionObject;
-                    //Logger.Error("Error from OpenFin runtime", ex);
+                    Logger.Error("Error from OpenFin runtime", ex);
                 }
                 catch (Exception ex)
                 {
-                    /*Logger.Error(
+                    Logger.Error(
                         $"Error from OpenFin runtime not an exception:\n {e.ExceptionObject.ToString()}",
-                        ex);*/
+                        ex);
                 }
 
                 // Notify listeners there was an error
@@ -115,7 +113,7 @@ namespace ChartIQ.Finsemble
             // Set up disconnected handler
             runtime.Disconnected += (s, e) =>
             {
-                //Logger.Info("Disconnected from OpenFin runtime.");
+                Logger.Info("Disconnected from OpenFin runtime.");
 
                 // Notify listeners bridge is disconnected from OpenFin
                 Disconnected?.Invoke(this, e);
@@ -124,7 +122,7 @@ namespace ChartIQ.Finsemble
             // Connect to the OpenFin runtime.
             runtime.Connect(() =>
             {
-                //Logger.Info("Connected to OpenFin Runtime.");
+                Logger.Info("Connected to OpenFin Runtime.");
 
                 // Listen for the various linker method callbacks
                 ListenForCallbacks();
@@ -139,7 +137,7 @@ namespace ChartIQ.Finsemble
         /// </summary>
         public void Disconnect()
         {
-            //Logger.Info("Disconnect called");
+            Logger.Info("Disconnect called");
             if (runtime == null)
             {
                 // Already disconnected
@@ -166,7 +164,7 @@ namespace ChartIQ.Finsemble
         /// </example>
         public void SendRPCCommand(string topic, JObject parameters)
         {
-            //Logger.Debug($"Sending RPC command: topic: \"{topic}\", parameters: {parameters.ToString()}");
+            Logger.Debug($"Sending RPC command: topic: \"{topic}\", parameters: {parameters.ToString()}");
             JArray args = new JArray
             {
                 parameters
@@ -198,11 +196,11 @@ namespace ChartIQ.Finsemble
         /// </example>
         public void SendRPCCommand(string topic, string parameter, string callbackChannel = "")
         {
-            /*Logger.Debug(
+            Logger.Debug(
                 "Sending RPC command:\n" +
                 $"\ttopic: \"{topic}\"\n" +
                 $"\tparameter: \"{parameter}\"\n" +
-                $"\tcallbackChannel: {callbackChannel}");*/
+                $"\tcallbackChannel: {callbackChannel}");
 
             JArray args = new JArray
             {
@@ -216,7 +214,7 @@ namespace ChartIQ.Finsemble
 
             if (!string.IsNullOrWhiteSpace(callbackChannel))
             {
-                //Logger.Debug($"Adding callback channel: {callbackChannel}");
+                Logger.Debug($"Adding callback channel: {callbackChannel}");
                 message.Add("callbackChannel", callbackChannel);
             }
 
@@ -232,15 +230,15 @@ namespace ChartIQ.Finsemble
         /// Subscribes to the inter-application bus to listen for Linker method callbacks. 
         /// </summary>
         /// <remarks>
-        /// This method sets up a subscriptions on the inter-application bus listening linker for each of it's API endpoints. for changes in the symbol. When a
-        /// change in the symbol occurs in a group to which the native application is subscribed, Finsemble sends a 
-        /// message on the SubscribeCallbackChannel with new symbol. 
+        /// This method sets up a subscriptions on the inter-application bus listening linker for each of it's API 
+		/// endpoints. for changes in the symbol. When a change in the symbol occurs in a group to which the native 
+		/// application is subscribed, Finsemble sends a message on the SubscribeCallbackChannel with new symbol. 
         /// </remarks>
         private void ListenForCallbacks()
         {
-           // Logger.Info("Listening for callbacks");
+			Logger.Info("Listening for callbacks");
 
-            //Logger.Debug($".subscribe(\"*\", {CallbackChannel.Subscribe}, FireLinkerSubscribe)");
+            Logger.Debug($".subscribe(\"*\", {CallbackChannel.Subscribe}, FireLinkerSubscribe)");
 
             // When data is sent back from Finsemble (e.g., a chart changes a symbol, and publishes on the green 
             // group), we will invoke the FireLinkerSubscribe.
@@ -257,7 +255,7 @@ namespace ChartIQ.Finsemble
         /// <param name="message">The message</param>
         private void FireLinkerSubscribe(string sourceUuid, string topic, object message)
         {
-            //Logger.Debug($"FireLinkerSubscribe({sourceUuid}, {topic}, {message.ToString()}");
+            Logger.Debug($"FireLinkerSubscribe({sourceUuid}, {topic}, {message.ToString()}");
 
             var h = LinkerSubscribe;
             if (h != null)
