@@ -231,8 +231,8 @@ namespace ChartIQ.Finsemble
         /// </summary>
         /// <remarks>
         /// This method sets up a subscriptions on the inter-application bus listening linker for each of it's API 
-		/// endpoints. for changes in the symbol. When a change in the symbol occurs in a group to which the native 
-		/// application is subscribed, Finsemble sends a message on the SubscribeCallbackChannel with new symbol. 
+		/// endpoints. When a change in the symbol occurs in a group to which the native application is subscribed, 
+		/// Finsemble sends a message on the SubscribeCallbackChannel with new symbol. 
         /// </remarks>
         private void ListenForCallbacks()
         {

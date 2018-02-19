@@ -1,15 +1,11 @@
-﻿
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
+﻿using System.Dynamic;
 
 namespace ChartIQ.Finsemble
 {
-    public class Linker
+	public class Linker
     {
         private static dynamic _Topic = new ExpandoObject(); 
         
-
         public static dynamic Topic
         {
             get
@@ -22,11 +18,7 @@ namespace ChartIQ.Finsemble
                 _Topic.GetAllGroups = "FSBL.Clients.LinkerClient.getAllGroups";
 
                 return _Topic;
-
             }
         }
     }
-        
-        
-
 }
