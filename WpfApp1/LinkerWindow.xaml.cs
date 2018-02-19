@@ -27,14 +27,17 @@ namespace WpfApp1
             bridge = new FinsembleBridge(new System.Version("8.56.28.34"));
             bridge.Connect();           
             bridge.Connected += Bridge_Connected;
-            InitializeComponent();
         }
 
         private void Bridge_Connected(object sender, EventArgs e)
         {
-            string topic = Linker.Topic.GetAllGroups;
-            bridge.SubscribeToChannel("allGroupsChannel", GotAllGroups);
-            bridge.SendRPCCommand(topic, new JObject().ToString(), "allGroupsChannel");
+            Application.Current.Dispatcher.Invoke((Action)delegate
+            {
+                string topic = Linker.Topic.GetAllGroups;
+                bridge.SubscribeToChannel("allGroupsChannel", GotAllGroups);
+                bridge.SendRPCCommand(topic, new JObject().ToString(), "allGroupsChannel");
+                InitializeComponent();
+            });
         }
 
         private void group_Click(object sender, RoutedEventArgs e)
@@ -74,7 +77,7 @@ namespace WpfApp1
                 var group = g as JObject;
                 var name = group.GetValue("name").ToString();
                 var colorcode = group.GetValue("color").ToString();
-                Application.Current.Dispatcher.Invoke((Action)delegate {
+                Application.Current.Dispatcher.Invoke((Action)delegate { //controls can only be created on main thread
                     createButton(name, colorcode, baseLocation);
                 });
                 baseLocation += 24;

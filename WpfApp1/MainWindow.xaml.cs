@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ChartIQ.Finsemble;
+using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Newtonsoft.Json.Linq;
 
 namespace WpfApp1
 {
@@ -23,21 +26,50 @@ namespace WpfApp1
     {
         private LinkerWindow LinkerWindow = new LinkerWindow();
         private SortedDictionary<string, Button> LinkerGroups = new SortedDictionary<string, Button>();
-        public MainWindow()
+        private bool moving = false;
+        private FinsembleBridge bridge;
+        private string windowName;
+
+        public MainWindow(string FinsembleWindowName)
         {
             LinkerWindow.Subscribe(LinkerSubscriber);
-            InitializeComponent();
+            bridge = new FinsembleBridge(new System.Version("8.56.28.34"));
+            bridge.Connect();
+            bridge.Connected += Bridge_Connected;
+            windowName = FinsembleWindowName;
+        }
+
+        private void Bridge_Connected(object sender, EventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                InitializeComponent();
+                this.Show();
+                dynamic windowprops = new ExpandoObject();
+                windowprops.name = windowName;
+                windowprops.top = this.Top;
+                windowprops.left = this.Left;
+
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(windowprops));
+
+            });
         }
 
         public void LinkerSubscriber (object sender, ChartIQ.Finsemble.LinkerEventArgs e) {
             MessageBox.Show(e.Message);
         }
 
-        private void Frame_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Toolbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            moving = true;
             this.DragMove();
         }
 
+
+        private void Toolbar_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            moving = false;
+        }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -68,7 +100,7 @@ namespace WpfApp1
 
         private void Linker_Click(object sender, RoutedEventArgs e)
         {
-            //IntPtr windowHandle = new WindowInteropHelper(this).Handle;
+            
 
             LinkerWindow.Left = this.Left;
             LinkerWindow.Top = this.Top + 35;
@@ -123,6 +155,12 @@ namespace WpfApp1
                 }
             }
             
+        }
+
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+            T1.Text = this.Top + " " + this.Left;
         }
     }
 }

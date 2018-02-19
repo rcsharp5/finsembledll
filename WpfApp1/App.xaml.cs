@@ -13,5 +13,15 @@ namespace WpfApp1
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            //base.OnStartup(e);
+            string mainWindowName = "";
+            if (e.Args.Length > 0)
+            {
+                mainWindowName = e.Args[0].Split('=')[1];
+            }
+            var mainWindow = new MainWindow(mainWindowName);
+        }
     }
 }
