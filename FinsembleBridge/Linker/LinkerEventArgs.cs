@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChartIQ.Finsemble
 {
-    public class LinkerEventArgs : EventArgs
+	/// <summary>
+	/// Event arguments for linker events.
+	/// </summary>
+	public class LinkerEventArgs : EventArgs
     {
         /// <summary>
         /// Gets the UUID of the source application.
@@ -36,5 +35,4 @@ namespace ChartIQ.Finsemble
             Message = message;
         }
     }
-
 }
