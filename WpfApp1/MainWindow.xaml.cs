@@ -26,17 +26,24 @@ namespace WpfApp1
     {
         private LinkerWindow LinkerWindow = new LinkerWindow();
         private SortedDictionary<string, Button> LinkerGroups = new SortedDictionary<string, Button>();
-        private bool moving = false;
         private FinsembleBridge bridge;
         private string windowName;
+        private Docking docking;
 
         public MainWindow(string FinsembleWindowName)
         {
+            if (FinsembleWindowName != "")
+            {
+                windowName = FinsembleWindowName;
+            }
+            else
+            {
+                windowName = Guid.NewGuid().ToString();
+            }
             LinkerWindow.Subscribe(LinkerSubscriber);
             bridge = new FinsembleBridge(new System.Version("8.56.28.34"));
             bridge.Connect();
             bridge.Connected += Bridge_Connected;
-            windowName = FinsembleWindowName;
         }
 
         private void Bridge_Connected(object sender, EventArgs e)
@@ -45,30 +52,43 @@ namespace WpfApp1
             {
                 InitializeComponent();
                 this.Show();
-                dynamic windowprops = new ExpandoObject();
-                windowprops.name = windowName;
-                windowprops.top = this.Top;
-                windowprops.left = this.Left;
-
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(windowprops));
-
+                docking = new Docking(bridge);
+                docking.Register(this, windowName, windowName + "-channel");
             });
         }
 
-        public void LinkerSubscriber (object sender, ChartIQ.Finsemble.LinkerEventArgs e) {
+        public void SetBounds(double top, double left, double height, double width)
+        {
+            Application.Current.Dispatcher.Invoke((Action)delegate
+            {
+                this.Top = top;
+                this.Left = left;
+                this.Height = height;
+                this.Width = width;
+            });
+
+        }
+
+        public void LinkerSubscriber(object sender, ChartIQ.Finsemble.LinkerEventArgs e)
+        {
             MessageBox.Show(e.Message);
         }
 
         private void Toolbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            moving = true;
-            this.DragMove();
+            docking.StartMove(sender, e);
         }
 
 
         private void Toolbar_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            moving = false;
+            docking.EndMove(sender, e);
+        }
+
+
+        private void Toolbar_MouseMove(object sender, MouseEventArgs e)
+        {
+            docking.Move(sender, e);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -76,44 +96,41 @@ namespace WpfApp1
             var senderButton = (System.Windows.Controls.Button)sender;
             if (this.WindowState == System.Windows.WindowState.Maximized)
             {
-                this.WindowState = System.Windows.WindowState.Normal;
+                docking.Restore();
                 senderButton.Content = "3";
             }
             else
             {
-                this.WindowState = System.Windows.WindowState.Maximized;
+                docking.Maxmimize();
                 senderButton.Content = "#";
-
             }
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            this.WindowState = System.Windows.WindowState.Minimized;
+            docking.Minimize();
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             LinkerWindow.Close();
+            docking.Close();
             this.Close();
         }
 
         private void Linker_Click(object sender, RoutedEventArgs e)
         {
-            
-
             LinkerWindow.Left = this.Left;
             LinkerWindow.Top = this.Top + 35;
-            
+
             // BS Hack to get window to focus properly - https://stackoverflow.com/questions/21033262/force-window-to-have-focus-when-opened
-            
+
             LinkerWindow.Show();
             LinkerWindow.Owner = this;
             LinkerWindow.Activate();
             LinkerWindow.Topmost = true;
             LinkerWindow.Topmost = false;
             LinkerWindow.Focus();
-
         }
 
         public void Groups_Changed(string group, Brush background, bool join)
@@ -138,7 +155,8 @@ namespace WpfApp1
             if (!join)
             {
                 LinkerGroups[group].Visibility = Visibility.Hidden;
-            } else
+            }
+            else
             {
                 LinkerGroups[group].Visibility = Visibility.Visible;
             }
@@ -146,15 +164,15 @@ namespace WpfApp1
             Double baseLeft = 36.0;
             Double increment = 15;
 
-            foreach(var item in LinkerGroups)
+            foreach (var item in LinkerGroups)
             {
-                if(item.Value.Visibility == Visibility.Visible)
+                if (item.Value.Visibility == Visibility.Visible)
                 {
                     item.Value.SetValue(Canvas.LeftProperty, baseLeft);
                     baseLeft += increment;
                 }
             }
-            
+
         }
 
 
@@ -162,5 +180,6 @@ namespace WpfApp1
         {
             T1.Text = this.Top + " " + this.Left;
         }
+
     }
 }

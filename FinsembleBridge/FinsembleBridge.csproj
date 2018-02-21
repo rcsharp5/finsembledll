@@ -45,8 +45,11 @@
     <Reference Include="OpenfinDesktop, Version=7.1.0.0, Culture=neutral, PublicKeyToken=18a277d64dddd680, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenfinDesktop.7.1.0\lib\net40\OpenfinDesktop.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,10 +59,12 @@
     <Reference Include="WebSocket4Net, Version=0.14.1.0, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
       <HintPath>..\packages\WebSocket4Net.0.14.1\lib\net45\WebSocket4Net.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallbackChannel.cs" />
+    <Compile Include="Docking\Docking.cs" />
     <Compile Include="FinsembleBridge.cs" />
     <Compile Include="Linker\LinkerEventArgs.cs" />
     <Compile Include="Linker\Linker.cs" />

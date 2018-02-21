@@ -77,7 +77,7 @@
     </Window.Resources>
 
     <Grid Margin="0,0,0,0" Background="White">
-        <Canvas Name="Toolbar" Height="35" Margin="0,0,0,0" VerticalAlignment="Top" MouseDown="Toolbar_MouseDown" MouseUp="Toolbar_MouseUp" Background="#FF233958">
+        <Canvas Name="Toolbar" Height="35" Margin="0,0,0,0" VerticalAlignment="Top" MouseDown="Toolbar_MouseDown" MouseUp="Toolbar_MouseUp" MouseMove="Toolbar_MouseMove" Background="#FF233958">
             <Button Name="Minimize" Content="4" Width="35" Click="Button_Click_2" HorizontalAlignment="Right" Canvas.Right="70" FontFamily="/WpfApp1;component/Resources/#finfont" Background="#FF233958" BorderBrush="{x:Null}" Foreground="White" Height="35" FontSize="16" />
             <Button Name="Maximize" Content="3" Width="35" Click="Button_Click_1" HorizontalAlignment="Right" Canvas.Right="35" Background="#FF233958" BorderBrush="{x:Null}" Foreground="White" FontFamily="/WpfApp1;component/Resources/#finfont" Height="35" FontSize="16" />
             <Button Name="Close" Content ="p" Width="35" Click="Button_Click_3" HorizontalAlignment="Right" Canvas.Right="0" FontFamily="/WpfApp1;component/Resources/#finfont" Height="35" Background="#FF233958" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
