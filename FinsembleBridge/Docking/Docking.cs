@@ -49,11 +49,13 @@ namespace ChartIQ.Finsemble
             switch (action)
             {
                 case "setBounds":
-                    var top = Double.Parse(jsonMessage.GetValue("top").ToString());
-                    var left = Double.Parse(jsonMessage.GetValue("left").ToString());
-                    var width = Double.Parse(jsonMessage.GetValue("width").ToString());
-                    var height = Double.Parse(jsonMessage.GetValue("height").ToString());
-                    dockingWindow.SetBounds(top, left, height, width);
+                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        dockingWindow.Top = Double.Parse(jsonMessage.GetValue("top").ToString());
+                        dockingWindow.Left = Double.Parse(jsonMessage.GetValue("left").ToString());
+                        dockingWindow.Height = Double.Parse(jsonMessage.GetValue("height").ToString());
+                        dockingWindow.Width = Double.Parse(jsonMessage.GetValue("width").ToString()); ;
+                    });
                     break;
             }
         }

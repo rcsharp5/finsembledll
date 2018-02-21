@@ -57,18 +57,6 @@ namespace WpfApp1
             });
         }
 
-        public void SetBounds(double top, double left, double height, double width)
-        {
-            Application.Current.Dispatcher.Invoke((Action)delegate
-            {
-                this.Top = top;
-                this.Left = left;
-                this.Height = height;
-                this.Width = width;
-            });
-
-        }
-
         public void LinkerSubscriber(object sender, ChartIQ.Finsemble.LinkerEventArgs e)
         {
             MessageBox.Show(e.Message);
