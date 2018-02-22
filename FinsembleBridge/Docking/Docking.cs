@@ -44,17 +44,51 @@ namespace ChartIQ.Finsemble
         {
             var joMessage = message as JObject;
             var action = joMessage.GetValue("action").ToString();
-            var jsonMessage = joMessage.GetValue("bounds") as JObject;
 
             switch (action)
             {
                 case "setBounds":
+                    var jsonMessage = joMessage.GetValue("bounds") as JObject;
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
                         dockingWindow.Top = Double.Parse(jsonMessage.GetValue("top").ToString());
                         dockingWindow.Left = Double.Parse(jsonMessage.GetValue("left").ToString());
                         dockingWindow.Height = Double.Parse(jsonMessage.GetValue("height").ToString());
                         dockingWindow.Width = Double.Parse(jsonMessage.GetValue("width").ToString()); ;
+                    });
+                    break;
+                case "bringToFront":
+                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        dockingWindow.BringIntoView();
+                    });
+                    break;
+                case "setOpacity":
+                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        dockingWindow.Opacity = Double.Parse(joMessage.GetValue("opacity").ToString());
+                    });
+                    break;
+                case "hide":
+                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        dockingWindow.Hide();
+                    });
+                    break;
+                case "show":
+                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        dockingWindow.Show();
+                    });
+                    break;
+                case "groupUpdate":
+                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        jsonMessage = joMessage.GetValue("groupData") as JObject;
+                        dynamic groupData = new ExpandoObject();
+                        groupData.dockingGroup = jsonMessage.GetValue("dockingGroup").ToString();
+                        groupData.snappingGroup = jsonMessage.GetValue("snappingGroup").ToString();
+                        dockingWindow.Docking_GroupUpdate(groupData);
                     });
                     break;
             }
@@ -164,6 +198,22 @@ namespace ChartIQ.Finsemble
             bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
             moving = false;
             Mouse.Capture(null);
+        }
+
+        public void FormGroup(object sender, RoutedEventArgs e)
+        {
+            dynamic props = new ExpandoObject();
+            props.windowName = dockingWindowName;
+            props.windowAction = "formGroup";
+            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+        }
+
+        public void LeaveGroup(object sender, RoutedEventArgs e)
+        {
+            dynamic props = new ExpandoObject();
+            props.windowName = dockingWindowName;
+            props.windowAction = "leaveGroup";
+            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
         }
     }
 }

@@ -57,6 +57,22 @@ namespace WpfApp1
             });
         }
 
+        public void Docking_GroupUpdate(dynamic groups)
+        {
+            if(groups.dockingGroup != "")
+            {
+                Docking.Content = "@";
+                Docking.Visibility = Visibility.Visible;
+            } else if(groups.snappingGroup != "")
+            {
+                Docking.Content = ">";
+                Docking.Visibility = Visibility.Visible;
+            } else
+            {
+                Docking.Visibility = Visibility.Hidden;
+            }
+        }
+
         public void LinkerSubscriber(object sender, ChartIQ.Finsemble.LinkerEventArgs e)
         {
             MessageBox.Show(e.Message);
@@ -169,5 +185,16 @@ namespace WpfApp1
             T1.Text = this.Top + " " + this.Left;
         }
 
+        private void Docking_Click(object sender, RoutedEventArgs e)
+        {
+            if (Docking.Content == "@")
+            {
+                docking.LeaveGroup(sender, e);
+            }
+            else
+            {
+                docking.FormGroup(sender, e);
+            }
+        }
     }
 }

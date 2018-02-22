@@ -82,6 +82,7 @@
             <Button Name="Maximize" Content="3" Width="35" Click="Button_Click_1" HorizontalAlignment="Right" Canvas.Right="35" Background="#FF233958" BorderBrush="{x:Null}" Foreground="White" FontFamily="/WpfApp1;component/Resources/#finfont" Height="35" FontSize="16" />
             <Button Name="Close" Content ="p" Width="35" Click="Button_Click_3" HorizontalAlignment="Right" Canvas.Right="0" FontFamily="/WpfApp1;component/Resources/#finfont" Height="35" Background="#FF233958" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
             <Button Name="Linker" Content="1" Width="35" Click="Linker_Click" HorizontalAlignment="Left"  Canvas.Left="0" FontFamily="/WpfApp1;component/Resources/#finfont" Height="35" Background="#FF233958" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
+            <Button Name="Docking" Content=">" Width="35" Click="Docking_Click" HorizontalAlignment="Right" Canvas.Right="105" FontFamily="/WpfApp1;component/Resources/#finfont" Background="#FF233958" BorderBrush="{x:Null}" Foreground="White" Height="35" FontSize="16" Visibility="Hidden" />
         </Canvas>
         <TextBox Name="T1" HorizontalAlignment="Left" Height="22" Margin="59,86,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
 
