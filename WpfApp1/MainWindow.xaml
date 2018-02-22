@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" 
-        Width="525" WindowStyle="None" Background="{x:Null}" LocationChanged="Window_LocationChanged" >
+        Width="525" WindowStyle="None" Background="{x:Null}" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" Activated="Window_GotFocus" Deactivated="Window_LostFocus">
 
     <WindowChrome.WindowChrome>
         <WindowChrome     
@@ -18,56 +18,84 @@
     </WindowChrome.WindowChrome>
 
     <Window.Resources>
-        <Style x:Key="FocusVisual">
-            <Setter Property="Control.Template">
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FF039BFF"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FF039BFF"/>
+        <SolidColorBrush x:Key="CloseButton.MouseOver.Background" Color="#FFEF1436"/>
+        <SolidColorBrush x:Key="CloseButton.Pressed.Background" Color="#FFEF1436"/>
+        <SolidColorBrush x:Key="InactiveButton.MouseOver.Background" Color="#FF039BFF"/>
+        <SolidColorBrush x:Key="InactiveButton.Pressed.Background" Color="#FF039BFF"/>
+        <SolidColorBrush x:Key="InactiveCloseButton.MouseOver.Background" Color="#FFEF1436"/>
+        <SolidColorBrush x:Key="InactiveCloseButton.Pressed.Background" Color="#FFEF1436"/>
+        <Style x:Key="ToolbarRegularButton" TargetType="{x:Type Button}">
+            <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate>
-                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true" CornerRadius="0">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
-        <SolidColorBrush x:Key="Button.Static.Border" Color="#00707070"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
-        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
-        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
-        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
-        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
-        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
-        <Style x:Key="RoundedButtonStyle" TargetType="{x:Type Button}">
-            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="1"/>
+        <Style x:Key="ToolbarCloseButton" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true" CornerRadius="2">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true" CornerRadius="0">
                             <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsDefaulted" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-
-                            </Trigger>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Static.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Static.Border}"/>
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource CloseButton.MouseOver.Background}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Static.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Static.Border}"/>
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource CloseButton.Pressed.Background}"/>
                             </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
-                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="InactiveToolbarRegularButton" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true" CornerRadius="0">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource InactiveButton.MouseOver.Background}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource InactiveButton.Pressed.Background}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="InactiveToolbarCloseButton" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true" CornerRadius="0">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource InactiveCloseButton.MouseOver.Background}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource InactiveCloseButton.Pressed.Background}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -78,11 +106,11 @@
 
     <Grid Margin="0,0,0,0" Background="White">
         <Canvas Name="Toolbar" Height="35" Margin="0,0,0,0" VerticalAlignment="Top" MouseDown="Toolbar_MouseDown" MouseUp="Toolbar_MouseUp" MouseMove="Toolbar_MouseMove" Background="#FF233958">
-            <Button Name="Minimize" Content="4" Width="35" Click="Button_Click_2" HorizontalAlignment="Right" Canvas.Right="70" FontFamily="/WpfApp1;component/Resources/#finfont" Background="#FF233958" BorderBrush="{x:Null}" Foreground="White" Height="35" FontSize="16" />
-            <Button Name="Maximize" Content="3" Width="35" Click="Button_Click_1" HorizontalAlignment="Right" Canvas.Right="35" Background="#FF233958" BorderBrush="{x:Null}" Foreground="White" FontFamily="/WpfApp1;component/Resources/#finfont" Height="35" FontSize="16" />
-            <Button Name="Close" Content ="p" Width="35" Click="Button_Click_3" HorizontalAlignment="Right" Canvas.Right="0" FontFamily="/WpfApp1;component/Resources/#finfont" Height="35" Background="#FF233958" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
-            <Button Name="Linker" Content="1" Width="35" Click="Linker_Click" HorizontalAlignment="Left"  Canvas.Left="0" FontFamily="/WpfApp1;component/Resources/#finfont" Height="35" Background="#FF233958" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
-            <Button Name="Docking" Content=">" Width="35" Click="Docking_Click" HorizontalAlignment="Right" Canvas.Right="105" FontFamily="/WpfApp1;component/Resources/#finfont" Background="#FF233958" BorderBrush="{x:Null}" Foreground="White" Height="35" FontSize="16" Visibility="Hidden" />
+            <Button Style="{StaticResource ToolbarRegularButton}" Name="Minimize" Content="4" Width="35" Click="Button_Click_2" HorizontalAlignment="Right" Canvas.Right="70" FontFamily="/WpfApp1;component/Resources/#finfont" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" Height="35" FontSize="16" />
+            <Button Style="{StaticResource ToolbarRegularButton}" Name="Maximize" Content="3" Width="35" Click="Button_Click_1" HorizontalAlignment="Right" Canvas.Right="35" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" FontFamily="/WpfApp1;component/Resources/#finfont" Height="35" FontSize="16" />
+            <Button Style="{StaticResource ToolbarCloseButton}" Name="Close" Content ="p" Width="35" Click="Button_Click_3" HorizontalAlignment="Right" Canvas.Right="0" FontFamily="/WpfApp1;component/Resources/#finfont" Height="35" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
+            <Button Style="{StaticResource ToolbarRegularButton}" Name="Linker" Content="1" Width="35" Click="Linker_Click" HorizontalAlignment="Left"  Canvas.Left="0" FontFamily="/WpfApp1;component/Resources/#finfont" Height="35" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
+            <Button Style="{StaticResource ToolbarRegularButton}" Name="Docking" Content=">" Width="35" Click="Docking_Click" HorizontalAlignment="Right" Canvas.Right="105" FontFamily="/WpfApp1;component/Resources/#finfont" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" Height="35" FontSize="16" Visibility="Hidden" />
         </Canvas>
         <TextBox Name="T1" HorizontalAlignment="Left" Height="22" Margin="59,86,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
 

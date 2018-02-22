@@ -196,5 +196,37 @@ namespace WpfApp1
                 docking.FormGroup(sender, e);
             }
         }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+
+        }
+
+        private void Window_GotFocus(object sender, EventArgs e)
+        {
+            Color color = (Color)ColorConverter.ConvertFromString("#FF133F7C");
+            Toolbar.Background = new SolidColorBrush(color);
+            var buttonStyle = this.Resources["ToolbarRegularButton"];
+            var closeButtonStyle =  this.Resources["ToolbarCloseButton"];
+            Minimize.SetValue(StyleProperty, buttonStyle);
+            Maximize.SetValue(StyleProperty, buttonStyle);
+            Linker.SetValue(StyleProperty, buttonStyle);
+            Docking.SetValue(StyleProperty, buttonStyle);
+            Close.SetValue(StyleProperty, closeButtonStyle);
+        }
+
+        private void Window_LostFocus(object sender, EventArgs e)
+        {
+            Color color = (Color)ColorConverter.ConvertFromString("#FF233958");
+            Toolbar.Background = new SolidColorBrush(color);
+            var buttonStyle = this.Resources["InactiveToolbarRegularButton"];
+            var closeButtonStyle = this.Resources["InactiveToolbarCloseButton"];
+            Minimize.SetValue(StyleProperty, buttonStyle);
+            Maximize.SetValue(StyleProperty, buttonStyle);
+            Linker.SetValue(StyleProperty, buttonStyle);
+            Docking.SetValue(StyleProperty, buttonStyle);
+            Close.SetValue(StyleProperty, closeButtonStyle);
+
+        }
     }
 }
