@@ -10,7 +10,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -19,6 +18,7 @@ using Newtonsoft.Json.Linq;
 
 namespace WpfApp1
 {
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -59,15 +59,17 @@ namespace WpfApp1
 
         public void Docking_GroupUpdate(dynamic groups)
         {
-            if(groups.dockingGroup != "")
+            if (groups.dockingGroup != "")
             {
                 Docking.Content = "@";
                 Docking.Visibility = Visibility.Visible;
-            } else if(groups.snappingGroup != "")
+            }
+            else if (groups.snappingGroup != "")
             {
                 Docking.Content = ">";
                 Docking.Visibility = Visibility.Visible;
-            } else
+            }
+            else
             {
                 Docking.Visibility = Visibility.Hidden;
             }
@@ -197,17 +199,12 @@ namespace WpfApp1
             }
         }
 
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-
-        }
-
         private void Window_GotFocus(object sender, EventArgs e)
         {
             Color color = (Color)ColorConverter.ConvertFromString("#FF133F7C");
             Toolbar.Background = new SolidColorBrush(color);
             var buttonStyle = this.Resources["ToolbarRegularButton"];
-            var closeButtonStyle =  this.Resources["ToolbarCloseButton"];
+            var closeButtonStyle = this.Resources["ToolbarCloseButton"];
             Minimize.SetValue(StyleProperty, buttonStyle);
             Maximize.SetValue(StyleProperty, buttonStyle);
             Linker.SetValue(StyleProperty, buttonStyle);
@@ -227,6 +224,19 @@ namespace WpfApp1
             Docking.SetValue(StyleProperty, buttonStyle);
             Close.SetValue(StyleProperty, closeButtonStyle);
 
+        }
+
+        private void Window_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            docking.Window_MouseUp(sender, e);
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if(this.WindowState == WindowState.Normal)
+            {
+                docking.Restore();
+            }
         }
     }
 }

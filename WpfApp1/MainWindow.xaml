@@ -6,7 +6,12 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" 
-        Width="525" WindowStyle="None" Background="{x:Null}" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" Activated="Window_GotFocus" Deactivated="Window_LostFocus">
+        Width="525" WindowStyle="None" Background="{x:Null}" 
+        LocationChanged="Window_LocationChanged" 
+        Activated="Window_GotFocus" 
+        Deactivated="Window_LostFocus"
+        MouseUp="Window_MouseUp"
+        StateChanged="Window_StateChanged">
 
     <WindowChrome.WindowChrome>
         <WindowChrome     
