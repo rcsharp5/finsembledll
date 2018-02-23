@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -30,8 +31,13 @@ namespace ChartIQ.Finsemble
         bool moving = false;
         bool resizing = false;
         Point startPosition;
+
         private Point WindowLocation;
         private Point WindowBottomRight;
+
+        private Point WindowResizeEndLocation;
+        private Point WindowResizeEndBottomRight;
+
         const int WM_SIZING = 0x0214;
         const int WM_MOVING = 0x0216;
 
@@ -49,9 +55,23 @@ namespace ChartIQ.Finsemble
 
         double dpiX, dpiY;
 
+        Timer resizeTimer = new Timer(250);
+
         public Docking(FinsembleBridge _bridge)
         {
             this.bridge = _bridge;
+            resizeTimer.Elapsed += handleResizeEnd;
+        }
+
+        private void handleResizeEnd(object sender, ElapsedEventArgs e)
+        {
+            resizeTimer.Stop();
+            Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
+            dynamic props = new ExpandoObject();
+            props.windowName = dockingWindowName;
+            props.windowAction = "endMove";
+            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            resizing = false;
         }
 
         public void Register(Window window, string windowName, string channel)
@@ -348,8 +368,8 @@ namespace ChartIQ.Finsemble
                             break;
 
                     }
-                    Point NewTopCorner = new Point(rectangle.Left / scale, rectangle.Top / scale);
-                    Point NewBottomCorner = new Point(rectangle.Right / scale, rectangle.Bottom / scale);
+                    WindowResizeEndLocation = new Point(rectangle.Left / scale, rectangle.Top / scale);
+                    WindowResizeEndBottomRight = new Point(rectangle.Right / scale, rectangle.Bottom / scale);
                     bHandled = true;
                     rectangle.Left = Convert.ToInt32(WindowLocation.X * scale);
                     rectangle.Top = Convert.ToInt32(WindowLocation.Y * scale);
@@ -358,9 +378,10 @@ namespace ChartIQ.Finsemble
                     Marshal.StructureToPtr(rectangle, lParam, true);
                     TimeSpan t = DateTime.Now - lastResizeSent;
                     if (t.TotalMilliseconds < 20) return IntPtr.Zero;
-                    Resize(NewTopCorner, NewBottomCorner);
+                    Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
                     lastResizeSent = DateTime.Now;
-                    
+                    resizeTimer.Stop();
+                    resizeTimer.Start();
                     break;
 
             }
