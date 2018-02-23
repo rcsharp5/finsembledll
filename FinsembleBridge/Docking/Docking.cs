@@ -57,25 +57,10 @@ namespace ChartIQ.Finsemble
 
         Timer resizeTimer = new Timer(250);
 
-        public Docking(FinsembleBridge _bridge)
+        public Docking(FinsembleBridge _bridge, Window window, string windowName, string channel)
         {
             this.bridge = _bridge;
             resizeTimer.Elapsed += handleResizeEnd;
-        }
-
-        private void handleResizeEnd(object sender, ElapsedEventArgs e)
-        {
-            resizeTimer.Stop();
-            Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
-            dynamic props = new ExpandoObject();
-            props.windowName = dockingWindowName;
-            props.windowAction = "endMove";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-            resizing = false;
-        }
-
-        public void Register(Window window, string windowName, string channel)
-        {
             dynamic props = new ExpandoObject();
             props.windowName = windowName;
             props.top = window.Top;
@@ -91,6 +76,17 @@ namespace ChartIQ.Finsemble
             Window_Loaded();
         }
 
+        private void handleResizeEnd(object sender, ElapsedEventArgs e)
+        {
+            resizeTimer.Stop();
+            Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
+            dynamic props = new ExpandoObject();
+            props.windowName = dockingWindowName;
+            props.windowAction = "endMove";
+            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            resizing = false;
+        }
+        
         private void Got_Docking_Message(string sourceUuid, string topic, object message)
         {
             var joMessage = message as JObject;

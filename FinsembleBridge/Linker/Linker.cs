@@ -2,10 +2,9 @@
 
 namespace ChartIQ.Finsemble
 {
-	public class Linker
+    public class Linker
     {
-        private static dynamic _Topic = new ExpandoObject(); 
-        
+        private static dynamic _Topic = new ExpandoObject();
         public static dynamic Topic
         {
             get

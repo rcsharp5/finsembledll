@@ -24,7 +24,7 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
-        private LinkerWindow LinkerWindow = new LinkerWindow();
+        private LinkerWindow linkerWindow;
         private SortedDictionary<string, Button> LinkerGroups = new SortedDictionary<string, Button>();
         private FinsembleBridge bridge;
         private string windowName;
@@ -32,7 +32,7 @@ namespace WpfApp1
 
         public MainWindow(string FinsembleWindowName)
         {
-            if (FinsembleWindowName != "")
+            if (!string.IsNullOrEmpty(FinsembleWindowName))
             {
                 windowName = FinsembleWindowName;
             }
@@ -40,7 +40,7 @@ namespace WpfApp1
             {
                 windowName = Guid.NewGuid().ToString();
             }
-            LinkerWindow.Subscribe(LinkerSubscriber);
+            
             bridge = new FinsembleBridge(new System.Version("8.56.28.34"));
             bridge.Connect();
             bridge.Connected += Bridge_Connected;
@@ -50,13 +50,27 @@ namespace WpfApp1
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
+                // Create the Linker Window. It needs a connected Openfin Bridge
+                linkerWindow = new LinkerWindow(bridge);
+
+                // Subscribe to Linker Publishes
+                bridge.LinkerSubscribe += LinkerSubscriber;
+
+                // Subscribe to topics
+                bridge.SendRPCCommand(ChartIQ.Finsemble.Linker.Topic.Subscribe, "symbol", bridge.CallbackChannel.Subscribe);
+
+                // Initialize this Window and show it
                 InitializeComponent();
                 this.Show();
-                docking = new Docking(bridge);
-                docking.Register(this, windowName, windowName + "-channel");
+
+                // Connect to Finsemble Docking
+                docking = new Docking(bridge, this, windowName, windowName + "-channel");
             });
         }
 
+        /**
+         * Handle Snapping And Docking updates.
+         */ 
         public void Docking_GroupUpdate(dynamic groups)
         {
             if (groups.dockingGroup != "")
@@ -73,30 +87,38 @@ namespace WpfApp1
             {
                 Docking.Visibility = Visibility.Hidden;
             }
+            Window_Size_Changed();
         }
 
-        public void LinkerSubscriber(object sender, ChartIQ.Finsemble.LinkerEventArgs e)
+        /*
+         * Linker Data Handler - TODO - not working
+         */
+        public void LinkerSubscriber(object sender, LinkerEventArgs e)
         {
             MessageBox.Show(e.Message);
         }
 
+        /*
+         * Let Docking Move this window instead of Windows - TODO - move this into docking to dynamically create these
+         */
         private void Toolbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             docking.StartMove(sender, e);
         }
-
 
         private void Toolbar_MouseUp(object sender, MouseButtonEventArgs e)
         {
             docking.EndMove(sender, e);
         }
 
-
         private void Toolbar_MouseMove(object sender, MouseEventArgs e)
         {
             docking.Move(sender, e);
         }
 
+        /*
+         * Maximize/Restore using Docking
+         */
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             var senderButton = (System.Windows.Controls.Button)sender;
@@ -112,33 +134,45 @@ namespace WpfApp1
             }
         }
 
+        /*
+         * Minimize using docking
+         */ 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             docking.Minimize();
         }
 
+        /*
+         * Close cleanly
+         */ 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            LinkerWindow.Close();
+            linkerWindow.Close();
             docking.Close();
             this.Close();
         }
 
+        /*
+         * Show Linker
+         */
         private void Linker_Click(object sender, RoutedEventArgs e)
         {
-            LinkerWindow.Left = this.Left;
-            LinkerWindow.Top = this.Top + 35;
+            linkerWindow.Left = this.Left;
+            linkerWindow.Top = this.Top + 35;
 
             // BS Hack to get window to focus properly - https://stackoverflow.com/questions/21033262/force-window-to-have-focus-when-opened
 
-            LinkerWindow.Show();
-            LinkerWindow.Owner = this;
-            LinkerWindow.Activate();
-            LinkerWindow.Topmost = true;
-            LinkerWindow.Topmost = false;
-            LinkerWindow.Focus();
+            linkerWindow.Show();
+            linkerWindow.Owner = this;
+            linkerWindow.Activate();
+            linkerWindow.Topmost = true;
+            linkerWindow.Topmost = false;
+            linkerWindow.Focus();
         }
 
+        /*
+         * Show Linker Pills
+         */
         public void Groups_Changed(string group, Brush background, bool join)
         {
             if (!LinkerGroups.ContainsKey(group))
@@ -152,7 +186,7 @@ namespace WpfApp1
                 Toolbar.Children.Add(groupRectangle);
                 groupRectangle.SetValue(Canvas.TopProperty, 5.0);
                 groupRectangle.Name = group;
-                var style = this.Resources["RoundedButtonStyle"];
+                var style = this.Resources["LinkerPill"];
                 groupRectangle.SetValue(StyleProperty, style);
 
                 LinkerGroups[group] = groupRectangle;
@@ -178,15 +212,13 @@ namespace WpfApp1
                     baseLeft += increment;
                 }
             }
+            Window_Size_Changed();
 
         }
 
-
-        private void Window_LocationChanged(object sender, EventArgs e)
-        {
-            T1.Text = this.Top + " " + this.Left;
-        }
-
+        /*
+         * Dock and undock
+         */
         private void Docking_Click(object sender, RoutedEventArgs e)
         {
             if (Docking.Content == "@")
@@ -199,6 +231,9 @@ namespace WpfApp1
             }
         }
 
+        /*
+         * Hover Color Changes
+         */
         private void Window_GotFocus(object sender, EventArgs e)
         {
             Color color = (Color)ColorConverter.ConvertFromString("#FF133F7C");
@@ -223,14 +258,23 @@ namespace WpfApp1
             Linker.SetValue(StyleProperty, buttonStyle);
             Docking.SetValue(StyleProperty, buttonStyle);
             Close.SetValue(StyleProperty, closeButtonStyle);
-
         }
 
-        private void Window_MouseUp(object sender, MouseButtonEventArgs e)
+        /*
+         * Handle when size of windows changes, linker/docking groups are joined left
+         */
+        private void Window_Size_Changed()
         {
-            docking.Window_MouseUp(sender, e);
+            double LeftWidths = 35 + LinkerGroups.Count * 15;
+            double RightWidths = 105;
+            if (Docking.IsVisible) RightWidths = 140;
+            Title.SetValue(Canvas.LeftProperty, LeftWidths);
+            Title.Width = this.Width - LeftWidths - RightWidths;
         }
 
+        /*
+         * Catch restores for Docking - TODO - move this to docking.
+         */
         private void Window_StateChanged(object sender, EventArgs e)
         {
             if(this.WindowState == WindowState.Normal)

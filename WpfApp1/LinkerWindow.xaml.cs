@@ -21,24 +21,17 @@ namespace WpfApp1
     /// </summary>
     public partial class LinkerWindow : Window
     {
-        private FinsembleBridge bridge;
-        public LinkerWindow()
+        FinsembleBridge bridge;
+
+        public LinkerWindow(FinsembleBridge bridge)
         {
-            bridge = new FinsembleBridge(new System.Version("8.56.28.34"));
-            bridge.Connect();           
-            bridge.Connected += Bridge_Connected;
+            this.bridge = bridge;
+            string topic = Linker.Topic.GetAllGroups;
+            this.bridge.SubscribeToChannel("allGroupsChannel", GotAllGroups);
+            this.bridge.SendRPCCommand(topic, new JObject().ToString(), "allGroupsChannel");
+            InitializeComponent();
         }
 
-        private void Bridge_Connected(object sender, EventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke((Action)delegate
-            {
-                string topic = Linker.Topic.GetAllGroups;
-                bridge.SubscribeToChannel("allGroupsChannel", GotAllGroups);
-                bridge.SendRPCCommand(topic, new JObject().ToString(), "allGroupsChannel");
-                InitializeComponent();
-            });
-        }
 
         private void group_Click(object sender, RoutedEventArgs e)
         {
@@ -105,9 +98,5 @@ namespace WpfApp1
             MainGrid.Children.Add(button);
         }
 
-        public void Subscribe(EventHandler<LinkerEventArgs> h)
-        {
-            bridge.LinkerSubscribe += h;
-        }
     }
 }
