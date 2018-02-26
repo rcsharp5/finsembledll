@@ -77,15 +77,20 @@ namespace WpfApp1
             {
                 Docking.Content = "@";
                 Docking.Visibility = Visibility.Visible;
+                Minimize.SetValue(Canvas.RightProperty, 105.0);
+                Docking.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF039BFF"));
             }
             else if (groups.snappingGroup != "")
             {
                 Docking.Content = ">";
                 Docking.Visibility = Visibility.Visible;
+                Minimize.SetValue(Canvas.RightProperty, 105.0);
+                Docking.Background = Brushes.Transparent;
             }
             else
             {
                 Docking.Visibility = Visibility.Hidden;
+                Minimize.SetValue(Canvas.RightProperty, 70.0);
             }
             Window_Size_Changed();
         }
@@ -95,7 +100,10 @@ namespace WpfApp1
          */
         public void LinkerSubscriber(object sender, LinkerEventArgs e)
         {
-            MessageBox.Show(e.Message);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                SendData.Text = e.Message;
+            });
         }
 
         /*
@@ -281,6 +289,11 @@ namespace WpfApp1
             {
                 docking.Restore();
             }
+        }
+
+        private void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            bridge.SendRPCCommand(ChartIQ.Finsemble.Linker.Topic.Publish, new JObject { ["dataType"] = "symbol", ["data"] = SendData.Text });
         }
     }
 }

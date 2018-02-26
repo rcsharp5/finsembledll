@@ -98,5 +98,9 @@ namespace WpfApp1
             MainGrid.Children.Add(button);
         }
 
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
     }
 }
