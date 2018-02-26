@@ -158,6 +158,12 @@ namespace ChartIQ.Finsemble
                         dockingWindow.WindowState = WindowState.Maximized;
                     });
                     break;
+                case "close":
+                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        dockingWindow.GotFinsembleClose();
+                    });
+                    break;
 
             }
         }

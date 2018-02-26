@@ -295,5 +295,11 @@ namespace WpfApp1
         {
             bridge.SendRPCCommand(ChartIQ.Finsemble.Linker.Topic.Publish, new JObject { ["dataType"] = "symbol", ["data"] = SendData.Text });
         }
+
+        public void GotFinsembleClose()
+        {
+            linkerWindow.Close();
+            this.Close();
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace WpfApp1
             string mainWindowName = "";
             if (e.Args.Length > 0)
             {
-                mainWindowName = e.Args[0].Split('=')[1];
+                mainWindowName = e.Args[0].Split(new char[] { '=' }, 2)[1];
             }
             var mainWindow = new MainWindow(mainWindowName);
         }
