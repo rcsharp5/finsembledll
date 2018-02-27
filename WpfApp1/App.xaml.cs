@@ -17,11 +17,38 @@ namespace WpfApp1
         {
             //base.OnStartup(e);
             string mainWindowName = "";
+            string top = null, left = null, height = null, width = null;
             if (e.Args.Length > 0)
             {
-                mainWindowName = e.Args[0].Split(new char[] { '=' }, 2)[1];
+                
+                for (var i = 0; i < e.Args.Length; i++)
+                {
+                    var argument = e.Args[i].Split(new char[] { '=' }, 2);
+                    var argumentName = argument[0];
+                    var argumentValue = argument[1];
+                    switch(argumentName)
+                    {
+                        case "top":
+                            top = argumentValue;
+                            break;
+                        case "left":
+                            left = argumentValue;
+                            break;
+                        case "width":
+                            width = argumentValue;
+                            break;
+                        case "height":
+                            height = argumentValue;
+                            break;
+                        case "finsembleWindowName":
+                            mainWindowName = argumentValue;
+                            break;
+                    }
+
+
+                }
             }
-            var mainWindow = new MainWindow(mainWindowName);
+            var mainWindow = new MainWindow(mainWindowName, top, left, height, width);
         }
     }
 }

@@ -29,8 +29,10 @@ namespace WpfApp1
         private FinsembleBridge bridge;
         private string windowName;
         private Docking docking;
+        private bool sendCloseToFinsemble = true;
 
-        public MainWindow(string FinsembleWindowName)
+
+        public MainWindow(string FinsembleWindowName, string top, string left, string height, string width)
         {
             if (!string.IsNullOrEmpty(FinsembleWindowName))
             {
@@ -40,7 +42,27 @@ namespace WpfApp1
             {
                 windowName = Guid.NewGuid().ToString();
             }
-            
+
+            if (!string.IsNullOrEmpty(top))
+            {
+                this.Top = Double.Parse(top);
+            }
+
+            if (!string.IsNullOrEmpty(left))
+            {
+                this.Left = Double.Parse(left);
+            }
+
+            if (!string.IsNullOrEmpty(height))
+            {
+                this.Height = Double.Parse(height);
+            }
+
+            if (!string.IsNullOrEmpty(width))
+            {
+                this.Width = Double.Parse(width);
+            }
+
             bridge = new FinsembleBridge(new System.Version("8.56.28.34"));
             bridge.Connect();
             bridge.Connected += Bridge_Connected;
@@ -155,8 +177,6 @@ namespace WpfApp1
          */ 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            linkerWindow.Close();
-            docking.Close();
             this.Close();
         }
 
@@ -298,8 +318,18 @@ namespace WpfApp1
 
         public void GotFinsembleClose()
         {
+            sendCloseToFinsemble = false;
             linkerWindow.Close();
             this.Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (sendCloseToFinsemble)
+            {
+                linkerWindow.Close();
+                docking.Close();
+            }
         }
     }
 }
