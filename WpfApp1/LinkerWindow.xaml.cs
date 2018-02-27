@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ChartIQ.Finsemble;
 using Newtonsoft.Json.Linq;
+using FSBL.Clients;
 
 namespace WpfApp1
 {
@@ -21,17 +22,14 @@ namespace WpfApp1
     /// </summary>
     public partial class LinkerWindow : Window
     {
-        FinsembleBridge bridge;
+        LinkerClient linkerClient;
 
-        public LinkerWindow(FinsembleBridge bridge)
+        public LinkerWindow(LinkerClient linkerClient)
         {
-            this.bridge = bridge;
-            string topic = Linker.Topic.GetAllGroups;
-            this.bridge.SubscribeToChannel("allGroupsChannel", GotAllGroups);
-            this.bridge.SendRPCCommand(topic, new JObject().ToString(), "allGroupsChannel");
+            this.linkerClient = linkerClient;
+            linkerClient.getAllGroups(GotAllGroups);
             InitializeComponent();
         }
-
 
         private void group_Click(object sender, RoutedEventArgs e)
         {
@@ -41,17 +39,17 @@ namespace WpfApp1
             var owner = (MainWindow)this.Owner;
             if (sendingButton.Content.ToString() == "r")
             {
-                topic = Linker.Topic.RemoveFromGroup;
+                linkerClient.removeFromGroup(sendingButton.Name);
                 sendingButton.Content = "";
                 owner.Groups_Changed(sendingButton.Name, sendingButton.Background, false);
             }
             else
             {
-                topic = Linker.Topic.AddToGroup;
+                linkerClient.addToGroup(sendingButton.Name);
                 sendingButton.Content = "r";
                 owner.Groups_Changed(sendingButton.Name, sendingButton.Background, true);
             }
-            bridge.SendRPCCommand(topic, sendingButton.Name);
+            
             this.Hide();
         }
 

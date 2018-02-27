@@ -70,7 +70,7 @@
     <Compile Include="Docking\Docking.cs" />
     <Compile Include="FinsembleBridge.cs" />
     <Compile Include="Linker\LinkerEventArgs.cs" />
-    <Compile Include="Linker\Linker.cs" />
+    <Compile Include="Linker\LinkerClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

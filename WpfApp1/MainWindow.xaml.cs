@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json.Linq;
+using FSBL.Clients;
 
 namespace WpfApp1
 {
@@ -30,6 +31,7 @@ namespace WpfApp1
         private string windowName;
         private Docking docking;
         private bool sendCloseToFinsemble = true;
+        private LinkerClient linkerClient;
 
 
         public MainWindow(string FinsembleWindowName, string top, string left, string height, string width)
@@ -72,14 +74,17 @@ namespace WpfApp1
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                // Create the Linker Window. It needs a connected Openfin Bridge
-                linkerWindow = new LinkerWindow(bridge);
+                //instantiate LinkerClient
+                linkerClient = new LinkerClient(bridge);
 
-                // Subscribe to Linker Publishes
+                // Create the Linker Window. It needs a connected Openfin Bridge
+                linkerWindow = new LinkerWindow(linkerClient);
+
+                // What to call when subscribed data is received
                 bridge.LinkerSubscribe += LinkerSubscriber;
 
                 // Subscribe to topics
-                bridge.SendRPCCommand(ChartIQ.Finsemble.Linker.Topic.Subscribe, "symbol", bridge.CallbackChannel.Subscribe);
+                linkerClient.subscribe("symbol");
 
                 // Initialize this Window and show it
                 InitializeComponent();
@@ -313,7 +318,8 @@ namespace WpfApp1
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            bridge.SendRPCCommand(ChartIQ.Finsemble.Linker.Topic.Publish, new JObject { ["dataType"] = "symbol", ["data"] = SendData.Text });
+            
+            linkerClient.publish(new JObject { ["dataType"] = "symbol", ["data"] = SendData.Text });
         }
 
         public void GotFinsembleClose()
