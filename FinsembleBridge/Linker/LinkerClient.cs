@@ -2,7 +2,7 @@
 using ChartIQ.Finsemble;
 using Newtonsoft.Json.Linq;
 
-namespace FSBL.Clients
+namespace ChartIQ.Finsemble
 {
     public class LinkerClient
     {
@@ -28,12 +28,12 @@ namespace FSBL.Clients
             this.bridge = bridge;
         }
 
-        public void addToGroup(string groupName)
+        public void linkToChannel(string groupName)
         {
             bridge.SendRPCCommand(Topic.AddToGroup, groupName);
         }
 
-        public void removeFromGroup(string groupName)
+        public void unlinkFromChannel(string groupName)
         {
             bridge.SendRPCCommand(Topic.RemoveFromGroup, groupName);
         }
@@ -50,10 +50,10 @@ namespace FSBL.Clients
 
         public void unsubscribe(string channel)
         {
-
+            //TODO
         }
 
-        public void getAllGroups(Openfin.Desktop.InterAppMessageHandler callback)
+        public void getAllChannels(Openfin.Desktop.InterAppMessageHandler callback)
         {
             this.bridge.SubscribeToChannel("allGroupsChannel", callback);
             this.bridge.SendRPCCommand(Topic.GetAllGroups, new JObject().ToString(), "allGroupsChannel");

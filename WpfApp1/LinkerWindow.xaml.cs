@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ChartIQ.Finsemble;
 using Newtonsoft.Json.Linq;
-using FSBL.Clients;
 
 namespace WpfApp1
 {
@@ -27,7 +26,7 @@ namespace WpfApp1
         public LinkerWindow(LinkerClient linkerClient)
         {
             this.linkerClient = linkerClient;
-            linkerClient.getAllGroups(GotAllGroups);
+            linkerClient.getAllChannels(GotAllGroups);
             InitializeComponent();
         }
 
@@ -39,13 +38,13 @@ namespace WpfApp1
             var owner = (MainWindow)this.Owner;
             if (sendingButton.Content.ToString() == "r")
             {
-                linkerClient.removeFromGroup(sendingButton.Name);
+                linkerClient.unlinkFromChannel(sendingButton.Name);
                 sendingButton.Content = "";
                 owner.Groups_Changed(sendingButton.Name, sendingButton.Background, false);
             }
             else
             {
-                linkerClient.addToGroup(sendingButton.Name);
+                linkerClient.linkToChannel(sendingButton.Name);
                 sendingButton.Content = "r";
                 owner.Groups_Changed(sendingButton.Name, sendingButton.Background, true);
             }
