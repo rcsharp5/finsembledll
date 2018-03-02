@@ -17,7 +17,7 @@ namespace WpfApp1
         {
             //base.OnStartup(e);
             string mainWindowName = "";
-            string top = null, left = null, height = null, width = null;
+            string top = null, left = null, height = null, width = null, componentType = null;
             if (e.Args.Length > 0)
             {
                 
@@ -43,12 +43,15 @@ namespace WpfApp1
                         case "finsembleWindowName":
                             mainWindowName = argumentValue;
                             break;
+                        case "componentType":
+                            componentType = argumentValue;
+                            break;
                     }
 
 
                 }
             }
-            var mainWindow = new MainWindow(mainWindowName, top, left, height, width);
+            var mainWindow = new MainWindow(mainWindowName, componentType, top, left, height, width);
         }
     }
 }

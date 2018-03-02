@@ -67,13 +67,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallbackChannel.cs" />
+    <Compile Include="DistributedStore\DistributedStoreClient.cs" />
+    <Compile Include="DistributedStore\StoreModel.cs" />
     <Compile Include="Docking\Docking.cs" />
     <Compile Include="FinsembleBridge.cs" />
+    <Compile Include="Launcher\LauncherClient.cs" />
+    <Compile Include="Linker\LinkerChannel.cs" />
     <Compile Include="Linker\LinkerEventArgs.cs" />
     <Compile Include="Linker\LinkerClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Router\RouterClient.cs" />
     <Compile Include="Router\RouterEventArgs.cs" />
+    <Compile Include="Storage\StorageClient.cs" />
+    <Compile Include="Window\WindowClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -30,12 +30,13 @@ namespace WpfApp1
         private SortedDictionary<string, Button> LinkerGroups = new SortedDictionary<string, Button>();
         private FinsembleBridge bridge;
         private string windowName;
+        private string componentType = "Unknown";
         private Docking docking;
         private bool sendCloseToFinsemble = true;
         private LinkerClient linkerClient;
 
 
-        public MainWindow(string FinsembleWindowName, string top, string left, string height, string width)
+        public MainWindow(string FinsembleWindowName, string componentType, string top, string left, string height, string width)
         {
             if (!string.IsNullOrEmpty(FinsembleWindowName))
             {
@@ -44,6 +45,11 @@ namespace WpfApp1
             else
             {
                 windowName = Guid.NewGuid().ToString();
+            }
+
+            if(!string.IsNullOrEmpty(componentType))
+            {
+                this.componentType = componentType;
             }
 
             if (!string.IsNullOrEmpty(top))
@@ -66,7 +72,7 @@ namespace WpfApp1
                 this.Width = Double.Parse(width);
             }
 
-            bridge = new FinsembleBridge(new System.Version("8.56.28.34"), windowName);
+            bridge = new FinsembleBridge(new System.Version("8.56.28.34"), windowName, componentType, this);
             bridge.Connect();
             bridge.Connected += Bridge_Connected;
         }
@@ -114,9 +120,6 @@ namespace WpfApp1
 
                 }
             }
-            
-
-
         }
 
         /**
@@ -214,7 +217,7 @@ namespace WpfApp1
          */
         private void Linker_Click(object sender, RoutedEventArgs e)
         {
-            linkerWindow.Left = this.Left;
+            /*linkerWindow.Left = this.Left;
             linkerWindow.Top = this.Top + 35;
 
             // BS Hack to get window to focus properly - https://stackoverflow.com/questions/21033262/force-window-to-have-focus-when-opened
@@ -224,7 +227,8 @@ namespace WpfApp1
             linkerWindow.Activate();
             linkerWindow.Topmost = true;
             linkerWindow.Topmost = false;
-            linkerWindow.Focus();
+            linkerWindow.Focus();*/
+            bridge.linkerClient.showLinkerWindow();
         }
 
         /*
@@ -366,7 +370,9 @@ namespace WpfApp1
         {
             //bridge.routerClient.transmit("test", new JObject { ["hello"] = "hello" });
             EventHandler<FinsembleEventArgs> handler = (EventHandler<FinsembleEventArgs>) delegate (object s, FinsembleEventArgs ea) { };
-            bridge.routerClient.query("test", new JObject { ["hello"] = "hello" }, new JObject { }, handler);
+            //bridge.routerClient.query("test", new JObject { ["hello"] = "hello" }, new JObject { }, handler);
+            //bridge.distributedStoreClient.getStore(new JObject { ["store"] = "Finsemble_Linker", ["global"] = true }, handler);
+
         }
     }
 }

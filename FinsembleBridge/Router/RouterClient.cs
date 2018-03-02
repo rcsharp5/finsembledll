@@ -13,6 +13,7 @@ namespace ChartIQ.Finsemble
         private FinsembleBridge bridge;
         private string clientName;
         private Dictionary<string, EventHandler<FinsembleEventArgs>> transmitListeners = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
+        private Dictionary<string, EventHandler<FinsembleEventArgs>> publishListeners = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
         private Dictionary<string, EventHandler<FinsembleEventArgs>> queryIDResponseHandlerMap = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
 
         public RouterClient(FinsembleBridge bridge)
@@ -47,6 +48,10 @@ namespace ChartIQ.Finsemble
                     args = new FinsembleEventArgs(null, message as JObject); // TODO: Handle Errors
                     queryIDResponseHandlerMap[m.header.queryID.Value]?.Invoke(this, args);
                     queryIDResponseHandlerMap.Remove(m.header.queryID.Value);
+                    break;
+                case "publish":
+                    args = new FinsembleEventArgs(null, message as JObject);
+                    publishListeners[m.header.topic.Value]?.Invoke(this, args);
                     break;
             }
         }
@@ -116,6 +121,50 @@ namespace ChartIQ.Finsemble
         public void addResponder(string channel, EventHandler<FinsembleEventArgs> callback)
         {
 
+        }
+
+        // Pub Sub
+        public void publish(string topic, JObject data)
+        {
+            var PublishMessage = new JObject(
+                new JProperty("header",
+                    new JObject(
+                        new JProperty("origin", clientName),
+                        new JProperty("type", "publish"),
+                        new JProperty("channel", topic)
+                    )
+                ),
+                new JProperty("data", data)
+            );
+            bridge.runtime.InterApplicationBus.Publish("RouterService", PublishMessage);
+        }
+
+        public void subscribe(string topic, EventHandler<FinsembleEventArgs> responseHandler)
+        {
+            if (!publishListeners.ContainsKey(topic))
+            {
+                publishListeners.Add(topic, responseHandler);
+                var AddSubscribeMessage = new JObject(
+                   new JProperty("header",
+                       new JObject(
+                           new JProperty("origin", clientName),
+                           new JProperty("type", "subscribe"),
+                           new JProperty("topic", topic),
+                           new JProperty("subscribeID", Guid.NewGuid().ToString())
+                       )
+                   )
+                );
+                bridge.runtime.InterApplicationBus.Publish("RouterService", AddSubscribeMessage);
+            }
+            else
+            {
+                publishListeners[topic] += responseHandler;
+            }
+        }
+
+        public void unsubscribe(string topic, EventHandler<FinsembleEventArgs> responseHandler)
+        {
+            publishListeners[topic] -= responseHandler;
         }
         
     }

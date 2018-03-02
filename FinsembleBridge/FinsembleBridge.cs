@@ -59,15 +59,23 @@ namespace ChartIQ.Finsemble
         public event EventHandler<LinkerEventArgs> LinkerSubscribe;
         #endregion
 
+        public string componentType { private set; get; }
         public string windowName { private set; get; }
+        public string uuid { private set; get; }
 
         public RouterClient routerClient { private set; get; }
+        public DistributedStoreClient distributedStoreClient { private set; get; }
+        public StorageClient storageClient { private set; get; }
+        public WindowClient windowClient { private set; get; }
+        public LauncherClient launcherClient { private set; get; }
+        public LinkerClient linkerClient { private set; get; }
+        public System.Windows.Window window { private set; get; }
 
         /// <summary>
         /// Initializes a new instance of the FinsembleBridge class.
         /// </summary>
         /// <param name="openFinVersion">The version of the OpenFin runtime to which to connect</param>
-        public FinsembleBridge(Version openFinVersion, string windowName)
+        public FinsembleBridge(Version openFinVersion, string windowName, string componentType, System.Windows.Window window)
         {
             Logger.Debug(
                 "Initializing new instance of FinsembleBridge:\n" +
@@ -75,6 +83,8 @@ namespace ChartIQ.Finsemble
 
             OpenFinVersion = openFinVersion;
             this.windowName = windowName;
+            this.componentType = componentType;
+            this.window = window;
         }
 
         /// <summary>
@@ -132,9 +142,17 @@ namespace ChartIQ.Finsemble
                 // Listen for the various linker method callbacks
                 ListenForCallbacks();
 
+                this.uuid = runtime.Options.UUID;
+
                 routerClient = new RouterClient(this);
+                storageClient = new StorageClient(this);
+                windowClient = new WindowClient(this);
+                launcherClient = new LauncherClient(this);
+                distributedStoreClient = new DistributedStoreClient(this);
+                linkerClient = new LinkerClient(this);
 
                 // Notify listeners that connection is complete.
+                // ToDo, wait for clients to be ready??
                 Connected?.Invoke(this, EventArgs.Empty);
             });
         }
@@ -274,6 +292,20 @@ namespace ChartIQ.Finsemble
                 var e = new LinkerEventArgs(sourceUuid, topic, messageStr);
                 h(this, e);
             }
+        }
+
+        public string CamelCase(string str)
+        {
+            var split = str.Split(' ');
+            for(var i = 0; i<split.Length; i++)
+            {
+                split[i] = split[i].ToLower();
+                if(!String.IsNullOrEmpty(split[1]))
+                {
+                    split[i] = char.ToUpper(split[i][0]) + split[i].Substring(1);
+                }
+            }
+            return String.Join("", split);
         }
 
         #region IDisposable Support

@@ -26,7 +26,7 @@ namespace WpfApp1
         public LinkerWindow(LinkerClient linkerClient)
         {
             this.linkerClient = linkerClient;
-            linkerClient.getAllChannels(GotAllGroups);
+            //linkerClient.getAllChannels(GotAllGroups);
             InitializeComponent();
         }
 
