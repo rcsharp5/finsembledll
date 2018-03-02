@@ -7,7 +7,7 @@ using Openfin.Desktop;
 
 namespace ChartIQ.Finsemble
 {
-	public partial class FinsembleBridge : IDisposable
+    public partial class FinsembleBridge : IDisposable
     {
         /// <summary>
         /// The logger
@@ -28,7 +28,7 @@ namespace ChartIQ.Finsemble
         /// <summary>
         /// The instance of the OpenFin used by this example.
         /// </summary>
-        private Runtime runtime = null;
+        public Runtime runtime {get; private set;}
 
         #region Instance constants
         /// <summary>
@@ -59,17 +59,22 @@ namespace ChartIQ.Finsemble
         public event EventHandler<LinkerEventArgs> LinkerSubscribe;
         #endregion
 
+        public string windowName { private set; get; }
+
+        public RouterClient routerClient { private set; get; }
+
         /// <summary>
         /// Initializes a new instance of the FinsembleBridge class.
         /// </summary>
         /// <param name="openFinVersion">The version of the OpenFin runtime to which to connect</param>
-        public FinsembleBridge(Version openFinVersion)
+        public FinsembleBridge(Version openFinVersion, string windowName)
         {
             Logger.Debug(
                 "Initializing new instance of FinsembleBridge:\n" +
                 $"\tVersion: {openFinVersion}\n");
 
             OpenFinVersion = openFinVersion;
+            this.windowName = windowName;
         }
 
         /// <summary>
@@ -126,6 +131,8 @@ namespace ChartIQ.Finsemble
 
                 // Listen for the various linker method callbacks
                 ListenForCallbacks();
+
+                routerClient = new RouterClient(this);
 
                 // Notify listeners that connection is complete.
                 Connected?.Invoke(this, EventArgs.Empty);

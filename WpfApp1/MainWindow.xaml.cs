@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace WpfApp1
 {
@@ -64,7 +66,7 @@ namespace WpfApp1
                 this.Width = Double.Parse(width);
             }
 
-            bridge = new FinsembleBridge(new System.Version("8.56.28.34"));
+            bridge = new FinsembleBridge(new System.Version("8.56.28.34"), windowName);
             bridge.Connect();
             bridge.Connected += Bridge_Connected;
         }
@@ -89,9 +91,32 @@ namespace WpfApp1
                 InitializeComponent();
                 this.Show();
 
+                // router test
+                bridge.routerClient.addListener("test", FinsembleListener);
+
                 // Connect to Finsemble Docking
                 docking = new Docking(bridge, this, windowName, windowName + "-channel");
             });
+        }
+
+        public void FinsembleListener(object sender, FinsembleEventArgs message)
+        {
+            if (message.error != null)
+            {
+                dynamic error = JsonConvert.DeserializeObject<ExpandoObject>(message.error.ToString(), new ExpandoObjectConverter());
+            } else
+            {
+                dynamic response = JsonConvert.DeserializeObject<ExpandoObject>(message.response.ToString(), new ExpandoObjectConverter());
+
+                var data = response.data;
+                foreach (KeyValuePair<string, object> kvp in data)
+                {
+
+                }
+            }
+            
+
+
         }
 
         /**
@@ -335,6 +360,11 @@ namespace WpfApp1
                 linkerWindow.Close();
                 docking.Close();
             }
+        }
+
+        private void RouterTransmit_Click(object sender, RoutedEventArgs e)
+        {
+            bridge.routerClient.transmit("test", new JObject { ["hello"] = "hello" });
         }
     }
 }
