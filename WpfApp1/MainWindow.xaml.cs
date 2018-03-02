@@ -364,7 +364,9 @@ namespace WpfApp1
 
         private void RouterTransmit_Click(object sender, RoutedEventArgs e)
         {
-            bridge.routerClient.transmit("test", new JObject { ["hello"] = "hello" });
+            //bridge.routerClient.transmit("test", new JObject { ["hello"] = "hello" });
+            EventHandler<FinsembleEventArgs> handler = (EventHandler<FinsembleEventArgs>) delegate (object s, FinsembleEventArgs ea) { };
+            bridge.routerClient.query("test", new JObject { ["hello"] = "hello" }, new JObject { }, handler);
         }
     }
 }
