@@ -69,7 +69,9 @@ namespace ChartIQ.Finsemble
         public WindowClient windowClient { private set; get; }
         public LauncherClient launcherClient { private set; get; }
         public LinkerClient linkerClient { private set; get; }
+        public ConfigClient configClient { private set; get; }
         public System.Windows.Window window { private set; get; }
+        public Docking docking;
 
         /// <summary>
         /// Initializes a new instance of the FinsembleBridge class.
@@ -146,10 +148,13 @@ namespace ChartIQ.Finsemble
 
                 routerClient = new RouterClient(this);
                 storageClient = new StorageClient(this);
-                windowClient = new WindowClient(this);
-                launcherClient = new LauncherClient(this);
+                configClient = new ConfigClient(this); 
+                windowClient = new WindowClient(this); 
+                launcherClient = new LauncherClient(this); 
                 distributedStoreClient = new DistributedStoreClient(this);
                 linkerClient = new LinkerClient(this);
+
+                docking = new Docking(this, window, windowName, windowName + "-channel");
 
                 // Notify listeners that connection is complete.
                 // ToDo, wait for clients to be ready??

@@ -12,13 +12,17 @@ namespace ChartIQ.Finsemble
         private FinsembleBridge bridge;
         public JObject windowIdentifier { private set; get; }
         private StorageClient storageClient;
+        private ConfigClient configClient;
+        private string windowHash;
         private string containerHash;
         private const string WORKSPACE_CACHE_TOPIC = "finsemble.workspace.cache";
+        private JObject options;
 
         public WindowClient(FinsembleBridge bridge)
         {
             this.bridge = bridge;
             this.storageClient = bridge.storageClient;
+            this.windowHash = bridge.CamelCase("activeWorkspace " + bridge.windowName);
             this.containerHash = bridge.CamelCase("activeWorkspace " + bridge.windowName + " " + bridge.windowName);
 
             this.windowIdentifier = new JObject
@@ -27,6 +31,7 @@ namespace ChartIQ.Finsemble
                 ["uuid"] = bridge.uuid,
                 ["componentType"] = bridge.componentType
             };
+
         }
 
         public void getComponentState(JObject parameters, EventHandler<FinsembleEventArgs> callback)

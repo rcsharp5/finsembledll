@@ -31,7 +31,6 @@ namespace WpfApp1
         private FinsembleBridge bridge;
         private string windowName;
         private string componentType = "Unknown";
-        private Docking docking;
         private bool sendCloseToFinsemble = true;
 
         public MainWindow(string FinsembleWindowName, string componentType, string top, string left, string height, string width)
@@ -93,9 +92,7 @@ namespace WpfApp1
 
                 // router test
                 bridge.routerClient.addListener("test", FinsembleListener);
-
-                // Connect to Finsemble Docking
-                docking = new Docking(bridge, this, windowName, windowName + "-channel");
+                
             });
         }
 
@@ -160,17 +157,17 @@ namespace WpfApp1
          */
         private void Toolbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            docking.StartMove(sender, e);
+            bridge.docking.StartMove(sender, e);
         }
 
         private void Toolbar_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            docking.EndMove(sender, e);
+            bridge.docking.EndMove(sender, e);
         }
 
         private void Toolbar_MouseMove(object sender, MouseEventArgs e)
         {
-            docking.Move(sender, e);
+            bridge.docking.Move(sender, e);
         }
 
         /*
@@ -181,12 +178,12 @@ namespace WpfApp1
             var senderButton = (System.Windows.Controls.Button)sender;
             if (this.WindowState == System.Windows.WindowState.Maximized)
             {
-                docking.Restore();
+                bridge.docking.Restore();
                 senderButton.Content = "3";
             }
             else
             {
-                docking.Maxmimize();
+                bridge.docking.Maxmimize();
                 senderButton.Content = "#";
             }
         }
@@ -196,7 +193,7 @@ namespace WpfApp1
          */
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            docking.Minimize();
+            bridge.docking.Minimize();
         }
 
         /*
@@ -316,11 +313,11 @@ namespace WpfApp1
         {
             if (Docking.Content == "@")
             {
-                docking.LeaveGroup(sender, e);
+                bridge.docking.LeaveGroup(sender, e);
             }
             else
             {
-                docking.FormGroup(sender, e);
+                bridge.docking.FormGroup(sender, e);
             }
         }
 
@@ -373,13 +370,12 @@ namespace WpfApp1
         {
             if (this.WindowState == WindowState.Normal)
             {
-                docking.Restore();
+                bridge.docking.Restore();
             }
         }
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-
             bridge.linkerClient.publish(new JObject {
                 ["dataType"] = "symbol",
                 ["data"] = SendData.Text
@@ -398,7 +394,7 @@ namespace WpfApp1
             if (sendCloseToFinsemble)
             {
                 //linkerWindow.Close();
-                docking.Close();
+                bridge.docking.Close();
             }
         }
 

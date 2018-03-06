@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallbackChannel.cs" />
+    <Compile Include="Config\ConfigClient.cs" />
     <Compile Include="DistributedStore\DistributedStoreClient.cs" />
     <Compile Include="DistributedStore\StoreModel.cs" />
     <Compile Include="Docking\Docking.cs" />
