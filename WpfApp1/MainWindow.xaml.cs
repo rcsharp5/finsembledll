@@ -33,8 +33,6 @@ namespace WpfApp1
         private string componentType = "Unknown";
         private Docking docking;
         private bool sendCloseToFinsemble = true;
-        private LinkerClient linkerClient;
-
 
         public MainWindow(string FinsembleWindowName, string componentType, string top, string left, string height, string width)
         {
@@ -83,7 +81,10 @@ namespace WpfApp1
             {
                 bridge.linkerClient.subscribe("symbol", (EventHandler<FinsembleEventArgs>)delegate(object s, FinsembleEventArgs args)
                 {
-                    args.ToString();
+                    Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                    {
+                        SendData.Text = args.response["data"].ToString();
+                    });
                 });
 
                 // Initialize this Window and show it
@@ -379,7 +380,10 @@ namespace WpfApp1
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
 
-            linkerClient.publish(new JObject { ["dataType"] = "symbol", ["data"] = SendData.Text });
+            bridge.linkerClient.publish(new JObject {
+                ["dataType"] = "symbol",
+                ["data"] = SendData.Text
+            });
         }
 
         public void GotFinsembleClose()

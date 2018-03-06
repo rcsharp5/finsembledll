@@ -22,7 +22,7 @@ namespace ChartIQ.Finsemble
         private string key;
         private EventHandler<FinsembleEventArgs> stateChangeListeners;
         private Dictionary<string, EventHandler<FinsembleEventArgs>> linkerSubscribers = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
-        private List<string> channelListenerList;
+        private List<string> channelListenerList = new List<string>();
 
         public LinkerClient(FinsembleBridge bridge)
         {
@@ -103,11 +103,14 @@ namespace ChartIQ.Finsemble
         private void handleListeners(object sender, FinsembleEventArgs args)
         {
             var topic = args.response["data"]?["type"].ToString();
-            linkerSubscribers["topic"]?.Invoke(this, new FinsembleEventArgs(null, new JObject
+            if (linkerSubscribers.ContainsKey(topic))
             {
-                ["data"] = args.response["data"]?["data"],
-                ["header"] = args.response["header"]
-            }));
+                linkerSubscribers[topic]?.Invoke(this, new FinsembleEventArgs(null, new JObject
+                {
+                    ["data"] = args.response["data"]?["data"],
+                    ["header"] = args.response["header"]
+                }));
+            }
         }
 
         private void updateListeners()
@@ -187,13 +190,21 @@ namespace ChartIQ.Finsemble
         public void publish(JObject parameters)
         {
             //bridge.SendRPCCommand(Topic.Publish, data);
-            foreach (JObject item in channels)
+            if (channels != null)
             {
-                routerClient.transmit((string)item + '.' + (string)parameters["dataType"], new JObject
+                foreach (var item in channels)
                 {
-                    ["type"] = (string)parameters["dataType"],
-                    ["data"] = parameters["data"]
-                });
+                    routerClient.transmit((string)item + '.' + (string)parameters["dataType"], new JObject
+                    {
+                        ["type"] = (string)parameters["dataType"],
+                        ["data"] = parameters["data"]
+                    });
+                    routerClient.transmit((string)item, new JObject
+                    {
+                        ["type"] = (string)parameters["dataType"],
+                        ["data"] = parameters["data"]
+                    });
+                }
             }
         }
 
