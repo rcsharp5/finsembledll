@@ -89,6 +89,7 @@ namespace WpfApp1
                 // Initialize this Window and show it
                 InitializeComponent();
                 this.Show();
+                bridge.docking.Window_Loaded();
 
                 // router test
                 bridge.routerClient.addListener("test", FinsembleListener);

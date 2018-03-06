@@ -59,32 +59,37 @@ namespace ChartIQ.Finsemble
 
         public Docking(FinsembleBridge _bridge, Window window, string windowName, string channel)
         {
-            this.bridge = _bridge;
-            resizeTimer.Elapsed += handleResizeEnd;
-            dynamic props = new ExpandoObject();
-            props.windowName = windowName;
-            props.top = window.Top;
-            props.left = window.Left;
-            props.width = window.Width;
-            props.height = window.Height;
-            props.windowAction = "open";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), channel);
-            this.dockingChannel = channel;
-            this.dockingWindow = window;
-            this.dockingWindowName = windowName;
-            bridge.SubscribeToChannel(dockingChannel, Got_Docking_Message);
-            Window_Loaded();
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                this.bridge = _bridge;
+                resizeTimer.Elapsed += handleResizeEnd;
+                dynamic props = new ExpandoObject();
+                props.windowName = windowName;
+                props.top = window.Top;
+                props.left = window.Left;
+                props.width = window.Width;
+                props.height = window.Height;
+                props.windowAction = "open";
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), channel);
+                this.dockingChannel = channel;
+                this.dockingWindow = window;
+                this.dockingWindowName = windowName;
+                bridge.SubscribeToChannel(dockingChannel, Got_Docking_Message);
+            });
         }
 
         private void handleResizeEnd(object sender, ElapsedEventArgs e)
         {
-            resizeTimer.Stop();
-            Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
-            dynamic props = new ExpandoObject();
-            props.windowName = dockingWindowName;
-            props.windowAction = "endMove";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-            resizing = false;
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                resizeTimer.Stop();
+                Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
+                dynamic props = new ExpandoObject();
+                props.windowName = dockingWindowName;
+                props.windowAction = "endMove";
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+                resizing = false;
+            });
         }
         
         private void Got_Docking_Message(string sourceUuid, string topic, object message)
@@ -170,79 +175,103 @@ namespace ChartIQ.Finsemble
 
         public void Minimize()
         {
-            dockingWindow.WindowState = WindowState.Minimized;
-            dynamic props = new ExpandoObject();
-            props.windowName = dockingWindowName;
-            props.windowAction = "minimize";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                dockingWindow.WindowState = WindowState.Minimized;
+                dynamic props = new ExpandoObject();
+                props.windowName = dockingWindowName;
+                props.windowAction = "minimize";
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            });
         }
 
         public void Maxmimize()
         {
-            dockingWindow.WindowState = WindowState.Maximized;
-            dynamic props = new ExpandoObject();
-            props.windowName = dockingWindowName;
-            props.windowAction = "maximize";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                dockingWindow.WindowState = WindowState.Maximized;
+                dynamic props = new ExpandoObject();
+                props.windowName = dockingWindowName;
+                props.windowAction = "maximize";
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            });
         }
 
         public void Restore()
         {
-            dockingWindow.WindowState = WindowState.Normal;
-            dynamic props = new ExpandoObject();
-            props.windowName = dockingWindowName;
-            props.windowAction = "restore";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                dockingWindow.WindowState = WindowState.Normal;
+                dynamic props = new ExpandoObject();
+                props.windowName = dockingWindowName;
+                props.windowAction = "restore";
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            });
         }
 
         public void Hide()
         {
-            dockingWindow.Hide();
-            dynamic props = new ExpandoObject();
-            props.windowName = dockingWindowName;
-            props.windowAction = "hide";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                dockingWindow.Hide();
+                dynamic props = new ExpandoObject();
+                props.windowName = dockingWindowName;
+                props.windowAction = "hide";
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            });
         }
 
         public void Show()
         {
-            dockingWindow.Show();
-            dynamic props = new ExpandoObject();
-            props.windowName = dockingWindowName;
-            props.windowAction = "show";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                dockingWindow.Show();
+                dynamic props = new ExpandoObject();
+                props.windowName = dockingWindowName;
+                props.windowAction = "show";
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            });
         }
 
         public void BringToFront()
         {
-            dockingWindow.BringIntoView();
-            dynamic props = new ExpandoObject();
-            props.windowName = dockingWindowName;
-            props.windowAction = "bringToFront";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                dockingWindow.BringIntoView();
+                dynamic props = new ExpandoObject();
+                props.windowName = dockingWindowName;
+                props.windowAction = "bringToFront";
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            });
         }
 
         public void Close()
         {
-            dynamic props = new ExpandoObject();
-            props.windowName = dockingWindowName;
-            props.windowAction = "close";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                dynamic props = new ExpandoObject();
+                props.windowName = dockingWindowName;
+                props.windowAction = "close";
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            });
         }
 
         public void StartMove(dynamic sender, MouseButtonEventArgs e)
         {
-            sender.CaptureMouse();
-            moving = true;
-            startPosition = e.GetPosition(dockingWindow);
-            dynamic props = new ExpandoObject();
-            props.windowName = dockingWindowName;
-            props.top = dockingWindow.Top;
-            props.left = dockingWindow.Left;
-            props.width = dockingWindow.Width;
-            props.height = dockingWindow.Height;
-            props.windowAction = "startMove";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                sender.CaptureMouse();
+                moving = true;
+                startPosition = e.GetPosition(dockingWindow);
+                dynamic props = new ExpandoObject();
+                props.windowName = dockingWindowName;
+                props.top = dockingWindow.Top;
+                props.left = dockingWindow.Left;
+                props.width = dockingWindow.Width;
+                props.height = dockingWindow.Height;
+                props.windowAction = "startMove";
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            });
         }
 
         public void Move(object sender, MouseEventArgs e)
@@ -251,86 +280,107 @@ namespace ChartIQ.Finsemble
             {
                 TimeSpan t = DateTime.Now - lastMoveSent;
                 if (t.TotalMilliseconds < 20) return;
-                var currentPosition = e.GetPosition(dockingWindow);
-                double differenceX = currentPosition.X - startPosition.X;
-                double differenceY = currentPosition.Y - startPosition.Y;
-                dynamic props = new ExpandoObject();
-                props.windowName = dockingWindowName;
-                props.width = dockingWindow.Width;
-                props.height = dockingWindow.Height;
-                props.top = dockingWindow.Top + differenceY;
-                props.left = dockingWindow.Left + differenceX;
-                props.windowAction = "move";
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-                lastMoveSent = DateTime.Now;
+                Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                {
+                    var currentPosition = e.GetPosition(dockingWindow);
+                    double differenceX = currentPosition.X - startPosition.X;
+                    double differenceY = currentPosition.Y - startPosition.Y;
+                    dynamic props = new ExpandoObject();
+                    props.windowName = dockingWindowName;
+                    props.width = dockingWindow.Width;
+                    props.height = dockingWindow.Height;
+                    props.top = dockingWindow.Top + differenceY;
+                    props.left = dockingWindow.Left + differenceX;
+                    props.windowAction = "move";
+                    bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+                    lastMoveSent = DateTime.Now;
+                });
             }
 
         }
 
         public void EndMove(object sender, MouseButtonEventArgs e)
         {
-            dynamic props = new ExpandoObject();
-            props.windowName = dockingWindowName;
-            props.windowAction = "endMove";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-            moving = false;
-            Mouse.Capture(null);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                dynamic props = new ExpandoObject();
+                props.windowName = dockingWindowName;
+                props.windowAction = "endMove";
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+                moving = false;
+                Mouse.Capture(null);
+            });
         }
 
         public void FormGroup(object sender, RoutedEventArgs e)
         {
-            dynamic props = new ExpandoObject();
-            props.windowName = dockingWindowName;
-            props.windowAction = "formGroup";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                dynamic props = new ExpandoObject();
+                props.windowName = dockingWindowName;
+                props.windowAction = "formGroup";
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            });
         }
 
         public void LeaveGroup(object sender, RoutedEventArgs e)
         {
-            dynamic props = new ExpandoObject();
-            props.windowName = dockingWindowName;
-            props.windowAction = "leaveGroup";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                dynamic props = new ExpandoObject();
+                props.windowName = dockingWindowName;
+                props.windowAction = "leaveGroup";
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            });
         }
 
         public void Resize (Point TopCorner, Point BottomCorner)
         {
-            dynamic props = new ExpandoObject();
-            props.windowName = dockingWindowName;
-            props.width = BottomCorner.X - TopCorner.X;
-            props.height = BottomCorner.Y - TopCorner.Y;
-            props.top = TopCorner.Y;
-            props.left = TopCorner.X;
-            props.windowAction = "resize";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                dynamic props = new ExpandoObject();
+                props.windowName = dockingWindowName;
+                props.width = BottomCorner.X - TopCorner.X;
+                props.height = BottomCorner.Y - TopCorner.Y;
+                props.top = TopCorner.Y;
+                props.left = TopCorner.X;
+                props.windowAction = "resize";
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+            });
         }
 
         public void Window_Loaded()
         {
-            WindowInteropHelper helper = new WindowInteropHelper(dockingWindow);
-            HwndSource.FromHwnd(helper.Handle).AddHook(HwndMessageHook);
-
-            PresentationSource source = PresentationSource.FromVisual(dockingWindow);
-
-            if (source != null)
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                dpiX = 96.0 * source.CompositionTarget.TransformToDevice.M11;
-                dpiY = 96.0 * source.CompositionTarget.TransformToDevice.M22;
-            }
+                WindowInteropHelper helper = new WindowInteropHelper(dockingWindow);
+                HwndSource.FromHwnd(helper.Handle).AddHook(HwndMessageHook);
 
-            WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
-            WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
+                PresentationSource source = PresentationSource.FromVisual(dockingWindow);
+
+                if (source != null)
+                {
+                    dpiX = 96.0 * source.CompositionTarget.TransformToDevice.M11;
+                    dpiY = 96.0 * source.CompositionTarget.TransformToDevice.M22;
+                }
+
+                WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
+                WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
+            });
         }
 
         public void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (!resizing) return;
-            dynamic props = new ExpandoObject();
-            props.windowName = dockingWindowName;
-            props.windowAction = "endMove";
-            bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-            resizing = false;
-            Mouse.Capture(null);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                if (!resizing) return;
+                dynamic props = new ExpandoObject();
+                props.windowName = dockingWindowName;
+                props.windowAction = "endMove";
+                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+                resizing = false;
+                Mouse.Capture(null);
+            });
         }
 
         //https://stackoverflow.com/questions/12376141/intercept-a-move-event-in-a-wpf-window-before-the-move-happens-on-the-screen
@@ -370,20 +420,24 @@ namespace ChartIQ.Finsemble
                             break;
 
                     }
-                    WindowResizeEndLocation = new Point(rectangle.Left / scale, rectangle.Top / scale);
-                    WindowResizeEndBottomRight = new Point(rectangle.Right / scale, rectangle.Bottom / scale);
                     bHandled = true;
-                    rectangle.Left = Convert.ToInt32(WindowLocation.X * scale);
-                    rectangle.Top = Convert.ToInt32(WindowLocation.Y * scale);
-                    rectangle.Bottom = Convert.ToInt32(WindowBottomRight.Y * scale);
-                    rectangle.Right = Convert.ToInt32(WindowBottomRight.X * scale);
-                    Marshal.StructureToPtr(rectangle, lParam, true);
+                    Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                    {
+                        WindowResizeEndLocation = new Point(rectangle.Left / scale, rectangle.Top / scale);
+                        WindowResizeEndBottomRight = new Point(rectangle.Right / scale, rectangle.Bottom / scale);
+                        rectangle.Left = Convert.ToInt32(WindowLocation.X * scale);
+                        rectangle.Top = Convert.ToInt32(WindowLocation.Y * scale);
+                        rectangle.Bottom = Convert.ToInt32(WindowBottomRight.Y * scale);
+                        rectangle.Right = Convert.ToInt32(WindowBottomRight.X * scale);
+                        Marshal.StructureToPtr(rectangle, lParam, true);
+                        Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
+                        lastResizeSent = DateTime.Now;
+                        resizeTimer.Stop();
+                        resizeTimer.Start();
+                    });
                     TimeSpan t = DateTime.Now - lastResizeSent;
                     if (t.TotalMilliseconds < 20) return IntPtr.Zero;
-                    Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
-                    lastResizeSent = DateTime.Now;
-                    resizeTimer.Stop();
-                    resizeTimer.Start();
+
                     break;
 
             }
