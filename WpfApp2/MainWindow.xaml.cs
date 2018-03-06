@@ -24,6 +24,7 @@ namespace WpfApp2
         private FinsembleBridge bridge;
         private string windowName;
         private string componentType = "Unknown";
+        private string top, left, height, width;
 
         public MainWindow(string FinsembleWindowName, string componentType, string top, string left, string height, string width)
         {
@@ -41,25 +42,10 @@ namespace WpfApp2
                 this.componentType = componentType;
             }
 
-            if (!string.IsNullOrEmpty(top))
-            {
-                this.Top = Double.Parse(top);
-            }
-
-            if (!string.IsNullOrEmpty(left))
-            {
-                this.Left = Double.Parse(left);
-            }
-
-            if (!string.IsNullOrEmpty(height))
-            {
-                this.Height = Double.Parse(height);
-            }
-
-            if (!string.IsNullOrEmpty(width))
-            {
-                this.Width = Double.Parse(width);
-            }
+            this.top = top;
+            this.left = left;
+            this.height = height;
+            this.width = width;
 
             bridge = new FinsembleBridge(new System.Version("8.56.28.34"), windowName, componentType, this);
             bridge.Connect();
@@ -71,8 +57,27 @@ namespace WpfApp2
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
                 // Initialize this Window and show it
-                FinsembleHeader.bridge = bridge;
                 InitializeComponent();
+                if (!string.IsNullOrEmpty(top))
+                {
+                    this.Top = Double.Parse(top);
+                }
+
+                if (!string.IsNullOrEmpty(left))
+                {
+                    this.Left = Double.Parse(left);
+                }
+
+                if (!string.IsNullOrEmpty(height))
+                {
+                    this.Height = Double.Parse(height);
+                }
+
+                if (!string.IsNullOrEmpty(width))
+                {
+                    this.Width = Double.Parse(width);
+                }
+                FinsembleHeader.bridge = bridge;
                 this.Show();
             });
         }

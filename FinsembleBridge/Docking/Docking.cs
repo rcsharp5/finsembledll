@@ -53,6 +53,8 @@ namespace ChartIQ.Finsemble
         private DateTime lastMoveSent = DateTime.Now;
         private DateTime lastResizeSent = DateTime.Now;
 
+        public EventHandler<dynamic> DockingGroupUpdateHandler;
+
         double dpiX, dpiY;
 
         Timer resizeTimer = new Timer(250);
@@ -142,7 +144,7 @@ namespace ChartIQ.Finsemble
                         dynamic groupData = new ExpandoObject();
                         groupData.dockingGroup = jsonMessage.GetValue("dockingGroup").ToString();
                         groupData.snappingGroup = jsonMessage.GetValue("snappingGroup").ToString();
-                        dockingWindow.Docking_GroupUpdate(groupData);
+                        DockingGroupUpdateHandler?.Invoke(this, groupData);
                     });
                     break;
                 case "minimize":

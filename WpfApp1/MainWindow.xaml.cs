@@ -32,6 +32,7 @@ namespace WpfApp1
         private string windowName;
         private string componentType = "Unknown";
         private bool sendCloseToFinsemble = true;
+        private string top, left, height, width;
 
         public MainWindow(string FinsembleWindowName, string componentType, string top, string left, string height, string width)
         {
@@ -49,25 +50,10 @@ namespace WpfApp1
                 this.componentType = componentType;
             }
 
-            if (!string.IsNullOrEmpty(top))
-            {
-                this.Top = Double.Parse(top);
-            }
-
-            if (!string.IsNullOrEmpty(left))
-            {
-                this.Left = Double.Parse(left);
-            }
-
-            if (!string.IsNullOrEmpty(height))
-            {
-                this.Height = Double.Parse(height);
-            }
-
-            if (!string.IsNullOrEmpty(width))
-            {
-                this.Width = Double.Parse(width);
-            }
+            this.top = top;
+            this.left = left;
+            this.height = height;
+            this.width = width;
 
             bridge = new FinsembleBridge(new System.Version("8.56.28.34"), windowName, componentType, this);
             bridge.Connect();
@@ -88,8 +74,28 @@ namespace WpfApp1
 
                 // Initialize this Window and show it
                 InitializeComponent();
+                if (!string.IsNullOrEmpty(top))
+                {
+                    this.Top = Double.Parse(top);
+                }
+
+                if (!string.IsNullOrEmpty(left))
+                {
+                    this.Left = Double.Parse(left);
+                }
+
+                if (!string.IsNullOrEmpty(height))
+                {
+                    this.Height = Double.Parse(height);
+                }
+
+                if (!string.IsNullOrEmpty(width))
+                {
+                    this.Width = Double.Parse(width);
+                }
                 this.Show();
                 bridge.docking.Window_Loaded();
+                bridge.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;
 
                 // router test
                 bridge.routerClient.addListener("test", FinsembleListener);
@@ -118,7 +124,7 @@ namespace WpfApp1
         /**
          * Handle Snapping And Docking updates.
          */
-        public void Docking_GroupUpdate(dynamic groups)
+        public void Docking_GroupUpdate(object sender, dynamic groups)
         {
             if (groups.dockingGroup != "")
             {
