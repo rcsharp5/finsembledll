@@ -26,7 +26,7 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
-        private LinkerWindow linkerWindow;
+        //private LinkerWindow linkerWindow;
         private SortedDictionary<string, Button> LinkerGroups = new SortedDictionary<string, Button>();
         private FinsembleBridge bridge;
         private string windowName;
@@ -47,7 +47,7 @@ namespace WpfApp1
                 windowName = Guid.NewGuid().ToString();
             }
 
-            if(!string.IsNullOrEmpty(componentType))
+            if (!string.IsNullOrEmpty(componentType))
             {
                 this.componentType = componentType;
             }
@@ -81,17 +81,10 @@ namespace WpfApp1
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                //instantiate LinkerClient
-                linkerClient = new LinkerClient(bridge);
-
-                // Create the Linker Window. It needs a connected Openfin Bridge
-                linkerWindow = new LinkerWindow(linkerClient);
-
-                // What to call when subscribed data is received
-                bridge.LinkerSubscribe += LinkerSubscriber;
-
-                // Subscribe to topics
-                linkerClient.subscribe("symbol");
+                bridge.linkerClient.subscribe("symbol", (EventHandler<FinsembleEventArgs>)delegate(object s, FinsembleEventArgs args)
+                {
+                    args.ToString();
+                });
 
                 // Initialize this Window and show it
                 InitializeComponent();
@@ -110,7 +103,8 @@ namespace WpfApp1
             if (message.error != null)
             {
                 dynamic error = JsonConvert.DeserializeObject<ExpandoObject>(message.error.ToString(), new ExpandoObjectConverter());
-            } else
+            }
+            else
             {
                 dynamic response = JsonConvert.DeserializeObject<ExpandoObject>(message.response.ToString(), new ExpandoObjectConverter());
 
@@ -124,7 +118,7 @@ namespace WpfApp1
 
         /**
          * Handle Snapping And Docking updates.
-         */ 
+         */
         public void Docking_GroupUpdate(dynamic groups)
         {
             if (groups.dockingGroup != "")
@@ -198,7 +192,7 @@ namespace WpfApp1
 
         /*
          * Minimize using docking
-         */ 
+         */
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             docking.Minimize();
@@ -206,7 +200,7 @@ namespace WpfApp1
 
         /*
          * Close cleanly
-         */ 
+         */
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -217,18 +211,55 @@ namespace WpfApp1
          */
         private void Linker_Click(object sender, RoutedEventArgs e)
         {
-            /*linkerWindow.Left = this.Left;
-            linkerWindow.Top = this.Top + 35;
-
-            // BS Hack to get window to focus properly - https://stackoverflow.com/questions/21033262/force-window-to-have-focus-when-opened
-
-            linkerWindow.Show();
-            linkerWindow.Owner = this;
-            linkerWindow.Activate();
-            linkerWindow.Topmost = true;
-            linkerWindow.Topmost = false;
-            linkerWindow.Focus();*/
             bridge.linkerClient.showLinkerWindow();
+            bridge.linkerClient.onStateChange((EventHandler<FinsembleEventArgs>)delegate (object sender2, FinsembleEventArgs args)
+            {
+                Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                {
+                    var channels = args.response["channels"] as JArray;
+                    var allChannels = args.response["allChannels"] as JArray;
+
+                    // Hide all LinkerGroups
+                    foreach (var item in LinkerGroups)
+                    {
+                        item.Value.Visibility = Visibility.Hidden;
+                    }
+
+                    // Loop through Channels
+                    Double baseLeft = 36.0;
+                    Double increment = 15;
+                    foreach (JObject item in allChannels)
+                    {
+                        var groupName = (string)item["name"];
+                        // check if in this group
+                        if (channels.Where(jt => jt.Value<string>() == groupName).Count() > 0)
+                        {
+                            if (!LinkerGroups.ContainsKey(groupName))
+                            {
+                                var groupRectangle = new Button();
+                                groupRectangle.HorizontalAlignment = HorizontalAlignment.Left;
+                                groupRectangle.VerticalAlignment = VerticalAlignment.Top;
+                                groupRectangle.Width = 10;
+                                groupRectangle.Height = 25;
+                                groupRectangle.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString((string)item["color"]));
+                                Toolbar.Children.Add(groupRectangle);
+                                groupRectangle.SetValue(Canvas.TopProperty, 5.0);
+                                groupRectangle.Name = groupName;
+                                var style = this.Resources["LinkerPill"];
+                                groupRectangle.SetValue(StyleProperty, style);
+                                LinkerGroups[groupName] = groupRectangle;
+                            }
+                            LinkerGroups[groupName].SetValue(Canvas.LeftProperty, baseLeft);
+                            baseLeft += increment;
+                            LinkerGroups[groupName].Visibility = Visibility.Visible;
+                        }
+                    }
+                    Window_Size_Changed();
+                });
+
+
+
+            });
         }
 
         /*
@@ -326,7 +357,8 @@ namespace WpfApp1
          */
         private void Window_Size_Changed()
         {
-            double LeftWidths = 35 + LinkerGroups.Count * 15;
+            int LinkerGroupCount = LinkerGroups.Where(g => g.Value.Visibility == Visibility.Visible).Count();
+            double LeftWidths = 35 + LinkerGroupCount * 15;
             double RightWidths = 105;
             if (Docking.IsVisible) RightWidths = 140;
             Title.SetValue(Canvas.LeftProperty, LeftWidths);
@@ -338,7 +370,7 @@ namespace WpfApp1
          */
         private void Window_StateChanged(object sender, EventArgs e)
         {
-            if(this.WindowState == WindowState.Normal)
+            if (this.WindowState == WindowState.Normal)
             {
                 docking.Restore();
             }
@@ -346,14 +378,14 @@ namespace WpfApp1
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
             linkerClient.publish(new JObject { ["dataType"] = "symbol", ["data"] = SendData.Text });
         }
 
         public void GotFinsembleClose()
         {
             sendCloseToFinsemble = false;
-            linkerWindow.Close();
+            //linkerWindow.Close();
             this.Close();
         }
 
@@ -361,7 +393,7 @@ namespace WpfApp1
         {
             if (sendCloseToFinsemble)
             {
-                linkerWindow.Close();
+                //linkerWindow.Close();
                 docking.Close();
             }
         }
@@ -369,7 +401,7 @@ namespace WpfApp1
         private void RouterTransmit_Click(object sender, RoutedEventArgs e)
         {
             //bridge.routerClient.transmit("test", new JObject { ["hello"] = "hello" });
-            EventHandler<FinsembleEventArgs> handler = (EventHandler<FinsembleEventArgs>) delegate (object s, FinsembleEventArgs ea) { };
+            EventHandler<FinsembleEventArgs> handler = (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs ea) { };
             //bridge.routerClient.query("test", new JObject { ["hello"] = "hello" }, new JObject { }, handler);
             //bridge.distributedStoreClient.getStore(new JObject { ["store"] = "Finsemble_Linker", ["global"] = true }, handler);
 

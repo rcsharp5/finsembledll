@@ -49,13 +49,27 @@ namespace ChartIQ.Finsemble
 
         public void addListener(JObject parameters, EventHandler<FinsembleEventArgs> callback)
         {
-            var field = name + "." + (string)parameters["field"]; //TODO: add ability to add global listener
+            string field;
+            if (parameters != null)
+            {
+                field = name + "." + (string)parameters["field"]; //TODO: add ability to add global listener
+            } else
+            {
+                field = "";
+            }
             routerClient.subscribe("storeService" + field, callback);
         }
 
         public void removeListener(JObject parameters, EventHandler<FinsembleEventArgs> callback)
         {
-            var field = name + "." + (string)parameters["field"]; //TODO: add ability to add global listener
+            string field;
+            if (parameters != null)
+            {
+                field = name + "." + (string)parameters["field"]; //TODO: add ability to add global listener
+            } else
+            {
+                field = "";
+            }
             routerClient.unsubscribe("storeService" + field, callback);
         }
     }

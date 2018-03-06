@@ -38,13 +38,13 @@ namespace WpfApp1
             var owner = (MainWindow)this.Owner;
             if (sendingButton.Content.ToString() == "r")
             {
-                linkerClient.unlinkFromChannel(sendingButton.Name);
+                //linkerClient.unlinkFromChannel(sendingButton.Name);
                 sendingButton.Content = "";
                 owner.Groups_Changed(sendingButton.Name, sendingButton.Background, false);
             }
             else
             {
-                linkerClient.linkToChannel(sendingButton.Name);
+                //linkerClient.linkToChannel(sendingButton.Name);
                 sendingButton.Content = "r";
                 owner.Groups_Changed(sendingButton.Name, sendingButton.Background, true);
             }

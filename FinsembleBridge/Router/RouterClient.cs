@@ -49,7 +49,7 @@ namespace ChartIQ.Finsemble
                     queryIDResponseHandlerMap[m.header.queryID.Value]?.Invoke(this, args);
                     queryIDResponseHandlerMap.Remove(m.header.queryID.Value);
                     break;
-                case "publish":
+                case "notify":
                     args = new FinsembleEventArgs(null, message as JObject);
                     publishListeners[m.header.topic.Value]?.Invoke(this, args);
                     break;

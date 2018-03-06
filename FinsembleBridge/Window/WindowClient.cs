@@ -33,9 +33,9 @@ namespace ChartIQ.Finsemble
         {
             var handler = (EventHandler<FinsembleEventArgs>) delegate (object sender, FinsembleEventArgs e)
             {
-                JObject response = e.response;
-                if (e.error == null) {
-                    response = e.response[parameters["field"]] as JObject;
+                JObject response = e.response["data"] as JObject;
+                if (e.error == null && response != null) {
+                    response = response[parameters["field"]] as JObject;
                 };
                 callback(this, new FinsembleEventArgs(e.error, response));
             };
