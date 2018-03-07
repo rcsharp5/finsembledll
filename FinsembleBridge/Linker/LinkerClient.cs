@@ -23,6 +23,7 @@ namespace ChartIQ.Finsemble
         private EventHandler<FinsembleEventArgs> stateChangeListeners;
         private Dictionary<string, EventHandler<FinsembleEventArgs>> linkerSubscribers = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
         private List<string> channelListenerList = new List<string>();
+        bool readyToPersistState = false;
 
         public LinkerClient(FinsembleBridge bridge)
         {
@@ -41,7 +42,17 @@ namespace ChartIQ.Finsemble
 
                     var linkerStateHandler = (EventHandler<FinsembleEventArgs>)delegate (object sender3, FinsembleEventArgs args3)
                     {
-                        channels = args3.response?["data"] as JArray;
+                        //MessageBox.Show(args3?.response.ToString());
+                        if (args3.response != null)
+                        {
+                            channels = args3.response as JArray;
+                        } else
+                        {
+                            channels = new JArray { };
+                        }
+                        
+                        //MessageBox.Show(bridge.window, channels.ToString(), "", MessageBoxButton.YesNo);
+                        //if (channels == null) 
 
                         clients[key] = new JObject
                         {
@@ -49,6 +60,17 @@ namespace ChartIQ.Finsemble
                             ["active"] = true,
                             ["channels"] = channels
                         };
+
+                        readyToPersistState = true;
+
+                        stateChangeListeners?.Invoke(this, new FinsembleEventArgs
+                        (
+                            null, new JObject
+                            {
+                                ["channels"] = channels,
+                                ["allChannels"] = allChannels
+                            }
+                        ));
 
                     };
                     bridge.windowClient.getComponentState(new JObject { ["field"] = "Finsemble_Linker" }, linkerStateHandler);
@@ -79,6 +101,11 @@ namespace ChartIQ.Finsemble
                         }
                     ));
 
+                    if (readyToPersistState)
+                    {
+                        persistState();
+                    }
+
                     updateListeners();
                 });
 
@@ -93,6 +120,22 @@ namespace ChartIQ.Finsemble
 
             };
             bridge.distributedStoreClient.getStore(new JObject { ["store"] = "Finsemble_Linker", ["global"] = true }, storehandler);
+        }
+
+        public void persistState()
+        {
+            try
+            {
+                windowClient.setComponentState(new JObject
+                {
+                    ["field"] = "Finsemble_Linker",
+                    ["value"] = channels
+                }, (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs e) { });
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         public string makeKey(JObject windowIdentifier)
@@ -129,7 +172,7 @@ namespace ChartIQ.Finsemble
             // Add new ones
             foreach (var item in channels)
             {
-                if(!channelListenerList.Contains(item.ToString()))
+                if (!channelListenerList.Contains(item.ToString()))
                 {
                     channelListenerList.Add(item.ToString());
                     routerClient.addListener(item.ToString(), handleListeners);

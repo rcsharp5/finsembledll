@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ChartIQ.Finsemble
 {
@@ -22,8 +23,8 @@ namespace ChartIQ.Finsemble
         {
             this.bridge = bridge;
             this.storageClient = bridge.storageClient;
-            this.windowHash = bridge.CamelCase("activeWorkspace " + bridge.windowName);
-            this.containerHash = bridge.CamelCase("activeWorkspace " + bridge.windowName + " " + bridge.windowName);
+            this.windowHash = "activeWorkspace" + bridge.CamelCase(bridge.windowName);
+            this.containerHash = "activeWorkspace" + bridge.CamelCase(bridge.windowName + " " + bridge.windowName);
 
             this.windowIdentifier = new JObject
             {
@@ -38,14 +39,54 @@ namespace ChartIQ.Finsemble
         {
             var handler = (EventHandler<FinsembleEventArgs>) delegate (object sender, FinsembleEventArgs e)
             {
-                JObject response = e.response["data"] as JObject;
-                if (e.error == null && response != null) {
-                    response = response[parameters["field"]] as JObject;
+                JToken response = e.response["data"] as JToken;
+                JToken responseData = new JObject { };
+                if (e.error == null && response != null && response.HasValues) {
+                    responseData = response[(string)parameters["field"]] as JToken;
                 };
-                callback(this, new FinsembleEventArgs(e.error, response));
+                callback(this, new FinsembleEventArgs(e.error, responseData));
             };
             storageClient.get(new JObject { ["topic"] = WORKSPACE_CACHE_TOPIC, ["key"] = containerHash }, handler);
         }
+
+        public void setComponentState(JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        {
+            try
+            {
+                JArray fields;
+                if (parameters["fields"] != null)
+                {
+                    fields = parameters["fields"] as JArray;
+                }
+                else
+                {
+                    fields = new JArray { };
+                }
+                if (parameters["field"] != null)
+                {
+                    fields.Add(new JObject
+                    {
+                        ["field"] = parameters["field"],
+                        ["value"] = parameters["value"]
+                    });
+                }
+                JObject storageValue = new JObject { };
+                foreach (var item in fields)
+                {
+                    storageValue[(string)item["field"]] = item["value"];
+                }
+                storageClient.save(new JObject
+                {
+                    ["topic"] = WORKSPACE_CACHE_TOPIC,
+                    ["key"] = containerHash,
+                    ["value"] = storageValue
+                }, (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs e) { });
+            } catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
 
     }
 }

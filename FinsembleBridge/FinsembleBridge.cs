@@ -249,8 +249,8 @@ namespace ChartIQ.Finsemble
             var split = str.Split(' ');
             for(var i = 0; i<split.Length; i++)
             {
-                split[i] = split[i].ToLower();
-                if(!String.IsNullOrEmpty(split[1]))
+                //split[i] = split[i].ToLower();
+                if(!String.IsNullOrEmpty(split[i]))
                 {
                     split[i] = char.ToUpper(split[i][0]) + split[i].Substring(1);
                 }

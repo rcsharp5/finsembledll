@@ -42,7 +42,7 @@ namespace WpfApp1
             }
             else
             {
-                windowName = Guid.NewGuid().ToString();
+                windowName = Guid.NewGuid().ToString(); //"Finsemble WPF Demo-37-2239";
             }
 
             if (!string.IsNullOrEmpty(componentType))
@@ -74,6 +74,7 @@ namespace WpfApp1
 
                 // Initialize this Window and show it
                 InitializeComponent();
+                LinkerStateChanged();
                 if (!string.IsNullOrEmpty(top))
                 {
                     this.Top = Double.Parse(top);
@@ -102,7 +103,54 @@ namespace WpfApp1
             });
         }
 
+        public void LinkerStateChanged()
+        {
+            bridge.linkerClient.onStateChange((EventHandler<FinsembleEventArgs>)delegate (object sender2, FinsembleEventArgs args)
+            {
+                Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                {
+                    var channels = args.response["channels"] as JArray;
+                    var allChannels = args.response["allChannels"] as JArray;
 
+                    // Hide all LinkerGroups
+                    foreach (var item in LinkerGroups)
+                    {
+                        item.Value.Visibility = Visibility.Hidden;
+                    }
+
+                    // Loop through Channels
+                    Double baseLeft = 36.0;
+                    Double increment = 15;
+                    foreach (JObject item in allChannels)
+                    {
+                        var groupName = (string)item["name"];
+                        // check if in this group
+                        if (channels.Where(jt => jt.Value<string>() == groupName).Count() > 0)
+                        {
+                            if (!LinkerGroups.ContainsKey(groupName))
+                            {
+                                var groupRectangle = new Button();
+                                groupRectangle.HorizontalAlignment = HorizontalAlignment.Left;
+                                groupRectangle.VerticalAlignment = VerticalAlignment.Top;
+                                groupRectangle.Width = 10;
+                                groupRectangle.Height = 25;
+                                groupRectangle.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString((string)item["color"]));
+                                Toolbar.Children.Add(groupRectangle);
+                                groupRectangle.SetValue(Canvas.TopProperty, 5.0);
+                                groupRectangle.Name = groupName;
+                                var style = this.Resources["LinkerPill"];
+                                groupRectangle.SetValue(StyleProperty, style);
+                                LinkerGroups[groupName] = groupRectangle;
+                            }
+                            LinkerGroups[groupName].SetValue(Canvas.LeftProperty, baseLeft);
+                            baseLeft += increment;
+                            LinkerGroups[groupName].Visibility = Visibility.Visible;
+                        }
+                    }
+                    Window_Size_Changed();
+                });
+            });
+        }
 
         public void FinsembleListener(object sender, FinsembleEventArgs message)
         {
@@ -210,54 +258,6 @@ namespace WpfApp1
         private void Linker_Click(object sender, RoutedEventArgs e)
         {
             bridge.linkerClient.showLinkerWindow();
-            bridge.linkerClient.onStateChange((EventHandler<FinsembleEventArgs>)delegate (object sender2, FinsembleEventArgs args)
-            {
-                Application.Current.Dispatcher.Invoke((Action)delegate //main thread
-                {
-                    var channels = args.response["channels"] as JArray;
-                    var allChannels = args.response["allChannels"] as JArray;
-
-                    // Hide all LinkerGroups
-                    foreach (var item in LinkerGroups)
-                    {
-                        item.Value.Visibility = Visibility.Hidden;
-                    }
-
-                    // Loop through Channels
-                    Double baseLeft = 36.0;
-                    Double increment = 15;
-                    foreach (JObject item in allChannels)
-                    {
-                        var groupName = (string)item["name"];
-                        // check if in this group
-                        if (channels.Where(jt => jt.Value<string>() == groupName).Count() > 0)
-                        {
-                            if (!LinkerGroups.ContainsKey(groupName))
-                            {
-                                var groupRectangle = new Button();
-                                groupRectangle.HorizontalAlignment = HorizontalAlignment.Left;
-                                groupRectangle.VerticalAlignment = VerticalAlignment.Top;
-                                groupRectangle.Width = 10;
-                                groupRectangle.Height = 25;
-                                groupRectangle.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString((string)item["color"]));
-                                Toolbar.Children.Add(groupRectangle);
-                                groupRectangle.SetValue(Canvas.TopProperty, 5.0);
-                                groupRectangle.Name = groupName;
-                                var style = this.Resources["LinkerPill"];
-                                groupRectangle.SetValue(StyleProperty, style);
-                                LinkerGroups[groupName] = groupRectangle;
-                            }
-                            LinkerGroups[groupName].SetValue(Canvas.LeftProperty, baseLeft);
-                            baseLeft += increment;
-                            LinkerGroups[groupName].Visibility = Visibility.Visible;
-                        }
-                    }
-                    Window_Size_Changed();
-                });
-
-
-
-            });
         }
 
         /*

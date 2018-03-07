@@ -16,14 +16,14 @@ namespace ChartIQ.Finsemble
         /// <summary>
         /// Gets the messages associated with the linker event.
         /// </summary>
-        public JObject response { get; private set; }
+        public JToken response { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the FinsembleEventArgs class.
         /// </summary>
         /// <param name="error">Object describing the error, if any or null</param>
         /// <param name="response">Response from the call</param>
-        public FinsembleEventArgs(JObject error, JObject response)
+        public FinsembleEventArgs(JObject error, JToken response)
         {
             this.error = error;
             this.response = response;
