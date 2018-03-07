@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,7 +18,7 @@ namespace WpfApp1
         {
             //base.OnStartup(e);
             string mainWindowName = "";
-            string top = null, left = null, height = null, width = null, componentType = null;
+            string top = null, left = null, height = null, width = null, componentType = null, uuid = null;
             if (e.Args.Length > 0)
             {
                 
@@ -46,12 +47,16 @@ namespace WpfApp1
                         case "componentType":
                             componentType = argumentValue;
                             break;
+                        case "uuid":
+                            uuid = argumentValue;
+                            break;
                     }
 
 
                 }
             }
-            var mainWindow = new MainWindow(mainWindowName, componentType, top, left, height, width);
+            Debugger.Launch();
+            var mainWindow = new MainWindow(mainWindowName, componentType, top, left, height, width, uuid);
         }
     }
 }

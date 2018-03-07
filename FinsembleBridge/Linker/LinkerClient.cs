@@ -43,25 +43,30 @@ namespace ChartIQ.Finsemble
                     var linkerStateHandler = (EventHandler<FinsembleEventArgs>)delegate (object sender3, FinsembleEventArgs args3)
                     {
                         //MessageBox.Show(args3?.response.ToString());
-                        if (args3.response != null)
+                        if (args3.response != null && args3.response.HasValues)
                         {
                             channels = args3.response as JArray;
                         } else
                         {
                             channels = new JArray { };
                         }
-                        
+
                         //MessageBox.Show(bridge.window, channels.ToString(), "", MessageBoxButton.YesNo);
                         //if (channels == null) 
-
+                        var clientsInStore = new JObject { };
+                        foreach (var item in channels)
+                        {
+                            clientsInStore[(string)item] = true;
+                        }
                         clients[key] = new JObject
                         {
                             ["client"] = windowClient.windowIdentifier,
                             ["active"] = true,
-                            ["channels"] = channels
+                            ["channels"] = clientsInStore
                         };
 
                         readyToPersistState = true;
+                        updateClientInStore(key);
 
                         stateChangeListeners?.Invoke(this, new FinsembleEventArgs
                         (

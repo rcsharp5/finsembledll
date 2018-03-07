@@ -31,10 +31,9 @@ namespace WpfApp1
         private FinsembleBridge bridge;
         private string windowName;
         private string componentType = "Unknown";
-        private bool sendCloseToFinsemble = true;
-        private string top, left, height, width;
+        private string top, left, height, width, uuid;
 
-        public MainWindow(string FinsembleWindowName, string componentType, string top, string left, string height, string width)
+        public MainWindow(string FinsembleWindowName, string componentType, string top, string left, string height, string width, string uuid)
         {
             if (!string.IsNullOrEmpty(FinsembleWindowName))
             {
@@ -54,8 +53,9 @@ namespace WpfApp1
             this.left = left;
             this.height = height;
             this.width = width;
+            this.uuid = uuid;
 
-            bridge = new FinsembleBridge(new System.Version("8.56.28.34"), windowName, componentType, this);
+            bridge = new FinsembleBridge(new System.Version("8.56.28.34"), windowName, componentType, this, uuid);
             bridge.Connect();
             bridge.Connected += Bridge_Connected;
         }
@@ -125,7 +125,7 @@ namespace WpfApp1
                     {
                         var groupName = (string)item["name"];
                         // check if in this group
-                        if (channels.Where(jt => jt.Value<string>() == groupName).Count() > 0)
+                        if (channels!= null && channels.Where(jt => jt.Value<string>() == groupName).Count() > 0)
                         {
                             if (!LinkerGroups.ContainsKey(groupName))
                             {

@@ -73,7 +73,7 @@ namespace ChartIQ.Finsemble
         /// Initializes a new instance of the FinsembleBridge class.
         /// </summary>
         /// <param name="openFinVersion">The version of the OpenFin runtime to which to connect</param>
-        public FinsembleBridge(Version openFinVersion, string windowName, string componentType, System.Windows.Window window)
+        public FinsembleBridge(Version openFinVersion, string windowName, string componentType, System.Windows.Window window, string uuid)
         {
             Logger.Debug(
                 "Initializing new instance of FinsembleBridge:\n" +
@@ -83,6 +83,7 @@ namespace ChartIQ.Finsemble
             this.windowName = windowName;
             this.componentType = componentType;
             this.window = window;
+            this.uuid = uuid;
         }
 
         /// <summary>
@@ -137,7 +138,7 @@ namespace ChartIQ.Finsemble
             {
                 Logger.Info("Connected to OpenFin Runtime.");
 
-                this.uuid = runtime.Options.UUID;
+                //this.uuid = runtime.Options.UUID;
 
                 routerClient = new RouterClient(this);
                 storageClient = new StorageClient(this);

@@ -17,7 +17,7 @@ namespace WpfApp2
         {
             //base.OnStartup(e);
             string mainWindowName = "";
-            string top = null, left = null, height = null, width = null, componentType = null;
+            string top = null, left = null, height = null, width = null, componentType = null, uuid = null;
             if (e.Args.Length > 0)
             {
 
@@ -46,12 +46,15 @@ namespace WpfApp2
                         case "componentType":
                             componentType = argumentValue;
                             break;
+                        case "uuid":
+                            uuid = argumentValue;
+                            break;
                     }
 
 
                 }
             }
-            var mainWindow = new MainWindow(mainWindowName, componentType, top, left, height, width);
+            var mainWindow = new MainWindow(mainWindowName, componentType, top, left, height, width, uuid);
         }
     }
 }
