@@ -25,8 +25,9 @@ namespace ChartIQ.Finsemble
     public class Docking
     {
         FinsembleBridge bridge;
+        RouterClient routerClient;
         string dockingChannel;
-        dynamic dockingWindow;
+        Window dockingWindow;
         string dockingWindowName;
         bool moving = false;
         bool resizing = false;
@@ -55,6 +56,8 @@ namespace ChartIQ.Finsemble
 
         public EventHandler<dynamic> DockingGroupUpdateHandler;
 
+        private bool sendCloseToFinsemble = true;
+
         double dpiX, dpiY;
 
         Timer resizeTimer = new Timer(250);
@@ -64,6 +67,7 @@ namespace ChartIQ.Finsemble
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
                 this.bridge = _bridge;
+                routerClient = bridge.routerClient;
                 resizeTimer.Elapsed += handleResizeEnd;
                 dynamic props = new ExpandoObject();
                 props.windowName = windowName;
@@ -75,6 +79,8 @@ namespace ChartIQ.Finsemble
                 bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), channel);
                 this.dockingChannel = channel;
                 this.dockingWindow = window;
+                dockingWindow.Loaded += Window_Loaded;
+                dockingWindow.Closing += Window_Closing;
                 this.dockingWindowName = windowName;
                 bridge.SubscribeToChannel(dockingChannel, Got_Docking_Message);
             });
@@ -93,7 +99,7 @@ namespace ChartIQ.Finsemble
                 resizing = false;
             });
         }
-        
+
         private void Got_Docking_Message(string sourceUuid, string topic, object message)
         {
             var joMessage = message as JObject;
@@ -105,10 +111,14 @@ namespace ChartIQ.Finsemble
                     var jsonMessage = joMessage.GetValue("bounds") as JObject;
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
-                        dockingWindow.Top = Double.Parse(jsonMessage.GetValue("top").ToString());
-                        dockingWindow.Left = Double.Parse(jsonMessage.GetValue("left").ToString());
-                        dockingWindow.Height = Double.Parse(jsonMessage.GetValue("height").ToString());
-                        dockingWindow.Width = Double.Parse(jsonMessage.GetValue("width").ToString());
+                        var top = jsonMessage.GetValue("top").ToString();
+                        if (!string.IsNullOrEmpty(top)) dockingWindow.Top = Double.Parse(top);
+                        var left = jsonMessage.GetValue("left").ToString();
+                        if (!string.IsNullOrEmpty(left)) dockingWindow.Left = Double.Parse(left);
+                        var height = jsonMessage.GetValue("height").ToString();
+                        if (!string.IsNullOrEmpty(height)) dockingWindow.Height = Double.Parse(height);
+                        var width = jsonMessage.GetValue("width").ToString();
+                        if (!string.IsNullOrEmpty(width)) dockingWindow.Width = Double.Parse(width);
                         WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
                         WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
                     });
@@ -137,7 +147,7 @@ namespace ChartIQ.Finsemble
                         dockingWindow.Show();
                     });
                     break;
-                case "groupUpdate":
+                /*case "groupUpdate":
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
                         jsonMessage = joMessage.GetValue("groupData") as JObject;
@@ -146,7 +156,7 @@ namespace ChartIQ.Finsemble
                         groupData.snappingGroup = jsonMessage.GetValue("snappingGroup").ToString();
                         DockingGroupUpdateHandler?.Invoke(this, groupData);
                     });
-                    break;
+                    break;*/
                 case "minimize":
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
@@ -168,7 +178,8 @@ namespace ChartIQ.Finsemble
                 case "close":
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
-                        dockingWindow.GotFinsembleClose();
+                        sendCloseToFinsemble = false;
+                        dockingWindow.Close();
                     });
                     break;
 
@@ -336,7 +347,7 @@ namespace ChartIQ.Finsemble
             });
         }
 
-        public void Resize (Point TopCorner, Point BottomCorner)
+        public void Resize(Point TopCorner, Point BottomCorner)
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
@@ -351,7 +362,7 @@ namespace ChartIQ.Finsemble
             });
         }
 
-        public void Window_Loaded()
+        public void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
@@ -368,7 +379,41 @@ namespace ChartIQ.Finsemble
 
                 WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
                 WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
+
             });
+
+            routerClient.subscribe("Finsemble.WorkspaceService.groupUpdate", (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs args)
+            {
+                var groupData = args.response?["data"]?["groupData"] as JObject;
+                dynamic thisWindowGroups = new ExpandoObject();
+                thisWindowGroups.dockingGroup = "";
+                thisWindowGroups.snappingGroup = "";
+                foreach (var item in groupData)
+                {
+                    var windowsInGroup = item.Value["windowNames"] as JArray;
+                    if (windowsInGroup.Where(window => (string)window == bridge.windowName).Count() > 0)
+                    {
+                        if ((bool)item.Value["isMovable"])
+                        {
+                            thisWindowGroups.dockingGroup = item.Key;
+                        }
+                        else
+                        {
+                            thisWindowGroups.snappingGroup = item.Key;
+                        }
+                    }
+                }
+                DockingGroupUpdateHandler?.Invoke(this, thisWindowGroups);
+            });
+
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (sendCloseToFinsemble)
+            {
+                this.Close();
+            }
         }
 
         public void Window_MouseUp(object sender, MouseButtonEventArgs e)

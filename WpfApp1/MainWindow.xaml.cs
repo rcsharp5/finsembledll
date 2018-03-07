@@ -94,7 +94,6 @@ namespace WpfApp1
                     this.Width = Double.Parse(width);
                 }
                 this.Show();
-                bridge.docking.Window_Loaded();
                 bridge.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;
 
                 // router test
@@ -102,6 +101,8 @@ namespace WpfApp1
                 
             });
         }
+
+
 
         public void FinsembleListener(object sender, FinsembleEventArgs message)
         {
@@ -126,26 +127,29 @@ namespace WpfApp1
          */
         public void Docking_GroupUpdate(object sender, dynamic groups)
         {
-            if (groups.dockingGroup != "")
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                Docking.Content = "@";
-                Docking.Visibility = Visibility.Visible;
-                Minimize.SetValue(Canvas.RightProperty, 105.0);
-                Docking.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF039BFF"));
-            }
-            else if (groups.snappingGroup != "")
-            {
-                Docking.Content = ">";
-                Docking.Visibility = Visibility.Visible;
-                Minimize.SetValue(Canvas.RightProperty, 105.0);
-                Docking.Background = Brushes.Transparent;
-            }
-            else
-            {
-                Docking.Visibility = Visibility.Hidden;
-                Minimize.SetValue(Canvas.RightProperty, 70.0);
-            }
-            Window_Size_Changed();
+                if (groups.dockingGroup != "")
+                {
+                    Docking.Content = "@";
+                    Docking.Visibility = Visibility.Visible;
+                    Minimize.SetValue(Canvas.RightProperty, 105.0);
+                    Docking.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF039BFF"));
+                }
+                else if (groups.snappingGroup != "")
+                {
+                    Docking.Content = ">";
+                    Docking.Visibility = Visibility.Visible;
+                    Minimize.SetValue(Canvas.RightProperty, 105.0);
+                    Docking.Background = Brushes.Transparent;
+                }
+                else
+                {
+                    Docking.Visibility = Visibility.Hidden;
+                    Minimize.SetValue(Canvas.RightProperty, 70.0);
+                }
+                Window_Size_Changed();
+            });
         }
 
         /*
@@ -389,26 +393,10 @@ namespace WpfApp1
             });
         }
 
-        public void GotFinsembleClose()
-        {
-            sendCloseToFinsemble = false;
-            //linkerWindow.Close();
-            this.Close();
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (sendCloseToFinsemble)
-            {
-                //linkerWindow.Close();
-                bridge.docking.Close();
-            }
-        }
-
         private void RouterTransmit_Click(object sender, RoutedEventArgs e)
         {
             //bridge.routerClient.transmit("test", new JObject { ["hello"] = "hello" });
-            EventHandler<FinsembleEventArgs> handler = (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs ea) { };
+            //EventHandler<FinsembleEventArgs> handler = (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs ea) { };
             //bridge.routerClient.query("test", new JObject { ["hello"] = "hello" }, new JObject { }, handler);
             //bridge.distributedStoreClient.getStore(new JObject { ["store"] = "Finsemble_Linker", ["global"] = true }, handler);
 

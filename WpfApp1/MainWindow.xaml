@@ -9,8 +9,7 @@
         Width="525" WindowStyle="None" Background="{x:Null}" 
         Activated="Window_GotFocus" 
         Deactivated="Window_LostFocus"
-        StateChanged="Window_StateChanged"
-        Closing="Window_Closing">
+        StateChanged="Window_StateChanged">
 
     <WindowChrome.WindowChrome>
         <WindowChrome     
