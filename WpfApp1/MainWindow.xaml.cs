@@ -153,17 +153,6 @@ namespace WpfApp1
         }
 
         /*
-         * Linker Data Handler - TODO - not working
-         */
-        public void LinkerSubscriber(object sender, LinkerEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
-            {
-                SendData.Text = e.Message;
-            });
-        }
-
-        /*
          * Let Docking Move this window instead of Windows - TODO - move this into docking to dynamically create these
          */
         private void Toolbar_MouseDown(object sender, MouseButtonEventArgs e)

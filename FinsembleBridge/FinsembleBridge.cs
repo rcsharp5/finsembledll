@@ -53,10 +53,6 @@ namespace ChartIQ.Finsemble
         /// </summary>
         public event EventHandler<UnhandledExceptionEventArgs> Error;
 
-        /// <summary>
-        /// Event that occurs when a linker subscription message comes in.
-        /// </summary>
-        public event EventHandler<LinkerEventArgs> LinkerSubscribe;
         #endregion
 
         public string componentType { private set; get; }
@@ -140,9 +136,6 @@ namespace ChartIQ.Finsemble
             runtime.Connect(() =>
             {
                 Logger.Info("Connected to OpenFin Runtime.");
-
-                // Listen for the various linker method callbacks
-                ListenForCallbacks();
 
                 this.uuid = runtime.Options.UUID;
 
@@ -249,54 +242,6 @@ namespace ChartIQ.Finsemble
             }
 
             runtime.InterApplicationBus.publish(topic, message);
-        }
-
-        public void SubscribeToChannel(string channel, Openfin.Desktop.InterAppMessageHandler callback)
-        {
-            runtime.InterApplicationBus.subscribe("*", channel, callback);
-        }
-
-        /// <summary>
-        /// Subscribes to the inter-application bus to listen for Linker method callbacks. 
-        /// </summary>
-        /// <remarks>
-        /// This method sets up a subscriptions on the inter-application bus listening linker for each of it's API 
-		/// endpoints. When a change in the symbol occurs in a group to which the native application is subscribed, 
-		/// Finsemble sends a message on the SubscribeCallbackChannel with new symbol. 
-        /// </remarks>
-        private void ListenForCallbacks()
-        {
-			Logger.Info("Listening for callbacks");
-
-            Logger.Debug($".subscribe(\"*\", {CallbackChannel.Subscribe}, FireLinkerSubscribe)");
-
-            // When data is sent back from Finsemble (e.g., a chart changes a symbol, and publishes on the green 
-            // group), we will invoke the FireLinkerSubscribe.
-            runtime.InterApplicationBus.subscribe("*", CallbackChannel.Subscribe, FireLinkerSubscribe);
-
-            // TODO: Subscribe and respond to other linker method calls. 
-        }
-
-        /// <summary>
-        /// Fires the LinkerSubscribe event.
-        /// </summary>
-        /// <param name="sourceUuid">The UUID of the source application</param>
-        /// <param name="topic">The topic associated with the message</param>
-        /// <param name="message">The message</param>
-        private void FireLinkerSubscribe(string sourceUuid, string topic, object message)
-        {
-            Logger.Debug($"FireLinkerSubscribe({sourceUuid}, {topic}, {message.ToString()}");
-
-            var h = LinkerSubscribe;
-            if (h != null)
-            {
-                var jObj = message as JObject;
-                var messageStr = jObj.GetValue("0").Value<string>();
-                Debug.WriteLine($"Received message: {messageStr}");
-
-                var e = new LinkerEventArgs(sourceUuid, topic, messageStr);
-                h(this, e);
-            }
         }
 
         public string CamelCase(string str)

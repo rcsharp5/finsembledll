@@ -19,7 +19,7 @@ namespace ChartIQ.Finsemble
         public JObject response { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the LInkerEventArgs class.
+        /// Initializes a new instance of the FinsembleEventArgs class.
         /// </summary>
         /// <param name="error">Object describing the error, if any or null</param>
         /// <param name="response">Response from the call</param>

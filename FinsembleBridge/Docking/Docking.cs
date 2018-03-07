@@ -82,7 +82,7 @@ namespace ChartIQ.Finsemble
                 dockingWindow.Loaded += Window_Loaded;
                 dockingWindow.Closing += Window_Closing;
                 this.dockingWindowName = windowName;
-                bridge.SubscribeToChannel(dockingChannel, Got_Docking_Message);
+                bridge.runtime.InterApplicationBus.subscribe("*", dockingChannel, Got_Docking_Message);
             });
         }
 
@@ -332,7 +332,11 @@ namespace ChartIQ.Finsemble
                 dynamic props = new ExpandoObject();
                 props.windowName = dockingWindowName;
                 props.windowAction = "formGroup";
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+                //bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+                routerClient.transmit("DockingService.formGroup", new JObject
+                {
+                    ["windowName"] = bridge.windowName
+                });
             });
         }
 
@@ -343,7 +347,11 @@ namespace ChartIQ.Finsemble
                 dynamic props = new ExpandoObject();
                 props.windowName = dockingWindowName;
                 props.windowAction = "leaveGroup";
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+                //bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+                routerClient.query("DockingService.leaveGroup", new JObject
+                {
+                    ["name"] = bridge.windowName
+                }, new JObject { }, (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs args) { });
             });
         }
 
@@ -379,6 +387,19 @@ namespace ChartIQ.Finsemble
 
                 WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
                 WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
+
+                routerClient.transmit(bridge.windowName + ".location", new JObject
+                {
+                    ["location"] = new JObject
+                    {
+                        ["top"] = dockingWindow.Top,
+                        ["left"] = dockingWindow.Left,
+                        ["height"] = dockingWindow.Height,
+                        ["width"] = dockingWindow.Width,
+                        ["right"] = dockingWindow.Left + dockingWindow.Width,
+                        ["bottom"] = dockingWindow.Top + dockingWindow.Height
+                    }
+                });
 
             });
 
