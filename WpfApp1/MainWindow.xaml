@@ -137,7 +137,6 @@
         </Canvas>
         <TextBox Name="SendData" HorizontalAlignment="Left" Height="23" Margin="41,84,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Button Name="SendButton" Content="Send Symbol" HorizontalAlignment="Left" Margin="166,83,0,0" VerticalAlignment="Top" Width="75" Height="24" Click="SendButton_Click" RenderTransformOrigin="0.094,0.487"/>
-        <Button Name="RouterTransmit" Content="Router Xmit" HorizontalAlignment="Left" Margin="166,122,0,0" VerticalAlignment="Top" Width="75" Click="RouterTransmit_Click"/>
     </Grid>
 
 </Window>
