@@ -47,7 +47,7 @@ namespace FinsembleHeaderControl
             bridge.docking.EndMove(sender, e);
         }
 
-        private void Toolbar_MouseMove(object sender, MouseEventArgs e)
+        private void Toolbar_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             bridge.docking.Move(sender, e);
         }

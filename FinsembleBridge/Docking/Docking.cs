@@ -10,6 +10,8 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using EventHook;
+using EventHook.Hooks;
 
 namespace ChartIQ.Finsemble
 {
@@ -31,6 +33,8 @@ namespace ChartIQ.Finsemble
         string dockingWindowName;
         bool moving = false;
         bool resizing = false;
+        double resizeScale;
+        int resizeHandle;
         Point startPosition;
 
         private Point WindowLocation;
@@ -60,43 +64,19 @@ namespace ChartIQ.Finsemble
 
         double dpiX, dpiY;
 
-        Timer resizeTimer = new Timer(250);
-
-        public Docking(FinsembleBridge _bridge, Window window, string windowName, string channel)
+        public Docking(FinsembleBridge _bridge, string channel)
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
                 this.bridge = _bridge;
                 routerClient = bridge.routerClient;
-                resizeTimer.Elapsed += handleResizeEnd;
-                dynamic props = new ExpandoObject();
-                props.windowName = windowName;
-                props.top = window.Top;
-                props.left = window.Left;
-                props.width = window.Width;
-                props.height = window.Height;
-                props.windowAction = "open";
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), channel);
                 this.dockingChannel = channel;
-                this.dockingWindow = window;
+                this.dockingWindow = bridge.window;
                 dockingWindow.Loaded += Window_Loaded;
                 dockingWindow.Closing += Window_Closing;
-                this.dockingWindowName = windowName;
+                this.dockingWindowName = bridge.windowName;
                 bridge.runtime.InterApplicationBus.subscribe("*", dockingChannel, Got_Docking_Message);
-            });
-        }
-
-        private void handleResizeEnd(object sender, ElapsedEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
-            {
-                resizeTimer.Stop();
-                Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
-                dynamic props = new ExpandoObject();
-                props.windowName = dockingWindowName;
-                props.windowAction = "endMove";
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-                resizing = false;
+                MouseWatcher.OnMouseInput += MouseWatcher_OnMouseInput;
             });
         }
 
@@ -287,7 +267,7 @@ namespace ChartIQ.Finsemble
             });
         }
 
-        public void Move(object sender, MouseEventArgs e)
+        public void Move(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (moving)
             {
@@ -357,6 +337,8 @@ namespace ChartIQ.Finsemble
 
         public void Resize(Point TopCorner, Point BottomCorner)
         {
+            TimeSpan t = DateTime.Now - lastResizeSent;
+            if (t.TotalMilliseconds < 50) return;
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
                 dynamic props = new ExpandoObject();
@@ -367,6 +349,7 @@ namespace ChartIQ.Finsemble
                 props.left = TopCorner.X;
                 props.windowAction = "resize";
                 bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+                lastResizeSent = DateTime.Now;
             });
         }
 
@@ -388,18 +371,16 @@ namespace ChartIQ.Finsemble
                 WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
                 WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
 
-                routerClient.transmit(bridge.windowName + ".location", new JObject
-                {
-                    ["location"] = new JObject
-                    {
-                        ["top"] = dockingWindow.Top,
-                        ["left"] = dockingWindow.Left,
-                        ["height"] = dockingWindow.Height,
-                        ["width"] = dockingWindow.Width,
-                        ["right"] = dockingWindow.Left + dockingWindow.Width,
-                        ["bottom"] = dockingWindow.Top + dockingWindow.Height
-                    }
-                });
+                var props = new JObject {
+                    ["windowName"] = dockingWindowName,
+                    ["top"] = dockingWindow.Top,
+                    ["left"] = dockingWindow.Left,
+                    ["width"] = dockingWindow.Width,
+                    ["height"] = dockingWindow.Height,
+                    ["windowAction"] = "open"
+                };
+                
+                bridge.SendRPCCommand("NativeWindow", props.ToString(), dockingChannel);
 
             });
 
@@ -437,19 +418,6 @@ namespace ChartIQ.Finsemble
             }
         }
 
-        public void Window_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
-            {
-                if (!resizing) return;
-                dynamic props = new ExpandoObject();
-                props.windowName = dockingWindowName;
-                props.windowAction = "endMove";
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-                resizing = false;
-                Mouse.Capture(null);
-            });
-        }
 
         //https://stackoverflow.com/questions/12376141/intercept-a-move-event-in-a-wpf-window-before-the-move-happens-on-the-screen
         private IntPtr HwndMessageHook(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool bHandled)
@@ -457,10 +425,20 @@ namespace ChartIQ.Finsemble
             switch (msg)
             {
                 case WM_SIZING:
-                    Mouse.Capture(dockingWindow); //this isn't working yet - TODO - for figuring out when resize has ended
-
+                    if (!resizing) 
+                    {
+                        TimeSpan t = DateTime.Now - lastResizeSent;
+                        if (t.TotalMilliseconds < 250) return IntPtr.Zero; //stop resizing events from firing after resizeended - may or may not be a problem now
+                        MouseWatcher.Start(); //start watching the mouse for movements and mouseup. Once watching starts, somehow resize ends so using the watcher also to resize
+                    } else //ignore if we are already resizing
+                    {
+                        bHandled = true;
+                        return IntPtr.Zero;
+                    }
                     resizing = true;
+
                     int sizeType = (int)wParam;
+                    resizeHandle = sizeType;
                     double scale = 1;
 
                     WIN32Rectangle rectangle = (WIN32Rectangle)Marshal.PtrToStructure(lParam, typeof(WIN32Rectangle));
@@ -489,27 +467,70 @@ namespace ChartIQ.Finsemble
 
                     }
                     bHandled = true;
-                    Application.Current.Dispatcher.Invoke((Action)delegate //main thread
-                    {
-                        WindowResizeEndLocation = new Point(rectangle.Left / scale, rectangle.Top / scale);
-                        WindowResizeEndBottomRight = new Point(rectangle.Right / scale, rectangle.Bottom / scale);
-                        rectangle.Left = Convert.ToInt32(WindowLocation.X * scale);
-                        rectangle.Top = Convert.ToInt32(WindowLocation.Y * scale);
-                        rectangle.Bottom = Convert.ToInt32(WindowBottomRight.Y * scale);
-                        rectangle.Right = Convert.ToInt32(WindowBottomRight.X * scale);
-                        Marshal.StructureToPtr(rectangle, lParam, true);
-                        Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
-                        lastResizeSent = DateTime.Now;
-                        resizeTimer.Stop();
-                        resizeTimer.Start();
-                    });
-                    TimeSpan t = DateTime.Now - lastResizeSent;
-                    if (t.TotalMilliseconds < 20) return IntPtr.Zero;
+                    resizeScale = scale;
+
 
                     break;
 
             }
             return IntPtr.Zero;
         }
+
+        private void MouseWatcher_OnMouseInput(object sender, EventHook.MouseEventArgs e)
+        {
+            if (e.Message == MouseMessages.WM_LBUTTONUP)
+            {
+                resizing = false;
+                Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                {
+                    MouseWatcher.Stop();
+                    Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
+                    dynamic props = new ExpandoObject();
+                    props.windowName = dockingWindowName;
+                    props.windowAction = "endMove";
+                    bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+                    lastResizeSent = DateTime.Now;
+                });
+            }
+            else if (resizing && e.Message == MouseMessages.WM_MOUSEMOVE)
+            {
+                WindowResizeEndLocation = new Point(WindowLocation.X, WindowLocation.Y);
+                WindowResizeEndBottomRight = new Point(WindowBottomRight.X, WindowBottomRight.Y);
+
+                switch (resizeHandle)
+                {
+                    case WMSZ_BOTTOM:
+                        WindowResizeEndBottomRight.Y = e.Point.y / resizeScale;
+                        break;
+                    case WMSZ_BOTTOMLEFT:
+                        WindowResizeEndBottomRight.Y = e.Point.y / resizeScale;
+                        WindowResizeEndLocation.X = e.Point.x / resizeScale;
+                        break;
+                    case WMSZ_LEFT:
+                        WindowResizeEndLocation.X = e.Point.x / resizeScale;
+                        break;
+                    case WMSZ_BOTTOMRIGHT:
+                        WindowResizeEndBottomRight.Y = e.Point.y / resizeScale;
+                        WindowResizeEndBottomRight.X = e.Point.x / resizeScale;
+                        break;
+                    case WMSZ_RIGHT:
+                        WindowResizeEndBottomRight.X = e.Point.x / resizeScale;
+                        break;
+                    case WMSZ_TOP:
+                        WindowResizeEndLocation.Y = e.Point.y / resizeScale;
+                        break;
+                    case WMSZ_TOPRIGHT:
+                        WindowResizeEndLocation.Y = e.Point.y / resizeScale;
+                        WindowResizeEndBottomRight.X = e.Point.x / resizeScale;
+                        break;
+                    case WMSZ_TOPLEFT:
+                        WindowResizeEndLocation.Y = e.Point.y / resizeScale;
+                        WindowResizeEndLocation.X = e.Point.x / resizeScale;
+                        break;
+                }
+                Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
+            }
+        }
+
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ChartIQ.Finsemble
 {
@@ -30,6 +31,41 @@ namespace ChartIQ.Finsemble
             );
             bridge.runtime.InterApplicationBus.Publish("RouterService", Handshake); //TODO: wait for handshake response
             bridge.runtime.InterApplicationBus.subscribe(clientName, OpenfinMessageHandler);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                bridge.window.Closing += Window_Closing;
+            });
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            foreach (var item in transmitListeners)
+            {
+                var RemoveListenerMessage = new JObject(
+                   new JProperty("header",
+                       new JObject(
+                           new JProperty("origin", clientName),
+                           new JProperty("type", "removeListener"),
+                           new JProperty("channel", item.Key)
+                       )
+                   )
+                );
+                bridge.runtime.InterApplicationBus.Publish("RouterService", RemoveListenerMessage);
+            }
+
+            foreach (var item in publishListeners)
+            {
+                var RemoveListenerMessage = new JObject(
+                   new JProperty("header",
+                       new JObject(
+                           new JProperty("origin", clientName),
+                           new JProperty("type", "unsubscribe"),
+                           new JProperty("topic", item.Key)
+                       )
+                   )
+                );
+                bridge.runtime.InterApplicationBus.Publish("RouterService", RemoveListenerMessage);
+            }
         }
 
         // All messages from Finsemble are handled by this.
@@ -57,7 +93,7 @@ namespace ChartIQ.Finsemble
         }
 
         // Transmit/Listen
-        public void transmit(string channel, JObject data)
+        public void transmit(string channel, JToken data)
         {
             var TransmitMessage = new JObject(
                 new JProperty("header",
@@ -100,7 +136,7 @@ namespace ChartIQ.Finsemble
         }
 
         // Query Response
-        public void query(string channel, JObject data, JObject parameters, EventHandler<FinsembleEventArgs> responseHandler)
+        public void query(string channel, JToken data, JObject parameters, EventHandler<FinsembleEventArgs> responseHandler)
         {
             var queryID = Guid.NewGuid().ToString();
             var QueryMessage = new JObject(
@@ -124,7 +160,7 @@ namespace ChartIQ.Finsemble
         }
 
         // Pub Sub
-        public void publish(string topic, JObject data)
+        public void publish(string topic, JToken data)
         {
             var PublishMessage = new JObject(
                 new JProperty("header",

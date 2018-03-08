@@ -4,6 +4,7 @@ using System.Reflection;
 using log4net;
 using Newtonsoft.Json.Linq;
 using Openfin.Desktop;
+using System.Collections.Generic;
 
 namespace ChartIQ.Finsemble
 {
@@ -66,8 +67,16 @@ namespace ChartIQ.Finsemble
         public LauncherClient launcherClient { private set; get; }
         public LinkerClient linkerClient { private set; get; }
         public ConfigClient configClient { private set; get; }
+        public AuthenticationClient authenticationClient { private set; get; }
         public System.Windows.Window window { private set; get; }
         public Docking docking;
+        private Dictionary<string, List<string>> dependencies = new Dictionary<string, List<string>>()
+        {
+            {"distributedStoreClient", new List<string>() {"dataStoreService"}  },
+            {"launcherClient", new List<string> {"launcherService"} },
+            {"linkerClient", new List<string> {"linkerService"} },
+            {"windowClient", new List<string> {"storageService"} }
+        };
 
         /// <summary>
         /// Initializes a new instance of the FinsembleBridge class.
@@ -141,14 +150,17 @@ namespace ChartIQ.Finsemble
                 //this.uuid = runtime.Options.UUID;
 
                 routerClient = new RouterClient(this);
+                
                 storageClient = new StorageClient(this);
+                authenticationClient = new AuthenticationClient(this);
                 configClient = new ConfigClient(this); 
                 windowClient = new WindowClient(this); 
                 launcherClient = new LauncherClient(this); 
                 distributedStoreClient = new DistributedStoreClient(this);
                 linkerClient = new LinkerClient(this);
+                
 
-                docking = new Docking(this, window, windowName, windowName + "-channel");
+                docking = new Docking(this, windowName + "-channel");
 
                 // Notify listeners that connection is complete.
                 // ToDo, wait for clients to be ready??
