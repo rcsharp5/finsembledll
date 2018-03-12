@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="Authentication\AuthenticationClient.cs" />
     <Compile Include="CallbackChannel.cs" />
+    <Compile Include="Common\InternalHelper.cs" />
     <Compile Include="Config\ConfigClient.cs" />
     <Compile Include="DistributedStore\DistributedStoreClient.cs" />
     <Compile Include="DistributedStore\StoreModel.cs" />

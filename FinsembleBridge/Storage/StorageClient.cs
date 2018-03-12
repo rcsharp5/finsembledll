@@ -16,14 +16,14 @@ namespace ChartIQ.Finsemble
             this.routerClient = bridge.routerClient;
         }
 
-        public void get(JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        public void Get(JObject parameters, EventHandler<FinsembleEventArgs> callback)
         {
-            routerClient.query("Storage.get", parameters, new JObject { }, callback);
+            routerClient.Query("Storage.get", parameters, new JObject { }, callback);
         }
 
-        public void save(JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        public void Save(JObject parameters, EventHandler<FinsembleEventArgs> callback)
         {
-            routerClient.query("Storage.save", parameters, new JObject { }, callback);
+            routerClient.Query("Storage.save", parameters, new JObject { }, callback);
         }
     }
 }

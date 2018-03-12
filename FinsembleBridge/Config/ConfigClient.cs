@@ -17,9 +17,22 @@ namespace ChartIQ.Finsemble
             this.routerClient = bridge.routerClient;
         }
 
-        public void getValue(JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        /// <summary>
+        /// parameters is a JObject containing the field
+        /// callback is called with the value
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// bridge.configClient.GetValue(new JObject {["field"] = "fieldname"}, (sender, args) => {
+        ///     var fieldValue = args.response
+        /// })
+        /// </code>
+        /// </example>
+        /// <param name="parameters"></param>
+        /// <param name="callback"></param>
+        public void GetValue(JObject parameters, EventHandler<FinsembleEventArgs> callback)
         {
-            routerClient.query("configService.getValue", new JObject
+            routerClient.Query("configService.getValue", new JObject
             {
                 ["field"] = parameters["field"]
             }, new JObject { }, callback);

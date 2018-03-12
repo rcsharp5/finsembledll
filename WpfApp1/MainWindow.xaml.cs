@@ -64,7 +64,7 @@ namespace WpfApp1
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                bridge.linkerClient.subscribe("symbol", (EventHandler<FinsembleEventArgs>)delegate(object s, FinsembleEventArgs args)
+                bridge.linkerClient.Subscribe("symbol", (EventHandler<FinsembleEventArgs>)delegate(object s, FinsembleEventArgs args)
                 {
                     Application.Current.Dispatcher.Invoke((Action)delegate //main thread
                     {
@@ -95,17 +95,25 @@ namespace WpfApp1
                     this.Width = Double.Parse(width);
                 }
                 this.Show();
+
+                // docking icon
                 bridge.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;
 
+                // app suites
+                bridge.launcherClient.GetGroupsForWindow((s, args) => {
+
+                });
+
+
                 // router test
-                bridge.routerClient.addListener("test", FinsembleListener);
+                //bridge.routerClient.addListener("test", FinsembleListener);
                 
             });
         }
 
         public void LinkerStateChanged()
         {
-            bridge.linkerClient.onStateChange((EventHandler<FinsembleEventArgs>)delegate (object sender2, FinsembleEventArgs args)
+            bridge.linkerClient.OnStateChange((EventHandler<FinsembleEventArgs>)delegate (object sender2, FinsembleEventArgs args)
             {
                 Application.Current.Dispatcher.Invoke((Action)delegate //main thread
                 {
@@ -226,12 +234,12 @@ namespace WpfApp1
             var senderButton = (System.Windows.Controls.Button)sender;
             if (this.WindowState == System.Windows.WindowState.Maximized)
             {
-                bridge.docking.Restore();
+                this.WindowState = WindowState.Normal;
                 senderButton.Content = "3";
             }
             else
             {
-                bridge.docking.Maxmimize();
+                this.WindowState = WindowState.Maximized;
                 senderButton.Content = "#";
             }
         }
@@ -241,7 +249,7 @@ namespace WpfApp1
          */
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            bridge.docking.Minimize();
+            this.WindowState = WindowState.Minimized;
         }
 
         /*
@@ -257,7 +265,7 @@ namespace WpfApp1
          */
         private void Linker_Click(object sender, RoutedEventArgs e)
         {
-            bridge.linkerClient.showLinkerWindow();
+            bridge.linkerClient.ShowLinkerWindow();
         }
 
         /*
@@ -313,11 +321,11 @@ namespace WpfApp1
         {
             if (Docking.Content == "@")
             {
-                bridge.docking.LeaveGroup(sender, e);
+                bridge.docking.LeaveGroup();
             }
             else
             {
-                bridge.docking.FormGroup(sender, e);
+                bridge.docking.FormGroup();
             }
         }
 
@@ -335,6 +343,11 @@ namespace WpfApp1
             Linker.SetValue(StyleProperty, buttonStyle);
             Docking.SetValue(StyleProperty, buttonStyle);
             Close.SetValue(StyleProperty, closeButtonStyle);
+        }
+
+        private void AppSuites_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void Window_LostFocus(object sender, EventArgs e)
@@ -360,23 +373,14 @@ namespace WpfApp1
             double RightWidths = 105;
             if (Docking.IsVisible) RightWidths = 140;
             Title.SetValue(Canvas.LeftProperty, LeftWidths);
-            Title.Width = this.Width - LeftWidths - RightWidths;
-        }
-
-        /*
-         * Catch restores for Docking - TODO - move this to docking.
-         */
-        private void Window_StateChanged(object sender, EventArgs e)
-        {
-            if (this.WindowState == WindowState.Normal)
-            {
-                bridge.docking.Restore();
-            }
+            var titleWidth = this.Width - LeftWidths - RightWidths;
+            if (titleWidth < 0) titleWidth = 0;
+            Title.Width = titleWidth;
         }
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            bridge.linkerClient.publish(new JObject {
+            bridge.linkerClient.Publish(new JObject {
                 ["dataType"] = "symbol",
                 ["data"] = SendData.Text
             });

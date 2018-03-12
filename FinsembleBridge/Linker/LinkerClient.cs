@@ -36,7 +36,7 @@ namespace ChartIQ.Finsemble
             var storehandler = (EventHandler<StoreModel>)delegate (object sender, StoreModel store)
             {
                 linkerStore = store;
-                linkerStore.getValue(new JObject { ["field"] = "channels" }, delegate (object sender2, FinsembleEventArgs args)
+                linkerStore.GetValue(new JObject { ["field"] = "channels" }, delegate (object sender2, FinsembleEventArgs args)
                 {
                     allChannels = args.response?["data"] as JArray;
 
@@ -66,7 +66,7 @@ namespace ChartIQ.Finsemble
                         };
 
                         readyToPersistState = true;
-                        updateClientInStore(key);
+                        UpdateClientInStore(key);
 
                         stateChangeListeners?.Invoke(this, new FinsembleEventArgs
                         (
@@ -78,10 +78,10 @@ namespace ChartIQ.Finsemble
                         ));
 
                     };
-                    bridge.windowClient.getComponentState(new JObject { ["field"] = "Finsemble_Linker" }, linkerStateHandler);
+                    bridge.windowClient.GetComponentState(new JObject { ["field"] = "Finsemble_Linker" }, linkerStateHandler);
                 });
 
-                linkerStore.addListener(new JObject
+                linkerStore.AddListener(new JObject
                 {
                     ["field"] = "clients." + key
                 }, (EventHandler<FinsembleEventArgs>)delegate (object sender4, FinsembleEventArgs args4)
@@ -108,13 +108,13 @@ namespace ChartIQ.Finsemble
 
                     if (readyToPersistState)
                     {
-                        persistState();
+                        PersistState();
                     }
 
-                    updateListeners();
+                    UpdateListeners();
                 });
 
-                linkerStore.addListener(null,
+                linkerStore.AddListener(null,
                 (EventHandler<FinsembleEventArgs>)delegate (object sender4, FinsembleEventArgs args4)
                 {
                     var newAllChannels = args4.response?["data"]?["value"]?["allChannels"] as JArray;
@@ -124,14 +124,14 @@ namespace ChartIQ.Finsemble
                 });
 
             };
-            bridge.distributedStoreClient.getStore(new JObject { ["store"] = "Finsemble_Linker", ["global"] = true }, storehandler);
+            bridge.distributedStoreClient.GetStore(new JObject { ["store"] = "Finsemble_Linker", ["global"] = true }, storehandler);
         }
 
-        public void persistState()
+        private void PersistState()
         {
             try
             {
-                windowClient.setComponentState(new JObject
+                windowClient.SetComponentState(new JObject
                 {
                     ["field"] = "Finsemble_Linker",
                     ["value"] = channels
@@ -143,7 +143,7 @@ namespace ChartIQ.Finsemble
             }
         }
 
-        public string makeKey(JObject windowIdentifier)
+        private string MakeKey(JObject windowIdentifier)
         {
             return ((string)windowIdentifier["windowName"] + "::" + (string)windowIdentifier["uuid"]).Replace('.', '_');
         }
@@ -161,7 +161,7 @@ namespace ChartIQ.Finsemble
             }
         }
 
-        private void updateListeners()
+        private void UpdateListeners()
         {
             // Remove listeners
             for (var i = channelListenerList.Count - 1; i >= 0; i--)
@@ -170,7 +170,7 @@ namespace ChartIQ.Finsemble
                 if (channels.Where(jt => jt.Value<string>() == item.ToString()).Count() == 0)
                 {
                     channelListenerList.RemoveAt(i);
-                    routerClient.removeListener(item.ToString(), handleListeners);
+                    routerClient.RemoveListener(item.ToString(), handleListeners);
                 }
             }
 
@@ -180,14 +180,14 @@ namespace ChartIQ.Finsemble
                 if (!channelListenerList.Contains(item.ToString()))
                 {
                     channelListenerList.Add(item.ToString());
-                    routerClient.addListener(item.ToString(), handleListeners);
+                    routerClient.AddListener(item.ToString(), handleListeners);
                 }
             }
         }
 
-        private void updateClientInStore(string key)
+        private void UpdateClientInStore(string key)
         {
-            linkerStore.setValue(new JObject
+            linkerStore.SetValue(new JObject
             {
                 ["field"] = "clients." + key,
                 ["value"] = clients[key]
@@ -203,7 +203,7 @@ namespace ChartIQ.Finsemble
             }
             else
             {
-                keyToUse = makeKey(windowIdentifier);
+                keyToUse = MakeKey(windowIdentifier);
             }
 
             if (clients[keyToUse] == null)
@@ -216,10 +216,10 @@ namespace ChartIQ.Finsemble
             }
 
             clients[keyToUse]["channels"][channel] = true;
-            updateClientInStore(keyToUse);
+            UpdateClientInStore(keyToUse);
         }
 
-        public void unlinkFromChannel(string channel, JObject windowIdentifier, EventHandler<FinsembleEventArgs> callback)
+        public void UnlinkFromChannel(string channel, JObject windowIdentifier, EventHandler<FinsembleEventArgs> callback)
         {
             string keyToUse = key;
             if (windowIdentifier["windowName"] == null)
@@ -228,26 +228,26 @@ namespace ChartIQ.Finsemble
             }
             else
             {
-                keyToUse = makeKey(windowIdentifier);
+                keyToUse = MakeKey(windowIdentifier);
             }
 
             clients[keyToUse]?["channels"]?[channel]?.Remove();
-            updateClientInStore(keyToUse);
+            UpdateClientInStore(keyToUse);
         }
 
-        public void publish(JObject parameters)
+        public void Publish(JObject parameters)
         {
             //bridge.SendRPCCommand(Topic.Publish, data);
             if (channels != null)
             {
                 foreach (var item in channels)
                 {
-                    routerClient.transmit((string)item + '.' + (string)parameters["dataType"], new JObject
+                    routerClient.Transmit((string)item + '.' + (string)parameters["dataType"], new JObject
                     {
                         ["type"] = (string)parameters["dataType"],
                         ["data"] = parameters["data"]
                     });
-                    routerClient.transmit((string)item, new JObject
+                    routerClient.Transmit((string)item, new JObject
                     {
                         ["type"] = (string)parameters["dataType"],
                         ["data"] = parameters["data"]
@@ -256,7 +256,7 @@ namespace ChartIQ.Finsemble
             }
         }
 
-        public void subscribe(string channel, EventHandler<FinsembleEventArgs> callback)
+        public void Subscribe(string channel, EventHandler<FinsembleEventArgs> callback)
         {
             if (linkerSubscribers.ContainsKey(channel))
             {
@@ -268,12 +268,12 @@ namespace ChartIQ.Finsemble
             }
         }
 
-        public void unsubscribe(string channel, EventHandler<FinsembleEventArgs> callback)
+        public void Unsubscribe(string channel, EventHandler<FinsembleEventArgs> callback)
         {
             linkerSubscribers[channel] -= callback;
         }
 
-        public void showLinkerWindow()
+        public void ShowLinkerWindow()
         {
 
             var channelsToSend = new JArray { };
@@ -291,7 +291,7 @@ namespace ChartIQ.Finsemble
                 ["windowIdentifier"] = windowClient.windowIdentifier
             };
 
-            routerClient.query("Finsemble.LinkerWindow.SetActiveChannels", data, new JObject { }, (EventHandler<FinsembleEventArgs>)delegate (object sender, FinsembleEventArgs e)
+            routerClient.Query("Finsemble.LinkerWindow.SetActiveChannels", data, new JObject { }, (EventHandler<FinsembleEventArgs>)delegate (object sender, FinsembleEventArgs e)
             {
                 Application.Current.Dispatcher.Invoke((Action)delegate //main thread
                 {
@@ -307,20 +307,20 @@ namespace ChartIQ.Finsemble
                         ["top"] = 30,
                         ["spawnIfNotFound"] = false
                     };
-                    launcherClient.showWindow(wi, parameters, (EventHandler<FinsembleEventArgs>)delegate (object s2, FinsembleEventArgs e2) { });
+                    launcherClient.ShowWindow(wi, parameters, (EventHandler<FinsembleEventArgs>)delegate (object s2, FinsembleEventArgs e2) { });
 
                 });
             });
         }
 
-        public JArray getAllChannels(EventHandler<FinsembleEventArgs> callback)
+        public JArray GetAllChannels(EventHandler<FinsembleEventArgs> callback)
         {
             var args = new FinsembleEventArgs(null, JObject.Parse(JsonConvert.SerializeObject(allChannels)));
             callback(this, args);
             return this.allChannels;
         }
 
-        public void onStateChange(EventHandler<FinsembleEventArgs> callback)
+        public void OnStateChange(EventHandler<FinsembleEventArgs> callback)
         {
             stateChangeListeners += callback;
         }

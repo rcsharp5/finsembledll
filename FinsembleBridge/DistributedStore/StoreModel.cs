@@ -26,7 +26,19 @@ namespace ChartIQ.Finsemble
             routerClient = bridge.routerClient;
         }
 
-        public void setValue(JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        /// <summary>
+        /// Sets a value in a distributed store.
+        /// </summary>
+        /// <example>
+        /// <code>
+        ///     store.SetValue(new JObject{["field"] = "field1", ["value"] = "new value"}, (sender, args) => {
+        ///         // value was set in store. Nothing needs to be done here.
+        ///     });
+        /// </code>
+        /// </example>
+        /// <param name="parameters"></param>
+        /// <param name="callback"></param>
+        public void SetValue(JObject parameters, EventHandler<FinsembleEventArgs> callback)
         {
             var data = new JObject
             {
@@ -34,20 +46,45 @@ namespace ChartIQ.Finsemble
                 ["field"] = (string)parameters["field"],
                 ["value"] = parameters["value"]
             };
-            routerClient.query("storeService.setValue", data, new JObject { }, callback);
+            routerClient.Query("storeService.setValue", data, new JObject { }, callback);
         }
 
-        public void getValue(JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        /// <summary>
+        /// Get a value from the distributed store
+        /// </summary>
+        /// <example>
+        /// <code>
+        ///     store.GetValue(new JObject {["field"] = "field1"}, (sender, args) => {
+        ///         var fieldValue = args.response;
+        ///     })
+        /// </code>
+        /// </example>
+        /// <param name="parameters"></param>
+        /// <param name="callback"></param>
+        public void GetValue(JObject parameters, EventHandler<FinsembleEventArgs> callback)
         {
             var data = new JObject
             {
                 ["store"] = name,
                 ["field"] = (string)parameters["field"]
             };
-            routerClient.query("storeService.getValue", data, new JObject { }, callback);
+            routerClient.Query("storeService.getValue", data, new JObject { }, callback);
         }
 
-        public void addListener(JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        /// <summary>
+        /// Add a listener that fires when a specific value in a store is changed.
+        /// </summary>
+        /// <example>
+        /// <code>
+        ///     store.AddListener(new JObject {["field"] = "field1"}, myHandler);
+        ///     store.AddListener(new JObject {["field"] = "field1"}, (sender, args) => {
+        ///         var valueOfField = args.response?["data"]?["value"]
+        ///     });
+        /// </code>
+        /// </example>
+        /// <param name="parameters"></param>
+        /// <param name="callback"></param>
+        public void AddListener(JObject parameters, EventHandler<FinsembleEventArgs> callback)
         {
             string field;
             if (parameters != null)
@@ -57,10 +94,20 @@ namespace ChartIQ.Finsemble
             {
                 field = "";
             }
-            routerClient.subscribe("storeService" + field, callback);
+            routerClient.Subscribe("storeService" + field, callback);
         }
 
-        public void removeListener(JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        /// <summary>
+        /// Add a listener that fires when a specific value in a store is changed.
+        /// </summary>
+        /// <example>
+        /// <code>
+        ///     store.RemoveListener(new JObject {["field"] = "field1"}, myHandler);
+        /// </code>
+        /// </example>
+        /// <param name="parameters"></param>
+        /// <param name="callback"></param>
+        public void RemoveListener(JObject parameters, EventHandler<FinsembleEventArgs> callback)
         {
             string field;
             if (parameters != null)
@@ -70,7 +117,7 @@ namespace ChartIQ.Finsemble
             {
                 field = "";
             }
-            routerClient.unsubscribe("storeService" + field, callback);
+            routerClient.Unsubscribe("storeService" + field, callback);
         }
     }
 }

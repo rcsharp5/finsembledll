@@ -93,7 +93,7 @@ namespace ChartIQ.Finsemble
         }
 
         // Transmit/Listen
-        public void transmit(string channel, JToken data)
+        public void Transmit(string channel, JToken data)
         {
             var TransmitMessage = new JObject(
                 new JProperty("header",
@@ -108,7 +108,7 @@ namespace ChartIQ.Finsemble
             bridge.runtime.InterApplicationBus.Publish("RouterService", TransmitMessage);
         }
 
-        public void addListener(string channel, EventHandler<FinsembleEventArgs> callback)
+        public void AddListener(string channel, EventHandler<FinsembleEventArgs> callback)
         {
             if (!transmitListeners.ContainsKey(channel))
             {
@@ -130,13 +130,13 @@ namespace ChartIQ.Finsemble
             }
         }
 
-        public void removeListener(string channel, EventHandler<FinsembleEventArgs> callback)
+        public void RemoveListener(string channel, EventHandler<FinsembleEventArgs> callback)
         {
             transmitListeners[channel] -= callback;
         }
 
         // Query Response
-        public void query(string channel, JToken data, JObject parameters, EventHandler<FinsembleEventArgs> responseHandler)
+        public void Query(string channel, JToken data, JObject parameters, EventHandler<FinsembleEventArgs> responseHandler)
         {
             var queryID = Guid.NewGuid().ToString();
             var QueryMessage = new JObject(
@@ -154,13 +154,13 @@ namespace ChartIQ.Finsemble
             queryIDResponseHandlerMap.Add(queryID, responseHandler);
         }
 
-        public void addResponder(string channel, EventHandler<FinsembleEventArgs> callback)
+        public void AddResponder(string channel, EventHandler<FinsembleEventArgs> callback)
         {
-
+            throw new NotImplementedException();
         }
 
         // Pub Sub
-        public void publish(string topic, JToken data)
+        public void Publish(string topic, JToken data)
         {
             var PublishMessage = new JObject(
                 new JProperty("header",
@@ -175,7 +175,7 @@ namespace ChartIQ.Finsemble
             bridge.runtime.InterApplicationBus.Publish("RouterService", PublishMessage);
         }
 
-        public void subscribe(string topic, EventHandler<FinsembleEventArgs> responseHandler)
+        public void Subscribe(string topic, EventHandler<FinsembleEventArgs> responseHandler)
         {
             if (!publishListeners.ContainsKey(topic))
             {
@@ -198,7 +198,7 @@ namespace ChartIQ.Finsemble
             }
         }
 
-        public void unsubscribe(string topic, EventHandler<FinsembleEventArgs> responseHandler)
+        public void Unsubscribe(string topic, EventHandler<FinsembleEventArgs> responseHandler)
         {
             publishListeners[topic] -= responseHandler;
         }

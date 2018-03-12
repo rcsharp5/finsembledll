@@ -57,6 +57,7 @@ namespace ChartIQ.Finsemble
 
         private DateTime lastMoveSent = DateTime.Now;
         private DateTime lastResizeSent = DateTime.Now;
+        private DateTime lastStateChanged = DateTime.Now;
 
         public EventHandler<dynamic> DockingGroupUpdateHandler;
 
@@ -72,12 +73,40 @@ namespace ChartIQ.Finsemble
                 routerClient = bridge.routerClient;
                 this.dockingChannel = channel;
                 this.dockingWindow = bridge.window;
+                this.dockingWindowName = bridge.windowName;
                 dockingWindow.Loaded += Window_Loaded;
                 dockingWindow.Closing += Window_Closing;
-                this.dockingWindowName = bridge.windowName;
+                dockingWindow.Activated += Window_Activated;
+                dockingWindow.StateChanged += DockingWindow_StateChanged;
                 bridge.runtime.InterApplicationBus.subscribe("*", dockingChannel, Got_Docking_Message);
                 MouseWatcher.OnMouseInput += MouseWatcher_OnMouseInput;
             });
+        }
+
+        private void DockingWindow_StateChanged(object sender, EventArgs e)
+        {
+            // prevent strange infinite loop from window somehow activating while minimize is called from docking
+            TimeSpan t = DateTime.Now - lastStateChanged;
+            if (t.TotalMilliseconds < 50) return;
+            lastStateChanged = DateTime.Now;
+            var w = (Window)sender;
+            if (w.WindowState == WindowState.Normal)
+            {
+                Restore();
+            }
+            else if (w.WindowState == WindowState.Minimized)
+            {
+                Minimize();
+            }
+            else if (w.WindowState == WindowState.Maximized)
+            {
+                Maxmimize();
+            }
+        }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            routerClient.Transmit(dockingWindowName + ".focused", new JObject { } );
         }
 
         private void Got_Docking_Message(string sourceUuid, string topic, object message)
@@ -106,7 +135,9 @@ namespace ChartIQ.Finsemble
                 case "bringToFront":
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
-                        dockingWindow.BringIntoView();
+                        dockingWindow.Topmost = true;
+                        dockingWindow.Topmost = false;
+
                     });
                     break;
                 case "setOpacity":
@@ -140,19 +171,19 @@ namespace ChartIQ.Finsemble
                 case "minimize":
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
-                        dockingWindow.WindowState = WindowState.Minimized;
+                        if(dockingWindow.WindowState != WindowState.Minimized) dockingWindow.WindowState = WindowState.Minimized;
                     });
                     break;
                 case "restore":
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
-                        dockingWindow.WindowState = WindowState.Normal;
+                        if (dockingWindow.WindowState != WindowState.Normal) dockingWindow.WindowState = WindowState.Normal;
                     });
                     break;
                 case "maximize":
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
-                        dockingWindow.WindowState = WindowState.Maximized;
+                        if (dockingWindow.WindowState != WindowState.Maximized) dockingWindow.WindowState = WindowState.Maximized;
                     });
                     break;
                 case "close":
@@ -166,11 +197,11 @@ namespace ChartIQ.Finsemble
             }
         }
 
-        public void Minimize()
+        private void Minimize()
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                dockingWindow.WindowState = WindowState.Minimized;
+                //dockingWindow.WindowState = WindowState.Minimized;
                 dynamic props = new ExpandoObject();
                 props.windowName = dockingWindowName;
                 props.windowAction = "minimize";
@@ -178,11 +209,11 @@ namespace ChartIQ.Finsemble
             });
         }
 
-        public void Maxmimize()
+        private void Maxmimize()
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                dockingWindow.WindowState = WindowState.Maximized;
+                //dockingWindow.WindowState = WindowState.Maximized;
                 dynamic props = new ExpandoObject();
                 props.windowName = dockingWindowName;
                 props.windowAction = "maximize";
@@ -190,11 +221,11 @@ namespace ChartIQ.Finsemble
             });
         }
 
-        public void Restore()
+        private void Restore()
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                dockingWindow.WindowState = WindowState.Normal;
+                //dockingWindow.WindowState = WindowState.Normal;
                 dynamic props = new ExpandoObject();
                 props.windowName = dockingWindowName;
                 props.windowAction = "restore";
@@ -202,7 +233,7 @@ namespace ChartIQ.Finsemble
             });
         }
 
-        public void Hide()
+        private void Hide()
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
@@ -214,7 +245,7 @@ namespace ChartIQ.Finsemble
             });
         }
 
-        public void Show()
+        private void Show()
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
@@ -226,19 +257,19 @@ namespace ChartIQ.Finsemble
             });
         }
 
-        public void BringToFront()
+        private void BringToFront()
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                dockingWindow.BringIntoView();
+                //dockingWindow.BringIntoView();
                 dynamic props = new ExpandoObject();
                 props.windowName = dockingWindowName;
                 props.windowAction = "bringToFront";
                 bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
             });
         }
-
-        public void Close()
+        
+        internal void Close()
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
@@ -249,6 +280,11 @@ namespace ChartIQ.Finsemble
             });
         }
 
+        /// <summary>
+        /// Call from MouseDown event of control in Window Header that is responsible for moving the the window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void StartMove(dynamic sender, MouseButtonEventArgs e)
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
@@ -267,6 +303,9 @@ namespace ChartIQ.Finsemble
             });
         }
 
+        /// <summary>
+        /// Call from MouseMove event of control in Window Header that is responsible for moving the the window
+        /// </summary>
         public void Move(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (moving)
@@ -292,6 +331,9 @@ namespace ChartIQ.Finsemble
 
         }
 
+        /// <summary>
+        /// Call from MouseUp event of control in Window Header that is responsible for moving the the window
+        /// </summary>
         public void EndMove(object sender, MouseButtonEventArgs e)
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
@@ -305,37 +347,35 @@ namespace ChartIQ.Finsemble
             });
         }
 
-        public void FormGroup(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Call to dock snapped window
+        /// </summary>
+        public void FormGroup()
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                dynamic props = new ExpandoObject();
-                props.windowName = dockingWindowName;
-                props.windowAction = "formGroup";
-                //bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-                routerClient.transmit("DockingService.formGroup", new JObject
+                routerClient.Transmit("DockingService.formGroup", new JObject
                 {
                     ["windowName"] = bridge.windowName
                 });
             });
         }
 
-        public void LeaveGroup(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Call to leave docking group
+        /// </summary>
+        public void LeaveGroup()
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                dynamic props = new ExpandoObject();
-                props.windowName = dockingWindowName;
-                props.windowAction = "leaveGroup";
-                //bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-                routerClient.query("DockingService.leaveGroup", new JObject
+                routerClient.Query("DockingService.leaveGroup", new JObject
                 {
                     ["name"] = bridge.windowName
                 }, new JObject { }, (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs args) { });
             });
         }
 
-        public void Resize(Point TopCorner, Point BottomCorner)
+        private void Resize(Point TopCorner, Point BottomCorner)
         {
             TimeSpan t = DateTime.Now - lastResizeSent;
             if (t.TotalMilliseconds < 50) return;
@@ -353,7 +393,7 @@ namespace ChartIQ.Finsemble
             });
         }
 
-        public void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
@@ -384,7 +424,7 @@ namespace ChartIQ.Finsemble
 
             });
 
-            routerClient.subscribe("Finsemble.WorkspaceService.groupUpdate", (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs args)
+            routerClient.Subscribe("Finsemble.WorkspaceService.groupUpdate", (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs args)
             {
                 var groupData = args.response?["data"]?["groupData"] as JObject;
                 dynamic thisWindowGroups = new ExpandoObject();

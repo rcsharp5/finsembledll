@@ -34,7 +34,10 @@ namespace FinsembleHeaderControl
 
         private void Minimize_Click(object sender, RoutedEventArgs e)
         {
-            bridge.docking.Minimize();
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                bridge.window.WindowState = WindowState.Minimized;
+            });
         }
 
         private void Toolbar_MouseDown(object sender, MouseButtonEventArgs e)
@@ -57,12 +60,18 @@ namespace FinsembleHeaderControl
             var senderButton = (System.Windows.Controls.Button)sender;
             if (bridge.window.WindowState == System.Windows.WindowState.Maximized)
             {
-                bridge.docking.Restore();
+                Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                {
+                    bridge.window.WindowState = WindowState.Normal;
+                });
                 senderButton.Content = "3";
             }
             else
             {
-                bridge.docking.Maxmimize();
+                Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                {
+                    bridge.window.WindowState = WindowState.Maximized;
+                });
                 senderButton.Content = "#";
             }
         }
@@ -74,8 +83,8 @@ namespace FinsembleHeaderControl
 
         private void Linker_Click(object sender, RoutedEventArgs e)
         {
-            bridge.linkerClient.showLinkerWindow();
-            bridge.linkerClient.onStateChange((EventHandler<FinsembleEventArgs>)delegate (object sender2, FinsembleEventArgs args)
+            bridge.linkerClient.ShowLinkerWindow();
+            bridge.linkerClient.OnStateChange((EventHandler<FinsembleEventArgs>)delegate (object sender2, FinsembleEventArgs args)
             {
                 Application.Current.Dispatcher.Invoke((Action)delegate //main thread
                 {

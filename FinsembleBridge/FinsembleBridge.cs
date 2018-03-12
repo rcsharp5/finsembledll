@@ -79,9 +79,13 @@ namespace ChartIQ.Finsemble
         };
 
         /// <summary>
-        /// Initializes a new instance of the FinsembleBridge class.
+        /// Initializes a new instance of the FinsembleBridge class. This is how you interact with Finsemble. All the clients will be part of the bridge.
         /// </summary>
         /// <param name="openFinVersion">The version of the OpenFin runtime to which to connect</param>
+        /// <param name="windowName">The windowName parameter passed as a command line parameter when launched from Finsemble.</param>
+        /// <param name="componentType">The componentType parameter passed as a command line parameter when launched from Finsemble.</param>
+        /// <param name="window">The window that will be Finsembleized</param>
+        /// <param name="uuid">The uuid parameter passed as a command line parameter when launched from Finsemble.</param>
         public FinsembleBridge(Version openFinVersion, string windowName, string componentType, System.Windows.Window window, string uuid)
         {
             Logger.Debug(
@@ -96,7 +100,7 @@ namespace ChartIQ.Finsemble
         }
 
         /// <summary>
-        /// Connect to the OpenFin inter-application bus.
+        /// Connect to Finsemble.
         /// </summary>
         public void Connect()
         {
@@ -167,11 +171,8 @@ namespace ChartIQ.Finsemble
                 Connected?.Invoke(this, EventArgs.Empty);
             });
         }
-
-        /// <summary>
-        /// Disconnects from OpenFin inter-application bus.
-        /// </summary>
-        public void Disconnect()
+        
+        private void Disconnect()
         {
             Logger.Info("Disconnect called");
             if (runtime == null)
@@ -198,7 +199,7 @@ namespace ChartIQ.Finsemble
         /// // Send the parameters to the publish channel for the RPCService to send out to the rest of Finsemble.
         /// SendRPCCommand("FSBL.Clients.LinkerClient.publish", parameters);
         /// </example>
-        public void SendRPCCommand(string topic, JObject parameters)
+        internal void SendRPCCommand(string topic, JObject parameters)
         {
             Logger.Debug($"Sending RPC command: topic: \"{topic}\", parameters: {parameters.ToString()}");
             JArray args = new JArray
@@ -230,7 +231,7 @@ namespace ChartIQ.Finsemble
         /// // Send a subscribe to symbol data type message.
         /// SendRPCCommand("FSBL.Clients.LinkerClient.subscribe", "symbol", "uniqueSubscribeCallbackChannel");
         /// </example>
-        public void SendRPCCommand(string topic, string parameter, string callbackChannel = "")
+        internal void SendRPCCommand(string topic, string parameter, string callbackChannel = "")
         {
             Logger.Debug(
                 "Sending RPC command:\n" +
@@ -255,20 +256,6 @@ namespace ChartIQ.Finsemble
             }
 
             runtime.InterApplicationBus.publish(topic, message);
-        }
-
-        public string CamelCase(string str)
-        {
-            var split = str.Split(' ');
-            for(var i = 0; i<split.Length; i++)
-            {
-                //split[i] = split[i].ToLower();
-                if(!String.IsNullOrEmpty(split[i]))
-                {
-                    split[i] = char.ToUpper(split[i][0]) + split[i].Substring(1);
-                }
-            }
-            return String.Join("", split);
         }
 
         #region IDisposable Support

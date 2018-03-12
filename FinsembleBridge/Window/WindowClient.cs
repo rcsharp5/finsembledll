@@ -23,8 +23,8 @@ namespace ChartIQ.Finsemble
         {
             this.bridge = bridge;
             this.storageClient = bridge.storageClient;
-            this.windowHash = "activeWorkspace" + bridge.CamelCase(bridge.windowName);
-            this.containerHash = "activeWorkspace" + bridge.CamelCase(bridge.windowName + " " + bridge.windowName);
+            this.windowHash = "activeWorkspace" + InternalHelper.TitleCase(bridge.windowName);
+            this.containerHash = "activeWorkspace" + InternalHelper.TitleCase(bridge.windowName + " " + bridge.windowName);
 
             this.windowIdentifier = new JObject
             {
@@ -35,7 +35,7 @@ namespace ChartIQ.Finsemble
 
         }
 
-        public void getComponentState(JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        public void GetComponentState(JObject parameters, EventHandler<FinsembleEventArgs> callback)
         {
             var handler = (EventHandler<FinsembleEventArgs>) delegate (object sender, FinsembleEventArgs e)
             {
@@ -46,10 +46,10 @@ namespace ChartIQ.Finsemble
                 };
                 callback(this, new FinsembleEventArgs(e.error, responseData));
             };
-            storageClient.get(new JObject { ["topic"] = WORKSPACE_CACHE_TOPIC, ["key"] = containerHash }, handler);
+            storageClient.Get(new JObject { ["topic"] = WORKSPACE_CACHE_TOPIC, ["key"] = containerHash }, handler);
         }
 
-        public void setComponentState(JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        public void SetComponentState(JObject parameters, EventHandler<FinsembleEventArgs> callback)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace ChartIQ.Finsemble
                 {
                     storageValue[(string)item["field"]] = item["value"];
                 }
-                storageClient.save(new JObject
+                storageClient.Save(new JObject
                 {
                     ["topic"] = WORKSPACE_CACHE_TOPIC,
                     ["key"] = containerHash,
