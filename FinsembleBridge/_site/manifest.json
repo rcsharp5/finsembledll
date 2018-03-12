@@ -65,18 +65,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.CallbackChannel.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.CallbackChannel.html",
-          "hash": "OCSB3lkZjEsQcJU0ihS1kw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/ChartIQ.Finsemble.ConfigClient.yml",
       "output": {
         ".html": {
@@ -117,7 +105,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.FinsembleBridge.html",
-          "hash": "NnNHciOeIzU401UDCLBDsA=="
+          "hash": "tBUlsTigGAVyCJrWvmgIMQ=="
         }
       },
       "is_incremental": false,
@@ -153,7 +141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.LinkerClient.html",
-          "hash": "aQsi0/EpGLTGm6n1BcCwyw=="
+          "hash": "TAA+SAdsuN7Oq8bJS8ho/Q=="
         }
       },
       "is_incremental": false,
@@ -201,7 +189,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.WindowClient.html",
-          "hash": "HZgihH7bNYettbuCkeWeIw=="
+          "hash": "wmKssv0Cu08qleRHwpsK5g=="
         }
       },
       "is_incremental": false,
@@ -213,7 +201,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.html",
-          "hash": "MK733WpP+TpIRGbP8e36Sg=="
+          "hash": "lF30Z5smhLbkuw+tB6745g=="
         }
       },
       "is_incremental": false,
@@ -225,7 +213,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "cthkr7TXfWXHQ02swXPajg=="
+          "hash": "CygM+Xj1h1CbC3xVa5w7wQ=="
         }
       },
       "is_incremental": false,
@@ -252,17 +240,17 @@
         "incrementalPhase": "build"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build"
         },
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         }
       }

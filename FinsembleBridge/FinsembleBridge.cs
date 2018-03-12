@@ -8,6 +8,27 @@ using System.Collections.Generic;
 
 namespace ChartIQ.Finsemble
 {
+    /// <summary>
+    /// This is the Main Class used to access Finsemble in a .NET Application. Once connected to the bridge Finsemble Clients are available via bridge.clientName.
+    /// <example>
+    /// Connecting to Finsemble:
+    /// <code>
+    /// /*windowName, componentType and uuid are provided as command line parameters when the application is launched by Finsemble*/
+    /// var finsemble = new FinsembleBridge(openFinVersion, windowName, componentType, window, uuid);
+    /// finsemble.Connect += Finsemble_Connected;
+    /// </code>
+    /// 
+    /// Using the Clients once connected:
+    /// <code>
+    /// private void Finsemble_Connected(object sender, EventArgs e) {
+    ///     finsemble.linkerClient.Publish(new JObject {
+    ///         ["dataType"] = "symbol",
+    ///         ["data"] = "AAPL"
+    ///     });
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public partial class FinsembleBridge : IDisposable
     {
         /// <summary>
@@ -29,13 +50,13 @@ namespace ChartIQ.Finsemble
         /// <summary>
         /// The instance of the OpenFin used by this example.
         /// </summary>
-        public Runtime runtime {get; private set;}
+        internal Runtime runtime {get; private set;}
 
         #region Instance constants
         /// <summary>
         /// Class containing the callback channel names unique to this instance of the application.
         /// </summary>
-        public readonly CallbackChannel CallbackChannel = new CallbackChannel();
+        internal readonly CallbackChannel CallbackChannel = new CallbackChannel();
         #endregion
 
         #region Events
@@ -261,7 +282,7 @@ namespace ChartIQ.Finsemble
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
-        protected virtual void Dispose(bool disposing)
+        internal virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
             {

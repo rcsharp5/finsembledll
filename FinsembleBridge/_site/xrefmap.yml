@@ -40,36 +40,6 @@ references:
   commentId: Overload:ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization
   fullName: ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization
   nameWithType: AuthenticationClient.PublishAuthorization
-- uid: ChartIQ.Finsemble.CallbackChannel
-  name: CallbackChannel
-  href: api/ChartIQ.Finsemble.CallbackChannel.html
-  commentId: T:ChartIQ.Finsemble.CallbackChannel
-  fullName: ChartIQ.Finsemble.CallbackChannel
-  nameWithType: CallbackChannel
-- uid: ChartIQ.Finsemble.CallbackChannel.#ctor
-  name: CallbackChannel()
-  href: api/ChartIQ.Finsemble.CallbackChannel.html#ChartIQ_Finsemble_CallbackChannel__ctor
-  commentId: M:ChartIQ.Finsemble.CallbackChannel.#ctor
-  fullName: ChartIQ.Finsemble.CallbackChannel.CallbackChannel()
-  nameWithType: CallbackChannel.CallbackChannel()
-- uid: ChartIQ.Finsemble.CallbackChannel.#ctor*
-  name: CallbackChannel
-  href: api/ChartIQ.Finsemble.CallbackChannel.html#ChartIQ_Finsemble_CallbackChannel__ctor_
-  commentId: Overload:ChartIQ.Finsemble.CallbackChannel.#ctor
-  fullName: ChartIQ.Finsemble.CallbackChannel.CallbackChannel
-  nameWithType: CallbackChannel.CallbackChannel
-- uid: ChartIQ.Finsemble.CallbackChannel.Subscribe
-  name: Subscribe
-  href: api/ChartIQ.Finsemble.CallbackChannel.html#ChartIQ_Finsemble_CallbackChannel_Subscribe
-  commentId: P:ChartIQ.Finsemble.CallbackChannel.Subscribe
-  fullName: ChartIQ.Finsemble.CallbackChannel.Subscribe
-  nameWithType: CallbackChannel.Subscribe
-- uid: ChartIQ.Finsemble.CallbackChannel.Subscribe*
-  name: Subscribe
-  href: api/ChartIQ.Finsemble.CallbackChannel.html#ChartIQ_Finsemble_CallbackChannel_Subscribe_
-  commentId: Overload:ChartIQ.Finsemble.CallbackChannel.Subscribe
-  fullName: ChartIQ.Finsemble.CallbackChannel.Subscribe
-  nameWithType: CallbackChannel.Subscribe
 - uid: ChartIQ.Finsemble.ConfigClient
   name: ConfigClient
   href: api/ChartIQ.Finsemble.ConfigClient.html
@@ -229,12 +199,6 @@ references:
   commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.authenticationClient
   fullName: ChartIQ.Finsemble.FinsembleBridge.authenticationClient
   nameWithType: FinsembleBridge.authenticationClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.CallbackChannel
-  name: CallbackChannel
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_CallbackChannel
-  commentId: F:ChartIQ.Finsemble.FinsembleBridge.CallbackChannel
-  fullName: ChartIQ.Finsemble.FinsembleBridge.CallbackChannel
-  nameWithType: FinsembleBridge.CallbackChannel
 - uid: ChartIQ.Finsemble.FinsembleBridge.componentType
   name: componentType
   href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_componentType
@@ -289,12 +253,6 @@ references:
   commentId: M:ChartIQ.Finsemble.FinsembleBridge.Dispose
   fullName: ChartIQ.Finsemble.FinsembleBridge.Dispose()
   nameWithType: FinsembleBridge.Dispose()
-- uid: ChartIQ.Finsemble.FinsembleBridge.Dispose(System.Boolean)
-  name: Dispose(Boolean)
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_Dispose_System_Boolean_
-  commentId: M:ChartIQ.Finsemble.FinsembleBridge.Dispose(System.Boolean)
-  fullName: ChartIQ.Finsemble.FinsembleBridge.Dispose(System.Boolean)
-  nameWithType: FinsembleBridge.Dispose(Boolean)
 - uid: ChartIQ.Finsemble.FinsembleBridge.Dispose*
   name: Dispose
   href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_Dispose_
@@ -373,18 +331,6 @@ references:
   commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.routerClient
   fullName: ChartIQ.Finsemble.FinsembleBridge.routerClient
   nameWithType: FinsembleBridge.routerClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.runtime
-  name: runtime
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_runtime
-  commentId: P:ChartIQ.Finsemble.FinsembleBridge.runtime
-  fullName: ChartIQ.Finsemble.FinsembleBridge.runtime
-  nameWithType: FinsembleBridge.runtime
-- uid: ChartIQ.Finsemble.FinsembleBridge.runtime*
-  name: runtime
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_runtime_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.runtime
-  fullName: ChartIQ.Finsemble.FinsembleBridge.runtime
-  nameWithType: FinsembleBridge.runtime
 - uid: ChartIQ.Finsemble.FinsembleBridge.storageClient
   name: storageClient
   href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_storageClient

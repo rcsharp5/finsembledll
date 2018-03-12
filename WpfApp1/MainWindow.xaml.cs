@@ -28,7 +28,7 @@ namespace WpfApp1
     {
         //private LinkerWindow linkerWindow;
         private SortedDictionary<string, Button> LinkerGroups = new SortedDictionary<string, Button>();
-        private FinsembleBridge bridge;
+        private FinsembleBridge finsemble;
         private string windowName;
         private string componentType = "Unknown";
         private string top, left, height, width, uuid;
@@ -55,16 +55,16 @@ namespace WpfApp1
             this.width = width;
             this.uuid = uuid;
 
-            bridge = new FinsembleBridge(new System.Version("8.56.28.34"), windowName, componentType, this, uuid);
-            bridge.Connect();
-            bridge.Connected += Bridge_Connected;
+            finsemble = new FinsembleBridge(new System.Version("8.56.28.34"), windowName, componentType, this, uuid);
+            finsemble.Connect();
+            finsemble.Connected += Finsemble_Connected;
         }
 
-        private void Bridge_Connected(object sender, EventArgs e)
+        private void Finsemble_Connected(object sender, EventArgs e)
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                bridge.linkerClient.Subscribe("symbol", (EventHandler<FinsembleEventArgs>)delegate(object s, FinsembleEventArgs args)
+                finsemble.linkerClient.Subscribe("symbol", (EventHandler<FinsembleEventArgs>)delegate(object s, FinsembleEventArgs args)
                 {
                     Application.Current.Dispatcher.Invoke((Action)delegate //main thread
                     {
@@ -97,10 +97,10 @@ namespace WpfApp1
                 this.Show();
 
                 // docking icon
-                bridge.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;
+                finsemble.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;
 
                 // app suites
-                bridge.launcherClient.GetGroupsForWindow((s, args) => {
+                finsemble.launcherClient.GetGroupsForWindow((s, args) => {
 
                 });
 
@@ -113,7 +113,7 @@ namespace WpfApp1
 
         public void LinkerStateChanged()
         {
-            bridge.linkerClient.OnStateChange((EventHandler<FinsembleEventArgs>)delegate (object sender2, FinsembleEventArgs args)
+            finsemble.linkerClient.OnStateChange((EventHandler<FinsembleEventArgs>)delegate (object sender2, FinsembleEventArgs args)
             {
                 Application.Current.Dispatcher.Invoke((Action)delegate //main thread
                 {
@@ -213,17 +213,17 @@ namespace WpfApp1
          */
         private void Toolbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            bridge.docking.StartMove(sender, e);
+            finsemble.docking.StartMove(sender, e);
         }
 
         private void Toolbar_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            bridge.docking.EndMove(sender, e);
+            finsemble.docking.EndMove(sender, e);
         }
 
         private void Toolbar_MouseMove(object sender, MouseEventArgs e)
         {
-            bridge.docking.Move(sender, e);
+            finsemble.docking.Move(sender, e);
         }
 
         /*
@@ -265,7 +265,7 @@ namespace WpfApp1
          */
         private void Linker_Click(object sender, RoutedEventArgs e)
         {
-            bridge.linkerClient.ShowLinkerWindow();
+            finsemble.linkerClient.ShowLinkerWindow();
         }
 
         /*
@@ -321,11 +321,11 @@ namespace WpfApp1
         {
             if (Docking.Content == "@")
             {
-                bridge.docking.LeaveGroup();
+                finsemble.docking.LeaveGroup();
             }
             else
             {
-                bridge.docking.FormGroup();
+                finsemble.docking.FormGroup();
             }
         }
 
@@ -380,7 +380,7 @@ namespace WpfApp1
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            bridge.linkerClient.Publish(new JObject {
+            finsemble.linkerClient.Publish(new JObject {
                 ["dataType"] = "symbol",
                 ["data"] = SendData.Text
             });

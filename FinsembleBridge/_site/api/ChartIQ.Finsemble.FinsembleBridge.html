@@ -73,7 +73,22 @@
   
   <h1 id="ChartIQ_Finsemble_FinsembleBridge" data-uid="ChartIQ.Finsemble.FinsembleBridge" class="text-break">Class FinsembleBridge
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>This is the Main Class used to access Finsemble in a .NET Application. Once connected to the bridge Finsemble Clients are available via bridge.clientName.
+<example>
+Connecting to Finsemble:<p>
+<pre><code>/*windowName, componentType and uuid are provided as command line parameters when the application is launched by Finsemble*/
+var finsemble = new FinsembleBridge(openFinVersion, windowName, componentType, window, uuid);
+finsemble.Connect += Finsemble_Connected;</code></pre>
+
+<p>Using the Clients once connected:</p>
+<pre><code>private void Finsemble_Connected(object sender, EventArgs e) {
+    finsemble.linkerClient.Publish(new JObject {
+        [&quot;dataType&quot;] = &quot;symbol&quot;,
+        [&quot;data&quot;] = &quot;AAPL&quot;
+    });
+}</code></pre>
+<p></example></p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -171,31 +186,6 @@
   </table>
   <h3 id="fields">Fields
   </h3>
-  
-  
-  <h4 id="ChartIQ_Finsemble_FinsembleBridge_CallbackChannel" data-uid="ChartIQ.Finsemble.FinsembleBridge.CallbackChannel">CallbackChannel</h4>
-  <div class="markdown level1 summary"><p>Class containing the callback channel names unique to this instance of the application.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly CallbackChannel CallbackChannel</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="ChartIQ.Finsemble.CallbackChannel.html">CallbackChannel</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <h4 id="ChartIQ_Finsemble_FinsembleBridge_docking" data-uid="ChartIQ.Finsemble.FinsembleBridge.docking">docking</h4>
@@ -429,32 +419,6 @@ possible.</p>
   </table>
   
   
-  <a id="ChartIQ_Finsemble_FinsembleBridge_runtime_" data-uid="ChartIQ.Finsemble.FinsembleBridge.runtime*"></a>
-  <h4 id="ChartIQ_Finsemble_FinsembleBridge_runtime" data-uid="ChartIQ.Finsemble.FinsembleBridge.runtime">runtime</h4>
-  <div class="markdown level1 summary"><p>The instance of the OpenFin used by this example.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Runtime runtime { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Openfin.Desktop.Runtime</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="ChartIQ_Finsemble_FinsembleBridge_storageClient_" data-uid="ChartIQ.Finsemble.FinsembleBridge.storageClient*"></a>
   <h4 id="ChartIQ_Finsemble_FinsembleBridge_storageClient" data-uid="ChartIQ.Finsemble.FinsembleBridge.storageClient">storageClient</h4>
   <div class="markdown level1 summary"></div>
@@ -601,33 +565,6 @@ possible.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
   </div>
-  
-  
-  <a id="ChartIQ_Finsemble_FinsembleBridge_Dispose_" data-uid="ChartIQ.Finsemble.FinsembleBridge.Dispose*"></a>
-  <h4 id="ChartIQ_Finsemble_FinsembleBridge_Dispose_System_Boolean_" data-uid="ChartIQ.Finsemble.FinsembleBridge.Dispose(System.Boolean)">Dispose(Boolean)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">disposing</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="events">Events
   </h3>
   

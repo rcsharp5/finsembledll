@@ -9,7 +9,7 @@ using System.Windows;
 namespace ChartIQ.Finsemble
 {
     /// <summary>
-    /// 
+    /// The Window Client Manages Window State in the Workspace
     /// </summary>
     public class WindowClient
     {
