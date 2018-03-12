@@ -1,0 +1,297 @@
+{
+  "homepages": [],
+  "source_base_path": "C:/Users/Sidd/Documents/GitHub/finsemble-wpf/FinsembleBridge",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "7yfAWnpl2NeoUQOb4OFUFw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/intro.html",
+          "hash": "JoavORvjWWsnQMp4FlppaQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html",
+          "hash": "xVlQaX7Tk85omoiWv3O+Ag=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "Y5OvPgPtTvm7S4v47g9AnA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.AuthenticationClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.AuthenticationClient.html",
+          "hash": "b248uh2AwOcldZEa/MjSQQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.CallbackChannel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.CallbackChannel.html",
+          "hash": "OCSB3lkZjEsQcJU0ihS1kw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.ConfigClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.ConfigClient.html",
+          "hash": "dc8EBAHu9nxEz8PbYQxBJQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.DistributedStoreClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.DistributedStoreClient.html",
+          "hash": "x/qbhG5gHtkf3L7J184vMg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.Docking.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.Docking.html",
+          "hash": "BY8DpktV7MTTFny0GWv5Sw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.FinsembleBridge.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.FinsembleBridge.html",
+          "hash": "NnNHciOeIzU401UDCLBDsA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.FinsembleEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.FinsembleEventArgs.html",
+          "hash": "ZOja+BulXpk2qtNH/osagQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.LauncherClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.LauncherClient.html",
+          "hash": "J+ST8lO6kzqC7rxD/p1kBA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.LinkerClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.LinkerClient.html",
+          "hash": "0XN2V9sOnVrmEdcMf8Penw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.RouterClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.RouterClient.html",
+          "hash": "wsMMRltw5UHbLNzYCnodHw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.StorageClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.StorageClient.html",
+          "hash": "As9nxMMIwaevlI9dw6imRA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.StoreModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.StoreModel.html",
+          "hash": "9G4N6C68ySu8bbo0n6HBHg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.WIN32Rectangle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.WIN32Rectangle.html",
+          "hash": "U98cYM2kocNZpvzGcmqgtA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.WindowClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.WindowClient.html",
+          "hash": "2lvd1PubqLM0B1oJ9GL57Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.html",
+          "hash": "4e269tTAeC60EsKpWcH9Og=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "obj/api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "jn81JkVZ5I9W4pHi+qSIWw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "frPdeW5hGroGiyexwMQIhg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
+        "incrementalPhase": "build"
+      },
+      "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build"
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build"
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
+        "incrementalPhase": "postProcessing"
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
