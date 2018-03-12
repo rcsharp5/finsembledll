@@ -73,7 +73,8 @@
   
   <h1 id="ChartIQ_Finsemble_DistributedStoreClient" data-uid="ChartIQ.Finsemble.DistributedStoreClient" class="text-break">Class DistributedStoreClient
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>The data store client handles creating/retrieving global distributed stores. Local stores are not supported. This data is not persisted. You can add listeners at multiple levels (store or field) and get the updated data as it&apos;s updated in the store. Fields are stored within the store as key/value pair.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -110,17 +111,18 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class DistributedStoreClient</code></pre>
   </div>
-  <h3 id="constructors">Constructors
+  <h3 id="methods">Methods
   </h3>
   
   
-  <a id="ChartIQ_Finsemble_DistributedStoreClient__ctor_" data-uid="ChartIQ.Finsemble.DistributedStoreClient.#ctor*"></a>
-  <h4 id="ChartIQ_Finsemble_DistributedStoreClient__ctor_ChartIQ_Finsemble_FinsembleBridge_" data-uid="ChartIQ.Finsemble.DistributedStoreClient.#ctor(ChartIQ.Finsemble.FinsembleBridge)">DistributedStoreClient(FinsembleBridge)</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="ChartIQ_Finsemble_DistributedStoreClient_CreateStore_" data-uid="ChartIQ.Finsemble.DistributedStoreClient.CreateStore*"></a>
+  <h4 id="ChartIQ_Finsemble_DistributedStoreClient_CreateStore_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_StoreModel__" data-uid="ChartIQ.Finsemble.DistributedStoreClient.CreateStore(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.StoreModel})">CreateStore(JObject, EventHandler&lt;StoreModel&gt;)</h4>
+  <div class="markdown level1 summary"><p>This creates a global distributed store or returns an existing one if it already exists. The StoreModel returned can be used to get and set values on a global store and create listeners on specific values. Only global stores are supported.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DistributedStoreClient(FinsembleBridge bridge)</code></pre>
+    <pre><code class="lang-csharp hljs">public void CreateStore(JObject parameters, EventHandler&lt;StoreModel&gt; args)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -133,14 +135,25 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="ChartIQ.Finsemble.FinsembleBridge.html">FinsembleBridge</a></td>
-        <td><span class="parametername">bridge</span></td>
+        <td><span class="xref">Newtonsoft.Json.Linq.JObject</span></td>
+        <td><span class="parametername">parameters</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.EventHandler</span>&lt;<a class="xref" href="ChartIQ.Finsemble.StoreModel.html">StoreModel</a>&gt;</td>
+        <td><span class="parametername">args</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
-  </h3>
+  <h5 id="ChartIQ_Finsemble_DistributedStoreClient_CreateStore_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_StoreModel___examples">Examples</h5>
+  <pre><code>bridge.distributedStoreClient.GetStore(new JObject {
+    [&quot;store&quot;] = &quot;storeName&quot;,
+    [&quot;global&quot;] = true
+}, (sender, store) {
+    // Do something with the store.
+})</code></pre>
+
   
   
   <a id="ChartIQ_Finsemble_DistributedStoreClient_GetStore_" data-uid="ChartIQ.Finsemble.DistributedStoreClient.GetStore*"></a>

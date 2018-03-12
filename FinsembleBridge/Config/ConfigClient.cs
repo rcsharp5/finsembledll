@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace ChartIQ.Finsemble
 {
+    /// <summary>
+    /// The Config Client provides run-time access to Finsemble's configuration.
+    /// </summary>
     public class ConfigClient
     {
         private FinsembleBridge bridge;
         private RouterClient routerClient;
-        public ConfigClient(FinsembleBridge bridge)
+        internal ConfigClient(FinsembleBridge bridge)
         {
             this.bridge = bridge;
             this.routerClient = bridge.routerClient;

@@ -15,15 +15,9 @@ using EventHook.Hooks;
 
 namespace ChartIQ.Finsemble
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct WIN32Rectangle
-    {
-        public int Left;
-        public int Top;
-        public int Right;
-        public int Bottom;
-    }
-
+    /// <summary>
+    /// This handles window movements, resizes and docking group membership
+    /// </summary>
     public class Docking
     {
         FinsembleBridge bridge;
@@ -55,6 +49,15 @@ namespace ChartIQ.Finsemble
         const int WMSZ_TOPLEFT = 4;
         const int WMSZ_TOPRIGHT = 5;
 
+        [StructLayout(LayoutKind.Sequential)]
+        private struct WIN32Rectangle
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+
         private DateTime lastMoveSent = DateTime.Now;
         private DateTime lastResizeSent = DateTime.Now;
         private DateTime lastStateChanged = DateTime.Now;
@@ -65,7 +68,7 @@ namespace ChartIQ.Finsemble
 
         double dpiX, dpiY;
 
-        public Docking(FinsembleBridge _bridge, string channel)
+        internal Docking(FinsembleBridge _bridge, string channel)
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {

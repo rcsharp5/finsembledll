@@ -9,6 +9,10 @@ using System.Windows;
 
 namespace ChartIQ.Finsemble
 {
+    /// <summary>
+    /// This module contains the RouterClient for sending and receiving events between Finsemble components and services.
+    /// Currently AddPubSubResponder, AddResponder, RemovePubSubResponder, RemoveResponder are not supported.
+    /// </summary>
     public class RouterClient
     {
         private FinsembleBridge bridge;
@@ -17,7 +21,7 @@ namespace ChartIQ.Finsemble
         private Dictionary<string, EventHandler<FinsembleEventArgs>> publishListeners = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
         private Dictionary<string, EventHandler<FinsembleEventArgs>> queryIDResponseHandlerMap = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
 
-        public RouterClient(FinsembleBridge bridge)
+        internal RouterClient(FinsembleBridge bridge)
         {
             this.bridge = bridge;
             this.clientName = "RouterClient." + bridge.windowName;
@@ -92,7 +96,11 @@ namespace ChartIQ.Finsemble
             }
         }
 
-        // Transmit/Listen
+        /// <summary>
+        /// Transmit data to all listeners on the specified channel. If no listeners the data is discarded without error. All listeners to the channel in this Finsemble window and other Finsemble windows will receive the transmit.
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="data"></param>
         public void Transmit(string channel, JToken data)
         {
             var TransmitMessage = new JObject(
@@ -108,6 +116,11 @@ namespace ChartIQ.Finsemble
             bridge.runtime.InterApplicationBus.Publish("RouterService", TransmitMessage);
         }
 
+        /// <summary>
+        /// Add listener for incoming data on specified channel. Each of the incoming data will trigger the specified handler.
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="callback"></param>
         public void AddListener(string channel, EventHandler<FinsembleEventArgs> callback)
         {
             if (!transmitListeners.ContainsKey(channel))
@@ -130,12 +143,23 @@ namespace ChartIQ.Finsemble
             }
         }
 
+        /// <summary>
+        /// Remove listener from specified channel for the specific data handler (only listeners created locally can be removed).
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="callback"></param>
         public void RemoveListener(string channel, EventHandler<FinsembleEventArgs> callback)
         {
             transmitListeners[channel] -= callback;
         }
 
-        // Query Response
+        /// <summary>
+        /// Send a query to responder listening on specified channel. The responder may be in this Finsemble window or another Finsemble window.
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="data"></param>
+        /// <param name="parameters"></param>
+        /// <param name="responseHandler"></param>
         public void Query(string channel, JToken data, JObject parameters, EventHandler<FinsembleEventArgs> responseHandler)
         {
             var queryID = Guid.NewGuid().ToString();
@@ -154,12 +178,11 @@ namespace ChartIQ.Finsemble
             queryIDResponseHandlerMap.Add(queryID, responseHandler);
         }
 
-        public void AddResponder(string channel, EventHandler<FinsembleEventArgs> callback)
-        {
-            throw new NotImplementedException();
-        }
-
-        // Pub Sub
+        /// <summary>
+        /// Publish to a PubSub Responder, which will trigger a corresponding Notify to be sent to all subscribers (local in this window or remote in other windows). There can be multiple publishers for a topic (again, in same window or remote windows)
+        /// </summary>
+        /// <param name="topic"></param>
+        /// <param name="data"></param>
         public void Publish(string topic, JToken data)
         {
             var PublishMessage = new JObject(
@@ -175,6 +198,11 @@ namespace ChartIQ.Finsemble
             bridge.runtime.InterApplicationBus.Publish("RouterService", PublishMessage);
         }
 
+        /// <summary>
+        /// Subscribe to a PubSub Responder. Each responder topic can have many subscribers (local in this window or remote in other windows). Each subscriber immediately (but asyncronouly) receives back current state in a notify; new notifys are receive for each publish sent to the same topic.
+        /// </summary>
+        /// <param name="topic"></param>
+        /// <param name="responseHandler"></param>
         public void Subscribe(string topic, EventHandler<FinsembleEventArgs> responseHandler)
         {
             if (!publishListeners.ContainsKey(topic))
@@ -198,6 +226,11 @@ namespace ChartIQ.Finsemble
             }
         }
 
+        /// <summary>
+        /// Unsubscribe from PubSub responder so no more notifications received (but doesn't affect other subscriptions). 
+        /// </summary>
+        /// <param name="topic"></param>
+        /// <param name="responseHandler"></param>
         public void Unsubscribe(string topic, EventHandler<FinsembleEventArgs> responseHandler)
         {
             publishListeners[topic] -= responseHandler;

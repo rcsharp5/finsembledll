@@ -8,6 +8,9 @@ using System.Windows;
 
 namespace ChartIQ.Finsemble
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class WindowClient
     {
         private FinsembleBridge bridge;
@@ -19,7 +22,7 @@ namespace ChartIQ.Finsemble
         private const string WORKSPACE_CACHE_TOPIC = "finsemble.workspace.cache";
         private JObject options;
 
-        public WindowClient(FinsembleBridge bridge)
+        internal WindowClient(FinsembleBridge bridge)
         {
             this.bridge = bridge;
             this.storageClient = bridge.storageClient;
@@ -35,6 +38,11 @@ namespace ChartIQ.Finsemble
 
         }
 
+        /// <summary>
+        /// Given a field, this function retrieves app state.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="callback"></param>
         public void GetComponentState(JObject parameters, EventHandler<FinsembleEventArgs> callback)
         {
             var handler = (EventHandler<FinsembleEventArgs>) delegate (object sender, FinsembleEventArgs e)
@@ -49,6 +57,11 @@ namespace ChartIQ.Finsemble
             storageClient.Get(new JObject { ["topic"] = WORKSPACE_CACHE_TOPIC, ["key"] = containerHash }, handler);
         }
 
+        /// <summary>
+        /// Given a field, this function sets and persists app state.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="callback"></param>
         public void SetComponentState(JObject parameters, EventHandler<FinsembleEventArgs> callback)
         {
             try

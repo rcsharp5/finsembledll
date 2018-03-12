@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ChartIQ.Finsemble
 {
+    /// <summary>
+    /// The store model is an instance of a distributed store. This handles getters/setters of data and creation of listeners.
+    /// </summary>
     public class StoreModel
     {
         public string name { private set; get; }
@@ -16,7 +19,7 @@ namespace ChartIQ.Finsemble
         private RouterClient routerClient;
         private Dictionary<string, EventHandler<FinsembleEventArgs>> storeEventListeners = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
 
-        public StoreModel(JObject parameters, FinsembleBridge bridge)
+        internal StoreModel(JObject parameters, FinsembleBridge bridge)
         {
             //store, name, global, values, clients
             this.name = (string)parameters["name"];

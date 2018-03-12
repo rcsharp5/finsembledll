@@ -73,7 +73,9 @@
   
   <h1 id="ChartIQ_Finsemble_RouterClient" data-uid="ChartIQ.Finsemble.RouterClient" class="text-break">Class RouterClient
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>This module contains the RouterClient for sending and receiving events between Finsemble components and services.
+Currently AddPubSubResponder, AddResponder, RemovePubSubResponder, RemoveResponder are not supported.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -110,42 +112,14 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class RouterClient</code></pre>
   </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  
-  
-  <a id="ChartIQ_Finsemble_RouterClient__ctor_" data-uid="ChartIQ.Finsemble.RouterClient.#ctor*"></a>
-  <h4 id="ChartIQ_Finsemble_RouterClient__ctor_ChartIQ_Finsemble_FinsembleBridge_" data-uid="ChartIQ.Finsemble.RouterClient.#ctor(ChartIQ.Finsemble.FinsembleBridge)">RouterClient(FinsembleBridge)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RouterClient(FinsembleBridge bridge)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="ChartIQ.Finsemble.FinsembleBridge.html">FinsembleBridge</a></td>
-        <td><span class="parametername">bridge</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
   
   <a id="ChartIQ_Finsemble_RouterClient_AddListener_" data-uid="ChartIQ.Finsemble.RouterClient.AddListener*"></a>
   <h4 id="ChartIQ_Finsemble_RouterClient_AddListener_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__" data-uid="ChartIQ.Finsemble.RouterClient.AddListener(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})">AddListener(String, EventHandler&lt;FinsembleEventArgs&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Add listener for incoming data on specified channel. Each of the incoming data will trigger the specified handler.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -175,41 +149,10 @@
   </table>
   
   
-  <a id="ChartIQ_Finsemble_RouterClient_AddResponder_" data-uid="ChartIQ.Finsemble.RouterClient.AddResponder*"></a>
-  <h4 id="ChartIQ_Finsemble_RouterClient_AddResponder_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__" data-uid="ChartIQ.Finsemble.RouterClient.AddResponder(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})">AddResponder(String, EventHandler&lt;FinsembleEventArgs&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void AddResponder(string channel, EventHandler&lt;FinsembleEventArgs&gt; callback)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">channel</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.EventHandler</span>&lt;<a class="xref" href="ChartIQ.Finsemble.FinsembleEventArgs.html">FinsembleEventArgs</a>&gt;</td>
-        <td><span class="parametername">callback</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="ChartIQ_Finsemble_RouterClient_Publish_" data-uid="ChartIQ.Finsemble.RouterClient.Publish*"></a>
   <h4 id="ChartIQ_Finsemble_RouterClient_Publish_System_String_Newtonsoft_Json_Linq_JToken_" data-uid="ChartIQ.Finsemble.RouterClient.Publish(System.String,Newtonsoft.Json.Linq.JToken)">Publish(String, JToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Publish to a PubSub Responder, which will trigger a corresponding Notify to be sent to all subscribers (local in this window or remote in other windows). There can be multiple publishers for a topic (again, in same window or remote windows)</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -241,7 +184,8 @@
   
   <a id="ChartIQ_Finsemble_RouterClient_Query_" data-uid="ChartIQ.Finsemble.RouterClient.Query*"></a>
   <h4 id="ChartIQ_Finsemble_RouterClient_Query_System_String_Newtonsoft_Json_Linq_JToken_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__" data-uid="ChartIQ.Finsemble.RouterClient.Query(System.String,Newtonsoft.Json.Linq.JToken,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})">Query(String, JToken, JObject, EventHandler&lt;FinsembleEventArgs&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Send a query to responder listening on specified channel. The responder may be in this Finsemble window or another Finsemble window.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -283,7 +227,8 @@
   
   <a id="ChartIQ_Finsemble_RouterClient_RemoveListener_" data-uid="ChartIQ.Finsemble.RouterClient.RemoveListener*"></a>
   <h4 id="ChartIQ_Finsemble_RouterClient_RemoveListener_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__" data-uid="ChartIQ.Finsemble.RouterClient.RemoveListener(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})">RemoveListener(String, EventHandler&lt;FinsembleEventArgs&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Remove listener from specified channel for the specific data handler (only listeners created locally can be removed).</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -315,7 +260,8 @@
   
   <a id="ChartIQ_Finsemble_RouterClient_Subscribe_" data-uid="ChartIQ.Finsemble.RouterClient.Subscribe*"></a>
   <h4 id="ChartIQ_Finsemble_RouterClient_Subscribe_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__" data-uid="ChartIQ.Finsemble.RouterClient.Subscribe(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})">Subscribe(String, EventHandler&lt;FinsembleEventArgs&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Subscribe to a PubSub Responder. Each responder topic can have many subscribers (local in this window or remote in other windows). Each subscriber immediately (but asyncronouly) receives back current state in a notify; new notifys are receive for each publish sent to the same topic.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -347,7 +293,8 @@
   
   <a id="ChartIQ_Finsemble_RouterClient_Transmit_" data-uid="ChartIQ.Finsemble.RouterClient.Transmit*"></a>
   <h4 id="ChartIQ_Finsemble_RouterClient_Transmit_System_String_Newtonsoft_Json_Linq_JToken_" data-uid="ChartIQ.Finsemble.RouterClient.Transmit(System.String,Newtonsoft.Json.Linq.JToken)">Transmit(String, JToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Transmit data to all listeners on the specified channel. If no listeners the data is discarded without error. All listeners to the channel in this Finsemble window and other Finsemble windows will receive the transmit.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -379,7 +326,8 @@
   
   <a id="ChartIQ_Finsemble_RouterClient_Unsubscribe_" data-uid="ChartIQ.Finsemble.RouterClient.Unsubscribe*"></a>
   <h4 id="ChartIQ_Finsemble_RouterClient_Unsubscribe_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__" data-uid="ChartIQ.Finsemble.RouterClient.Unsubscribe(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})">Unsubscribe(String, EventHandler&lt;FinsembleEventArgs&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Unsubscribe from PubSub responder so no more notifications received (but doesn&apos;t affect other subscriptions). </p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">

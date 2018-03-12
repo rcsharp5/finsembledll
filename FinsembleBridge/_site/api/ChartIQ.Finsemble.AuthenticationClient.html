@@ -73,7 +73,8 @@
   
   <h1 id="ChartIQ_Finsemble_AuthenticationClient" data-uid="ChartIQ.Finsemble.AuthenticationClient" class="text-break">Class AuthenticationClient
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>The Authentication Client API provides hooks for plugging in a custom sign-on component at the beginning of Finsemble start-up (before application-level components are started).</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -110,17 +111,18 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class AuthenticationClient</code></pre>
   </div>
-  <h3 id="constructors">Constructors
+  <h3 id="methods">Methods
   </h3>
   
   
-  <a id="ChartIQ_Finsemble_AuthenticationClient__ctor_" data-uid="ChartIQ.Finsemble.AuthenticationClient.#ctor*"></a>
-  <h4 id="ChartIQ_Finsemble_AuthenticationClient__ctor_ChartIQ_Finsemble_FinsembleBridge_" data-uid="ChartIQ.Finsemble.AuthenticationClient.#ctor(ChartIQ.Finsemble.FinsembleBridge)">AuthenticationClient(FinsembleBridge)</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="ChartIQ_Finsemble_AuthenticationClient_GetCurrentCredentials_" data-uid="ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials*"></a>
+  <h4 id="ChartIQ_Finsemble_AuthenticationClient_GetCurrentCredentials_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__" data-uid="ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials(System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})">GetCurrentCredentials(EventHandler&lt;FinsembleEventArgs&gt;)</h4>
+  <div class="markdown level1 summary"><p>Returns the current global credentials (as published through PublishAuthorization}) or null if no credentials are set yet.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AuthenticationClient(FinsembleBridge bridge)</code></pre>
+    <pre><code class="lang-csharp hljs">public void GetCurrentCredentials(EventHandler&lt;FinsembleEventArgs&gt; callback)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -133,22 +135,21 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="ChartIQ.Finsemble.FinsembleBridge.html">FinsembleBridge</a></td>
-        <td><span class="parametername">bridge</span></td>
-        <td></td>
+        <td><span class="xref">System.EventHandler</span>&lt;<a class="xref" href="ChartIQ.Finsemble.FinsembleEventArgs.html">FinsembleEventArgs</a>&gt;</td>
+        <td><span class="parametername">callback</span></td>
+        <td><p>A function that returns the current credentials. Will return null if no credentials have yet been established.</p>
+</td>
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
-  </h3>
   
   
   <a id="ChartIQ_Finsemble_AuthenticationClient_PublishAuthorization_" data-uid="ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization*"></a>
   <h4 id="ChartIQ_Finsemble_AuthenticationClient_PublishAuthorization_System_String_Newtonsoft_Json_Linq_JObject_" data-uid="ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization(System.String,Newtonsoft.Json.Linq.JObject)">PublishAuthorization(String, JObject)</h4>
   <div class="markdown level1 summary"><p>During Finsemble&apos;s start-up process, this function must be invoked before Finsemble will start the application.
 Once invoked, the authenticated user name and authorization credentials are received by the Authentication Service and published on the &quot;AuthenticationService.authorization&quot; channel.
-Any component can revieve the credentials by subscribing to that channel or by calling {@link AuthenticationClient#getCurrentCredentials}.
-Note that all calls to Storage Client are keyed to the authenticated <em>user</em>. See {@link StorageClient#setUser}.
+Any component can revieve the credentials by subscribing to that channel or by calling GetCurrentCredentials.
+Note that all calls to Storage Client are keyed to the authenticated <em>user</em>. See StorageClient.SetUser.
 If authentication is not enabled, then &quot;defaultUser&quot; is used instead.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -169,12 +170,14 @@ If authentication is not enabled, then &quot;defaultUser&quot; is used instead.<
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">user</span></td>
-        <td></td>
+        <td><p>Username</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">Newtonsoft.Json.Linq.JObject</span></td>
         <td><span class="parametername">credentials</span></td>
-        <td></td>
+        <td><p>Object containing user credentials</p>
+</td>
       </tr>
     </tbody>
   </table>

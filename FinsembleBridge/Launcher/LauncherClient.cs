@@ -8,6 +8,9 @@ using System.Timers;
 
 namespace ChartIQ.Finsemble
 {
+    /// <summary>
+    /// The Launcher client handles spawning windows and window groups.
+    /// </summary>
     public class LauncherClient
     {
         private FinsembleBridge bridge;
@@ -15,7 +18,7 @@ namespace ChartIQ.Finsemble
         private WindowClient windowClient;
         public EventHandler<FinsembleEventArgs> windowGroupUpdateHandler;
 
-        public LauncherClient(FinsembleBridge bridge)
+        internal LauncherClient(FinsembleBridge bridge)
         {
             this.bridge = bridge;
             routerClient = bridge.routerClient;

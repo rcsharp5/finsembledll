@@ -57,7 +57,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.AuthenticationClient.html",
-          "hash": "b248uh2AwOcldZEa/MjSQQ=="
+          "hash": "/T7+FgvRNzpfmwDH7XihWw=="
         }
       },
       "is_incremental": false,
@@ -81,7 +81,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.ConfigClient.html",
-          "hash": "dc8EBAHu9nxEz8PbYQxBJQ=="
+          "hash": "ljA0h182hoN71dwBhT5UrQ=="
         }
       },
       "is_incremental": false,
@@ -93,7 +93,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.DistributedStoreClient.html",
-          "hash": "x/qbhG5gHtkf3L7J184vMg=="
+          "hash": "b2KNJxFlH+ZDVBSQlRIphQ=="
         }
       },
       "is_incremental": false,
@@ -105,7 +105,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.Docking.html",
-          "hash": "BY8DpktV7MTTFny0GWv5Sw=="
+          "hash": "QIXhDV1HChkLDcrM2M9NBA=="
         }
       },
       "is_incremental": false,
@@ -141,7 +141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.LauncherClient.html",
-          "hash": "J+ST8lO6kzqC7rxD/p1kBA=="
+          "hash": "NTI0gxJhBlJ9pLZZQZ0TVQ=="
         }
       },
       "is_incremental": false,
@@ -153,7 +153,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.LinkerClient.html",
-          "hash": "0XN2V9sOnVrmEdcMf8Penw=="
+          "hash": "aQsi0/EpGLTGm6n1BcCwyw=="
         }
       },
       "is_incremental": false,
@@ -165,7 +165,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.RouterClient.html",
-          "hash": "wsMMRltw5UHbLNzYCnodHw=="
+          "hash": "LNvRFctKsc5mXvQFfRuZaw=="
         }
       },
       "is_incremental": false,
@@ -177,7 +177,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.StorageClient.html",
-          "hash": "As9nxMMIwaevlI9dw6imRA=="
+          "hash": "JXZwnpxG8bwgWwWXn1Ln4w=="
         }
       },
       "is_incremental": false,
@@ -189,19 +189,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.StoreModel.html",
-          "hash": "9G4N6C68ySu8bbo0n6HBHg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.WIN32Rectangle.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.WIN32Rectangle.html",
-          "hash": "U98cYM2kocNZpvzGcmqgtA=="
+          "hash": "FQ6HhYPe+oTmluySyByHtQ=="
         }
       },
       "is_incremental": false,
@@ -213,7 +201,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.WindowClient.html",
-          "hash": "2lvd1PubqLM0B1oJ9GL57Q=="
+          "hash": "HZgihH7bNYettbuCkeWeIw=="
         }
       },
       "is_incremental": false,
@@ -225,7 +213,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.html",
-          "hash": "4e269tTAeC60EsKpWcH9Og=="
+          "hash": "MK733WpP+TpIRGbP8e36Sg=="
         }
       },
       "is_incremental": false,
@@ -237,7 +225,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "jn81JkVZ5I9W4pHi+qSIWw=="
+          "hash": "cthkr7TXfWXHQ02swXPajg=="
         }
       },
       "is_incremental": false,
@@ -260,7 +248,7 @@
     {
       "status": {
         "can_incremental": false,
-        "details": "Cannot build incrementally because last build info is missing.",
+        "details": "Disable incremental build by force rebuild option.",
         "incrementalPhase": "build"
       },
       "processors": {
@@ -282,7 +270,7 @@
     {
       "status": {
         "can_incremental": false,
-        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
+        "details": "Cannot support incremental post processing, the reason is: it's disabled.",
         "incrementalPhase": "postProcessing"
       },
       "processors": {}

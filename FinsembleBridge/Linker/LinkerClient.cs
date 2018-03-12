@@ -9,6 +9,12 @@ using System.Linq;
 
 namespace ChartIQ.Finsemble
 {
+    /// <summary>
+    /// The Linker API provides a mechanism for synchronizing components on a piece of data. For instance, a user might link multiple components by "stock symbol". Using the Linker API, a developer could enable their component to participate in this synchronization. The developer would use {@link LinkerClient#subscribe} to receive synchronization events and they would use {@link LinkerClient#publish} to send them. The Linker API is inherently similar to The {@link RouterClient} pub/sub mechanism. The primary difference is that the Linker API is designed for end-user interaction. By exposing the Linker API, developers allow *end users* to create and destroy linkages at run-time.
+    /// In order for components to be linked, they must understand the data format that will be passed betweenthem (the "context"), and agree on a label to identifies that format (the "dataType"). For instance, components might choose to publish and subscribe to a dataType called "symbol". They would then also need to agree that a "symbol" looks like, for instance, `{symbol:"IBM"}`. The Linker API doesn't proscribe any specific format for context or set of labels (some would call this a "taxonomy"). See OpenFin's FDC3 project for an emerging industry standard taxonomy.
+    /// End users create linkages by assigning components to "channels". Our default implementation represents channels by color. When a component is assigned to channel "purple", publish and subscribe messages are only received by other components assigned to that channel. If you're using Finsemble's built in Linker component, you won't have to code this. The Linker component does the work of assigning and unassigning its associated component to the selected channel. However, the Linker API exposes functionality so that you can manage channels programatically if you choose. You could use these functions to build your own Linker Component using a different paradigm, or apply intelligently link components based on your own business logic. *Note, it is not necessary to stick to a color convention. Channels are simple strings and so can be anything.*
+    /// Behind the scenes, the Linker Service coordinates Linker activity between components. It keeps track of the available channels and channel assignments. It uses a dedicated distributed store to maintain this information and also persists the information to workspaces.
+    /// </summary>
     public class LinkerClient
     {
         private FinsembleBridge bridge;
@@ -25,7 +31,7 @@ namespace ChartIQ.Finsemble
         private List<string> channelListenerList = new List<string>();
         bool readyToPersistState = false;
 
-        public LinkerClient(FinsembleBridge bridge)
+        internal LinkerClient(FinsembleBridge bridge)
         {
             this.bridge = bridge;
             windowClient = bridge.windowClient;
