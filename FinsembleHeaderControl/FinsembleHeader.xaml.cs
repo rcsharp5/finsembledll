@@ -148,11 +148,11 @@ namespace FinsembleHeaderControl
         {
             if (Docking.Content == "@")
             {
-                bridge.docking.LeaveGroup(sender, e);
+                bridge.docking.LeaveGroup();
             }
             else
             {
-                bridge.docking.FormGroup(sender, e);
+                bridge.docking.FormGroup();
             }
         }
     }

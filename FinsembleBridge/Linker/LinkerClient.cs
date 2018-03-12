@@ -194,10 +194,16 @@ namespace ChartIQ.Finsemble
             }, (EventHandler<FinsembleEventArgs>)delegate (object sender, FinsembleEventArgs args) { });
         }
 
+        /// <summary>
+        /// Add a component to a Linker channel programatically. Components will begin receiving any new contexts published to this channel but will not receive the currently established context.
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="windowIdentifier">If windowIdentifier is null, it uses current window.</param>
+        /// <param name="callback"></param>
         public void linkToChannel(string channel, JObject windowIdentifier, EventHandler<FinsembleEventArgs> callback)
         {
             string keyToUse = key;
-            if (windowIdentifier["windowName"] == null)
+            if (windowIdentifier == null)
             {
                 windowIdentifier = windowClient.windowIdentifier;
             }
@@ -219,10 +225,16 @@ namespace ChartIQ.Finsemble
             UpdateClientInStore(keyToUse);
         }
 
+        /// <summary>
+        /// Unlinks a component from a Linker channel.
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="windowIdentifier">If windowIdentifier is null, it uses current window.</param>
+        /// <param name="callback"></param>
         public void UnlinkFromChannel(string channel, JObject windowIdentifier, EventHandler<FinsembleEventArgs> callback)
         {
             string keyToUse = key;
-            if (windowIdentifier["windowName"] == null)
+            if (windowIdentifier == null)
             {
                 windowIdentifier = windowClient.windowIdentifier;
             }
@@ -235,9 +247,12 @@ namespace ChartIQ.Finsemble
             UpdateClientInStore(keyToUse);
         }
 
+        /// <summary>
+        /// Publish a piece of data. The data will be published to all channels that the component is linked to. Foreign components that are linked to those channels will receive the data if they have subscribed to this dataType. They can then use that data to synchronize their internal state. See Subscribe
+        /// </summary>
+        /// <param name="parameters">parameters["dataType"] is a string that represents the data type. paramters["data"] is a JObject/JArray representing the data.</param>
         public void Publish(JObject parameters)
         {
-            //bridge.SendRPCCommand(Topic.Publish, data);
             if (channels != null)
             {
                 foreach (var item in channels)
@@ -256,26 +271,40 @@ namespace ChartIQ.Finsemble
             }
         }
 
-        public void Subscribe(string channel, EventHandler<FinsembleEventArgs> callback)
+        /// <summary>
+        /// Registers a client for a specific data type that is sent to a group.
+        /// </summary>
+        /// <param name="dataType"></param>
+        /// <param name="callback">A function to be called once the linker receives the specific data.</param>
+        public void Subscribe(string dataType, EventHandler<FinsembleEventArgs> callback)
         {
-            if (linkerSubscribers.ContainsKey(channel))
+            if (linkerSubscribers.ContainsKey(dataType))
             {
-                linkerSubscribers[channel] += callback;
+                linkerSubscribers[dataType] += callback;
             }
             else
             {
-                linkerSubscribers.Add(channel, callback);
+                linkerSubscribers.Add(dataType, callback);
             }
         }
 
-        public void Unsubscribe(string channel, EventHandler<FinsembleEventArgs> callback)
+        /// <summary>
+        /// Remove a listener for a specific dataType
+        /// </summary>
+        /// <param name="dataType"></param>
+        /// <param name="callback"></param>
+        public void Unsubscribe(string dataType, EventHandler<FinsembleEventArgs> callback)
         {
-            linkerSubscribers[channel] -= callback;
+            linkerSubscribers[dataType] -= callback;
         }
 
-        public void ShowLinkerWindow()
+        /// <summary>
+        /// Shows the Finsemble Linker Window
+        /// </summary>
+        /// <param name="left">Left of Linker Window relative to the current window (default 0)</param>
+        /// <param name="top">Top of Linker Window relative to the current window (default 30)</param>
+        public void ShowLinkerWindow(double left = 0, double top = 30)
         {
-
             var channelsToSend = new JArray { };
             if (channels != null)
             {
@@ -303,8 +332,8 @@ namespace ChartIQ.Finsemble
                     var parameters = new JObject
                     {
                         ["position"] = "relative",
-                        ["left"] = 0,
-                        ["top"] = 30,
+                        ["left"] = left,
+                        ["top"] = top,
                         ["spawnIfNotFound"] = false
                     };
                     launcherClient.ShowWindow(wi, parameters, (EventHandler<FinsembleEventArgs>)delegate (object s2, FinsembleEventArgs e2) { });
@@ -313,6 +342,11 @@ namespace ChartIQ.Finsemble
             });
         }
 
+        /// <summary>
+        /// Returns all available Linker channels
+        /// </summary>
+        /// <param name="callback"></param>
+        /// <returns></returns>
         public JArray GetAllChannels(EventHandler<FinsembleEventArgs> callback)
         {
             var args = new FinsembleEventArgs(null, JObject.Parse(JsonConvert.SerializeObject(allChannels)));
@@ -320,6 +354,10 @@ namespace ChartIQ.Finsemble
             return this.allChannels;
         }
 
+        /// <summary>
+        /// Use this method to register a callback which will be called whenever the state of the Linker changes. This will be called whenever a user links or unlinks your component to a channel.
+        /// </summary>
+        /// <param name="callback"></param>
         public void OnStateChange(EventHandler<FinsembleEventArgs> callback)
         {
             stateChangeListeners += callback;
