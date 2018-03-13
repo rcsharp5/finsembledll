@@ -30,12 +30,12 @@ namespace ChartIQ.Finsemble
         /// </summary>
         /// <param name="user">Username</param>
         /// <param name="credentials">Object containing user credentials</param>
-        public void PublishAuthorization(string user, JObject credentials)
+        public void PublishAuthorization<T>(string user, T credentials)
         {
             routerClient.Transmit("AuthenticationService.authorization", new JObject
             {
                 ["user"] = user,
-                ["credentials"] = credentials
+                ["credentials"] = JObject.FromObject(credentials)
             });
         }
 
@@ -43,11 +43,12 @@ namespace ChartIQ.Finsemble
         /// Returns the current global credentials (as published through PublishAuthorization}) or null if no credentials are set yet.
         /// </summary>
         /// <param name="callback">A function that returns the current credentials. Will return null if no credentials have yet been established.</param>
-        public void GetCurrentCredentials(EventHandler<FinsembleEventArgs> callback)
+        public void GetCurrentCredentials<T>(EventHandler<T> callback)
         {
             routerClient.Query("authentication.currentCredentials", new JObject { }, new JObject { }, (sender, args) => {
-                var credentials = args.response?["data"];
-                callback(sender, new FinsembleEventArgs(args.error, credentials));
+                var jCredentials = args.response?["data"];
+                T credentials = jCredentials.ToObject<T>();
+                callback(sender, credentials);
             });
         }
 
