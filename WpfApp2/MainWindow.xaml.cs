@@ -21,7 +21,7 @@ namespace WpfApp2
     /// </summary>
     public partial class MainWindow : Window
     {
-        private FinsembleBridge bridge;
+        private FinsembleBridge finsemble;
         private string windowName;
         private string componentType = "Unknown";
         private string top, left, height, width, uuid;
@@ -48,9 +48,9 @@ namespace WpfApp2
             this.width = width;
             this.uuid = uuid;
 
-            bridge = new FinsembleBridge(new System.Version("8.56.28.34"), windowName, componentType, this, uuid);
-            bridge.Connect();
-            bridge.Connected += Bridge_Connected;
+            finsemble = new FinsembleBridge(new System.Version("8.56.28.34"), windowName, componentType, this, uuid);
+            finsemble.Connect();
+            finsemble.Connected += Bridge_Connected;
         }
 
         private void Bridge_Connected(object sender, EventArgs e)
@@ -59,6 +59,7 @@ namespace WpfApp2
             {
                 // Initialize this Window and show it
                 InitializeComponent();
+                FinsembleHeader.setBridge(finsemble);
                 if (!string.IsNullOrEmpty(top))
                 {
                     this.Top = Double.Parse(top);
@@ -78,7 +79,6 @@ namespace WpfApp2
                 {
                     this.Width = Double.Parse(width);
                 }
-                FinsembleHeader.bridge = bridge;
                 this.Show();
             });
         }

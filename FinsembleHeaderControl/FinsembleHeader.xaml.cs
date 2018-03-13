@@ -30,6 +30,45 @@ namespace FinsembleHeaderControl
         public FinsembleHeader()
         {
             InitializeComponent();
+            Toolbar.SizeChanged += FinsembleHeader_SizeChanged;
+        }
+
+        private void FinsembleHeader_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Window_Size_Changed();
+        }
+
+        public void setBridge(FinsembleBridge finsemble)
+        {
+            bridge = finsemble;
+            bridge.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;
+        }
+
+        private void Docking_GroupUpdate(object sender, dynamic groups)
+        {
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                if (groups.dockingGroup != "")
+                {
+                    Docking.Content = "@";
+                    Docking.Visibility = Visibility.Visible;
+                    Minimize.SetValue(Canvas.RightProperty, 105.0);
+                    Docking.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF039BFF"));
+                }
+                else if (groups.snappingGroup != "")
+                {
+                    Docking.Content = ">";
+                    Docking.Visibility = Visibility.Visible;
+                    Minimize.SetValue(Canvas.RightProperty, 105.0);
+                    Docking.Background = Brushes.Transparent;
+                }
+                else
+                {
+                    Docking.Visibility = Visibility.Hidden;
+                    Minimize.SetValue(Canvas.RightProperty, 70.0);
+                }
+                Window_Size_Changed();
+            });
         }
 
         private void Minimize_Click(object sender, RoutedEventArgs e)
@@ -120,6 +159,7 @@ namespace FinsembleHeaderControl
                                 var style = this.Resources["LinkerPill"];
                                 groupRectangle.SetValue(StyleProperty, style);
                                 LinkerGroups[groupName] = groupRectangle;
+                                groupRectangle.Click += LinkerPill_Click;
                             }
                             LinkerGroups[groupName].SetValue(Canvas.LeftProperty, baseLeft);
                             baseLeft += increment;
@@ -134,6 +174,14 @@ namespace FinsembleHeaderControl
             });
         }
 
+        private void LinkerPill_Click(object sender, RoutedEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            {
+
+            }
+        }
+
         private void Window_Size_Changed()
         {
             int LinkerGroupCount = LinkerGroups.Where(g => g.Value.Visibility == Visibility.Visible).Count();
@@ -141,7 +189,9 @@ namespace FinsembleHeaderControl
             double RightWidths = 105;
             if (Docking.IsVisible) RightWidths = 140;
             Title.SetValue(Canvas.LeftProperty, LeftWidths);
-            Title.Width = this.Width - LeftWidths - RightWidths;
+            var titleWidth = Toolbar.ActualWidth - LeftWidths - RightWidths;
+            if (titleWidth < 0) titleWidth = 0;
+            Title.Width = titleWidth;
         }
 
         private void Docking_Click(object sender, RoutedEventArgs e)
@@ -154,6 +204,11 @@ namespace FinsembleHeaderControl
             {
                 bridge.docking.FormGroup();
             }
+        }
+
+        private void AppSuites_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -117,6 +117,7 @@
             <Button Style="{StaticResource ToolbarCloseButton}" Name="Close" Content ="p" Width="35" Click="Close_Click" HorizontalAlignment="Right" Canvas.Right="0" FontFamily="/FinsembleHeaderControl;component/Resources/#finfont" Height="35" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
             <Button Style="{StaticResource ToolbarRegularButton}" Name="Linker" Content="1" Width="35" Click="Linker_Click" HorizontalAlignment="Left"  Canvas.Left="0" FontFamily="/FinsembleHeaderControl;component/Resources/#finfont" Height="35" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
             <Button Style="{StaticResource ToolbarRegularButton}" Name="Docking" Content=">" Width="35" Click="Docking_Click" HorizontalAlignment="Right" Canvas.Right="70" FontFamily="/FinsembleHeaderControl;component/Resources/#finfont" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" Height="35" FontSize="16" Visibility="Hidden" />
+            <Button Style="{StaticResource ToolbarRegularButton}" Name="AppSuites" Content="z" Width="35" Click="AppSuites_Click" HorizontalAlignment="Right" Canvas.Right="105" FontFamily="/FinsembleHeaderControl;component/Resources/#finfont" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" Height="35" FontSize="16" Visibility="Hidden" />
             <Label Name="Title" Content="Hi! I'm a WPF App!" Foreground="White" VerticalAlignment="Center" Canvas.Left="35" Canvas.Right="105" FontSize="16"/>
         </Canvas>
     </Grid>
