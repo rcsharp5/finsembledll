@@ -10,7 +10,7 @@ namespace ChartIQ.Finsemble
     /// <summary>
     /// The Config Client provides run-time access to Finsemble's configuration.
     /// </summary>
-    public class ConfigClient
+    internal class ConfigClient
     {
         private FinsembleBridge bridge;
         private RouterClient routerClient;

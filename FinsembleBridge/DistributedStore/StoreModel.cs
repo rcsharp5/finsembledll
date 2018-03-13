@@ -10,7 +10,7 @@ namespace ChartIQ.Finsemble
     /// <summary>
     /// The store model is an instance of a distributed store. This handles getters/setters of data and creation of listeners.
     /// </summary>
-    public class StoreModel
+    internal class StoreModel
     {
         public string name { private set; get; }
         public bool global { private set; get; }

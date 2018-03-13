@@ -57,43 +57,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.AuthenticationClient.html",
-          "hash": "/T7+FgvRNzpfmwDH7XihWw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.ConfigClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.ConfigClient.html",
-          "hash": "ljA0h182hoN71dwBhT5UrQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.DistributedStoreClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.DistributedStoreClient.html",
-          "hash": "b2KNJxFlH+ZDVBSQlRIphQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.Docking.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.Docking.html",
-          "hash": "QIXhDV1HChkLDcrM2M9NBA=="
+          "hash": "D99CppWGcMvcXJ2BZ0FouQ=="
         }
       },
       "is_incremental": false,
@@ -105,7 +69,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.FinsembleBridge.html",
-          "hash": "tBUlsTigGAVyCJrWvmgIMQ=="
+          "hash": "46rv7Wr0c5Jut1/P5Wv7eA=="
         }
       },
       "is_incremental": false,
@@ -125,71 +89,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.LauncherClient.yml",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.FinsembleWPFHeader.yml",
       "output": {
         ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.LauncherClient.html",
-          "hash": "NTI0gxJhBlJ9pLZZQZ0TVQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.LinkerClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.LinkerClient.html",
-          "hash": "TAA+SAdsuN7Oq8bJS8ho/Q=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.RouterClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.RouterClient.html",
-          "hash": "LNvRFctKsc5mXvQFfRuZaw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.StorageClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.StorageClient.html",
-          "hash": "JXZwnpxG8bwgWwWXn1Ln4w=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.StoreModel.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.StoreModel.html",
-          "hash": "FQ6HhYPe+oTmluySyByHtQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.WindowClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.WindowClient.html",
-          "hash": "wmKssv0Cu08qleRHwpsK5g=="
+          "relative_path": "api/ChartIQ.Finsemble.FinsembleWPFHeader.html",
+          "hash": "7Q2lH7Yj18dt2ws+kDbGcA=="
         }
       },
       "is_incremental": false,
@@ -201,7 +105,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.html",
-          "hash": "lF30Z5smhLbkuw+tB6745g=="
+          "hash": "K9UsXIpQpdunbqGZBzySxg=="
         }
       },
       "is_incremental": false,
@@ -213,7 +117,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "CygM+Xj1h1CbC3xVa5w7wQ=="
+          "hash": "bvAHrI1VVQrkgJC27wPSXA=="
         }
       },
       "is_incremental": false,
@@ -240,17 +144,17 @@
         "incrementalPhase": "build"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build"
         },
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         }
       }

@@ -55,7 +55,7 @@ namespace WpfApp1
 
                 }
             }
-            Debugger.Launch();
+            //Debugger.Launch();
             var mainWindow = new MainWindow(mainWindowName, componentType, top, left, height, width, uuid);
         }
     }

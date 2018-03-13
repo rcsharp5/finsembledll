@@ -18,7 +18,7 @@ namespace ChartIQ.Finsemble
     /// <summary>
     /// This handles window movements, resizes and docking group membership
     /// </summary>
-    public class Docking
+    internal class Docking
     {
         FinsembleBridge bridge;
         RouterClient routerClient;

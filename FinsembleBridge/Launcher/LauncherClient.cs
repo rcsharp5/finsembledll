@@ -11,7 +11,7 @@ namespace ChartIQ.Finsemble
     /// <summary>
     /// The Launcher client handles spawning windows and window groups.
     /// </summary>
-    public class LauncherClient
+    internal class LauncherClient
     {
         private FinsembleBridge bridge;
         private RouterClient routerClient;

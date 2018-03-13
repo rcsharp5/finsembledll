@@ -15,7 +15,7 @@ namespace ChartIQ.Finsemble
     /// <para>End users create linkages by assigning components to "channels". Our default implementation represents channels by color. When a component is assigned to channel "purple", publish and subscribe messages are only received by other components assigned to that channel. If you're using Finsemble's built in Linker component, you won't have to code this. The Linker component does the work of assigning and unassigning its associated component to the selected channel. However, the Linker API exposes functionality so that you can manage channels programatically if you choose. You could use these functions to build your own Linker Component using a different paradigm, or apply intelligently link components based on your own business logic. *Note, it is not necessary to stick to a color convention. Channels are simple strings and so can be anything.*</para>
     /// <para>Behind the scenes, the Linker Service coordinates Linker activity between components. It keeps track of the available channels and channel assignments. It uses a dedicated distributed store to maintain this information and also persists the information to workspaces.</para>
     /// </summary>
-    public class LinkerClient
+    internal class LinkerClient
     {
         private FinsembleBridge bridge;
         private WindowClient windowClient;

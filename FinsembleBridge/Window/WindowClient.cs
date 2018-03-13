@@ -11,7 +11,7 @@ namespace ChartIQ.Finsemble
     /// <summary>
     /// The Window Client Manages Window State in the Workspace
     /// </summary>
-    public class WindowClient
+    internal class WindowClient
     {
         private FinsembleBridge bridge;
         public JObject windowIdentifier { private set; get; }

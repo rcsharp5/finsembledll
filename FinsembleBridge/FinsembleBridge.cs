@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace ChartIQ.Finsemble
 {
     /// <summary>
-    /// This is the Main Class used to access Finsemble in a .NET Application. Once connected to the bridge Finsemble Clients are available via bridge.clientName.
+    /// This is the Main Class used to access Finsemble in a .NET Application. Once connected, several Finsemble APIs can be used using the SendCommand method.
     /// <example>
     /// Connecting to Finsemble:
     /// <code>
@@ -21,7 +21,7 @@ namespace ChartIQ.Finsemble
     /// Using the Clients once connected:
     /// <code>
     /// private void Finsemble_Connected(object sender, EventArgs e) {
-    ///     finsemble.linkerClient.Publish(new JObject {
+    ///     finsemble.SendCommand("LinkerClient.publish", new JObject {
     ///         ["dataType"] = "symbol",
     ///         ["data"] = "AAPL"
     ///     });
@@ -81,16 +81,16 @@ namespace ChartIQ.Finsemble
         public string windowName { private set; get; }
         public string uuid { private set; get; }
 
-        public RouterClient routerClient { private set; get; }
-        public DistributedStoreClient distributedStoreClient { private set; get; }
-        public StorageClient storageClient { private set; get; }
-        public WindowClient windowClient { private set; get; }
-        public LauncherClient launcherClient { private set; get; }
-        public LinkerClient linkerClient { private set; get; }
-        public ConfigClient configClient { private set; get; }
+        internal RouterClient routerClient { private set; get; }
+        internal DistributedStoreClient distributedStoreClient { private set; get; }
+        internal StorageClient storageClient { private set; get; }
+        internal WindowClient windowClient { private set; get; }
+        internal LauncherClient launcherClient { private set; get; }
+        internal LinkerClient linkerClient { private set; get; }
+        internal ConfigClient configClient { private set; get; }
         public AuthenticationClient authenticationClient { private set; get; }
         public System.Windows.Window window { private set; get; }
-        public Docking docking;
+        internal Docking docking;
         private Dictionary<string, List<string>> dependencies = new Dictionary<string, List<string>>()
         {
             {"distributedStoreClient", new List<string>() {"dataStoreService"}  },
@@ -191,6 +191,89 @@ namespace ChartIQ.Finsemble
                 // ToDo, wait for clients to be ready??
                 Connected?.Invoke(this, EventArgs.Empty);
             });
+        }
+
+        /// <summary>
+        /// Use this command to execute Finsemble API calls remotely. Specify all the parameters as part of the parameters object and the callback for the callback or eventHandler.
+        /// 
+        /// Supported API Calls:
+        /// <list type="bullet">
+        /// <item><term>RouterClient.transmit: </term> <description>same as Javascript API</description></item>
+        /// <item><term>RouterClient.addListener: </term> <description>same as Javascript API</description></item>
+        /// <item><term>RouterClient.removeListener: </term> <description>same as Javascript API</description></item>
+        /// <item><term>RouterClient.publish: </term> <description>same as Javascript API</description></item>
+        /// <item><term>RouterClient.subscribe: </term> <description>does not return a subscribeID</description></item>
+        /// <item><term>RouterClient.unsubscribe: </term> <description>takes parameters["topic"] and the same callback that was passed to subscribe.</description></item>
+        /// <item><term>RouterClient.query: </term> <description>same as Javascript API</description></item>
+        /// <item><term>LinkerClient.publish: </term> <description>does not use the callback, does not support the channels option.</description></item>
+        /// <item><term>LinkerClient.subscribe: </term> <description>same as Javascript API</description></item>
+        /// </list>
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// /* The router transmit API has two parameters, toChannel and event */
+        /// finsemble.SendCommand("RouterClient.transmit", new JObject {
+        ///     ["toChannel"] = "channel",
+        ///     ["event"] = new JObject {
+        ///         ["myData"] = "myData"
+        ///     }
+        /// }, (s, args) => {});
+        /// 
+        /// finsemble.SendCommand("RouterClient.subscribe", new JObject {
+        ///     ["topic"] = "myTopic"
+        /// }, mySubHandler);
+        /// 
+        /// finsemble.SendCommand("RouterClient.unsubscribe", new JObject {
+        ///     ["topic"] = "myTopic"
+        /// }, mySubHandler);
+        /// 
+        /// /* Linker.publish takes params */
+        /// finsemble.SendCommand("LinkerClient.publish", new JObject { 
+        ///     ["params"] = new JObject {
+        ///         ["dataType"] = "myType",
+        ///         ["data"] = new JObject {
+        ///             ["property1"] = "property"
+        ///         }
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        /// <param name="apiCall">Name of the API call from the list above</param>
+        /// <param name="parameters">This is a JObject which contains all the parameters that the API call takes. Refer to our Javascript API for the parameters to each API call.</param>
+        /// <param name="callback">If the API has a callback, this will be used to call back.</param>
+        public void SendCommand(string apiCall, JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        {
+            switch(apiCall) {
+                case "RouterClient.transmit":                    
+                    routerClient.Transmit((string)parameters["toChannel"], parameters["event"]);
+                    break;
+                case "RouterClient.addListener":
+                    routerClient.AddListener((string)parameters["channel"], callback);
+                    break;
+                case "RouterClient.removeListener":
+                    routerClient.RemoveListener((string)parameters["channel"], callback);
+                    break;
+                case "RouterClient.publish":
+                    routerClient.Publish((string)parameters["topic"], parameters["event"]);
+                    break;
+                case "RouterClient.subscribe":
+                    routerClient.Subscribe((string)parameters["topic"], callback);
+                    break;
+                case "RouterClient.unsubscribe":
+                    routerClient.Unsubscribe((string)parameters["topic"], callback);
+                    break;
+                case "RouterClient.query":
+                    routerClient.Query((string)parameters["responderChannel"], parameters["queryEvent"], parameters["params"] as JObject, callback);
+                    break;
+                case "LinkerClient.publish":
+                    linkerClient.Publish(parameters["params"] as JObject);
+                    break;
+                case "LinkerClient.subscribe":
+                    linkerClient.Subscribe((string)parameters["dataType"], callback);
+                    break;
+                default:
+                    throw new Exception("This API does not exist or is not yet supported");
+            }
         }
         
         private void Disconnect()

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp2"
-        xmlns:FinsembleHeaderControl="clr-namespace:FinsembleHeaderControl;assembly=FinsembleHeaderControl"
+        xmlns:Finsemble="clr-namespace:ChartIQ.Finsemble;assembly=FinsembleBridge"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" 
         Width="525" WindowStyle="None" Background="{x:Null}" >
@@ -17,6 +17,8 @@
         GlassFrameThickness="0"/>
     </WindowChrome.WindowChrome>
     <Grid Background="White">
-        <FinsembleHeaderControl:FinsembleHeader Name="FinsembleHeader" Height="34" VerticalAlignment="Top" Margin="0,0,0,0"/>
+        <Finsemble:FinsembleWPFHeader Name="FinsembleHeader" Height="34" VerticalAlignment="Top" Margin="0,0,0,0"/>
+        <Button Name="Send" Content="Send" HorizontalAlignment="Left" Margin="200,93,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="Send_Click"/>
+        <TextBox Name="DataToSend" HorizontalAlignment="Left" Height="23" Margin="75,93,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Window>

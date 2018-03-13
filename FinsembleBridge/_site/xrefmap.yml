@@ -13,162 +13,36 @@ references:
   commentId: T:ChartIQ.Finsemble.AuthenticationClient
   fullName: ChartIQ.Finsemble.AuthenticationClient
   nameWithType: AuthenticationClient
-- uid: ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials(System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: GetCurrentCredentials(EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.AuthenticationClient.html#ChartIQ_Finsemble_AuthenticationClient_GetCurrentCredentials_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials(System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: GetCurrentCredentials(EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials(System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials(System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: AuthenticationClient.GetCurrentCredentials(EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: AuthenticationClient.GetCurrentCredentials(EventHandler(Of FinsembleEventArgs))
 - uid: ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials*
   name: GetCurrentCredentials
   href: api/ChartIQ.Finsemble.AuthenticationClient.html#ChartIQ_Finsemble_AuthenticationClient_GetCurrentCredentials_
   commentId: Overload:ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials
   fullName: ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials
   nameWithType: AuthenticationClient.GetCurrentCredentials
-- uid: ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization(System.String,Newtonsoft.Json.Linq.JObject)
-  name: PublishAuthorization(String, JObject)
-  href: api/ChartIQ.Finsemble.AuthenticationClient.html#ChartIQ_Finsemble_AuthenticationClient_PublishAuthorization_System_String_Newtonsoft_Json_Linq_JObject_
-  commentId: M:ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization(System.String,Newtonsoft.Json.Linq.JObject)
-  fullName: ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization(System.String, Newtonsoft.Json.Linq.JObject)
-  nameWithType: AuthenticationClient.PublishAuthorization(String, JObject)
+- uid: ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials``1(System.EventHandler{``0})
+  name: GetCurrentCredentials<T>(EventHandler<T>)
+  href: api/ChartIQ.Finsemble.AuthenticationClient.html#ChartIQ_Finsemble_AuthenticationClient_GetCurrentCredentials__1_System_EventHandler___0__
+  commentId: M:ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials``1(System.EventHandler{``0})
+  name.vb: GetCurrentCredentials(Of T)(EventHandler(Of T))
+  fullName: ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials<T>(System.EventHandler<T>)
+  fullName.vb: ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials(Of T)(System.EventHandler(Of T))
+  nameWithType: AuthenticationClient.GetCurrentCredentials<T>(EventHandler<T>)
+  nameWithType.vb: AuthenticationClient.GetCurrentCredentials(Of T)(EventHandler(Of T))
 - uid: ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization*
   name: PublishAuthorization
   href: api/ChartIQ.Finsemble.AuthenticationClient.html#ChartIQ_Finsemble_AuthenticationClient_PublishAuthorization_
   commentId: Overload:ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization
   fullName: ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization
   nameWithType: AuthenticationClient.PublishAuthorization
-- uid: ChartIQ.Finsemble.ConfigClient
-  name: ConfigClient
-  href: api/ChartIQ.Finsemble.ConfigClient.html
-  commentId: T:ChartIQ.Finsemble.ConfigClient
-  fullName: ChartIQ.Finsemble.ConfigClient
-  nameWithType: ConfigClient
-- uid: ChartIQ.Finsemble.ConfigClient.GetValue(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: GetValue(JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.ConfigClient.html#ChartIQ_Finsemble_ConfigClient_GetValue_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.ConfigClient.GetValue(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: GetValue(JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.ConfigClient.GetValue(Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.ConfigClient.GetValue(Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: ConfigClient.GetValue(JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: ConfigClient.GetValue(JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.ConfigClient.GetValue*
-  name: GetValue
-  href: api/ChartIQ.Finsemble.ConfigClient.html#ChartIQ_Finsemble_ConfigClient_GetValue_
-  commentId: Overload:ChartIQ.Finsemble.ConfigClient.GetValue
-  fullName: ChartIQ.Finsemble.ConfigClient.GetValue
-  nameWithType: ConfigClient.GetValue
-- uid: ChartIQ.Finsemble.DistributedStoreClient
-  name: DistributedStoreClient
-  href: api/ChartIQ.Finsemble.DistributedStoreClient.html
-  commentId: T:ChartIQ.Finsemble.DistributedStoreClient
-  fullName: ChartIQ.Finsemble.DistributedStoreClient
-  nameWithType: DistributedStoreClient
-- uid: ChartIQ.Finsemble.DistributedStoreClient.CreateStore(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.StoreModel})
-  name: CreateStore(JObject, EventHandler<StoreModel>)
-  href: api/ChartIQ.Finsemble.DistributedStoreClient.html#ChartIQ_Finsemble_DistributedStoreClient_CreateStore_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_StoreModel__
-  commentId: M:ChartIQ.Finsemble.DistributedStoreClient.CreateStore(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.StoreModel})
-  name.vb: CreateStore(JObject, EventHandler(Of StoreModel))
-  fullName: ChartIQ.Finsemble.DistributedStoreClient.CreateStore(Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.StoreModel>)
-  fullName.vb: ChartIQ.Finsemble.DistributedStoreClient.CreateStore(Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.StoreModel))
-  nameWithType: DistributedStoreClient.CreateStore(JObject, EventHandler<StoreModel>)
-  nameWithType.vb: DistributedStoreClient.CreateStore(JObject, EventHandler(Of StoreModel))
-- uid: ChartIQ.Finsemble.DistributedStoreClient.CreateStore*
-  name: CreateStore
-  href: api/ChartIQ.Finsemble.DistributedStoreClient.html#ChartIQ_Finsemble_DistributedStoreClient_CreateStore_
-  commentId: Overload:ChartIQ.Finsemble.DistributedStoreClient.CreateStore
-  fullName: ChartIQ.Finsemble.DistributedStoreClient.CreateStore
-  nameWithType: DistributedStoreClient.CreateStore
-- uid: ChartIQ.Finsemble.DistributedStoreClient.GetStore(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.StoreModel})
-  name: GetStore(JObject, EventHandler<StoreModel>)
-  href: api/ChartIQ.Finsemble.DistributedStoreClient.html#ChartIQ_Finsemble_DistributedStoreClient_GetStore_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_StoreModel__
-  commentId: M:ChartIQ.Finsemble.DistributedStoreClient.GetStore(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.StoreModel})
-  name.vb: GetStore(JObject, EventHandler(Of StoreModel))
-  fullName: ChartIQ.Finsemble.DistributedStoreClient.GetStore(Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.StoreModel>)
-  fullName.vb: ChartIQ.Finsemble.DistributedStoreClient.GetStore(Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.StoreModel))
-  nameWithType: DistributedStoreClient.GetStore(JObject, EventHandler<StoreModel>)
-  nameWithType.vb: DistributedStoreClient.GetStore(JObject, EventHandler(Of StoreModel))
-- uid: ChartIQ.Finsemble.DistributedStoreClient.GetStore*
-  name: GetStore
-  href: api/ChartIQ.Finsemble.DistributedStoreClient.html#ChartIQ_Finsemble_DistributedStoreClient_GetStore_
-  commentId: Overload:ChartIQ.Finsemble.DistributedStoreClient.GetStore
-  fullName: ChartIQ.Finsemble.DistributedStoreClient.GetStore
-  nameWithType: DistributedStoreClient.GetStore
-- uid: ChartIQ.Finsemble.Docking
-  name: Docking
-  href: api/ChartIQ.Finsemble.Docking.html
-  commentId: T:ChartIQ.Finsemble.Docking
-  fullName: ChartIQ.Finsemble.Docking
-  nameWithType: Docking
-- uid: ChartIQ.Finsemble.Docking.DockingGroupUpdateHandler
-  name: DockingGroupUpdateHandler
-  href: api/ChartIQ.Finsemble.Docking.html#ChartIQ_Finsemble_Docking_DockingGroupUpdateHandler
-  commentId: F:ChartIQ.Finsemble.Docking.DockingGroupUpdateHandler
-  fullName: ChartIQ.Finsemble.Docking.DockingGroupUpdateHandler
-  nameWithType: Docking.DockingGroupUpdateHandler
-- uid: ChartIQ.Finsemble.Docking.EndMove(System.Object,System.Windows.Input.MouseButtonEventArgs)
-  name: EndMove(Object, MouseButtonEventArgs)
-  href: api/ChartIQ.Finsemble.Docking.html#ChartIQ_Finsemble_Docking_EndMove_System_Object_System_Windows_Input_MouseButtonEventArgs_
-  commentId: M:ChartIQ.Finsemble.Docking.EndMove(System.Object,System.Windows.Input.MouseButtonEventArgs)
-  fullName: ChartIQ.Finsemble.Docking.EndMove(System.Object, System.Windows.Input.MouseButtonEventArgs)
-  nameWithType: Docking.EndMove(Object, MouseButtonEventArgs)
-- uid: ChartIQ.Finsemble.Docking.EndMove*
-  name: EndMove
-  href: api/ChartIQ.Finsemble.Docking.html#ChartIQ_Finsemble_Docking_EndMove_
-  commentId: Overload:ChartIQ.Finsemble.Docking.EndMove
-  fullName: ChartIQ.Finsemble.Docking.EndMove
-  nameWithType: Docking.EndMove
-- uid: ChartIQ.Finsemble.Docking.FormGroup
-  name: FormGroup()
-  href: api/ChartIQ.Finsemble.Docking.html#ChartIQ_Finsemble_Docking_FormGroup
-  commentId: M:ChartIQ.Finsemble.Docking.FormGroup
-  fullName: ChartIQ.Finsemble.Docking.FormGroup()
-  nameWithType: Docking.FormGroup()
-- uid: ChartIQ.Finsemble.Docking.FormGroup*
-  name: FormGroup
-  href: api/ChartIQ.Finsemble.Docking.html#ChartIQ_Finsemble_Docking_FormGroup_
-  commentId: Overload:ChartIQ.Finsemble.Docking.FormGroup
-  fullName: ChartIQ.Finsemble.Docking.FormGroup
-  nameWithType: Docking.FormGroup
-- uid: ChartIQ.Finsemble.Docking.LeaveGroup
-  name: LeaveGroup()
-  href: api/ChartIQ.Finsemble.Docking.html#ChartIQ_Finsemble_Docking_LeaveGroup
-  commentId: M:ChartIQ.Finsemble.Docking.LeaveGroup
-  fullName: ChartIQ.Finsemble.Docking.LeaveGroup()
-  nameWithType: Docking.LeaveGroup()
-- uid: ChartIQ.Finsemble.Docking.LeaveGroup*
-  name: LeaveGroup
-  href: api/ChartIQ.Finsemble.Docking.html#ChartIQ_Finsemble_Docking_LeaveGroup_
-  commentId: Overload:ChartIQ.Finsemble.Docking.LeaveGroup
-  fullName: ChartIQ.Finsemble.Docking.LeaveGroup
-  nameWithType: Docking.LeaveGroup
-- uid: ChartIQ.Finsemble.Docking.Move(System.Object,System.Windows.Input.MouseEventArgs)
-  name: Move(Object, MouseEventArgs)
-  href: api/ChartIQ.Finsemble.Docking.html#ChartIQ_Finsemble_Docking_Move_System_Object_System_Windows_Input_MouseEventArgs_
-  commentId: M:ChartIQ.Finsemble.Docking.Move(System.Object,System.Windows.Input.MouseEventArgs)
-  fullName: ChartIQ.Finsemble.Docking.Move(System.Object, System.Windows.Input.MouseEventArgs)
-  nameWithType: Docking.Move(Object, MouseEventArgs)
-- uid: ChartIQ.Finsemble.Docking.Move*
-  name: Move
-  href: api/ChartIQ.Finsemble.Docking.html#ChartIQ_Finsemble_Docking_Move_
-  commentId: Overload:ChartIQ.Finsemble.Docking.Move
-  fullName: ChartIQ.Finsemble.Docking.Move
-  nameWithType: Docking.Move
-- uid: ChartIQ.Finsemble.Docking.StartMove(System.Object,System.Windows.Input.MouseButtonEventArgs)
-  name: StartMove(Object, MouseButtonEventArgs)
-  href: api/ChartIQ.Finsemble.Docking.html#ChartIQ_Finsemble_Docking_StartMove_System_Object_System_Windows_Input_MouseButtonEventArgs_
-  commentId: M:ChartIQ.Finsemble.Docking.StartMove(System.Object,System.Windows.Input.MouseButtonEventArgs)
-  fullName: ChartIQ.Finsemble.Docking.StartMove(System.Object, System.Windows.Input.MouseButtonEventArgs)
-  nameWithType: Docking.StartMove(Object, MouseButtonEventArgs)
-- uid: ChartIQ.Finsemble.Docking.StartMove*
-  name: StartMove
-  href: api/ChartIQ.Finsemble.Docking.html#ChartIQ_Finsemble_Docking_StartMove_
-  commentId: Overload:ChartIQ.Finsemble.Docking.StartMove
-  fullName: ChartIQ.Finsemble.Docking.StartMove
-  nameWithType: Docking.StartMove
+- uid: ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization``1(System.String,``0)
+  name: PublishAuthorization<T>(String, T)
+  href: api/ChartIQ.Finsemble.AuthenticationClient.html#ChartIQ_Finsemble_AuthenticationClient_PublishAuthorization__1_System_String___0_
+  commentId: M:ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization``1(System.String,``0)
+  name.vb: PublishAuthorization(Of T)(String, T)
+  fullName: ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization<T>(System.String, T)
+  fullName.vb: ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization(Of T)(System.String, T)
+  nameWithType: AuthenticationClient.PublishAuthorization<T>(String, T)
+  nameWithType.vb: AuthenticationClient.PublishAuthorization(Of T)(String, T)
 - uid: ChartIQ.Finsemble.FinsembleBridge
   name: FinsembleBridge
   href: api/ChartIQ.Finsemble.FinsembleBridge.html
@@ -211,18 +85,6 @@ references:
   commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.componentType
   fullName: ChartIQ.Finsemble.FinsembleBridge.componentType
   nameWithType: FinsembleBridge.componentType
-- uid: ChartIQ.Finsemble.FinsembleBridge.configClient
-  name: configClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_configClient
-  commentId: P:ChartIQ.Finsemble.FinsembleBridge.configClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.configClient
-  nameWithType: FinsembleBridge.configClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.configClient*
-  name: configClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_configClient_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.configClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.configClient
-  nameWithType: FinsembleBridge.configClient
 - uid: ChartIQ.Finsemble.FinsembleBridge.Connect
   name: Connect()
   href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_Connect
@@ -259,54 +121,12 @@ references:
   commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.Dispose
   fullName: ChartIQ.Finsemble.FinsembleBridge.Dispose
   nameWithType: FinsembleBridge.Dispose
-- uid: ChartIQ.Finsemble.FinsembleBridge.distributedStoreClient
-  name: distributedStoreClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_distributedStoreClient
-  commentId: P:ChartIQ.Finsemble.FinsembleBridge.distributedStoreClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.distributedStoreClient
-  nameWithType: FinsembleBridge.distributedStoreClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.distributedStoreClient*
-  name: distributedStoreClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_distributedStoreClient_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.distributedStoreClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.distributedStoreClient
-  nameWithType: FinsembleBridge.distributedStoreClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.docking
-  name: docking
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_docking
-  commentId: F:ChartIQ.Finsemble.FinsembleBridge.docking
-  fullName: ChartIQ.Finsemble.FinsembleBridge.docking
-  nameWithType: FinsembleBridge.docking
 - uid: ChartIQ.Finsemble.FinsembleBridge.Error
   name: Error
   href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_Error
   commentId: E:ChartIQ.Finsemble.FinsembleBridge.Error
   fullName: ChartIQ.Finsemble.FinsembleBridge.Error
   nameWithType: FinsembleBridge.Error
-- uid: ChartIQ.Finsemble.FinsembleBridge.launcherClient
-  name: launcherClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_launcherClient
-  commentId: P:ChartIQ.Finsemble.FinsembleBridge.launcherClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.launcherClient
-  nameWithType: FinsembleBridge.launcherClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.launcherClient*
-  name: launcherClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_launcherClient_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.launcherClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.launcherClient
-  nameWithType: FinsembleBridge.launcherClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.linkerClient
-  name: linkerClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_linkerClient
-  commentId: P:ChartIQ.Finsemble.FinsembleBridge.linkerClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.linkerClient
-  nameWithType: FinsembleBridge.linkerClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.linkerClient*
-  name: linkerClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_linkerClient_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.linkerClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.linkerClient
-  nameWithType: FinsembleBridge.linkerClient
 - uid: ChartIQ.Finsemble.FinsembleBridge.OpenFinVersion
   name: OpenFinVersion
   href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_OpenFinVersion
@@ -319,30 +139,21 @@ references:
   commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.OpenFinVersion
   fullName: ChartIQ.Finsemble.FinsembleBridge.OpenFinVersion
   nameWithType: FinsembleBridge.OpenFinVersion
-- uid: ChartIQ.Finsemble.FinsembleBridge.routerClient
-  name: routerClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_routerClient
-  commentId: P:ChartIQ.Finsemble.FinsembleBridge.routerClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.routerClient
-  nameWithType: FinsembleBridge.routerClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.routerClient*
-  name: routerClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_routerClient_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.routerClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.routerClient
-  nameWithType: FinsembleBridge.routerClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.storageClient
-  name: storageClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_storageClient
-  commentId: P:ChartIQ.Finsemble.FinsembleBridge.storageClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.storageClient
-  nameWithType: FinsembleBridge.storageClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.storageClient*
-  name: storageClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_storageClient_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.storageClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.storageClient
-  nameWithType: FinsembleBridge.storageClient
+- uid: ChartIQ.Finsemble.FinsembleBridge.SendCommand(System.String,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
+  name: SendCommand(String, JObject, EventHandler<FinsembleEventArgs>)
+  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_SendCommand_System_String_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
+  commentId: M:ChartIQ.Finsemble.FinsembleBridge.SendCommand(System.String,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
+  name.vb: SendCommand(String, JObject, EventHandler(Of FinsembleEventArgs))
+  fullName: ChartIQ.Finsemble.FinsembleBridge.SendCommand(System.String, Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
+  fullName.vb: ChartIQ.Finsemble.FinsembleBridge.SendCommand(System.String, Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
+  nameWithType: FinsembleBridge.SendCommand(String, JObject, EventHandler<FinsembleEventArgs>)
+  nameWithType.vb: FinsembleBridge.SendCommand(String, JObject, EventHandler(Of FinsembleEventArgs))
+- uid: ChartIQ.Finsemble.FinsembleBridge.SendCommand*
+  name: SendCommand
+  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_SendCommand_
+  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.SendCommand
+  fullName: ChartIQ.Finsemble.FinsembleBridge.SendCommand
+  nameWithType: FinsembleBridge.SendCommand
 - uid: ChartIQ.Finsemble.FinsembleBridge.uuid
   name: uuid
   href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_uuid
@@ -367,18 +178,6 @@ references:
   commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.window
   fullName: ChartIQ.Finsemble.FinsembleBridge.window
   nameWithType: FinsembleBridge.window
-- uid: ChartIQ.Finsemble.FinsembleBridge.windowClient
-  name: windowClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_windowClient
-  commentId: P:ChartIQ.Finsemble.FinsembleBridge.windowClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.windowClient
-  nameWithType: FinsembleBridge.windowClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.windowClient*
-  name: windowClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_windowClient_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.windowClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.windowClient
-  nameWithType: FinsembleBridge.windowClient
 - uid: ChartIQ.Finsemble.FinsembleBridge.windowName
   name: windowName
   href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_windowName
@@ -433,483 +232,51 @@ references:
   commentId: Overload:ChartIQ.Finsemble.FinsembleEventArgs.response
   fullName: ChartIQ.Finsemble.FinsembleEventArgs.response
   nameWithType: FinsembleEventArgs.response
-- uid: ChartIQ.Finsemble.LauncherClient
-  name: LauncherClient
-  href: api/ChartIQ.Finsemble.LauncherClient.html
-  commentId: T:ChartIQ.Finsemble.LauncherClient
-  fullName: ChartIQ.Finsemble.LauncherClient
-  nameWithType: LauncherClient
-- uid: ChartIQ.Finsemble.LauncherClient.AddToGroups(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: AddToGroups(JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.LauncherClient.html#ChartIQ_Finsemble_LauncherClient_AddToGroups_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.LauncherClient.AddToGroups(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: AddToGroups(JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.LauncherClient.AddToGroups(Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.LauncherClient.AddToGroups(Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: LauncherClient.AddToGroups(JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: LauncherClient.AddToGroups(JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.LauncherClient.AddToGroups*
-  name: AddToGroups
-  href: api/ChartIQ.Finsemble.LauncherClient.html#ChartIQ_Finsemble_LauncherClient_AddToGroups_
-  commentId: Overload:ChartIQ.Finsemble.LauncherClient.AddToGroups
-  fullName: ChartIQ.Finsemble.LauncherClient.AddToGroups
-  nameWithType: LauncherClient.AddToGroups
-- uid: ChartIQ.Finsemble.LauncherClient.GetGroupsForWindow(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: GetGroupsForWindow(JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.LauncherClient.html#ChartIQ_Finsemble_LauncherClient_GetGroupsForWindow_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.LauncherClient.GetGroupsForWindow(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: GetGroupsForWindow(JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.LauncherClient.GetGroupsForWindow(Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.LauncherClient.GetGroupsForWindow(Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: LauncherClient.GetGroupsForWindow(JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: LauncherClient.GetGroupsForWindow(JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.LauncherClient.GetGroupsForWindow(System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: GetGroupsForWindow(EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.LauncherClient.html#ChartIQ_Finsemble_LauncherClient_GetGroupsForWindow_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.LauncherClient.GetGroupsForWindow(System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: GetGroupsForWindow(EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.LauncherClient.GetGroupsForWindow(System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.LauncherClient.GetGroupsForWindow(System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: LauncherClient.GetGroupsForWindow(EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: LauncherClient.GetGroupsForWindow(EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.LauncherClient.GetGroupsForWindow*
-  name: GetGroupsForWindow
-  href: api/ChartIQ.Finsemble.LauncherClient.html#ChartIQ_Finsemble_LauncherClient_GetGroupsForWindow_
-  commentId: Overload:ChartIQ.Finsemble.LauncherClient.GetGroupsForWindow
-  fullName: ChartIQ.Finsemble.LauncherClient.GetGroupsForWindow
-  nameWithType: LauncherClient.GetGroupsForWindow
-- uid: ChartIQ.Finsemble.LauncherClient.ShowWindow(Newtonsoft.Json.Linq.JObject,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: ShowWindow(JObject, JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.LauncherClient.html#ChartIQ_Finsemble_LauncherClient_ShowWindow_Newtonsoft_Json_Linq_JObject_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.LauncherClient.ShowWindow(Newtonsoft.Json.Linq.JObject,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: ShowWindow(JObject, JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.LauncherClient.ShowWindow(Newtonsoft.Json.Linq.JObject, Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.LauncherClient.ShowWindow(Newtonsoft.Json.Linq.JObject, Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: LauncherClient.ShowWindow(JObject, JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: LauncherClient.ShowWindow(JObject, JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.LauncherClient.ShowWindow*
-  name: ShowWindow
-  href: api/ChartIQ.Finsemble.LauncherClient.html#ChartIQ_Finsemble_LauncherClient_ShowWindow_
-  commentId: Overload:ChartIQ.Finsemble.LauncherClient.ShowWindow
-  fullName: ChartIQ.Finsemble.LauncherClient.ShowWindow
-  nameWithType: LauncherClient.ShowWindow
-- uid: ChartIQ.Finsemble.LauncherClient.Spawn(System.String,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: Spawn(String, JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.LauncherClient.html#ChartIQ_Finsemble_LauncherClient_Spawn_System_String_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.LauncherClient.Spawn(System.String,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: Spawn(String, JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.LauncherClient.Spawn(System.String, Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.LauncherClient.Spawn(System.String, Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: LauncherClient.Spawn(String, JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: LauncherClient.Spawn(String, JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.LauncherClient.Spawn*
-  name: Spawn
-  href: api/ChartIQ.Finsemble.LauncherClient.html#ChartIQ_Finsemble_LauncherClient_Spawn_
-  commentId: Overload:ChartIQ.Finsemble.LauncherClient.Spawn
-  fullName: ChartIQ.Finsemble.LauncherClient.Spawn
-  nameWithType: LauncherClient.Spawn
-- uid: ChartIQ.Finsemble.LauncherClient.windowGroupUpdateHandler
-  name: windowGroupUpdateHandler
-  href: api/ChartIQ.Finsemble.LauncherClient.html#ChartIQ_Finsemble_LauncherClient_windowGroupUpdateHandler
-  commentId: F:ChartIQ.Finsemble.LauncherClient.windowGroupUpdateHandler
-  fullName: ChartIQ.Finsemble.LauncherClient.windowGroupUpdateHandler
-  nameWithType: LauncherClient.windowGroupUpdateHandler
-- uid: ChartIQ.Finsemble.LinkerClient
-  name: LinkerClient
-  href: api/ChartIQ.Finsemble.LinkerClient.html
-  commentId: T:ChartIQ.Finsemble.LinkerClient
-  fullName: ChartIQ.Finsemble.LinkerClient
-  nameWithType: LinkerClient
-- uid: ChartIQ.Finsemble.LinkerClient.GetAllChannels(System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: GetAllChannels(EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_GetAllChannels_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.LinkerClient.GetAllChannels(System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: GetAllChannels(EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.LinkerClient.GetAllChannels(System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.LinkerClient.GetAllChannels(System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: LinkerClient.GetAllChannels(EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: LinkerClient.GetAllChannels(EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.LinkerClient.GetAllChannels*
-  name: GetAllChannels
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_GetAllChannels_
-  commentId: Overload:ChartIQ.Finsemble.LinkerClient.GetAllChannels
-  fullName: ChartIQ.Finsemble.LinkerClient.GetAllChannels
-  nameWithType: LinkerClient.GetAllChannels
-- uid: ChartIQ.Finsemble.LinkerClient.linkToChannel(System.String,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: linkToChannel(String, JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_linkToChannel_System_String_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.LinkerClient.linkToChannel(System.String,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: linkToChannel(String, JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.LinkerClient.linkToChannel(System.String, Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.LinkerClient.linkToChannel(System.String, Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: LinkerClient.linkToChannel(String, JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: LinkerClient.linkToChannel(String, JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.LinkerClient.linkToChannel*
-  name: linkToChannel
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_linkToChannel_
-  commentId: Overload:ChartIQ.Finsemble.LinkerClient.linkToChannel
-  fullName: ChartIQ.Finsemble.LinkerClient.linkToChannel
-  nameWithType: LinkerClient.linkToChannel
-- uid: ChartIQ.Finsemble.LinkerClient.OnStateChange(System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: OnStateChange(EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_OnStateChange_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.LinkerClient.OnStateChange(System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: OnStateChange(EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.LinkerClient.OnStateChange(System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.LinkerClient.OnStateChange(System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: LinkerClient.OnStateChange(EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: LinkerClient.OnStateChange(EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.LinkerClient.OnStateChange*
-  name: OnStateChange
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_OnStateChange_
-  commentId: Overload:ChartIQ.Finsemble.LinkerClient.OnStateChange
-  fullName: ChartIQ.Finsemble.LinkerClient.OnStateChange
-  nameWithType: LinkerClient.OnStateChange
-- uid: ChartIQ.Finsemble.LinkerClient.Publish(Newtonsoft.Json.Linq.JObject)
-  name: Publish(JObject)
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_Publish_Newtonsoft_Json_Linq_JObject_
-  commentId: M:ChartIQ.Finsemble.LinkerClient.Publish(Newtonsoft.Json.Linq.JObject)
-  fullName: ChartIQ.Finsemble.LinkerClient.Publish(Newtonsoft.Json.Linq.JObject)
-  nameWithType: LinkerClient.Publish(JObject)
-- uid: ChartIQ.Finsemble.LinkerClient.Publish*
-  name: Publish
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_Publish_
-  commentId: Overload:ChartIQ.Finsemble.LinkerClient.Publish
-  fullName: ChartIQ.Finsemble.LinkerClient.Publish
-  nameWithType: LinkerClient.Publish
-- uid: ChartIQ.Finsemble.LinkerClient.ShowLinkerWindow(System.Double,System.Double)
-  name: ShowLinkerWindow(Double, Double)
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_ShowLinkerWindow_System_Double_System_Double_
-  commentId: M:ChartIQ.Finsemble.LinkerClient.ShowLinkerWindow(System.Double,System.Double)
-  fullName: ChartIQ.Finsemble.LinkerClient.ShowLinkerWindow(System.Double, System.Double)
-  nameWithType: LinkerClient.ShowLinkerWindow(Double, Double)
-- uid: ChartIQ.Finsemble.LinkerClient.ShowLinkerWindow*
-  name: ShowLinkerWindow
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_ShowLinkerWindow_
-  commentId: Overload:ChartIQ.Finsemble.LinkerClient.ShowLinkerWindow
-  fullName: ChartIQ.Finsemble.LinkerClient.ShowLinkerWindow
-  nameWithType: LinkerClient.ShowLinkerWindow
-- uid: ChartIQ.Finsemble.LinkerClient.Subscribe(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: Subscribe(String, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_Subscribe_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.LinkerClient.Subscribe(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: Subscribe(String, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.LinkerClient.Subscribe(System.String, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.LinkerClient.Subscribe(System.String, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: LinkerClient.Subscribe(String, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: LinkerClient.Subscribe(String, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.LinkerClient.Subscribe*
-  name: Subscribe
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_Subscribe_
-  commentId: Overload:ChartIQ.Finsemble.LinkerClient.Subscribe
-  fullName: ChartIQ.Finsemble.LinkerClient.Subscribe
-  nameWithType: LinkerClient.Subscribe
-- uid: ChartIQ.Finsemble.LinkerClient.UnlinkFromChannel(System.String,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: UnlinkFromChannel(String, JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_UnlinkFromChannel_System_String_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.LinkerClient.UnlinkFromChannel(System.String,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: UnlinkFromChannel(String, JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.LinkerClient.UnlinkFromChannel(System.String, Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.LinkerClient.UnlinkFromChannel(System.String, Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: LinkerClient.UnlinkFromChannel(String, JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: LinkerClient.UnlinkFromChannel(String, JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.LinkerClient.UnlinkFromChannel*
-  name: UnlinkFromChannel
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_UnlinkFromChannel_
-  commentId: Overload:ChartIQ.Finsemble.LinkerClient.UnlinkFromChannel
-  fullName: ChartIQ.Finsemble.LinkerClient.UnlinkFromChannel
-  nameWithType: LinkerClient.UnlinkFromChannel
-- uid: ChartIQ.Finsemble.LinkerClient.Unsubscribe(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: Unsubscribe(String, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_Unsubscribe_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.LinkerClient.Unsubscribe(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: Unsubscribe(String, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.LinkerClient.Unsubscribe(System.String, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.LinkerClient.Unsubscribe(System.String, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: LinkerClient.Unsubscribe(String, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: LinkerClient.Unsubscribe(String, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.LinkerClient.Unsubscribe*
-  name: Unsubscribe
-  href: api/ChartIQ.Finsemble.LinkerClient.html#ChartIQ_Finsemble_LinkerClient_Unsubscribe_
-  commentId: Overload:ChartIQ.Finsemble.LinkerClient.Unsubscribe
-  fullName: ChartIQ.Finsemble.LinkerClient.Unsubscribe
-  nameWithType: LinkerClient.Unsubscribe
-- uid: ChartIQ.Finsemble.RouterClient
-  name: RouterClient
-  href: api/ChartIQ.Finsemble.RouterClient.html
-  commentId: T:ChartIQ.Finsemble.RouterClient
-  fullName: ChartIQ.Finsemble.RouterClient
-  nameWithType: RouterClient
-- uid: ChartIQ.Finsemble.RouterClient.AddListener(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: AddListener(String, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.RouterClient.html#ChartIQ_Finsemble_RouterClient_AddListener_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.RouterClient.AddListener(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: AddListener(String, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.RouterClient.AddListener(System.String, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.RouterClient.AddListener(System.String, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: RouterClient.AddListener(String, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: RouterClient.AddListener(String, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.RouterClient.AddListener*
-  name: AddListener
-  href: api/ChartIQ.Finsemble.RouterClient.html#ChartIQ_Finsemble_RouterClient_AddListener_
-  commentId: Overload:ChartIQ.Finsemble.RouterClient.AddListener
-  fullName: ChartIQ.Finsemble.RouterClient.AddListener
-  nameWithType: RouterClient.AddListener
-- uid: ChartIQ.Finsemble.RouterClient.Publish(System.String,Newtonsoft.Json.Linq.JToken)
-  name: Publish(String, JToken)
-  href: api/ChartIQ.Finsemble.RouterClient.html#ChartIQ_Finsemble_RouterClient_Publish_System_String_Newtonsoft_Json_Linq_JToken_
-  commentId: M:ChartIQ.Finsemble.RouterClient.Publish(System.String,Newtonsoft.Json.Linq.JToken)
-  fullName: ChartIQ.Finsemble.RouterClient.Publish(System.String, Newtonsoft.Json.Linq.JToken)
-  nameWithType: RouterClient.Publish(String, JToken)
-- uid: ChartIQ.Finsemble.RouterClient.Publish*
-  name: Publish
-  href: api/ChartIQ.Finsemble.RouterClient.html#ChartIQ_Finsemble_RouterClient_Publish_
-  commentId: Overload:ChartIQ.Finsemble.RouterClient.Publish
-  fullName: ChartIQ.Finsemble.RouterClient.Publish
-  nameWithType: RouterClient.Publish
-- uid: ChartIQ.Finsemble.RouterClient.Query(System.String,Newtonsoft.Json.Linq.JToken,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: Query(String, JToken, JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.RouterClient.html#ChartIQ_Finsemble_RouterClient_Query_System_String_Newtonsoft_Json_Linq_JToken_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.RouterClient.Query(System.String,Newtonsoft.Json.Linq.JToken,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: Query(String, JToken, JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.RouterClient.Query(System.String, Newtonsoft.Json.Linq.JToken, Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.RouterClient.Query(System.String, Newtonsoft.Json.Linq.JToken, Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: RouterClient.Query(String, JToken, JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: RouterClient.Query(String, JToken, JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.RouterClient.Query*
-  name: Query
-  href: api/ChartIQ.Finsemble.RouterClient.html#ChartIQ_Finsemble_RouterClient_Query_
-  commentId: Overload:ChartIQ.Finsemble.RouterClient.Query
-  fullName: ChartIQ.Finsemble.RouterClient.Query
-  nameWithType: RouterClient.Query
-- uid: ChartIQ.Finsemble.RouterClient.RemoveListener(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: RemoveListener(String, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.RouterClient.html#ChartIQ_Finsemble_RouterClient_RemoveListener_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.RouterClient.RemoveListener(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: RemoveListener(String, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.RouterClient.RemoveListener(System.String, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.RouterClient.RemoveListener(System.String, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: RouterClient.RemoveListener(String, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: RouterClient.RemoveListener(String, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.RouterClient.RemoveListener*
-  name: RemoveListener
-  href: api/ChartIQ.Finsemble.RouterClient.html#ChartIQ_Finsemble_RouterClient_RemoveListener_
-  commentId: Overload:ChartIQ.Finsemble.RouterClient.RemoveListener
-  fullName: ChartIQ.Finsemble.RouterClient.RemoveListener
-  nameWithType: RouterClient.RemoveListener
-- uid: ChartIQ.Finsemble.RouterClient.Subscribe(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: Subscribe(String, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.RouterClient.html#ChartIQ_Finsemble_RouterClient_Subscribe_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.RouterClient.Subscribe(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: Subscribe(String, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.RouterClient.Subscribe(System.String, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.RouterClient.Subscribe(System.String, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: RouterClient.Subscribe(String, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: RouterClient.Subscribe(String, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.RouterClient.Subscribe*
-  name: Subscribe
-  href: api/ChartIQ.Finsemble.RouterClient.html#ChartIQ_Finsemble_RouterClient_Subscribe_
-  commentId: Overload:ChartIQ.Finsemble.RouterClient.Subscribe
-  fullName: ChartIQ.Finsemble.RouterClient.Subscribe
-  nameWithType: RouterClient.Subscribe
-- uid: ChartIQ.Finsemble.RouterClient.Transmit(System.String,Newtonsoft.Json.Linq.JToken)
-  name: Transmit(String, JToken)
-  href: api/ChartIQ.Finsemble.RouterClient.html#ChartIQ_Finsemble_RouterClient_Transmit_System_String_Newtonsoft_Json_Linq_JToken_
-  commentId: M:ChartIQ.Finsemble.RouterClient.Transmit(System.String,Newtonsoft.Json.Linq.JToken)
-  fullName: ChartIQ.Finsemble.RouterClient.Transmit(System.String, Newtonsoft.Json.Linq.JToken)
-  nameWithType: RouterClient.Transmit(String, JToken)
-- uid: ChartIQ.Finsemble.RouterClient.Transmit*
-  name: Transmit
-  href: api/ChartIQ.Finsemble.RouterClient.html#ChartIQ_Finsemble_RouterClient_Transmit_
-  commentId: Overload:ChartIQ.Finsemble.RouterClient.Transmit
-  fullName: ChartIQ.Finsemble.RouterClient.Transmit
-  nameWithType: RouterClient.Transmit
-- uid: ChartIQ.Finsemble.RouterClient.Unsubscribe(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: Unsubscribe(String, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.RouterClient.html#ChartIQ_Finsemble_RouterClient_Unsubscribe_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.RouterClient.Unsubscribe(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: Unsubscribe(String, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.RouterClient.Unsubscribe(System.String, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.RouterClient.Unsubscribe(System.String, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: RouterClient.Unsubscribe(String, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: RouterClient.Unsubscribe(String, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.RouterClient.Unsubscribe*
-  name: Unsubscribe
-  href: api/ChartIQ.Finsemble.RouterClient.html#ChartIQ_Finsemble_RouterClient_Unsubscribe_
-  commentId: Overload:ChartIQ.Finsemble.RouterClient.Unsubscribe
-  fullName: ChartIQ.Finsemble.RouterClient.Unsubscribe
-  nameWithType: RouterClient.Unsubscribe
-- uid: ChartIQ.Finsemble.StorageClient
-  name: StorageClient
-  href: api/ChartIQ.Finsemble.StorageClient.html
-  commentId: T:ChartIQ.Finsemble.StorageClient
-  fullName: ChartIQ.Finsemble.StorageClient
-  nameWithType: StorageClient
-- uid: ChartIQ.Finsemble.StorageClient.Get(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: Get(JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.StorageClient.html#ChartIQ_Finsemble_StorageClient_Get_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.StorageClient.Get(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: Get(JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.StorageClient.Get(Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.StorageClient.Get(Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: StorageClient.Get(JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: StorageClient.Get(JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.StorageClient.Get*
-  name: Get
-  href: api/ChartIQ.Finsemble.StorageClient.html#ChartIQ_Finsemble_StorageClient_Get_
-  commentId: Overload:ChartIQ.Finsemble.StorageClient.Get
-  fullName: ChartIQ.Finsemble.StorageClient.Get
-  nameWithType: StorageClient.Get
-- uid: ChartIQ.Finsemble.StorageClient.Save(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: Save(JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.StorageClient.html#ChartIQ_Finsemble_StorageClient_Save_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.StorageClient.Save(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: Save(JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.StorageClient.Save(Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.StorageClient.Save(Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: StorageClient.Save(JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: StorageClient.Save(JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.StorageClient.Save*
-  name: Save
-  href: api/ChartIQ.Finsemble.StorageClient.html#ChartIQ_Finsemble_StorageClient_Save_
-  commentId: Overload:ChartIQ.Finsemble.StorageClient.Save
-  fullName: ChartIQ.Finsemble.StorageClient.Save
-  nameWithType: StorageClient.Save
-- uid: ChartIQ.Finsemble.StoreModel
-  name: StoreModel
-  href: api/ChartIQ.Finsemble.StoreModel.html
-  commentId: T:ChartIQ.Finsemble.StoreModel
-  fullName: ChartIQ.Finsemble.StoreModel
-  nameWithType: StoreModel
-- uid: ChartIQ.Finsemble.StoreModel.AddListener(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: AddListener(JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.StoreModel.html#ChartIQ_Finsemble_StoreModel_AddListener_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.StoreModel.AddListener(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: AddListener(JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.StoreModel.AddListener(Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.StoreModel.AddListener(Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: StoreModel.AddListener(JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: StoreModel.AddListener(JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.StoreModel.AddListener*
-  name: AddListener
-  href: api/ChartIQ.Finsemble.StoreModel.html#ChartIQ_Finsemble_StoreModel_AddListener_
-  commentId: Overload:ChartIQ.Finsemble.StoreModel.AddListener
-  fullName: ChartIQ.Finsemble.StoreModel.AddListener
-  nameWithType: StoreModel.AddListener
-- uid: ChartIQ.Finsemble.StoreModel.GetValue(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: GetValue(JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.StoreModel.html#ChartIQ_Finsemble_StoreModel_GetValue_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.StoreModel.GetValue(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: GetValue(JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.StoreModel.GetValue(Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.StoreModel.GetValue(Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: StoreModel.GetValue(JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: StoreModel.GetValue(JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.StoreModel.GetValue*
-  name: GetValue
-  href: api/ChartIQ.Finsemble.StoreModel.html#ChartIQ_Finsemble_StoreModel_GetValue_
-  commentId: Overload:ChartIQ.Finsemble.StoreModel.GetValue
-  fullName: ChartIQ.Finsemble.StoreModel.GetValue
-  nameWithType: StoreModel.GetValue
-- uid: ChartIQ.Finsemble.StoreModel.global
-  name: global
-  href: api/ChartIQ.Finsemble.StoreModel.html#ChartIQ_Finsemble_StoreModel_global
-  commentId: P:ChartIQ.Finsemble.StoreModel.global
-  fullName: ChartIQ.Finsemble.StoreModel.global
-  nameWithType: StoreModel.global
-- uid: ChartIQ.Finsemble.StoreModel.global*
-  name: global
-  href: api/ChartIQ.Finsemble.StoreModel.html#ChartIQ_Finsemble_StoreModel_global_
-  commentId: Overload:ChartIQ.Finsemble.StoreModel.global
-  fullName: ChartIQ.Finsemble.StoreModel.global
-  nameWithType: StoreModel.global
-- uid: ChartIQ.Finsemble.StoreModel.name
-  name: name
-  href: api/ChartIQ.Finsemble.StoreModel.html#ChartIQ_Finsemble_StoreModel_name
-  commentId: P:ChartIQ.Finsemble.StoreModel.name
-  fullName: ChartIQ.Finsemble.StoreModel.name
-  nameWithType: StoreModel.name
-- uid: ChartIQ.Finsemble.StoreModel.name*
-  name: name
-  href: api/ChartIQ.Finsemble.StoreModel.html#ChartIQ_Finsemble_StoreModel_name_
-  commentId: Overload:ChartIQ.Finsemble.StoreModel.name
-  fullName: ChartIQ.Finsemble.StoreModel.name
-  nameWithType: StoreModel.name
-- uid: ChartIQ.Finsemble.StoreModel.RemoveListener(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: RemoveListener(JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.StoreModel.html#ChartIQ_Finsemble_StoreModel_RemoveListener_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.StoreModel.RemoveListener(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: RemoveListener(JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.StoreModel.RemoveListener(Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.StoreModel.RemoveListener(Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: StoreModel.RemoveListener(JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: StoreModel.RemoveListener(JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.StoreModel.RemoveListener*
-  name: RemoveListener
-  href: api/ChartIQ.Finsemble.StoreModel.html#ChartIQ_Finsemble_StoreModel_RemoveListener_
-  commentId: Overload:ChartIQ.Finsemble.StoreModel.RemoveListener
-  fullName: ChartIQ.Finsemble.StoreModel.RemoveListener
-  nameWithType: StoreModel.RemoveListener
-- uid: ChartIQ.Finsemble.StoreModel.SetValue(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: SetValue(JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.StoreModel.html#ChartIQ_Finsemble_StoreModel_SetValue_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.StoreModel.SetValue(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: SetValue(JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.StoreModel.SetValue(Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.StoreModel.SetValue(Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: StoreModel.SetValue(JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: StoreModel.SetValue(JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.StoreModel.SetValue*
-  name: SetValue
-  href: api/ChartIQ.Finsemble.StoreModel.html#ChartIQ_Finsemble_StoreModel_SetValue_
-  commentId: Overload:ChartIQ.Finsemble.StoreModel.SetValue
-  fullName: ChartIQ.Finsemble.StoreModel.SetValue
-  nameWithType: StoreModel.SetValue
-- uid: ChartIQ.Finsemble.WindowClient
-  name: WindowClient
-  href: api/ChartIQ.Finsemble.WindowClient.html
-  commentId: T:ChartIQ.Finsemble.WindowClient
-  fullName: ChartIQ.Finsemble.WindowClient
-  nameWithType: WindowClient
-- uid: ChartIQ.Finsemble.WindowClient.GetComponentState(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: GetComponentState(JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.WindowClient.html#ChartIQ_Finsemble_WindowClient_GetComponentState_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.WindowClient.GetComponentState(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: GetComponentState(JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.WindowClient.GetComponentState(Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.WindowClient.GetComponentState(Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: WindowClient.GetComponentState(JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: WindowClient.GetComponentState(JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.WindowClient.GetComponentState*
-  name: GetComponentState
-  href: api/ChartIQ.Finsemble.WindowClient.html#ChartIQ_Finsemble_WindowClient_GetComponentState_
-  commentId: Overload:ChartIQ.Finsemble.WindowClient.GetComponentState
-  fullName: ChartIQ.Finsemble.WindowClient.GetComponentState
-  nameWithType: WindowClient.GetComponentState
-- uid: ChartIQ.Finsemble.WindowClient.SetComponentState(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: SetComponentState(JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.WindowClient.html#ChartIQ_Finsemble_WindowClient_SetComponentState_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.WindowClient.SetComponentState(Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: SetComponentState(JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.WindowClient.SetComponentState(Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.WindowClient.SetComponentState(Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: WindowClient.SetComponentState(JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: WindowClient.SetComponentState(JObject, EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.WindowClient.SetComponentState*
-  name: SetComponentState
-  href: api/ChartIQ.Finsemble.WindowClient.html#ChartIQ_Finsemble_WindowClient_SetComponentState_
-  commentId: Overload:ChartIQ.Finsemble.WindowClient.SetComponentState
-  fullName: ChartIQ.Finsemble.WindowClient.SetComponentState
-  nameWithType: WindowClient.SetComponentState
-- uid: ChartIQ.Finsemble.WindowClient.windowIdentifier
-  name: windowIdentifier
-  href: api/ChartIQ.Finsemble.WindowClient.html#ChartIQ_Finsemble_WindowClient_windowIdentifier
-  commentId: P:ChartIQ.Finsemble.WindowClient.windowIdentifier
-  fullName: ChartIQ.Finsemble.WindowClient.windowIdentifier
-  nameWithType: WindowClient.windowIdentifier
-- uid: ChartIQ.Finsemble.WindowClient.windowIdentifier*
-  name: windowIdentifier
-  href: api/ChartIQ.Finsemble.WindowClient.html#ChartIQ_Finsemble_WindowClient_windowIdentifier_
-  commentId: Overload:ChartIQ.Finsemble.WindowClient.windowIdentifier
-  fullName: ChartIQ.Finsemble.WindowClient.windowIdentifier
-  nameWithType: WindowClient.windowIdentifier
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader
+  name: FinsembleWPFHeader
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html
+  commentId: T:ChartIQ.Finsemble.FinsembleWPFHeader
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader
+  nameWithType: FinsembleWPFHeader
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.#ctor
+  name: FinsembleWPFHeader()
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader__ctor
+  commentId: M:ChartIQ.Finsemble.FinsembleWPFHeader.#ctor
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.FinsembleWPFHeader()
+  nameWithType: FinsembleWPFHeader.FinsembleWPFHeader()
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.#ctor*
+  name: FinsembleWPFHeader
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader__ctor_
+  commentId: Overload:ChartIQ.Finsemble.FinsembleWPFHeader.#ctor
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.FinsembleWPFHeader
+  nameWithType: FinsembleWPFHeader.FinsembleWPFHeader
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.bridge
+  name: bridge
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_bridge
+  commentId: F:ChartIQ.Finsemble.FinsembleWPFHeader.bridge
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.bridge
+  nameWithType: FinsembleWPFHeader.bridge
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.InitializeComponent
+  name: InitializeComponent()
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_InitializeComponent
+  commentId: M:ChartIQ.Finsemble.FinsembleWPFHeader.InitializeComponent
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.InitializeComponent()
+  nameWithType: FinsembleWPFHeader.InitializeComponent()
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.InitializeComponent*
+  name: InitializeComponent
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_InitializeComponent_
+  commentId: Overload:ChartIQ.Finsemble.FinsembleWPFHeader.InitializeComponent
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.InitializeComponent
+  nameWithType: FinsembleWPFHeader.InitializeComponent
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.setBridge(ChartIQ.Finsemble.FinsembleBridge)
+  name: setBridge(FinsembleBridge)
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_setBridge_ChartIQ_Finsemble_FinsembleBridge_
+  commentId: M:ChartIQ.Finsemble.FinsembleWPFHeader.setBridge(ChartIQ.Finsemble.FinsembleBridge)
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.setBridge(ChartIQ.Finsemble.FinsembleBridge)
+  nameWithType: FinsembleWPFHeader.setBridge(FinsembleBridge)
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.setBridge*
+  name: setBridge
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_setBridge_
+  commentId: Overload:ChartIQ.Finsemble.FinsembleWPFHeader.setBridge
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.setBridge
+  nameWithType: FinsembleWPFHeader.setBridge

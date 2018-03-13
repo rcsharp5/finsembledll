@@ -80,17 +80,8 @@
       <h4><a class="xref" href="ChartIQ.Finsemble.AuthenticationClient.html">AuthenticationClient</a></h4>
       <section><p>The Authentication Client API provides hooks for plugging in a custom sign-on component at the beginning of Finsemble start-up (before application-level components are started).</p>
 </section>
-      <h4><a class="xref" href="ChartIQ.Finsemble.ConfigClient.html">ConfigClient</a></h4>
-      <section><p>The Config Client provides run-time access to Finsemble&apos;s configuration.</p>
-</section>
-      <h4><a class="xref" href="ChartIQ.Finsemble.DistributedStoreClient.html">DistributedStoreClient</a></h4>
-      <section><p>The data store client handles creating/retrieving global distributed stores. Local stores are not supported. This data is not persisted. You can add listeners at multiple levels (store or field) and get the updated data as it&apos;s updated in the store. Fields are stored within the store as key/value pair.</p>
-</section>
-      <h4><a class="xref" href="ChartIQ.Finsemble.Docking.html">Docking</a></h4>
-      <section><p>This handles window movements, resizes and docking group membership</p>
-</section>
       <h4><a class="xref" href="ChartIQ.Finsemble.FinsembleBridge.html">FinsembleBridge</a></h4>
-      <section><p>This is the Main Class used to access Finsemble in a .NET Application. Once connected to the bridge Finsemble Clients are available via bridge.clientName.
+      <section><p>This is the Main Class used to access Finsemble in a .NET Application. Once connected, several Finsemble APIs can be used using the SendCommand method.
 <example>
 Connecting to Finsemble:<p>
 <pre><code>/*windowName, componentType and uuid are provided as command line parameters when the application is launched by Finsemble*/
@@ -99,7 +90,7 @@ finsemble.Connect += Finsemble_Connected;</code></pre>
 
 <p>Using the Clients once connected:</p>
 <pre><code>private void Finsemble_Connected(object sender, EventArgs e) {
-    finsemble.linkerClient.Publish(new JObject {
+    finsemble.SendCommand(&quot;LinkerClient.publish&quot;, new JObject {
         [&quot;dataType&quot;] = &quot;symbol&quot;,
         [&quot;data&quot;] = &quot;AAPL&quot;
     });
@@ -109,27 +100,8 @@ finsemble.Connect += Finsemble_Connected;</code></pre>
       <h4><a class="xref" href="ChartIQ.Finsemble.FinsembleEventArgs.html">FinsembleEventArgs</a></h4>
       <section><p>Event arguments for linker events.</p>
 </section>
-      <h4><a class="xref" href="ChartIQ.Finsemble.LauncherClient.html">LauncherClient</a></h4>
-      <section><p>The Launcher client handles spawning windows and window groups.</p>
-</section>
-      <h4><a class="xref" href="ChartIQ.Finsemble.LinkerClient.html">LinkerClient</a></h4>
-      <section><p>The Linker API provides a mechanism for synchronizing components on a piece of data. For instance, a user might link multiple components by &quot;stock symbol&quot;. Using the Linker API, a developer could enable their component to participate in this synchronization. The developer would use {@link LinkerClient#subscribe} to receive synchronization events and they would use {@link LinkerClient#publish} to send them. The Linker API is inherently similar to The {@link RouterClient} pub/sub mechanism. The primary difference is that the Linker API is designed for end-user interaction. By exposing the Linker API, developers allow <em>end users</em> to create and destroy linkages at run-time.</p>
-<p>In order for components to be linked, they must understand the data format that will be passed betweenthem (the &quot;context&quot;), and agree on a label to identifies that format (the &quot;dataType&quot;). For instance, components might choose to publish and subscribe to a dataType called &quot;symbol&quot;. They would then also need to agree that a &quot;symbol&quot; looks like. The Linker API doesn&apos;t proscribe any specific format for context or set of labels (some would call this a &quot;taxonomy&quot;). See OpenFin&apos;s FDC3 project for an emerging industry standard taxonomy.</p>
-<p>End users create linkages by assigning components to &quot;channels&quot;. Our default implementation represents channels by color. When a component is assigned to channel &quot;purple&quot;, publish and subscribe messages are only received by other components assigned to that channel. If you&apos;re using Finsemble&apos;s built in Linker component, you won&apos;t have to code this. The Linker component does the work of assigning and unassigning its associated component to the selected channel. However, the Linker API exposes functionality so that you can manage channels programatically if you choose. You could use these functions to build your own Linker Component using a different paradigm, or apply intelligently link components based on your own business logic. <em>Note, it is not necessary to stick to a color convention. Channels are simple strings and so can be anything.</em></p>
-<p>Behind the scenes, the Linker Service coordinates Linker activity between components. It keeps track of the available channels and channel assignments. It uses a dedicated distributed store to maintain this information and also persists the information to workspaces.</p>
-</section>
-      <h4><a class="xref" href="ChartIQ.Finsemble.RouterClient.html">RouterClient</a></h4>
-      <section><p>This module contains the RouterClient for sending and receiving events between Finsemble components and services.
-Currently AddPubSubResponder, AddResponder, RemovePubSubResponder, RemoveResponder are not supported.</p>
-</section>
-      <h4><a class="xref" href="ChartIQ.Finsemble.StorageClient.html">StorageClient</a></h4>
-      <section><p>The Storage client handles saving and retrieving data for your application.</p>
-</section>
-      <h4><a class="xref" href="ChartIQ.Finsemble.StoreModel.html">StoreModel</a></h4>
-      <section><p>The store model is an instance of a distributed store. This handles getters/setters of data and creation of listeners.</p>
-</section>
-      <h4><a class="xref" href="ChartIQ.Finsemble.WindowClient.html">WindowClient</a></h4>
-      <section><p>The Window Client Manages Window State in the Workspace</p>
+      <h4><a class="xref" href="ChartIQ.Finsemble.FinsembleWPFHeader.html">FinsembleWPFHeader</a></h4>
+      <section><p>Interaction logic for FinsembleWPFHeader.xaml</p>
 </section>
 </article>
           </div>

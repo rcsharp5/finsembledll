@@ -116,13 +116,13 @@
   
   
   <a id="ChartIQ_Finsemble_AuthenticationClient_GetCurrentCredentials_" data-uid="ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials*"></a>
-  <h4 id="ChartIQ_Finsemble_AuthenticationClient_GetCurrentCredentials_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__" data-uid="ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials(System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})">GetCurrentCredentials(EventHandler&lt;FinsembleEventArgs&gt;)</h4>
+  <h4 id="ChartIQ_Finsemble_AuthenticationClient_GetCurrentCredentials__1_System_EventHandler___0__" data-uid="ChartIQ.Finsemble.AuthenticationClient.GetCurrentCredentials``1(System.EventHandler{``0})">GetCurrentCredentials&lt;T&gt;(EventHandler&lt;T&gt;)</h4>
   <div class="markdown level1 summary"><p>Returns the current global credentials (as published through PublishAuthorization}) or null if no credentials are set yet.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void GetCurrentCredentials(EventHandler&lt;FinsembleEventArgs&gt; callback)</code></pre>
+    <pre><code class="lang-csharp hljs">public void GetCurrentCredentials&lt;T&gt;(EventHandler&lt;T&gt; callback)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -135,17 +135,32 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.EventHandler</span>&lt;<a class="xref" href="ChartIQ.Finsemble.FinsembleEventArgs.html">FinsembleEventArgs</a>&gt;</td>
+        <td><span class="xref">System.EventHandler</span>&lt;T&gt;</td>
         <td><span class="parametername">callback</span></td>
         <td><p>A function that returns the current credentials. Will return null if no credentials have yet been established.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="ChartIQ_Finsemble_AuthenticationClient_PublishAuthorization_" data-uid="ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization*"></a>
-  <h4 id="ChartIQ_Finsemble_AuthenticationClient_PublishAuthorization_System_String_Newtonsoft_Json_Linq_JObject_" data-uid="ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization(System.String,Newtonsoft.Json.Linq.JObject)">PublishAuthorization(String, JObject)</h4>
+  <h4 id="ChartIQ_Finsemble_AuthenticationClient_PublishAuthorization__1_System_String___0_" data-uid="ChartIQ.Finsemble.AuthenticationClient.PublishAuthorization``1(System.String,``0)">PublishAuthorization&lt;T&gt;(String, T)</h4>
   <div class="markdown level1 summary"><p>During Finsemble&apos;s start-up process, this function must be invoked before Finsemble will start the application.
 Once invoked, the authenticated user name and authorization credentials are received by the Authentication Service and published on the &quot;AuthenticationService.authorization&quot; channel.
 Any component can revieve the credentials by subscribing to that channel or by calling GetCurrentCredentials.
@@ -155,7 +170,7 @@ If authentication is not enabled, then &quot;defaultUser&quot; is used instead.<
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void PublishAuthorization(string user, JObject credentials)</code></pre>
+    <pre><code class="lang-csharp hljs">public void PublishAuthorization&lt;T&gt;(string user, T credentials)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -174,10 +189,25 @@ If authentication is not enabled, then &quot;defaultUser&quot; is used instead.<
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Newtonsoft.Json.Linq.JObject</span></td>
+        <td><span class="xref">T</span></td>
         <td><span class="parametername">credentials</span></td>
         <td><p>Object containing user credentials</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

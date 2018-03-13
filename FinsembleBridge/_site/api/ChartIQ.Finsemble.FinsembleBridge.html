@@ -73,7 +73,7 @@
   
   <h1 id="ChartIQ_Finsemble_FinsembleBridge" data-uid="ChartIQ.Finsemble.FinsembleBridge" class="text-break">Class FinsembleBridge
   </h1>
-  <div class="markdown level0 summary"><p>This is the Main Class used to access Finsemble in a .NET Application. Once connected to the bridge Finsemble Clients are available via bridge.clientName.
+  <div class="markdown level0 summary"><p>This is the Main Class used to access Finsemble in a .NET Application. Once connected, several Finsemble APIs can be used using the SendCommand method.
 <example>
 Connecting to Finsemble:<p>
 <pre><code>/*windowName, componentType and uuid are provided as command line parameters when the application is launched by Finsemble*/
@@ -82,7 +82,7 @@ finsemble.Connect += Finsemble_Connected;</code></pre>
 
 <p>Using the Clients once connected:</p>
 <pre><code>private void Finsemble_Connected(object sender, EventArgs e) {
-    finsemble.linkerClient.Publish(new JObject {
+    finsemble.SendCommand(&quot;LinkerClient.publish&quot;, new JObject {
         [&quot;dataType&quot;] = &quot;symbol&quot;,
         [&quot;data&quot;] = &quot;AAPL&quot;
     });
@@ -184,32 +184,6 @@ finsemble.Connect += Finsemble_Connected;</code></pre>
       </tr>
     </tbody>
   </table>
-  <h3 id="fields">Fields
-  </h3>
-  
-  
-  <h4 id="ChartIQ_Finsemble_FinsembleBridge_docking" data-uid="ChartIQ.Finsemble.FinsembleBridge.docking">docking</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Docking docking</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="ChartIQ.Finsemble.Docking.html">Docking</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
   
@@ -264,106 +238,6 @@ finsemble.Connect += Finsemble_Connected;</code></pre>
   </table>
   
   
-  <a id="ChartIQ_Finsemble_FinsembleBridge_configClient_" data-uid="ChartIQ.Finsemble.FinsembleBridge.configClient*"></a>
-  <h4 id="ChartIQ_Finsemble_FinsembleBridge_configClient" data-uid="ChartIQ.Finsemble.FinsembleBridge.configClient">configClient</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ConfigClient configClient { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="ChartIQ.Finsemble.ConfigClient.html">ConfigClient</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="ChartIQ_Finsemble_FinsembleBridge_distributedStoreClient_" data-uid="ChartIQ.Finsemble.FinsembleBridge.distributedStoreClient*"></a>
-  <h4 id="ChartIQ_Finsemble_FinsembleBridge_distributedStoreClient" data-uid="ChartIQ.Finsemble.FinsembleBridge.distributedStoreClient">distributedStoreClient</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DistributedStoreClient distributedStoreClient { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="ChartIQ.Finsemble.DistributedStoreClient.html">DistributedStoreClient</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="ChartIQ_Finsemble_FinsembleBridge_launcherClient_" data-uid="ChartIQ.Finsemble.FinsembleBridge.launcherClient*"></a>
-  <h4 id="ChartIQ_Finsemble_FinsembleBridge_launcherClient" data-uid="ChartIQ.Finsemble.FinsembleBridge.launcherClient">launcherClient</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LauncherClient launcherClient { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="ChartIQ.Finsemble.LauncherClient.html">LauncherClient</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="ChartIQ_Finsemble_FinsembleBridge_linkerClient_" data-uid="ChartIQ.Finsemble.FinsembleBridge.linkerClient*"></a>
-  <h4 id="ChartIQ_Finsemble_FinsembleBridge_linkerClient" data-uid="ChartIQ.Finsemble.FinsembleBridge.linkerClient">linkerClient</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LinkerClient linkerClient { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="ChartIQ.Finsemble.LinkerClient.html">LinkerClient</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="ChartIQ_Finsemble_FinsembleBridge_OpenFinVersion_" data-uid="ChartIQ.Finsemble.FinsembleBridge.OpenFinVersion*"></a>
   <h4 id="ChartIQ_Finsemble_FinsembleBridge_OpenFinVersion" data-uid="ChartIQ.Finsemble.FinsembleBridge.OpenFinVersion">OpenFinVersion</h4>
   <div class="markdown level1 summary"><p>The version of the OpenFin runtime that will be requested by this example.</p>
@@ -392,56 +266,6 @@ finsemble.Connect += Finsemble_Connected;</code></pre>
   <div class="markdown level1 remarks"><p>Version must match the version of OpenFin used by Finsemble for inter-application communication to be
 possible.</p>
 </div>
-  
-  
-  <a id="ChartIQ_Finsemble_FinsembleBridge_routerClient_" data-uid="ChartIQ.Finsemble.FinsembleBridge.routerClient*"></a>
-  <h4 id="ChartIQ_Finsemble_FinsembleBridge_routerClient" data-uid="ChartIQ.Finsemble.FinsembleBridge.routerClient">routerClient</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RouterClient routerClient { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="ChartIQ.Finsemble.RouterClient.html">RouterClient</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="ChartIQ_Finsemble_FinsembleBridge_storageClient_" data-uid="ChartIQ.Finsemble.FinsembleBridge.storageClient*"></a>
-  <h4 id="ChartIQ_Finsemble_FinsembleBridge_storageClient" data-uid="ChartIQ.Finsemble.FinsembleBridge.storageClient">storageClient</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public StorageClient storageClient { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="ChartIQ.Finsemble.StorageClient.html">StorageClient</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="ChartIQ_Finsemble_FinsembleBridge_uuid_" data-uid="ChartIQ.Finsemble.FinsembleBridge.uuid*"></a>
@@ -494,31 +318,6 @@ possible.</p>
   </table>
   
   
-  <a id="ChartIQ_Finsemble_FinsembleBridge_windowClient_" data-uid="ChartIQ.Finsemble.FinsembleBridge.windowClient*"></a>
-  <h4 id="ChartIQ_Finsemble_FinsembleBridge_windowClient" data-uid="ChartIQ.Finsemble.FinsembleBridge.windowClient">windowClient</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public WindowClient windowClient { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="ChartIQ.Finsemble.WindowClient.html">WindowClient</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="ChartIQ_Finsemble_FinsembleBridge_windowName_" data-uid="ChartIQ.Finsemble.FinsembleBridge.windowName*"></a>
   <h4 id="ChartIQ_Finsemble_FinsembleBridge_windowName" data-uid="ChartIQ.Finsemble.FinsembleBridge.windowName">windowName</h4>
   <div class="markdown level1 summary"></div>
@@ -565,6 +364,76 @@ possible.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
   </div>
+  
+  
+  <a id="ChartIQ_Finsemble_FinsembleBridge_SendCommand_" data-uid="ChartIQ.Finsemble.FinsembleBridge.SendCommand*"></a>
+  <h4 id="ChartIQ_Finsemble_FinsembleBridge_SendCommand_System_String_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__" data-uid="ChartIQ.Finsemble.FinsembleBridge.SendCommand(System.String,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})">SendCommand(String, JObject, EventHandler&lt;FinsembleEventArgs&gt;)</h4>
+  <div class="markdown level1 summary"><p>Use this command to execute Finsemble API calls remotely. Specify all the parameters as part of the parameters object and the callback for the callback or eventHandler.</p>
+<p>Supported API Calls:
+<ul><li>RouterClient.transmit: same as Javascript API</li><li>RouterClient.addListener: same as Javascript API</li><li>RouterClient.removeListener: same as Javascript API</li><li>RouterClient.publish: same as Javascript API</li><li>RouterClient.subscribe: does not return a subscribeID</li><li>RouterClient.unsubscribe: takes parameters[&quot;topic&quot;] and the same callback that was passed to subscribe.</li><li>RouterClient.query: same as Javascript API</li><li>LinkerClient.publish: does not use the callback, does not support the channels option.</li><li>LinkerClient.subscribe: same as Javascript API</li></ul></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SendCommand(string apiCall, JObject parameters, EventHandler&lt;FinsembleEventArgs&gt; callback)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">apiCall</span></td>
+        <td><p>Name of the API call from the list above</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Newtonsoft.Json.Linq.JObject</span></td>
+        <td><span class="parametername">parameters</span></td>
+        <td><p>This is a JObject which contains all the parameters that the API call takes. Refer to our Javascript API for the parameters to each API call.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.EventHandler</span>&lt;<a class="xref" href="ChartIQ.Finsemble.FinsembleEventArgs.html">FinsembleEventArgs</a>&gt;</td>
+        <td><span class="parametername">callback</span></td>
+        <td><p>If the API has a callback, this will be used to call back.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ChartIQ_Finsemble_FinsembleBridge_SendCommand_System_String_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs___examples">Examples</h5>
+  <pre><code>/* The router transmit API has two parameters, toChannel and event */
+finsemble.SendCommand(&quot;RouterClient.transmit&quot;, new JObject {
+    [&quot;toChannel&quot;] = &quot;channel&quot;,
+    [&quot;event&quot;] = new JObject {
+        [&quot;myData&quot;] = &quot;myData&quot;
+    }
+}, (s, args) => {});
+
+finsemble.SendCommand(&quot;RouterClient.subscribe&quot;, new JObject {
+    [&quot;topic&quot;] = &quot;myTopic&quot;
+}, mySubHandler);
+
+finsemble.SendCommand(&quot;RouterClient.unsubscribe&quot;, new JObject {
+    [&quot;topic&quot;] = &quot;myTopic&quot;
+}, mySubHandler);
+
+/* Linker.publish takes params */
+finsemble.SendCommand(&quot;LinkerClient.publish&quot;, new JObject { 
+    [&quot;params&quot;] = new JObject {
+        [&quot;dataType&quot;] = &quot;myType&quot;,
+        [&quot;data&quot;] = new JObject {
+            [&quot;property1&quot;] = &quot;property&quot;
+        }
+    }
+}</code></pre>
+
   <h3 id="events">Events
   </h3>
   

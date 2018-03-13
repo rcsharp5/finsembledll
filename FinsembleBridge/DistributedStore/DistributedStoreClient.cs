@@ -10,7 +10,7 @@ namespace ChartIQ.Finsemble
     /// <summary>
     /// The data store client handles creating/retrieving global distributed stores. Local stores are not supported. This data is not persisted. You can add listeners at multiple levels (store or field) and get the updated data as it's updated in the store. Fields are stored within the store as key/value pair.
     /// </summary>
-    public class DistributedStoreClient
+    internal class DistributedStoreClient
     {
         FinsembleBridge bridge;
         internal DistributedStoreClient(FinsembleBridge bridge)

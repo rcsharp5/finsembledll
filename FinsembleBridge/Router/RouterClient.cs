@@ -13,7 +13,7 @@ namespace ChartIQ.Finsemble
     /// This module contains the RouterClient for sending and receiving events between Finsemble components and services.
     /// Currently AddPubSubResponder, AddResponder, RemovePubSubResponder, RemoveResponder are not supported.
     /// </summary>
-    public class RouterClient
+    internal class RouterClient
     {
         private FinsembleBridge bridge;
         private string clientName;

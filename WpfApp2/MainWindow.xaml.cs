@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ChartIQ.Finsemble;
+using Newtonsoft.Json.Linq;
 
 namespace WpfApp2
 {
@@ -25,6 +26,17 @@ namespace WpfApp2
         private string windowName;
         private string componentType = "Unknown";
         private string top, left, height, width, uuid;
+
+        private void Send_Click(object sender, RoutedEventArgs e)
+        {
+            finsemble.SendCommand("LinkerClient.publish", new JObject
+            {
+                ["params"] = new JObject {
+                        ["dataType"] = "symbol",
+                        ["data"] = DataToSend.Text
+                    }
+            }, (s, args) => { });
+        }
 
         public MainWindow(string FinsembleWindowName, string componentType, string top, string left, string height, string width, string uuid)
         {
@@ -80,6 +92,17 @@ namespace WpfApp2
                     this.Width = Double.Parse(width);
                 }
                 this.Show();
+                
+            });
+
+            finsemble.SendCommand("LinkerClient.subscribe", new JObject
+            {
+                ["dataType"] = "symbol"
+            }, (s, args) => {
+                Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                {
+                    DataToSend.Text = args.response["data"].ToString();
+                });
             });
         }
     }

@@ -10,7 +10,7 @@ namespace ChartIQ.Finsemble
     /// <summary>
     /// The Storage client handles saving and retrieving data for your application.
     /// </summary>
-    public class StorageClient
+    internal class StorageClient
     {
         private RouterClient routerClient;
 
