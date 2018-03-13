@@ -175,7 +175,7 @@ namespace ChartIQ.Finsemble
         {
             if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
             {
-
+                
             }
         }
 

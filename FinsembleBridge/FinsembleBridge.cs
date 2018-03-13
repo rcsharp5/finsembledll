@@ -207,6 +207,8 @@ namespace ChartIQ.Finsemble
         /// <item><term>RouterClient.query: </term> <description>same as Javascript API</description></item>
         /// <item><term>LinkerClient.publish: </term> <description>does not use the callback, does not support the channels option.</description></item>
         /// <item><term>LinkerClient.subscribe: </term> <description>same as Javascript API</description></item>
+        /// <item><term>LauncherClient.spawn: </term> <description>same as Javascript API</description></item>
+        /// <item><term>LauncherClient.showWindow: </term> <description>same as Javascript API</description></item>
         /// </list>
         /// </summary>
         /// <example>
@@ -270,6 +272,12 @@ namespace ChartIQ.Finsemble
                     break;
                 case "LinkerClient.subscribe":
                     linkerClient.Subscribe((string)parameters["dataType"], callback);
+                    break;
+                case "LauncherClient.spawn":
+                    launcherClient.Spawn((string)parameters["component"], parameters["params"] as JObject, callback);
+                    break;
+                case "LauncherClient.showWindow":
+                    launcherClient.ShowWindow(parameters["windowIdentifier"] as JObject, parameters["params"] as JObject, callback);
                     break;
                 default:
                     throw new Exception("This API does not exist or is not yet supported");
