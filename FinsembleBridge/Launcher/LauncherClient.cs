@@ -130,6 +130,15 @@ namespace ChartIQ.Finsemble
             }
             routerClient.Query("LauncherService.addWindowToGroups", parameters, new JObject { }, callback);
         }
-        
+
+        public void GetWindowsInGroup(JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        {
+            routerClient.Query("LauncherService.getWindowsInGroup", new JObject { ["groupName"] = parameters["groupName"] }, new JObject { }, (sender, args) =>
+            {
+                callback(sender, new FinsembleEventArgs(args.error, args.response?["data"]));
+            });
+        }
+
+
     }
 }

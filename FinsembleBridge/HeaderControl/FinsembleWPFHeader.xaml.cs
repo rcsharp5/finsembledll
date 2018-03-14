@@ -23,6 +23,7 @@ namespace ChartIQ.Finsemble
     {
         public FinsembleBridge bridge;
         private SortedDictionary<string, Button> LinkerGroups = new SortedDictionary<string, Button>();
+        private string dockingGroup, snappingGroup;
 
         public FinsembleWPFHeader()
         {
@@ -45,6 +46,8 @@ namespace ChartIQ.Finsemble
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
+                this.dockingGroup = groups.dockingGroup;
+                this.snappingGroup = groups.snappingGroup;
                 if (groups.dockingGroup != "")
                 {
                     DockingButton.Content = "@";
@@ -171,11 +174,39 @@ namespace ChartIQ.Finsemble
             });
         }
 
-        private void LinkerPill_Click(object sender, RoutedEventArgs e)
+        private void hyperFocus(string linkerChannel, bool includeAppSuites, bool includeDockedGroups)
         {
-            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            var windowList = new List<string>();
+
+            if(!string.IsNullOrEmpty(linkerChannel))
             {
                 
+            }
+
+            if(includeAppSuites)
+            {
+
+            }
+
+            if (includeDockedGroups)
+            {
+                bridge.docking.GetWindowsInGroup(new JObject {
+                    ["groupName"] = dockingGroup
+                }, (s, args) => {
+                    var windows = args.response;
+                });
+            }
+        }
+
+        private void LinkerPill_Click(object sender, RoutedEventArgs e)
+        {
+            var sendingButton = (Button)sender;
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            {
+                hyperFocus(sendingButton.Name, false, true);
+            } else
+            {
+
             }
         }
 
@@ -195,7 +226,14 @@ namespace ChartIQ.Finsemble
         {
             if (DockingButton.Content == "@")
             {
-                bridge.docking.LeaveGroup();
+                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                {
+                    hyperFocus(null, false, true);
+                }
+                else
+                {
+                    bridge.docking.LeaveGroup();
+                }
             }
             else
             {

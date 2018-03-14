@@ -40,5 +40,26 @@ namespace ChartIQ.Finsemble
                 ["field"] = parameters["field"]
             }, new JObject { }, callback);
         }
+
+        /// <summary>
+        /// parameters is a JObject containing the field and value
+        /// callback is called with the value
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// bridge.configClient.SetValue(new JObject {["field"] = "fieldname", ["value"] = "value"})
+        /// </code>
+        /// </example>
+        /// <param name="parameters"></param>
+        /// <param name="callback"></param>
+        public void SetValue(JObject parameters)
+        {
+            routerClient.Query("configService.setValue", new JObject
+            {
+                ["field"] = parameters["field"],
+                ["value"] = parameters["value"]
+            }, new JObject { }, (s, a) => { });
+
+        }
     }
 }

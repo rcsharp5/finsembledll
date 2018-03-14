@@ -378,6 +378,13 @@ namespace ChartIQ.Finsemble
             });
         }
 
+        public void GetWindowsInGroup(JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        {
+            routerClient.Query("DockingService.getWindowsInGroup", new JObject { ["groupName"] = parameters["groupName"] }, new JObject { }, (sender, args) => {
+                callback(sender, new FinsembleEventArgs(args.error, args.response?["data"]));
+            });
+        }
+
         private void Resize(Point TopCorner, Point BottomCorner)
         {
             TimeSpan t = DateTime.Now - lastResizeSent;
@@ -430,6 +437,7 @@ namespace ChartIQ.Finsemble
             routerClient.Subscribe("Finsemble.WorkspaceService.groupUpdate", (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs args)
             {
                 var groupData = args.response?["data"]?["groupData"] as JObject;
+                if (groupData == null) return;
                 dynamic thisWindowGroups = new ExpandoObject();
                 thisWindowGroups.dockingGroup = "";
                 thisWindowGroups.snappingGroup = "";

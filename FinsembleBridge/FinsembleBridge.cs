@@ -209,6 +209,7 @@ namespace ChartIQ.Finsemble
         /// <item><term>LinkerClient.subscribe: </term> <description>same as Javascript API</description></item>
         /// <item><term>LauncherClient.spawn: </term> <description>same as Javascript API</description></item>
         /// <item><term>LauncherClient.showWindow: </term> <description>same as Javascript API</description></item>
+        /// <item><term>ConfigClient.getValue: </term> <description>same as Javascript API</description></item>
         /// </list>
         /// </summary>
         /// <example>
@@ -278,6 +279,9 @@ namespace ChartIQ.Finsemble
                     break;
                 case "LauncherClient.showWindow":
                     launcherClient.ShowWindow(parameters["windowIdentifier"] as JObject, parameters["params"] as JObject, callback);
+                    break;
+                case "ConfigClient.getValue":
+                    configClient.GetValue(parameters["params"] as JObject, callback);
                     break;
                 default:
                     throw new Exception("This API does not exist or is not yet supported");
@@ -388,6 +392,11 @@ namespace ChartIQ.Finsemble
 
                 disposedValue = true;
             }
+        }
+
+        public void ShutdownApplication()
+        {
+            routerClient.Transmit("Application.shutdown", new JObject { });
         }
 
         // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.

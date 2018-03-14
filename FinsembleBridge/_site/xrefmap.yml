@@ -154,6 +154,18 @@ references:
   commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.SendCommand
   fullName: ChartIQ.Finsemble.FinsembleBridge.SendCommand
   nameWithType: FinsembleBridge.SendCommand
+- uid: ChartIQ.Finsemble.FinsembleBridge.ShutdownApplication
+  name: ShutdownApplication()
+  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_ShutdownApplication
+  commentId: M:ChartIQ.Finsemble.FinsembleBridge.ShutdownApplication
+  fullName: ChartIQ.Finsemble.FinsembleBridge.ShutdownApplication()
+  nameWithType: FinsembleBridge.ShutdownApplication()
+- uid: ChartIQ.Finsemble.FinsembleBridge.ShutdownApplication*
+  name: ShutdownApplication
+  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_ShutdownApplication_
+  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.ShutdownApplication
+  fullName: ChartIQ.Finsemble.FinsembleBridge.ShutdownApplication
+  nameWithType: FinsembleBridge.ShutdownApplication
 - uid: ChartIQ.Finsemble.FinsembleBridge.uuid
   name: uuid
   href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_uuid
