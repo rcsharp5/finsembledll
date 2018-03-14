@@ -52,7 +52,8 @@ namespace ChartIQ.Finsemble
                         if (args3.response != null && args3.response.HasValues)
                         {
                             channels = args3.response as JArray;
-                        } else
+                        }
+                        else
                         {
                             channels = new JArray { };
                         }
@@ -123,9 +124,9 @@ namespace ChartIQ.Finsemble
                 linkerStore.AddListener(null,
                 (EventHandler<FinsembleEventArgs>)delegate (object sender4, FinsembleEventArgs args4)
                 {
-                    var newAllChannels = args4.response?["data"]?["value"]?["allChannels"] as JArray;
+                    var newAllChannels = args4.response?["data"]?["storeData"]?["values"]?["channels"] as JArray;
                     if (newAllChannels != null) allChannels = newAllChannels;
-                    clients = args4.response?["data"]?["clients"] as JObject;
+                    clients = args4.response?["data"]?["storeData"]?["values"]?["clients"] as JObject;
                     if (clients == null) clients = new JObject { };
                 });
 
@@ -302,6 +303,43 @@ namespace ChartIQ.Finsemble
         public void Unsubscribe(string dataType, EventHandler<FinsembleEventArgs> callback)
         {
             linkerSubscribers[dataType] -= callback;
+        }
+
+        // This does not match the implementation in finsemble.
+        public void GetLinkedComponents(JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        {
+            var linkedWindows = new List<string>();
+
+            // Fix params
+            if (parameters == null) { parameters = new JObject { }; }
+
+            // if no channels, assume all channels
+            if (parameters["channels"] == null) parameters["channels"] = channels;
+            else parameters["channels"] = parameters["channels"] as JArray;
+
+            // Get all active
+            foreach (var c in clients)
+            {
+                var component = c.Value as JObject;
+                if (component["channels"] == null) // frame fix
+                {
+                    component = component.First as JObject;
+                }
+                
+                
+                var channelList = (component["channels"] as JObject).Properties().Select(p=>p.Name).ToList<string>();
+                var paramChannels = parameters["channels"].ToObject<List<String>>();
+                var clientMatchesChannels = channelList.Intersect(paramChannels).Count();
+
+
+                if (clientMatchesChannels > 0)
+                {
+                    linkedWindows.Add((string)component["client"]["windowName"]);
+                }
+            }
+
+            callback(this, new FinsembleEventArgs(null, JArray.FromObject(linkedWindows)));
+            //return linkedWindows;
         }
 
         /// <summary>

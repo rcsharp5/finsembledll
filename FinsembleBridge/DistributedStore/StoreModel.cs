@@ -95,7 +95,7 @@ namespace ChartIQ.Finsemble
                 field = name + "." + (string)parameters["field"]; //TODO: add ability to add global listener
             } else
             {
-                field = "";
+                field = name;
             }
             routerClient.Subscribe("storeService" + field, callback);
         }
