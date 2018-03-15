@@ -139,6 +139,15 @@ namespace ChartIQ.Finsemble
             });
         }
 
+        public void HyperFocus(JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        {
+            if (parameters["windowList"] == null && parameters["groupName"] == null && parameters["componentType"] == null) {
+                parameters["windowList"] = new JArray();
+                (parameters["windowList"] as JArray).Add(windowClient.windowIdentifier);
+            }
+            routerClient.Transmit("LauncherService.hyperFocus", parameters);
+            callback(this, new FinsembleEventArgs(null, null));
+        }
 
     }
 }

@@ -194,7 +194,7 @@ namespace ChartIQ.Finsemble
         }
 
         /// <summary>
-        /// Use this command to execute Finsemble API calls remotely. Specify all the parameters as part of the parameters object and the callback for the callback or eventHandler.
+        /// Use this command to execute Finsemble API calls remotely. Specify all the arguments as a list and the callback for the callback or eventHandler.
         /// 
         /// Supported API Calls:
         /// <list type="bullet">
@@ -215,73 +215,73 @@ namespace ChartIQ.Finsemble
         /// <example>
         /// <code>
         /// /* The router transmit API has two parameters, toChannel and event */
-        /// finsemble.SendCommand("RouterClient.transmit", new JObject {
-        ///     ["toChannel"] = "channel",
-        ///     ["event"] = new JObject {
+        /// finsemble.SendCommand("RouterClient.transmit", new List&lt;JToken&gt; {
+        ///     "channel",
+        ///     new JObject {
         ///         ["myData"] = "myData"
         ///     }
         /// }, (s, args) => {});
         /// 
-        /// finsemble.SendCommand("RouterClient.subscribe", new JObject {
-        ///     ["topic"] = "myTopic"
+        /// finsemble.SendCommand("RouterClient.subscribe", new List&lt;JToken&gt; {
+        ///     "myTopic"
         /// }, mySubHandler);
         /// 
-        /// finsemble.SendCommand("RouterClient.unsubscribe", new JObject {
-        ///     ["topic"] = "myTopic"
+        /// finsemble.SendCommand("RouterClient.unsubscribe", new List&lt;JToken&gt; {
+        ///     "myTopic"
         /// }, mySubHandler);
         /// 
         /// /* Linker.publish takes params */
-        /// finsemble.SendCommand("LinkerClient.publish", new JObject { 
-        ///     ["params"] = new JObject {
+        /// finsemble.SendCommand("LinkerClient.publish", new new List&lt;JToken&gt; { 
+        ///     new JObject {
         ///         ["dataType"] = "myType",
         ///         ["data"] = new JObject {
         ///             ["property1"] = "property"
         ///         }
         ///     }
-        /// }
+        /// }, (s, args) => {});
         /// </code>
         /// </example>
         /// <param name="apiCall">Name of the API call from the list above</param>
-        /// <param name="parameters">This is a JObject which contains all the parameters that the API call takes. Refer to our Javascript API for the parameters to each API call.</param>
+        /// <param name="arguments">This is a JObject which contains all the parameters that the API call takes. Refer to our Javascript API for the parameters to each API call.</param>
         /// <param name="callback">If the API has a callback, this will be used to call back.</param>
-        public void SendCommand(string apiCall, JObject parameters, EventHandler<FinsembleEventArgs> callback)
+        public void SendCommand(string apiCall, List<JToken> arguments, EventHandler<FinsembleEventArgs> callback)
         {
             switch(apiCall) {
                 case "RouterClient.transmit":                    
-                    routerClient.Transmit((string)parameters["toChannel"], parameters["event"]);
+                    routerClient.Transmit((string)arguments[0], arguments[1]);
                     break;
                 case "RouterClient.addListener":
-                    routerClient.AddListener((string)parameters["channel"], callback);
+                    routerClient.AddListener((string)arguments[0], callback);
                     break;
                 case "RouterClient.removeListener":
-                    routerClient.RemoveListener((string)parameters["channel"], callback);
+                    routerClient.RemoveListener((string)arguments[0], callback);
                     break;
                 case "RouterClient.publish":
-                    routerClient.Publish((string)parameters["topic"], parameters["event"]);
+                    routerClient.Publish((string)arguments[0], arguments[1]);
                     break;
                 case "RouterClient.subscribe":
-                    routerClient.Subscribe((string)parameters["topic"], callback);
+                    routerClient.Subscribe((string)arguments[0], callback);
                     break;
                 case "RouterClient.unsubscribe":
-                    routerClient.Unsubscribe((string)parameters["topic"], callback);
+                    routerClient.Unsubscribe((string)arguments[0], callback);
                     break;
                 case "RouterClient.query":
-                    routerClient.Query((string)parameters["responderChannel"], parameters["queryEvent"], parameters["params"] as JObject, callback);
+                    routerClient.Query((string)arguments[0], arguments[1], arguments[2] as JObject, callback);
                     break;
                 case "LinkerClient.publish":
-                    linkerClient.Publish(parameters["params"] as JObject);
+                    linkerClient.Publish(arguments[0] as JObject);
                     break;
                 case "LinkerClient.subscribe":
-                    linkerClient.Subscribe((string)parameters["dataType"], callback);
+                    linkerClient.Subscribe((string)arguments[0], callback);
                     break;
                 case "LauncherClient.spawn":
-                    launcherClient.Spawn((string)parameters["component"], parameters["params"] as JObject, callback);
+                    launcherClient.Spawn((string)arguments[0], arguments[1] as JObject, callback);
                     break;
                 case "LauncherClient.showWindow":
-                    launcherClient.ShowWindow(parameters["windowIdentifier"] as JObject, parameters["params"] as JObject, callback);
+                    launcherClient.ShowWindow(arguments[0] as JObject, arguments[1] as JObject, callback);
                     break;
                 case "ConfigClient.getValue":
-                    configClient.GetValue(parameters["params"] as JObject, callback);
+                    configClient.GetValue(arguments[0] as JObject, callback);
                     break;
                 default:
                     throw new Exception("This API does not exist or is not yet supported");

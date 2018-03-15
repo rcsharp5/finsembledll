@@ -31,6 +31,54 @@ namespace ChartIQ.Finsemble
             Toolbar.SizeChanged += FinsembleHeader_SizeChanged;
         }
 
+        private void Linker_StateChange(object sender2, FinsembleEventArgs args)
+        {
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                var channels = args.response["channels"] as JArray;
+                var allChannels = args.response["allChannels"] as JArray;
+
+                // Hide all LinkerGroups
+                foreach (var item in LinkerGroups)
+                {
+                    item.Value.Visibility = Visibility.Hidden;
+                }
+
+                // Loop through Channels
+                Double baseLeft = 36.0;
+                Double increment = 15;
+                foreach (JObject item in allChannels)
+                {
+                    var groupName = (string)item["name"];
+                    // check if in this group
+                    if (channels.Where(jt => jt.Value<string>() == groupName).Count() > 0)
+                    {
+                        if (!LinkerGroups.ContainsKey(groupName))
+                        {
+                            var groupRectangle = new Button();
+                            groupRectangle.HorizontalAlignment = HorizontalAlignment.Left;
+                            groupRectangle.VerticalAlignment = VerticalAlignment.Top;
+                            groupRectangle.Width = 10;
+                            groupRectangle.Height = 25;
+                            groupRectangle.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString((string)item["color"]));
+                            Toolbar.Children.Add(groupRectangle);
+                            groupRectangle.SetValue(Canvas.TopProperty, 5.0);
+                            groupRectangle.Name = groupName;
+                            var style = this.Resources["LinkerPill"];
+                            groupRectangle.SetValue(StyleProperty, style);
+                            LinkerGroups[groupName] = groupRectangle;
+                            groupRectangle.Click += LinkerPill_Click;
+                        }
+                        LinkerGroups[groupName].SetValue(Canvas.LeftProperty, baseLeft);
+                        baseLeft += increment;
+                        LinkerGroups[groupName].Visibility = Visibility.Visible;
+                    }
+                }
+                Window_Size_Changed();
+            });
+        }
+
+
         private void FinsembleHeader_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Window_Size_Changed();
@@ -40,6 +88,7 @@ namespace ChartIQ.Finsemble
         {
             bridge = finsemble;
             bridge.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;
+            bridge.linkerClient.OnStateChange(Linker_StateChange);
         }
 
         private void Docking_GroupUpdate(object sender, dynamic groups)
@@ -123,79 +172,50 @@ namespace ChartIQ.Finsemble
         private void Linker_Click(object sender, RoutedEventArgs e)
         {
             bridge.linkerClient.ShowLinkerWindow();
-            bridge.linkerClient.OnStateChange((EventHandler<FinsembleEventArgs>)delegate (object sender2, FinsembleEventArgs args)
-            {
-                Application.Current.Dispatcher.Invoke((Action)delegate //main thread
-                {
-                    var channels = args.response["channels"] as JArray;
-                    var allChannels = args.response["allChannels"] as JArray;
 
-                    // Hide all LinkerGroups
-                    foreach (var item in LinkerGroups)
-                    {
-                        item.Value.Visibility = Visibility.Hidden;
-                    }
-
-                    // Loop through Channels
-                    Double baseLeft = 36.0;
-                    Double increment = 15;
-                    foreach (JObject item in allChannels)
-                    {
-                        var groupName = (string)item["name"];
-                        // check if in this group
-                        if (channels.Where(jt => jt.Value<string>() == groupName).Count() > 0)
-                        {
-                            if (!LinkerGroups.ContainsKey(groupName))
-                            {
-                                var groupRectangle = new Button();
-                                groupRectangle.HorizontalAlignment = HorizontalAlignment.Left;
-                                groupRectangle.VerticalAlignment = VerticalAlignment.Top;
-                                groupRectangle.Width = 10;
-                                groupRectangle.Height = 25;
-                                groupRectangle.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString((string)item["color"]));
-                                Toolbar.Children.Add(groupRectangle);
-                                groupRectangle.SetValue(Canvas.TopProperty, 5.0);
-                                groupRectangle.Name = groupName;
-                                var style = this.Resources["LinkerPill"];
-                                groupRectangle.SetValue(StyleProperty, style);
-                                LinkerGroups[groupName] = groupRectangle;
-                                groupRectangle.Click += LinkerPill_Click;
-                            }
-                            LinkerGroups[groupName].SetValue(Canvas.LeftProperty, baseLeft);
-                            baseLeft += increment;
-                            LinkerGroups[groupName].Visibility = Visibility.Visible;
-                        }
-                    }
-                    Window_Size_Changed();
-                });
-
-
-
-            });
         }
 
         private void hyperFocus(string linkerChannel, bool includeAppSuites, bool includeDockedGroups)
         {
             var windowList = new List<string>();
+            var taskCompletionList = new List<TaskCompletionSource<List<string>>>();
+            var taskList = new List<Task<List<string>>>();
 
-            if(!string.IsNullOrEmpty(linkerChannel))
+            if (!string.IsNullOrEmpty(linkerChannel))
             {
-                
+                var linkerChannelTaskCompletionSource = new TaskCompletionSource<List<string>>();
+                var linkerChannelTask = linkerChannelTaskCompletionSource.Task;
+                var channels = new JArray();
+                channels.Add(linkerChannel);
+                bridge.linkerClient.GetLinkedComponents(new JObject { ["channels"] = channels }, (s, args) =>
+                {
+                    var linkedWindowList = (args.response as JArray).ToObject<List<string>>();
+                    linkerChannelTaskCompletionSource.SetResult(linkedWindowList);
+                });
+                windowList.AddRange(linkerChannelTask.Result);
             }
 
-            if(includeAppSuites)
+            if (includeAppSuites)
             {
 
             }
 
             if (includeDockedGroups)
             {
-                bridge.docking.GetWindowsInGroup(new JObject {
+                bridge.docking.GetWindowsInGroup(new JObject
+                {
                     ["groupName"] = dockingGroup
-                }, (s, args) => {
+                }, (s, args) =>
+                {
                     var windows = args.response;
                 });
             }
+
+            bridge.launcherClient.HyperFocus(new JObject
+            {
+                ["windowList"] = JArray.FromObject(windowList)
+            }, (s, args) => { });
+
         }
 
         private void LinkerPill_Click(object sender, RoutedEventArgs e)
@@ -204,7 +224,8 @@ namespace ChartIQ.Finsemble
             if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
             {
                 hyperFocus(sendingButton.Name, false, true);
-            } else
+            }
+            else
             {
 
             }

@@ -29,12 +29,12 @@ namespace WpfApp2
 
         private void Send_Click(object sender, RoutedEventArgs e)
         {
-            finsemble.SendCommand("LinkerClient.publish", new JObject
+            finsemble.SendCommand("LinkerClient.publish", new List<JToken>
             {
-                ["params"] = new JObject {
-                        ["dataType"] = "symbol",
-                        ["data"] = DataToSend.Text
-                    }
+                new JObject {
+                    ["dataType"] = "symbol",
+                    ["data"] = DataToSend.Text
+                }
             }, (s, args) => { });
         }
 
@@ -95,9 +95,9 @@ namespace WpfApp2
                 
             });
 
-            finsemble.SendCommand("LinkerClient.subscribe", new JObject
+            finsemble.SendCommand("LinkerClient.subscribe", new List<JToken>
             {
-                ["dataType"] = "symbol"
+                "symbol"
             }, (s, args) => {
                 Application.Current.Dispatcher.Invoke((Action)delegate //main thread
                 {

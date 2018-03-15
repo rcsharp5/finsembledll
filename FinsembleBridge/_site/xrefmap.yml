@@ -139,15 +139,15 @@ references:
   commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.OpenFinVersion
   fullName: ChartIQ.Finsemble.FinsembleBridge.OpenFinVersion
   nameWithType: FinsembleBridge.OpenFinVersion
-- uid: ChartIQ.Finsemble.FinsembleBridge.SendCommand(System.String,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: SendCommand(String, JObject, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_SendCommand_System_String_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.FinsembleBridge.SendCommand(System.String,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: SendCommand(String, JObject, EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.FinsembleBridge.SendCommand(System.String, Newtonsoft.Json.Linq.JObject, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.FinsembleBridge.SendCommand(System.String, Newtonsoft.Json.Linq.JObject, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: FinsembleBridge.SendCommand(String, JObject, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: FinsembleBridge.SendCommand(String, JObject, EventHandler(Of FinsembleEventArgs))
+- uid: ChartIQ.Finsemble.FinsembleBridge.SendCommand(System.String,System.Collections.Generic.List{Newtonsoft.Json.Linq.JToken},System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
+  name: SendCommand(String, List<JToken>, EventHandler<FinsembleEventArgs>)
+  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_SendCommand_System_String_System_Collections_Generic_List_Newtonsoft_Json_Linq_JToken__System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
+  commentId: M:ChartIQ.Finsemble.FinsembleBridge.SendCommand(System.String,System.Collections.Generic.List{Newtonsoft.Json.Linq.JToken},System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
+  name.vb: SendCommand(String, List(Of JToken), EventHandler(Of FinsembleEventArgs))
+  fullName: ChartIQ.Finsemble.FinsembleBridge.SendCommand(System.String, System.Collections.Generic.List<Newtonsoft.Json.Linq.JToken>, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
+  fullName.vb: ChartIQ.Finsemble.FinsembleBridge.SendCommand(System.String, System.Collections.Generic.List(Of Newtonsoft.Json.Linq.JToken), System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
+  nameWithType: FinsembleBridge.SendCommand(String, List<JToken>, EventHandler<FinsembleEventArgs>)
+  nameWithType.vb: FinsembleBridge.SendCommand(String, List(Of JToken), EventHandler(Of FinsembleEventArgs))
 - uid: ChartIQ.Finsemble.FinsembleBridge.SendCommand*
   name: SendCommand
   href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_SendCommand_

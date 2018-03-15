@@ -20,6 +20,7 @@ namespace ChartIQ.Finsemble
         private Dictionary<string, EventHandler<FinsembleEventArgs>> transmitListeners = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
         private Dictionary<string, EventHandler<FinsembleEventArgs>> publishListeners = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
         private Dictionary<string, EventHandler<FinsembleEventArgs>> queryIDResponseHandlerMap = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
+        private Dictionary<string, string> subscribeIDTopicMap = new Dictionary<string, string>();
 
         internal RouterClient(FinsembleBridge bridge)
         {
@@ -64,7 +65,8 @@ namespace ChartIQ.Finsemble
                        new JObject(
                            new JProperty("origin", clientName),
                            new JProperty("type", "unsubscribe"),
-                           new JProperty("topic", item.Key)
+                           new JProperty("topic", item.Key),
+                           new JProperty("subscribeID", subscribeIDTopicMap[item.Key])
                        )
                    )
                 );
@@ -82,16 +84,30 @@ namespace ChartIQ.Finsemble
             {
                 case "transmit":
                     args = new FinsembleEventArgs(null, message as JObject);
-                    transmitListeners[m.header.channel.Value]?.Invoke(this, args);
+                    if (transmitListeners.ContainsKey(m.header.channel.Value))
+                    {
+                        transmitListeners[m.header.channel.Value]?.Invoke(this, args);
+                    }
                     break;
                 case "queryResponse":
                     args = new FinsembleEventArgs(null, message as JObject); // TODO: Handle Errors
-                    queryIDResponseHandlerMap[m.header.queryID.Value]?.Invoke(this, args);
-                    queryIDResponseHandlerMap.Remove(m.header.queryID.Value);
+                    if (queryIDResponseHandlerMap.ContainsKey(m.header.queryID.Value))
+                    {
+                        queryIDResponseHandlerMap[m.header.queryID.Value]?.Invoke(this, args);
+                        queryIDResponseHandlerMap.Remove(m.header.queryID.Value);
+                    }
                     break;
                 case "notify":
                     args = new FinsembleEventArgs(null, message as JObject);
-                    publishListeners[m.header.topic.Value]?.Invoke(this, args);
+                    if (publishListeners.ContainsKey(m.header.topic.Value))
+                    {
+                        publishListeners[m.header.topic.Value]?.Invoke(this, args);
+                    }
+                    break;
+                case "initialHandshakeResponse":
+                    Publish("Finsemble." + bridge.windowName + ".componentReady", new JObject {
+                        ["name"] = bridge.windowName
+                    });
                     break;
             }
         }
@@ -208,13 +224,15 @@ namespace ChartIQ.Finsemble
             if (!publishListeners.ContainsKey(topic))
             {
                 publishListeners.Add(topic, responseHandler);
+                var subscribeId = Guid.NewGuid().ToString();
+                subscribeIDTopicMap.Add(topic, subscribeId);
                 var AddSubscribeMessage = new JObject(
                    new JProperty("header",
                        new JObject(
                            new JProperty("origin", clientName),
                            new JProperty("type", "subscribe"),
                            new JProperty("topic", topic),
-                           new JProperty("subscribeID", Guid.NewGuid().ToString())
+                           new JProperty("subscribeID", subscribeId)
                        )
                    )
                 );
