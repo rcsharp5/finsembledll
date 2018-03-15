@@ -175,7 +175,7 @@ namespace ChartIQ.Finsemble
 
         }
 
-        private void hyperFocus(string linkerChannel, bool includeAppSuites, bool includeDockedGroups)
+        private List<string> getWindowList(string linkerChannel, bool includeAppSuites, bool includeDockedGroups)
         {
             var windowList = new List<string>();
             var taskCompletionList = new List<TaskCompletionSource<List<string>>>();
@@ -197,25 +197,68 @@ namespace ChartIQ.Finsemble
 
             if (includeAppSuites)
             {
+                var appSuitesTaskCompletionSource = new TaskCompletionSource<List<string>>();
+                var appSuitesTask = appSuitesTaskCompletionSource.Task;
+                int numberOfGroups = 0;
+                var appSuitesList = new List<string>();
+                bridge.launcherClient.GetGroupsForWindow((s, args) =>
+                {
+                    var groups = args.response as JObject;
+                    numberOfGroups = groups.Properties().Count();
+                    foreach (var g in groups)
+                    {
+                        bridge.launcherClient.GetWindowsInGroup(new JObject
+                        {
+                            ["groupName"] = g.Value
+                        }, (s2, args2) => {
+                            args.ToString();
+                            numberOfGroups--;
+                            if (numberOfGroups == 0)
+                            {
+                                appSuitesTaskCompletionSource.SetResult(appSuitesList);
+                            }
+                        });
+                    }
+                });
+                windowList.AddRange(appSuitesTask.Result);
 
             }
 
             if (includeDockedGroups)
             {
+                var dockingGroupTaskCompletionSource = new TaskCompletionSource<List<string>>();
+                var dockingGroupChannelTask = dockingGroupTaskCompletionSource.Task;
                 bridge.docking.GetWindowsInGroup(new JObject
                 {
                     ["groupName"] = dockingGroup
                 }, (s, args) =>
                 {
-                    var windows = args.response;
+                    var dockingGroupList = (args.response as JArray).ToObject<List<string>>();
+                    dockingGroupTaskCompletionSource.SetResult(dockingGroupList);
                 });
+                windowList.AddRange(dockingGroupChannelTask.Result);
             }
 
+            return windowList;
+
+        }
+
+        private void hyperFocus(string linkerChannel, bool includeAppSuites, bool includeDockingGroups)
+        {
+            var windowList = getWindowList(linkerChannel, includeAppSuites, includeDockingGroups);
             bridge.launcherClient.HyperFocus(new JObject
             {
                 ["windowList"] = JArray.FromObject(windowList)
             }, (s, args) => { });
+        }
 
+        private void bringToFront(string linkerChannel, bool includeAppSuites, bool includeDockingGroups)
+        {
+            var windowList = getWindowList(linkerChannel, includeAppSuites, includeDockingGroups);
+            bridge.launcherClient.BringWindowsToFront(new JObject
+            {
+                ["windowList"] = JArray.FromObject(windowList)
+            }, (s, args) => { });
         }
 
         private void LinkerPill_Click(object sender, RoutedEventArgs e)
@@ -227,7 +270,7 @@ namespace ChartIQ.Finsemble
             }
             else
             {
-
+                bringToFront(sendingButton.Name, false, false);
             }
         }
 

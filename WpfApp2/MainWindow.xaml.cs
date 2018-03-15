@@ -27,6 +27,8 @@ namespace WpfApp2
         private string componentType = "Unknown";
         private string top, left, height, width, uuid;
 
+
+
         private void Send_Click(object sender, RoutedEventArgs e)
         {
             finsemble.SendCommand("LinkerClient.publish", new List<JToken>
@@ -91,6 +93,7 @@ namespace WpfApp2
                 {
                     this.Width = Double.Parse(width);
                 }
+                
                 this.Show();
                 
             });
