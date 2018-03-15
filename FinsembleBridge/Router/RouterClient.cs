@@ -105,9 +105,7 @@ namespace ChartIQ.Finsemble
                     }
                     break;
                 case "initialHandshakeResponse":
-                    Publish("Finsemble." + bridge.windowName + ".componentReady", new JObject {
-                        ["name"] = bridge.windowName
-                    });
+                    
                     break;
             }
         }
