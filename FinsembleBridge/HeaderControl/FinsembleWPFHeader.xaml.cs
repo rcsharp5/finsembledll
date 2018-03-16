@@ -46,7 +46,7 @@ namespace ChartIQ.Finsemble
 
                 // Loop through Channels
                 Double baseLeft = 36.0;
-                Double increment = 15;
+                Double increment = 12;
                 foreach (JObject item in allChannels)
                 {
                     var groupName = (string)item["name"];
@@ -57,14 +57,14 @@ namespace ChartIQ.Finsemble
                         {
                             var groupRectangle = new Button();
                             groupRectangle.HorizontalAlignment = HorizontalAlignment.Left;
-                            groupRectangle.VerticalAlignment = VerticalAlignment.Top;
-                            groupRectangle.Width = 10;
-                            groupRectangle.Height = 25;
+                            groupRectangle.VerticalAlignment = VerticalAlignment.Center;
+                            groupRectangle.Width = 7;
+                            groupRectangle.Height = 20;
                             groupRectangle.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString((string)item["color"]));
                             Toolbar.Children.Add(groupRectangle);
-                            groupRectangle.SetValue(Canvas.TopProperty, 5.0);
+                            groupRectangle.SetValue(Canvas.TopProperty, (Toolbar.ActualHeight - groupRectangle.Height)/2);
                             groupRectangle.Name = groupName;
-                            var style = this.Resources["LinkerPill"];
+                            var style = this.Resources["LinkerPillStyle"];
                             groupRectangle.SetValue(StyleProperty, style);
                             LinkerGroups[groupName] = groupRectangle;
                             groupRectangle.Click += LinkerPill_Click;
@@ -233,8 +233,15 @@ namespace ChartIQ.Finsemble
                     ["groupName"] = dockingGroup
                 }, (s, args) =>
                 {
-                    var dockingGroupList = (args.response as JArray).ToObject<List<string>>();
-                    dockingGroupTaskCompletionSource.SetResult(dockingGroupList);
+                    if (args.response.HasValues)
+                    {
+                        var dockingGroupList = (args.response as JArray).ToObject<List<string>>();
+                        dockingGroupTaskCompletionSource.SetResult(dockingGroupList);
+                    } else
+                    {
+                        dockingGroupTaskCompletionSource.SetResult(new List<string>());
+                    }
+                    
                 });
                 windowList.AddRange(dockingGroupChannelTask.Result);
             }
@@ -277,7 +284,7 @@ namespace ChartIQ.Finsemble
         private void Window_Size_Changed()
         {
             int LinkerGroupCount = LinkerGroups.Where(g => g.Value.Visibility == Visibility.Visible).Count();
-            double LeftWidths = 35 + LinkerGroupCount * 15;
+            double LeftWidths = 35 + LinkerGroupCount * 12;
             double RightWidths = 105;
             if (DockingButton.IsVisible) RightWidths = 140;
             Title.SetValue(Canvas.LeftProperty, LeftWidths);

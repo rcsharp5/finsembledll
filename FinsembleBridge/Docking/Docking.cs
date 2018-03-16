@@ -123,14 +123,26 @@ namespace ChartIQ.Finsemble
                     var jsonMessage = joMessage.GetValue("bounds") as JObject;
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
+                        
+
                         var top = jsonMessage.GetValue("top").ToString();
-                        if (!string.IsNullOrEmpty(top)) dockingWindow.Top = Double.Parse(top);
+                        if (!string.IsNullOrEmpty(top)) dockingWindow.Top = Math.Abs(Double.Parse(top));
                         var left = jsonMessage.GetValue("left").ToString();
-                        if (!string.IsNullOrEmpty(left)) dockingWindow.Left = Double.Parse(left);
+                        if (!string.IsNullOrEmpty(left)) dockingWindow.Left = Math.Abs(Double.Parse(left));
+
                         var height = jsonMessage.GetValue("height").ToString();
-                        if (!string.IsNullOrEmpty(height)) dockingWindow.Height = Double.Parse(height);
+                        if (!string.IsNullOrEmpty(height)) {
+                            double h = Math.Abs(Double.Parse(height));
+                            if (h>0) dockingWindow.Height = h;
+                        }
+
                         var width = jsonMessage.GetValue("width").ToString();
-                        if (!string.IsNullOrEmpty(width)) dockingWindow.Width = Double.Parse(width);
+                        if (!string.IsNullOrEmpty(width))
+                        {
+                            double w = Math.Abs(Double.Parse(width));
+                            if (w>0) dockingWindow.Width = w;
+                        }
+
                         WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
                         WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
                     });
