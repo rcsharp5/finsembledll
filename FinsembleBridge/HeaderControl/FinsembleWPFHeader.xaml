@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChartIQ.Finsemble"
-             mc:Ignorable="d" d:DesignWidth="300" Height="36.364">
+             mc:Ignorable="d" d:DesignWidth="300" Height="32.055">
     <UserControl.Resources>
         <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FF039BFF"/>
         <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FF039BFF"/>
@@ -111,13 +111,13 @@
         </Style>
     </UserControl.Resources>
     <Grid Margin="0,0,0,264">
-        <Canvas Name="Toolbar" Height="35" Margin="0,0,0,0" VerticalAlignment="Top" MouseDown="Toolbar_MouseDown" MouseUp="Toolbar_MouseUp" MouseMove="Toolbar_MouseMove" Background="#FF233958">
-            <Button Style="{StaticResource ToolbarRegularButton}" Name="Minimize" Content="4" Width="35" Click="Minimize_Click" HorizontalAlignment="Right" Canvas.Right="70" FontFamily="/FinsembleBridge;component/Resources/#finfont" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" Height="35" FontSize="16" />
-            <Button Style="{StaticResource ToolbarRegularButton}" Name="Maximize" Content="3" Width="35" Click="Maximize_Click" HorizontalAlignment="Right" Canvas.Right="35" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" FontFamily="/FinsembleBridge;component/Resources/#finfont" Height="35" FontSize="16" />
-            <Button Style="{StaticResource ToolbarCloseButton}" Name="Close" Content ="p" Width="35" Click="Close_Click" HorizontalAlignment="Right" Canvas.Right="0" FontFamily="/FinsembleBridge;component/Resources/#finfont" Height="35" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
-            <Button Style="{StaticResource ToolbarRegularButton}" Name="Linker" Content="1" Width="35" Click="Linker_Click" HorizontalAlignment="Left"  Canvas.Left="0" FontFamily="/FinsembleBridge;component/Resources/#finfont" Height="35" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
-            <Button Style="{StaticResource ToolbarRegularButton}" Name="DockingButton" Content=">" Width="35" Click="Docking_Click" HorizontalAlignment="Right" Canvas.Right="70" FontFamily="/FinsembleBridge;component/Resources/#finfont" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" Height="35" FontSize="16" Visibility="Hidden" />
-            <Button Style="{StaticResource ToolbarRegularButton}" Name="AppSuites" Content="z" Width="35" Click="AppSuites_Click" HorizontalAlignment="Right" Canvas.Right="105" FontFamily="/FinsembleBridge;component/Resources/#finfont" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" Height="35" FontSize="16" Visibility="Hidden" />
+        <Canvas Name="Toolbar" Height="32" Margin="0,0,0,0" VerticalAlignment="Top" MouseDown="Toolbar_MouseDown" MouseUp="Toolbar_MouseUp" MouseMove="Toolbar_MouseMove" Background="#FF233958">
+            <Button Style="{StaticResource ToolbarRegularButton}" Name="Minimize" Content="4" Width="32" Click="Minimize_Click" HorizontalAlignment="Right" Canvas.Right="64" FontFamily="/FinsembleBridge;component/Resources/#finfont" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" Height="32" FontSize="16" />
+            <Button Style="{StaticResource ToolbarRegularButton}" Name="Maximize" Content="3" Width="32" Click="Maximize_Click" HorizontalAlignment="Right" Canvas.Right="32" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" FontFamily="/FinsembleBridge;component/Resources/#finfont" Height="32" FontSize="16" />
+            <Button Style="{StaticResource ToolbarCloseButton}" Name="Close" Content ="p" Width="32" Click="Close_Click" HorizontalAlignment="Right" Canvas.Right="0" FontFamily="/FinsembleBridge;component/Resources/#finfont" Height="32" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
+            <Button Style="{StaticResource ToolbarRegularButton}" Name="Linker" Content="1" Width="32" Click="Linker_Click" HorizontalAlignment="Left"  Canvas.Left="0" FontFamily="/FinsembleBridge;component/Resources/#finfont" Height="32" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
+            <Button Style="{StaticResource ToolbarRegularButton}" Name="DockingButton" Content=">" Width="32" Click="Docking_Click" HorizontalAlignment="Right" Canvas.Right="64" FontFamily="/FinsembleBridge;component/Resources/#finfont" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" Height="32" FontSize="16" Visibility="Hidden" />
+            <Button Style="{StaticResource ToolbarRegularButton}" Name="AppSuites" Content="z" Width="32" Click="AppSuites_Click" HorizontalAlignment="Right" Canvas.Right="96" FontFamily="/FinsembleBridge;component/Resources/#finfont" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" Height="32" FontSize="16" Visibility="Hidden" />
             <Label Name="Title" Content="Hi! I'm a WPF App!" Foreground="White" VerticalAlignment="Center" Canvas.Left="35" Canvas.Right="105" FontSize="16"/>
         </Canvas>
     </Grid>

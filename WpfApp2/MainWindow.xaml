@@ -17,7 +17,7 @@
         GlassFrameThickness="0"/>
     </WindowChrome.WindowChrome>
     <Grid Background="White">
-        <Finsemble:FinsembleWPFHeader Name="FinsembleHeader" Height="34" VerticalAlignment="Top" Margin="0,0,0,0"/>
+        <Finsemble:FinsembleWPFHeader Name="FinsembleHeader" Height="32" VerticalAlignment="Top" Margin="0,0,0,0"/>
         <Button Name="Send" Content="Send Symbol" HorizontalAlignment="Left" Margin="10,76,0,0" VerticalAlignment="Top" Width="120" Height="23" Click="Send_Click" Panel.ZIndex="1"/>
         <TextBox Name="DataToSend" HorizontalAlignment="Left" Height="23" Margin="10,48,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Panel.ZIndex="1"/>
 

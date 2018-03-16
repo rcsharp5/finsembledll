@@ -101,20 +101,20 @@ namespace ChartIQ.Finsemble
                 {
                     DockingButton.Content = "@";
                     DockingButton.Visibility = Visibility.Visible;
-                    Minimize.SetValue(Canvas.RightProperty, 105.0);
+                    Minimize.SetValue(Canvas.RightProperty, 96.0);
                     DockingButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF039BFF"));
                 }
                 else if (groups.snappingGroup != "")
                 {
                     DockingButton.Content = ">";
                     DockingButton.Visibility = Visibility.Visible;
-                    Minimize.SetValue(Canvas.RightProperty, 105.0);
+                    Minimize.SetValue(Canvas.RightProperty, 96.0);
                     DockingButton.Background = Brushes.Transparent;
                 }
                 else
                 {
                     DockingButton.Visibility = Visibility.Hidden;
-                    Minimize.SetValue(Canvas.RightProperty, 70.0);
+                    Minimize.SetValue(Canvas.RightProperty, 64.0);
                 }
                 Window_Size_Changed();
             });
@@ -285,8 +285,8 @@ namespace ChartIQ.Finsemble
         {
             int LinkerGroupCount = LinkerGroups.Where(g => g.Value.Visibility == Visibility.Visible).Count();
             double LeftWidths = 35 + LinkerGroupCount * 12;
-            double RightWidths = 105;
-            if (DockingButton.IsVisible) RightWidths = 140;
+            double RightWidths = 96;
+            if (DockingButton.IsVisible) RightWidths = 128;
             Title.SetValue(Canvas.LeftProperty, LeftWidths);
             var titleWidth = Toolbar.ActualWidth - LeftWidths - RightWidths;
             if (titleWidth < 0) titleWidth = 0;
