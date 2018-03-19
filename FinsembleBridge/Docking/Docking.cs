@@ -400,7 +400,7 @@ namespace ChartIQ.Finsemble
         private void Resize(Point TopCorner, Point BottomCorner)
         {
             TimeSpan t = DateTime.Now - lastResizeSent;
-            if (t.TotalMilliseconds < 50) return;
+            if (t.TotalMilliseconds < 20) return;
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
                 dynamic props = new ExpandoObject();

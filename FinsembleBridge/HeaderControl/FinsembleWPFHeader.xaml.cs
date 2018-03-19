@@ -130,6 +130,7 @@ namespace ChartIQ.Finsemble
                 if (groups.dockingGroup != "")
                 {
                     DockingButton.Content = "@";
+                    DockingButton.ToolTip = "Detach Window";
                     DockingButton.Visibility = Visibility.Visible;
                     Minimize.SetValue(Canvas.RightProperty, 96.0);
                     DockingButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF039BFF"));
@@ -137,6 +138,7 @@ namespace ChartIQ.Finsemble
                 else if (groups.snappingGroup != "")
                 {
                     DockingButton.Content = ">";
+                    DockingButton.ToolTip = "Attach Windows";
                     DockingButton.Visibility = Visibility.Visible;
                     Minimize.SetValue(Canvas.RightProperty, 96.0);
                     DockingButton.Background = Brushes.Transparent;

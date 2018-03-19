@@ -104,6 +104,7 @@ namespace WpfApp2
                             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
                             {
                                 DroppedData.Content = data.ToString();
+                                DataToSend.Text = data.ToString();
                             });
                         };
                     })
@@ -133,6 +134,7 @@ namespace WpfApp2
                 Application.Current.Dispatcher.Invoke((Action)delegate //main thread
                 {
                     DataToSend.Text = args.response["data"].ToString();
+                    DroppedData.Content = args.response["data"].ToString();
                 });
             });
         }
