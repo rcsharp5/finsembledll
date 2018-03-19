@@ -27,8 +27,6 @@ namespace WpfApp2
         private string componentType = "Unknown";
         private string top, left, height, width, uuid;
 
-
-
         private void Send_Click(object sender, RoutedEventArgs e)
         {
             finsemble.SendCommand("LinkerClient.publish", new List<JToken>
@@ -93,15 +91,33 @@ namespace WpfApp2
                 {
                     this.Width = Double.Parse(width);
                 }
-                
+
+                finsemble.dragAndDropClient.setScrim(Scrim);
+
+                finsemble.dragAndDropClient.addReceivers(new List<KeyValuePair<string, EventHandler<FinsembleEventArgs>>>()
+                {
+                    new KeyValuePair<string, EventHandler<FinsembleEventArgs>>("symbol", (s, args) =>
+                    {
+                        var data = args.response["data"]?["symbol"]?["symbol"];
+                        if(data != null)
+                        {
+                            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                            {
+                                DroppedData.Content = data.ToString();
+                            });
+                        };
+                    })
+                });
+
                 this.Show();
-                
+
             });
 
             finsemble.SendCommand("LinkerClient.subscribe", new List<JToken>
             {
                 "symbol"
-            }, (s, args) => {
+            }, (s, args) =>
+            {
                 Application.Current.Dispatcher.Invoke((Action)delegate //main thread
                 {
                     DataToSend.Text = args.response["data"].ToString();

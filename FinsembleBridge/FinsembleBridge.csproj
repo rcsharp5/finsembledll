@@ -89,6 +89,7 @@
     <Compile Include="DistributedStore\DistributedStoreClient.cs" />
     <Compile Include="DistributedStore\StoreModel.cs" />
     <Compile Include="Docking\Docking.cs" />
+    <Compile Include="DragAndDrop\DragAndDropClient.cs" />
     <Compile Include="FinsembleBridge.cs" />
     <Compile Include="HeaderControl\FinsembleWPFHeader.xaml.cs">
       <DependentUpon>FinsembleWPFHeader.xaml</DependentUpon>

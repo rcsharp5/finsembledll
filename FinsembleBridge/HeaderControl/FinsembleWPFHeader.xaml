@@ -118,7 +118,7 @@
             <Button Style="{StaticResource ToolbarRegularButton}" Name="Linker" Content="1" Width="32" Click="Linker_Click" HorizontalAlignment="Left"  Canvas.Left="0" FontFamily="/FinsembleBridge;component/Resources/#finfont" Height="32" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
             <Button Style="{StaticResource ToolbarRegularButton}" Name="DockingButton" Content=">" Width="32" Click="Docking_Click" HorizontalAlignment="Right" Canvas.Right="64" FontFamily="/FinsembleBridge;component/Resources/#finfont" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" Height="32" FontSize="16" Visibility="Hidden" />
             <Button Style="{StaticResource ToolbarRegularButton}" Name="AppSuites" Content="z" Width="32" Click="AppSuites_Click" HorizontalAlignment="Right" Canvas.Right="96" FontFamily="/FinsembleBridge;component/Resources/#finfont" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" Height="32" FontSize="16" Visibility="Hidden" />
-            <Label Name="Title" Content="Hi! I'm a WPF App!" Foreground="White" VerticalAlignment="Center" Canvas.Left="35" Canvas.Right="105" FontSize="16"/>
+            <Label Name="Title" Content="Hi! I'm a WPF App!" Foreground="White" VerticalAlignment="Center" Canvas.Left="35" Canvas.Right="105" FontSize="16" HorizontalContentAlignment="Center"/>
         </Canvas>
     </Grid>
 </UserControl>

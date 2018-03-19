@@ -65,11 +65,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.DragAndDropClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.DragAndDropClient.html",
+          "hash": "v+95uQ/u1UI2Z3t275irlw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/ChartIQ.Finsemble.FinsembleBridge.yml",
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.FinsembleBridge.html",
-          "hash": "hyUnAIFJautDsLccUViD7w=="
+          "hash": "1gAfi+XvhGAYJ03VwjzCgQ=="
         }
       },
       "is_incremental": false,
@@ -105,7 +117,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.html",
-          "hash": "K9UsXIpQpdunbqGZBzySxg=="
+          "hash": "YuDD7kzwhXR5zJeQ4br0Jw=="
         }
       },
       "is_incremental": false,
@@ -117,7 +129,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "bvAHrI1VVQrkgJC27wPSXA=="
+          "hash": "gLrxueDf1tk/ZJV8yK6rdQ=="
         }
       },
       "is_incremental": false,

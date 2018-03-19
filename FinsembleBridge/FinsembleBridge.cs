@@ -5,6 +5,7 @@ using log4net;
 using Newtonsoft.Json.Linq;
 using Openfin.Desktop;
 using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace ChartIQ.Finsemble
 {
@@ -82,13 +83,15 @@ namespace ChartIQ.Finsemble
         public string uuid { private set; get; }
 
         internal RouterClient routerClient { private set; get; }
+        public AuthenticationClient authenticationClient { private set; get; }
         internal DistributedStoreClient distributedStoreClient { private set; get; }
         internal StorageClient storageClient { private set; get; }
         internal WindowClient windowClient { private set; get; }
         internal LauncherClient launcherClient { private set; get; }
         internal LinkerClient linkerClient { private set; get; }
         internal ConfigClient configClient { private set; get; }
-        public AuthenticationClient authenticationClient { private set; get; }
+        public DragAndDropClient dragAndDropClient { private set; get; }
+        
         public System.Windows.Window window { private set; get; }
         internal Docking docking;
         private Dictionary<string, List<string>> dependencies = new Dictionary<string, List<string>>()
@@ -183,6 +186,7 @@ namespace ChartIQ.Finsemble
                 launcherClient = new LauncherClient(this); 
                 distributedStoreClient = new DistributedStoreClient(this);
                 linkerClient = new LinkerClient(this);
+                dragAndDropClient = new DragAndDropClient(this);
                 
 
                 docking = new Docking(this, windowName + "-channel");
@@ -287,7 +291,7 @@ namespace ChartIQ.Finsemble
                     throw new Exception("This API does not exist or is not yet supported");
             }
         }
-        
+
         private void Disconnect()
         {
             Logger.Info("Disconnect called");
