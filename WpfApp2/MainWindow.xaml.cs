@@ -92,9 +92,9 @@ namespace WpfApp2
                     this.Width = Double.Parse(width);
                 }
 
-                finsemble.dragAndDropClient.setScrim(Scrim);
+                finsemble.dragAndDropClient.SetScrim(Scrim);
 
-                finsemble.dragAndDropClient.addReceivers(new List<KeyValuePair<string, EventHandler<FinsembleEventArgs>>>()
+                finsemble.dragAndDropClient.AddReceivers(new List<KeyValuePair<string, EventHandler<FinsembleEventArgs>>>()
                 {
                     new KeyValuePair<string, EventHandler<FinsembleEventArgs>>("symbol", (s, args) =>
                     {
@@ -105,6 +105,18 @@ namespace WpfApp2
                             {
                                 DroppedData.Content = data.ToString();
                             });
+                        };
+                    })
+                });
+
+                finsemble.dragAndDropClient.SetEmitters(new List<KeyValuePair<string, DragAndDropClient.emitter>>()
+                {
+                    new KeyValuePair<string, DragAndDropClient.emitter>("symbol", () =>
+                    {
+                        return new JObject
+                        {
+                            ["symbol"] = DataToSend.Text,
+                            ["description"] = "Symbol " + DataToSend.Text
                         };
                     })
                 });

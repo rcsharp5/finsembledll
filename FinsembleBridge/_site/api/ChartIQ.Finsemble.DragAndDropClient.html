@@ -139,17 +139,96 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="ChartIQ_Finsemble_DragAndDropClient_emitters_" data-uid="ChartIQ.Finsemble.DragAndDropClient.emitters*"></a>
+  <h4 id="ChartIQ_Finsemble_DragAndDropClient_emitters" data-uid="ChartIQ.Finsemble.DragAndDropClient.emitters">emitters</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, DragAndDropClient.emitter&gt; emitters { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="ChartIQ.Finsemble.DragAndDropClient.emitter.html">DragAndDropClient.emitter</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="ChartIQ_Finsemble_DragAndDropClient_receivers_" data-uid="ChartIQ.Finsemble.DragAndDropClient.receivers*"></a>
+  <h4 id="ChartIQ_Finsemble_DragAndDropClient_receivers" data-uid="ChartIQ.Finsemble.DragAndDropClient.receivers">receivers</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, EventHandler&lt;FinsembleEventArgs&gt;&gt; receivers { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.EventHandler</span>&lt;<a class="xref" href="ChartIQ.Finsemble.FinsembleEventArgs.html">FinsembleEventArgs</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="ChartIQ_Finsemble_DragAndDropClient_addReceivers_" data-uid="ChartIQ.Finsemble.DragAndDropClient.addReceivers*"></a>
-  <h4 id="ChartIQ_Finsemble_DragAndDropClient_addReceivers_System_Collections_Generic_List_System_Collections_Generic_KeyValuePair_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs____" data-uid="ChartIQ.Finsemble.DragAndDropClient.addReceivers(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs}}})">addReceivers(List&lt;KeyValuePair&lt;String, EventHandler&lt;FinsembleEventArgs&gt;&gt;&gt;)</h4>
+  <a id="ChartIQ_Finsemble_DragAndDropClient_AddEmitterChangeListener_" data-uid="ChartIQ.Finsemble.DragAndDropClient.AddEmitterChangeListener*"></a>
+  <h4 id="ChartIQ_Finsemble_DragAndDropClient_AddEmitterChangeListener_System_EventHandler_System_Boolean__" data-uid="ChartIQ.Finsemble.DragAndDropClient.AddEmitterChangeListener(System.EventHandler{System.Boolean})">AddEmitterChangeListener(EventHandler&lt;Boolean&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void addReceivers(List&lt;KeyValuePair&lt;string, EventHandler&lt;FinsembleEventArgs&gt;&gt;&gt; receivers)</code></pre>
+    <pre><code class="lang-csharp hljs">public void AddEmitterChangeListener(EventHandler&lt;bool&gt; listener)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.EventHandler</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">listener</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="ChartIQ_Finsemble_DragAndDropClient_AddReceivers_" data-uid="ChartIQ.Finsemble.DragAndDropClient.AddReceivers*"></a>
+  <h4 id="ChartIQ_Finsemble_DragAndDropClient_AddReceivers_System_Collections_Generic_List_System_Collections_Generic_KeyValuePair_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs____" data-uid="ChartIQ.Finsemble.DragAndDropClient.AddReceivers(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs}}})">AddReceivers(List&lt;KeyValuePair&lt;String, EventHandler&lt;FinsembleEventArgs&gt;&gt;&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddReceivers(List&lt;KeyValuePair&lt;string, EventHandler&lt;FinsembleEventArgs&gt;&gt;&gt; receivers)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -170,13 +249,40 @@
   </table>
   
   
-  <a id="ChartIQ_Finsemble_DragAndDropClient_removeReceivers_" data-uid="ChartIQ.Finsemble.DragAndDropClient.removeReceivers*"></a>
-  <h4 id="ChartIQ_Finsemble_DragAndDropClient_removeReceivers_System_Collections_Generic_List_System_Collections_Generic_KeyValuePair_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs____" data-uid="ChartIQ.Finsemble.DragAndDropClient.removeReceivers(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs}}})">removeReceivers(List&lt;KeyValuePair&lt;String, EventHandler&lt;FinsembleEventArgs&gt;&gt;&gt;)</h4>
+  <a id="ChartIQ_Finsemble_DragAndDropClient_DragStartWithData_" data-uid="ChartIQ.Finsemble.DragAndDropClient.DragStartWithData*"></a>
+  <h4 id="ChartIQ_Finsemble_DragAndDropClient_DragStartWithData_System_Object_" data-uid="ChartIQ.Finsemble.DragAndDropClient.DragStartWithData(System.Object)">DragStartWithData(Object)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void removeReceivers(List&lt;KeyValuePair&lt;string, EventHandler&lt;FinsembleEventArgs&gt;&gt;&gt; receivers)</code></pre>
+    <pre><code class="lang-csharp hljs">public void DragStartWithData(object sender)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">sender</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="ChartIQ_Finsemble_DragAndDropClient_RemoveReceivers_" data-uid="ChartIQ.Finsemble.DragAndDropClient.RemoveReceivers*"></a>
+  <h4 id="ChartIQ_Finsemble_DragAndDropClient_RemoveReceivers_System_Collections_Generic_List_System_Collections_Generic_KeyValuePair_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs____" data-uid="ChartIQ.Finsemble.DragAndDropClient.RemoveReceivers(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs}}})">RemoveReceivers(List&lt;KeyValuePair&lt;String, EventHandler&lt;FinsembleEventArgs&gt;&gt;&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveReceivers(List&lt;KeyValuePair&lt;string, EventHandler&lt;FinsembleEventArgs&gt;&gt;&gt; receivers)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -197,13 +303,40 @@
   </table>
   
   
-  <a id="ChartIQ_Finsemble_DragAndDropClient_setScrim_" data-uid="ChartIQ.Finsemble.DragAndDropClient.setScrim*"></a>
-  <h4 id="ChartIQ_Finsemble_DragAndDropClient_setScrim_System_Windows_Controls_Control_" data-uid="ChartIQ.Finsemble.DragAndDropClient.setScrim(System.Windows.Controls.Control)">setScrim(Control)</h4>
+  <a id="ChartIQ_Finsemble_DragAndDropClient_SetEmitters_" data-uid="ChartIQ.Finsemble.DragAndDropClient.SetEmitters*"></a>
+  <h4 id="ChartIQ_Finsemble_DragAndDropClient_SetEmitters_System_Collections_Generic_List_System_Collections_Generic_KeyValuePair_System_String_ChartIQ_Finsemble_DragAndDropClient_emitter___" data-uid="ChartIQ.Finsemble.DragAndDropClient.SetEmitters(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,ChartIQ.Finsemble.DragAndDropClient.emitter}})">SetEmitters(List&lt;KeyValuePair&lt;String, DragAndDropClient.emitter&gt;&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void setScrim(Control c)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SetEmitters(List&lt;KeyValuePair&lt;string, DragAndDropClient.emitter&gt;&gt; emitters)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="ChartIQ.Finsemble.DragAndDropClient.emitter.html">DragAndDropClient.emitter</a>&gt;&gt;</td>
+        <td><span class="parametername">emitters</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="ChartIQ_Finsemble_DragAndDropClient_SetScrim_" data-uid="ChartIQ.Finsemble.DragAndDropClient.SetScrim*"></a>
+  <h4 id="ChartIQ_Finsemble_DragAndDropClient_SetScrim_System_Windows_Controls_Control_" data-uid="ChartIQ.Finsemble.DragAndDropClient.SetScrim(System.Windows.Controls.Control)">SetScrim(Control)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetScrim(Control c)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

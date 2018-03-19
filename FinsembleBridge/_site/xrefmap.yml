@@ -61,48 +61,120 @@ references:
   commentId: Overload:ChartIQ.Finsemble.DragAndDropClient.#ctor
   fullName: ChartIQ.Finsemble.DragAndDropClient.DragAndDropClient
   nameWithType: DragAndDropClient.DragAndDropClient
-- uid: ChartIQ.Finsemble.DragAndDropClient.addReceivers(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs}}})
-  name: addReceivers(List<KeyValuePair<String, EventHandler<FinsembleEventArgs>>>)
-  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_addReceivers_System_Collections_Generic_List_System_Collections_Generic_KeyValuePair_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs____
-  commentId: M:ChartIQ.Finsemble.DragAndDropClient.addReceivers(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs}}})
-  name.vb: addReceivers(List(Of KeyValuePair(Of String, EventHandler(Of FinsembleEventArgs))))
-  fullName: ChartIQ.Finsemble.DragAndDropClient.addReceivers(System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<System.String, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>>>)
-  fullName.vb: ChartIQ.Finsemble.DragAndDropClient.addReceivers(System.Collections.Generic.List(Of System.Collections.Generic.KeyValuePair(Of System.String, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))))
-  nameWithType: DragAndDropClient.addReceivers(List<KeyValuePair<String, EventHandler<FinsembleEventArgs>>>)
-  nameWithType.vb: DragAndDropClient.addReceivers(List(Of KeyValuePair(Of String, EventHandler(Of FinsembleEventArgs))))
-- uid: ChartIQ.Finsemble.DragAndDropClient.addReceivers*
-  name: addReceivers
-  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_addReceivers_
-  commentId: Overload:ChartIQ.Finsemble.DragAndDropClient.addReceivers
-  fullName: ChartIQ.Finsemble.DragAndDropClient.addReceivers
-  nameWithType: DragAndDropClient.addReceivers
-- uid: ChartIQ.Finsemble.DragAndDropClient.removeReceivers(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs}}})
-  name: removeReceivers(List<KeyValuePair<String, EventHandler<FinsembleEventArgs>>>)
-  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_removeReceivers_System_Collections_Generic_List_System_Collections_Generic_KeyValuePair_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs____
-  commentId: M:ChartIQ.Finsemble.DragAndDropClient.removeReceivers(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs}}})
-  name.vb: removeReceivers(List(Of KeyValuePair(Of String, EventHandler(Of FinsembleEventArgs))))
-  fullName: ChartIQ.Finsemble.DragAndDropClient.removeReceivers(System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<System.String, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>>>)
-  fullName.vb: ChartIQ.Finsemble.DragAndDropClient.removeReceivers(System.Collections.Generic.List(Of System.Collections.Generic.KeyValuePair(Of System.String, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))))
-  nameWithType: DragAndDropClient.removeReceivers(List<KeyValuePair<String, EventHandler<FinsembleEventArgs>>>)
-  nameWithType.vb: DragAndDropClient.removeReceivers(List(Of KeyValuePair(Of String, EventHandler(Of FinsembleEventArgs))))
-- uid: ChartIQ.Finsemble.DragAndDropClient.removeReceivers*
-  name: removeReceivers
-  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_removeReceivers_
-  commentId: Overload:ChartIQ.Finsemble.DragAndDropClient.removeReceivers
-  fullName: ChartIQ.Finsemble.DragAndDropClient.removeReceivers
-  nameWithType: DragAndDropClient.removeReceivers
-- uid: ChartIQ.Finsemble.DragAndDropClient.setScrim(System.Windows.Controls.Control)
-  name: setScrim(Control)
-  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_setScrim_System_Windows_Controls_Control_
-  commentId: M:ChartIQ.Finsemble.DragAndDropClient.setScrim(System.Windows.Controls.Control)
-  fullName: ChartIQ.Finsemble.DragAndDropClient.setScrim(System.Windows.Controls.Control)
-  nameWithType: DragAndDropClient.setScrim(Control)
-- uid: ChartIQ.Finsemble.DragAndDropClient.setScrim*
-  name: setScrim
-  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_setScrim_
-  commentId: Overload:ChartIQ.Finsemble.DragAndDropClient.setScrim
-  fullName: ChartIQ.Finsemble.DragAndDropClient.setScrim
-  nameWithType: DragAndDropClient.setScrim
+- uid: ChartIQ.Finsemble.DragAndDropClient.AddEmitterChangeListener(System.EventHandler{System.Boolean})
+  name: AddEmitterChangeListener(EventHandler<Boolean>)
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_AddEmitterChangeListener_System_EventHandler_System_Boolean__
+  commentId: M:ChartIQ.Finsemble.DragAndDropClient.AddEmitterChangeListener(System.EventHandler{System.Boolean})
+  name.vb: AddEmitterChangeListener(EventHandler(Of Boolean))
+  fullName: ChartIQ.Finsemble.DragAndDropClient.AddEmitterChangeListener(System.EventHandler<System.Boolean>)
+  fullName.vb: ChartIQ.Finsemble.DragAndDropClient.AddEmitterChangeListener(System.EventHandler(Of System.Boolean))
+  nameWithType: DragAndDropClient.AddEmitterChangeListener(EventHandler<Boolean>)
+  nameWithType.vb: DragAndDropClient.AddEmitterChangeListener(EventHandler(Of Boolean))
+- uid: ChartIQ.Finsemble.DragAndDropClient.AddEmitterChangeListener*
+  name: AddEmitterChangeListener
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_AddEmitterChangeListener_
+  commentId: Overload:ChartIQ.Finsemble.DragAndDropClient.AddEmitterChangeListener
+  fullName: ChartIQ.Finsemble.DragAndDropClient.AddEmitterChangeListener
+  nameWithType: DragAndDropClient.AddEmitterChangeListener
+- uid: ChartIQ.Finsemble.DragAndDropClient.AddReceivers(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs}}})
+  name: AddReceivers(List<KeyValuePair<String, EventHandler<FinsembleEventArgs>>>)
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_AddReceivers_System_Collections_Generic_List_System_Collections_Generic_KeyValuePair_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs____
+  commentId: M:ChartIQ.Finsemble.DragAndDropClient.AddReceivers(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs}}})
+  name.vb: AddReceivers(List(Of KeyValuePair(Of String, EventHandler(Of FinsembleEventArgs))))
+  fullName: ChartIQ.Finsemble.DragAndDropClient.AddReceivers(System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<System.String, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>>>)
+  fullName.vb: ChartIQ.Finsemble.DragAndDropClient.AddReceivers(System.Collections.Generic.List(Of System.Collections.Generic.KeyValuePair(Of System.String, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))))
+  nameWithType: DragAndDropClient.AddReceivers(List<KeyValuePair<String, EventHandler<FinsembleEventArgs>>>)
+  nameWithType.vb: DragAndDropClient.AddReceivers(List(Of KeyValuePair(Of String, EventHandler(Of FinsembleEventArgs))))
+- uid: ChartIQ.Finsemble.DragAndDropClient.AddReceivers*
+  name: AddReceivers
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_AddReceivers_
+  commentId: Overload:ChartIQ.Finsemble.DragAndDropClient.AddReceivers
+  fullName: ChartIQ.Finsemble.DragAndDropClient.AddReceivers
+  nameWithType: DragAndDropClient.AddReceivers
+- uid: ChartIQ.Finsemble.DragAndDropClient.DragStartWithData(System.Object)
+  name: DragStartWithData(Object)
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_DragStartWithData_System_Object_
+  commentId: M:ChartIQ.Finsemble.DragAndDropClient.DragStartWithData(System.Object)
+  fullName: ChartIQ.Finsemble.DragAndDropClient.DragStartWithData(System.Object)
+  nameWithType: DragAndDropClient.DragStartWithData(Object)
+- uid: ChartIQ.Finsemble.DragAndDropClient.DragStartWithData*
+  name: DragStartWithData
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_DragStartWithData_
+  commentId: Overload:ChartIQ.Finsemble.DragAndDropClient.DragStartWithData
+  fullName: ChartIQ.Finsemble.DragAndDropClient.DragStartWithData
+  nameWithType: DragAndDropClient.DragStartWithData
+- uid: ChartIQ.Finsemble.DragAndDropClient.emitter
+  name: DragAndDropClient.emitter
+  href: api/ChartIQ.Finsemble.DragAndDropClient.emitter.html
+  commentId: T:ChartIQ.Finsemble.DragAndDropClient.emitter
+  fullName: ChartIQ.Finsemble.DragAndDropClient.emitter
+  nameWithType: DragAndDropClient.emitter
+- uid: ChartIQ.Finsemble.DragAndDropClient.emitters
+  name: emitters
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_emitters
+  commentId: P:ChartIQ.Finsemble.DragAndDropClient.emitters
+  fullName: ChartIQ.Finsemble.DragAndDropClient.emitters
+  nameWithType: DragAndDropClient.emitters
+- uid: ChartIQ.Finsemble.DragAndDropClient.emitters*
+  name: emitters
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_emitters_
+  commentId: Overload:ChartIQ.Finsemble.DragAndDropClient.emitters
+  fullName: ChartIQ.Finsemble.DragAndDropClient.emitters
+  nameWithType: DragAndDropClient.emitters
+- uid: ChartIQ.Finsemble.DragAndDropClient.receivers
+  name: receivers
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_receivers
+  commentId: P:ChartIQ.Finsemble.DragAndDropClient.receivers
+  fullName: ChartIQ.Finsemble.DragAndDropClient.receivers
+  nameWithType: DragAndDropClient.receivers
+- uid: ChartIQ.Finsemble.DragAndDropClient.receivers*
+  name: receivers
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_receivers_
+  commentId: Overload:ChartIQ.Finsemble.DragAndDropClient.receivers
+  fullName: ChartIQ.Finsemble.DragAndDropClient.receivers
+  nameWithType: DragAndDropClient.receivers
+- uid: ChartIQ.Finsemble.DragAndDropClient.RemoveReceivers(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs}}})
+  name: RemoveReceivers(List<KeyValuePair<String, EventHandler<FinsembleEventArgs>>>)
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_RemoveReceivers_System_Collections_Generic_List_System_Collections_Generic_KeyValuePair_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs____
+  commentId: M:ChartIQ.Finsemble.DragAndDropClient.RemoveReceivers(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs}}})
+  name.vb: RemoveReceivers(List(Of KeyValuePair(Of String, EventHandler(Of FinsembleEventArgs))))
+  fullName: ChartIQ.Finsemble.DragAndDropClient.RemoveReceivers(System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<System.String, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>>>)
+  fullName.vb: ChartIQ.Finsemble.DragAndDropClient.RemoveReceivers(System.Collections.Generic.List(Of System.Collections.Generic.KeyValuePair(Of System.String, System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))))
+  nameWithType: DragAndDropClient.RemoveReceivers(List<KeyValuePair<String, EventHandler<FinsembleEventArgs>>>)
+  nameWithType.vb: DragAndDropClient.RemoveReceivers(List(Of KeyValuePair(Of String, EventHandler(Of FinsembleEventArgs))))
+- uid: ChartIQ.Finsemble.DragAndDropClient.RemoveReceivers*
+  name: RemoveReceivers
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_RemoveReceivers_
+  commentId: Overload:ChartIQ.Finsemble.DragAndDropClient.RemoveReceivers
+  fullName: ChartIQ.Finsemble.DragAndDropClient.RemoveReceivers
+  nameWithType: DragAndDropClient.RemoveReceivers
+- uid: ChartIQ.Finsemble.DragAndDropClient.SetEmitters(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,ChartIQ.Finsemble.DragAndDropClient.emitter}})
+  name: SetEmitters(List<KeyValuePair<String, DragAndDropClient.emitter>>)
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_SetEmitters_System_Collections_Generic_List_System_Collections_Generic_KeyValuePair_System_String_ChartIQ_Finsemble_DragAndDropClient_emitter___
+  commentId: M:ChartIQ.Finsemble.DragAndDropClient.SetEmitters(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,ChartIQ.Finsemble.DragAndDropClient.emitter}})
+  name.vb: SetEmitters(List(Of KeyValuePair(Of String, DragAndDropClient.emitter)))
+  fullName: ChartIQ.Finsemble.DragAndDropClient.SetEmitters(System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<System.String, ChartIQ.Finsemble.DragAndDropClient.emitter>>)
+  fullName.vb: ChartIQ.Finsemble.DragAndDropClient.SetEmitters(System.Collections.Generic.List(Of System.Collections.Generic.KeyValuePair(Of System.String, ChartIQ.Finsemble.DragAndDropClient.emitter)))
+  nameWithType: DragAndDropClient.SetEmitters(List<KeyValuePair<String, DragAndDropClient.emitter>>)
+  nameWithType.vb: DragAndDropClient.SetEmitters(List(Of KeyValuePair(Of String, DragAndDropClient.emitter)))
+- uid: ChartIQ.Finsemble.DragAndDropClient.SetEmitters*
+  name: SetEmitters
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_SetEmitters_
+  commentId: Overload:ChartIQ.Finsemble.DragAndDropClient.SetEmitters
+  fullName: ChartIQ.Finsemble.DragAndDropClient.SetEmitters
+  nameWithType: DragAndDropClient.SetEmitters
+- uid: ChartIQ.Finsemble.DragAndDropClient.SetScrim(System.Windows.Controls.Control)
+  name: SetScrim(Control)
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_SetScrim_System_Windows_Controls_Control_
+  commentId: M:ChartIQ.Finsemble.DragAndDropClient.SetScrim(System.Windows.Controls.Control)
+  fullName: ChartIQ.Finsemble.DragAndDropClient.SetScrim(System.Windows.Controls.Control)
+  nameWithType: DragAndDropClient.SetScrim(Control)
+- uid: ChartIQ.Finsemble.DragAndDropClient.SetScrim*
+  name: SetScrim
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient_SetScrim_
+  commentId: Overload:ChartIQ.Finsemble.DragAndDropClient.SetScrim
+  fullName: ChartIQ.Finsemble.DragAndDropClient.SetScrim
+  nameWithType: DragAndDropClient.SetScrim
 - uid: ChartIQ.Finsemble.FinsembleBridge
   name: FinsembleBridge
   href: api/ChartIQ.Finsemble.FinsembleBridge.html

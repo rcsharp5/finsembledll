@@ -12,7 +12,7 @@
           "hash": "7yfAWnpl2NeoUQOb4OFUFw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -24,7 +24,7 @@
           "hash": "JoavORvjWWsnQMp4FlppaQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -48,7 +48,7 @@
           "hash": "Y5OvPgPtTvm7S4v47g9AnA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -60,7 +60,19 @@
           "hash": "D99CppWGcMvcXJ2BZ0FouQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.DragAndDropClient.emitter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.DragAndDropClient.emitter.html",
+          "hash": "fAo45ZdGIeyzZg6Gu9xDkw=="
+        }
+      },
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -69,10 +81,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.DragAndDropClient.html",
-          "hash": "v+95uQ/u1UI2Z3t275irlw=="
+          "hash": "cmzEn/B1HwyVqPqgrNtlEQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -84,7 +96,7 @@
           "hash": "1gAfi+XvhGAYJ03VwjzCgQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -96,7 +108,7 @@
           "hash": "ZOja+BulXpk2qtNH/osagQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -108,7 +120,7 @@
           "hash": "7Q2lH7Yj18dt2ws+kDbGcA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -117,10 +129,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.html",
-          "hash": "YuDD7kzwhXR5zJeQ4br0Jw=="
+          "hash": "I4kkl8QZSwEb+lIJS+w05A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -129,7 +141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "gLrxueDf1tk/ZJV8yK6rdQ=="
+          "hash": "pf2qgABCS4adLlxZSpvQyg=="
         }
       },
       "is_incremental": false,
@@ -151,8 +163,7 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": false,
-        "details": "Disable incremental build by force rebuild option.",
+        "can_incremental": true,
         "incrementalPhase": "build"
       },
       "processors": {
@@ -162,19 +173,19 @@
           "incrementalPhase": "build"
         },
         "ConceptualDocumentProcessor": {
-          "can_incremental": false,
+          "can_incremental": true,
           "incrementalPhase": "build"
         },
         "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
+          "can_incremental": true,
           "incrementalPhase": "build"
         }
       }
     },
     {
       "status": {
-        "can_incremental": false,
-        "details": "Cannot support incremental post processing, the reason is: it's disabled.",
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
         "incrementalPhase": "postProcessing"
       },
       "processors": {}

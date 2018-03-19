@@ -24,6 +24,7 @@ namespace ChartIQ.Finsemble
         public FinsembleBridge bridge;
         private SortedDictionary<string, Button> LinkerGroups = new SortedDictionary<string, Button>();
         private string dockingGroup, snappingGroup;
+        private bool dragging = true;
 
         public FinsembleWPFHeader()
         {
@@ -62,7 +63,7 @@ namespace ChartIQ.Finsemble
                             groupRectangle.Height = 20;
                             groupRectangle.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString((string)item["color"]));
                             Toolbar.Children.Add(groupRectangle);
-                            groupRectangle.SetValue(Canvas.TopProperty, (Toolbar.ActualHeight - groupRectangle.Height)/2);
+                            groupRectangle.SetValue(Canvas.TopProperty, (Toolbar.ActualHeight - groupRectangle.Height) / 2);
                             groupRectangle.Name = groupName;
                             var style = this.Resources["LinkerPillStyle"];
                             groupRectangle.SetValue(StyleProperty, style);
@@ -89,6 +90,35 @@ namespace ChartIQ.Finsemble
             bridge = finsemble;
             bridge.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;
             bridge.linkerClient.OnStateChange(Linker_StateChange);
+            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            {
+                bridge.window.Activated += Window_Activated;
+                bridge.window.Deactivated += Window_Deactivated;
+            });
+            bridge.dragAndDropClient.AddEmitterChangeListener((s, e) =>
+            {
+                Application.Current.Dispatcher.Invoke((Action)delegate
+                {
+                    if (e)
+                    {
+                        Emitter.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        Emitter.Visibility = Visibility.Hidden;
+                    }
+                });
+            });
+        }
+
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            Toolbar.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#233958"));
+        }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            Toolbar.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#133f7c"));
         }
 
         private void Docking_GroupUpdate(object sender, dynamic groups)
@@ -130,6 +160,11 @@ namespace ChartIQ.Finsemble
 
         private void Toolbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (dragging)
+            {
+                dragging = false;
+                return;
+            }
             bridge.docking.StartMove(sender, e);
         }
 
@@ -210,7 +245,8 @@ namespace ChartIQ.Finsemble
                         bridge.launcherClient.GetWindowsInGroup(new JObject
                         {
                             ["groupName"] = g.Value
-                        }, (s2, args2) => {
+                        }, (s2, args2) =>
+                        {
                             args.ToString();
                             numberOfGroups--;
                             if (numberOfGroups == 0)
@@ -237,11 +273,12 @@ namespace ChartIQ.Finsemble
                     {
                         var dockingGroupList = (args.response as JArray).ToObject<List<string>>();
                         dockingGroupTaskCompletionSource.SetResult(dockingGroupList);
-                    } else
+                    }
+                    else
                     {
                         dockingGroupTaskCompletionSource.SetResult(new List<string>());
                     }
-                    
+
                 });
                 windowList.AddRange(dockingGroupChannelTask.Result);
             }
@@ -284,8 +321,13 @@ namespace ChartIQ.Finsemble
         private void Window_Size_Changed()
         {
             int LinkerGroupCount = LinkerGroups.Where(g => g.Value.Visibility == Visibility.Visible).Count();
-            double LeftWidths = 35 + LinkerGroupCount * 12;
+            double LeftWidths = 32 + LinkerGroupCount * 12;
             double RightWidths = 96;
+            if (Emitter.Visibility == Visibility.Visible)
+            {
+                Emitter.SetValue(Canvas.LeftProperty, LeftWidths);
+                LeftWidths += 32;
+            }
             if (DockingButton.IsVisible) RightWidths = 128;
             Title.SetValue(Canvas.LeftProperty, LeftWidths);
             var titleWidth = Toolbar.ActualWidth - LeftWidths - RightWidths;
@@ -310,6 +352,12 @@ namespace ChartIQ.Finsemble
             {
                 bridge.docking.FormGroup();
             }
+        }
+
+        private void Label_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            dragging = true;
+            bridge.dragAndDropClient.DragStartWithData(sender);
         }
 
         private void AppSuites_Click(object sender, RoutedEventArgs e)

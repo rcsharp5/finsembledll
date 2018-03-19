@@ -15,7 +15,10 @@ namespace ChartIQ.Finsemble
     {
         FinsembleBridge bridge;
         RouterClient routerClient;
-        Dictionary<string, EventHandler<FinsembleEventArgs>> receivers = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
+        public Dictionary<string, EventHandler<FinsembleEventArgs>> receivers { private set; get; } = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
+        public delegate JObject emitter();
+        public Dictionary<string, emitter> emitters { private set; get; } = new Dictionary<string, emitter>();
+        private EventHandler<bool> hasEmitters;
         const string DRAG_START_CHANNEL = "DragAndDropClient.dragStart";
         const string DRAG_END_CHANNEL = "DragAndDropClient.dragEnd";
         Control scrim;
@@ -31,7 +34,7 @@ namespace ChartIQ.Finsemble
                 if (scrim == null) return;
                 var dataBeingShared = (args.response?["data"] as JArray).ToObject<List<string>>();
                 dynamic a = scrim;
-                if (canReceiveData(dataBeingShared))
+                if ((string)args.response["header"]["origin"]!="RouterClient." + bridge.windowName && CanReceiveData(dataBeingShared))
                 {
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
@@ -90,7 +93,7 @@ namespace ChartIQ.Finsemble
 
         }
 
-        private bool canReceiveData(List<string> dataTypes)
+        private bool CanReceiveData(List<string> dataTypes)
         {
             foreach (var dataType in dataTypes)
             {
@@ -116,7 +119,7 @@ namespace ChartIQ.Finsemble
             return false;
         }
 
-        public void setScrim(Control c)
+        public void SetScrim(Control c)
         {
             scrim = c;
             scrim.PreviewDrop += Scrim_PreviewDrop;
@@ -165,7 +168,7 @@ namespace ChartIQ.Finsemble
             e.Handled = true;
         }
 
-        public void addReceivers(List<KeyValuePair<string, EventHandler<FinsembleEventArgs>>> receivers)
+        public void AddReceivers(List<KeyValuePair<string, EventHandler<FinsembleEventArgs>>> receivers)
         {
             foreach(var receiver in receivers)
             {
@@ -180,13 +183,59 @@ namespace ChartIQ.Finsemble
             }
         }
 
-        public void removeReceivers(List<KeyValuePair<string, EventHandler<FinsembleEventArgs>>> receivers)
+        public void RemoveReceivers(List<KeyValuePair<string, EventHandler<FinsembleEventArgs>>> receivers)
         {
             foreach (var receiver in receivers)
             {
                 var type = receiver.Key;
                 this.receivers[type] -= receiver.Value;
             }
+        }
+        
+
+        public void SetEmitters(List<KeyValuePair<string, emitter>> emitters)
+        {
+            foreach(var emitter in emitters)
+            {
+                var type = emitter.Key;
+                if (!this.emitters.ContainsKey(type))
+                {
+                    this.emitters.Add(type, emitter.Value);
+                }
+                else
+                {
+                    this.emitters[type] = emitter.Value;
+                }
+            }
+            hasEmitters?.Invoke(this, (emitters.Count > 0));
+        }
+
+        public void AddEmitterChangeListener(EventHandler<bool> listener)
+        {
+            hasEmitters += listener;
+        }
+
+        public void DragStartWithData(object sender)
+        {
+            routerClient.Transmit(DRAG_START_CHANNEL, JArray.FromObject(emitters.Keys));
+            var ret = DragDrop.DoDragDrop(sender as Control, emit().ToString(), DragDropEffects.Copy);
+            routerClient.Transmit(DRAG_END_CHANNEL, new JObject { });
+        }
+
+        private JObject emit()
+        {
+            var dataToEmit = new JObject
+            {
+                ["FSBL"] = true,
+                ["containsData"] = true,
+                ["window"] = bridge.windowName,
+                ["data"] = new JObject { }
+            };
+            foreach (var emitter in emitters)
+            {
+                dataToEmit["data"][emitter.Key] = emitter.Value();
+            }
+            return dataToEmit;
         }
 
     }
