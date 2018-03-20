@@ -251,6 +251,6 @@ namespace ChartIQ.Finsemble
         {
             publishListeners[topic] -= responseHandler;
         }
-        
+ 
     }
 }
