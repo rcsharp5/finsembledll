@@ -177,7 +177,10 @@ namespace ChartIQ.Finsemble
                 case "setOpacity":
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
-                        dockingWindow.Opacity = Double.Parse(joMessage.GetValue("opacity").ToString());
+                        if (!resizing)
+                        {
+                            dockingWindow.Opacity = Double.Parse(joMessage.GetValue("opacity").ToString());
+                        }
                     });
                     break;
                 case "hide":

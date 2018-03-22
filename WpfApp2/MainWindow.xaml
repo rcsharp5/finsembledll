@@ -8,7 +8,8 @@
         xmlns:Custom="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon" x:Class="WpfApp2.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" 
-        Width="525" WindowStyle="None" Background="{x:Null}">
+        Width="525" WindowStyle="None" Background="{x:Null}"
+        AllowsTransparency="True">
 
     <WindowChrome.WindowChrome>
         <WindowChrome     
