@@ -1,0 +1,201 @@
+{
+  "homepages": [],
+  "source_base_path": "C:/Users/Sidd/Documents/GitHub/finsemble-wpf/FinsembleBridge",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "7yfAWnpl2NeoUQOb4OFUFw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/intro.html",
+          "hash": "JoavORvjWWsnQMp4FlppaQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html",
+          "hash": "xVlQaX7Tk85omoiWv3O+Ag=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "Y5OvPgPtTvm7S4v47g9AnA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.AuthenticationClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.AuthenticationClient.html",
+          "hash": "D99CppWGcMvcXJ2BZ0FouQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.DragAndDropClient.emitter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.DragAndDropClient.emitter.html",
+          "hash": "fAo45ZdGIeyzZg6Gu9xDkw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.DragAndDropClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.DragAndDropClient.html",
+          "hash": "cmzEn/B1HwyVqPqgrNtlEQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.FinsembleBridge.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.FinsembleBridge.html",
+          "hash": "1gAfi+XvhGAYJ03VwjzCgQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.FinsembleEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.FinsembleEventArgs.html",
+          "hash": "ZOja+BulXpk2qtNH/osagQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.FinsembleWPFHeader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.FinsembleWPFHeader.html",
+          "hash": "7Q2lH7Yj18dt2ws+kDbGcA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ChartIQ.Finsemble.html",
+          "hash": "I4kkl8QZSwEb+lIJS+w05A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "obj/api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "pf2qgABCS4adLlxZSpvQyg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "frPdeW5hGroGiyexwMQIhg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Disable incremental build by force rebuild option.",
+        "incrementalPhase": "build"
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build"
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build"
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: it's disabled.",
+        "incrementalPhase": "postProcessing"
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

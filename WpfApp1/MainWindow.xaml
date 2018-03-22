@@ -8,9 +8,7 @@
         Title="MainWindow" Height="350" 
         Width="525" WindowStyle="None" Background="{x:Null}" 
         Activated="Window_GotFocus" 
-        Deactivated="Window_LostFocus"
-        StateChanged="Window_StateChanged"
-        Closing="Window_Closing">
+        Deactivated="Window_LostFocus">
 
     <WindowChrome.WindowChrome>
         <WindowChrome     
@@ -134,10 +132,12 @@
             <Button Style="{StaticResource ToolbarCloseButton}" Name="Close" Content ="p" Width="35" Click="Button_Click_3" HorizontalAlignment="Right" Canvas.Right="0" FontFamily="/WpfApp1;component/Resources/#finfont" Height="35" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
             <Button Style="{StaticResource ToolbarRegularButton}" Name="Linker" Content="1" Width="35" Click="Linker_Click" HorizontalAlignment="Left"  Canvas.Left="0" FontFamily="/WpfApp1;component/Resources/#finfont" Height="35" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" FontSize="16"/>
             <Button Style="{StaticResource ToolbarRegularButton}" Name="Docking" Content=">" Width="35" Click="Docking_Click" HorizontalAlignment="Right" Canvas.Right="70" FontFamily="/WpfApp1;component/Resources/#finfont" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" Height="35" FontSize="16" Visibility="Hidden" />
+            <Button Style="{StaticResource ToolbarRegularButton}" Name="AppSuites" Content="z" Width="35" Click="AppSuites_Click" HorizontalAlignment="Right" Canvas.Right="105" FontFamily="/WpfApp1;component/Resources/#finfont" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" Height="35" FontSize="16" Visibility="Hidden" />
+            
             <Label Name="Title" Content="Hi! I'm a WPF App!" Foreground="White" VerticalAlignment="Center" Canvas.Left="35" Canvas.Right="105" FontSize="16"/>
         </Canvas>
         <TextBox Name="SendData" HorizontalAlignment="Left" Height="23" Margin="41,84,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button Name="SendButton" Content="Send Symbol" HorizontalAlignment="Left" Margin="166,83,0,0" VerticalAlignment="Top" Width="75" Height="24" Click="SendButton_Click"/>
+        <Button Name="SendButton" Content="Send Symbol" HorizontalAlignment="Left" Margin="166,83,0,0" VerticalAlignment="Top" Width="75" Height="24" Click="SendButton_Click" RenderTransformOrigin="0.094,0.487"/>
     </Grid>
 
 </Window>

@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp1", "WpfApp1\WpfApp1.csproj", "{02AE3E13-951D-4E12-886E-CB132A78411E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinsembleBridge", "FinsembleBridge\FinsembleBridge.csproj", "{DD9676C0-71AB-4CA2-9CCF-930D3C047258}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp2", "WpfApp2\WpfApp2.csproj", "{B6FB5104-A0EA-479A-8BFC-4DFE207CEB24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication", "Authentication\Authentication.csproj", "{815ADC60-447D-445B-A875-B50218956A07}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{02AE3E13-951D-4E12-886E-CB132A78411E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02AE3E13-951D-4E12-886E-CB132A78411E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02AE3E13-951D-4E12-886E-CB132A78411E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02AE3E13-951D-4E12-886E-CB132A78411E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DD9676C0-71AB-4CA2-9CCF-930D3C047258}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DD9676C0-71AB-4CA2-9CCF-930D3C047258}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD9676C0-71AB-4CA2-9CCF-930D3C047258}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD9676C0-71AB-4CA2-9CCF-930D3C047258}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6FB5104-A0EA-479A-8BFC-4DFE207CEB24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6FB5104-A0EA-479A-8BFC-4DFE207CEB24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6FB5104-A0EA-479A-8BFC-4DFE207CEB24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6FB5104-A0EA-479A-8BFC-4DFE207CEB24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{815ADC60-447D-445B-A875-B50218956A07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{815ADC60-447D-445B-A875-B50218956A07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{815ADC60-447D-445B-A875-B50218956A07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{815ADC60-447D-445B-A875-B50218956A07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

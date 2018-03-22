@@ -2,7 +2,7 @@
 
 namespace ChartIQ.Finsemble
 {
-	public class CallbackChannel
+	internal class CallbackChannel
     {
         /// <summary>
         /// GUID for the CallbackChannel instance.

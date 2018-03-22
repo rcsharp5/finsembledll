@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace WpfApp1
 {
@@ -24,16 +26,14 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
-        private LinkerWindow linkerWindow;
+        //private LinkerWindow linkerWindow;
         private SortedDictionary<string, Button> LinkerGroups = new SortedDictionary<string, Button>();
-        private FinsembleBridge bridge;
+        private FinsembleBridge finsemble;
         private string windowName;
-        private Docking docking;
-        private bool sendCloseToFinsemble = true;
-        private LinkerClient linkerClient;
+        private string componentType = "Unknown";
+        private string top, left, height, width, uuid;
 
-
-        public MainWindow(string FinsembleWindowName, string top, string left, string height, string width)
+        public MainWindow(string FinsembleWindowName, string componentType, string top, string left, string height, string width, string uuid)
         {
             if (!string.IsNullOrEmpty(FinsembleWindowName))
             {
@@ -41,94 +41,170 @@ namespace WpfApp1
             }
             else
             {
-                windowName = Guid.NewGuid().ToString();
+                windowName = Guid.NewGuid().ToString(); //"Finsemble WPF Demo-37-2239";
             }
 
-            if (!string.IsNullOrEmpty(top))
+            if (!string.IsNullOrEmpty(componentType))
             {
-                this.Top = Double.Parse(top);
+                this.componentType = componentType;
             }
 
-            if (!string.IsNullOrEmpty(left))
-            {
-                this.Left = Double.Parse(left);
-            }
+            this.top = top;
+            this.left = left;
+            this.height = height;
+            this.width = width;
+            this.uuid = uuid;
 
-            if (!string.IsNullOrEmpty(height))
-            {
-                this.Height = Double.Parse(height);
-            }
-
-            if (!string.IsNullOrEmpty(width))
-            {
-                this.Width = Double.Parse(width);
-            }
-
-            bridge = new FinsembleBridge(new System.Version("8.56.28.34"));
-            bridge.Connect();
-            bridge.Connected += Bridge_Connected;
+            finsemble = new FinsembleBridge(new System.Version("8.56.28.34"), windowName, componentType, this, uuid);
+            finsemble.Connect();
+            finsemble.Connected += Finsemble_Connected;
         }
 
-        private void Bridge_Connected(object sender, EventArgs e)
+        private void Finsemble_Connected(object sender, EventArgs e)
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                //instantiate LinkerClient
-                linkerClient = new LinkerClient(bridge);
-
-                // Create the Linker Window. It needs a connected Openfin Bridge
-                linkerWindow = new LinkerWindow(linkerClient);
-
-                // What to call when subscribed data is received
-                bridge.LinkerSubscribe += LinkerSubscriber;
-
-                // Subscribe to topics
-                linkerClient.subscribe("symbol");
+                finsemble.linkerClient.Subscribe("symbol", (EventHandler<FinsembleEventArgs>)delegate(object s, FinsembleEventArgs args)
+                {
+                    Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                    {
+                        SendData.Text = args.response["data"].ToString();
+                    });
+                });
 
                 // Initialize this Window and show it
                 InitializeComponent();
+                LinkerStateChanged();
+                if (!string.IsNullOrEmpty(top))
+                {
+                    this.Top = Double.Parse(top);
+                }
+
+                if (!string.IsNullOrEmpty(left))
+                {
+                    this.Left = Double.Parse(left);
+                }
+
+                if (!string.IsNullOrEmpty(height))
+                {
+                    this.Height = Double.Parse(height);
+                }
+
+                if (!string.IsNullOrEmpty(width))
+                {
+                    this.Width = Double.Parse(width);
+                }
                 this.Show();
 
-                // Connect to Finsemble Docking
-                docking = new Docking(bridge, this, windowName, windowName + "-channel");
+                // docking icon
+                finsemble.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;
+
+                // app suites
+                finsemble.launcherClient.GetGroupsForWindow((s, args) => {
+
+                });
+
+
+                // router test
+                //bridge.routerClient.addListener("test", FinsembleListener);
+                
             });
+        }
+
+        public void LinkerStateChanged()
+        {
+            finsemble.linkerClient.OnStateChange((EventHandler<FinsembleEventArgs>)delegate (object sender2, FinsembleEventArgs args)
+            {
+                Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                {
+                    var channels = args.response["channels"] as JArray;
+                    var allChannels = args.response["allChannels"] as JArray;
+
+                    // Hide all LinkerGroups
+                    foreach (var item in LinkerGroups)
+                    {
+                        item.Value.Visibility = Visibility.Hidden;
+                    }
+
+                    // Loop through Channels
+                    Double baseLeft = 36.0;
+                    Double increment = 15;
+                    foreach (JObject item in allChannels)
+                    {
+                        var groupName = (string)item["name"];
+                        // check if in this group
+                        if (channels!= null && channels.Where(jt => jt.Value<string>() == groupName).Count() > 0)
+                        {
+                            if (!LinkerGroups.ContainsKey(groupName))
+                            {
+                                var groupRectangle = new Button();
+                                groupRectangle.HorizontalAlignment = HorizontalAlignment.Left;
+                                groupRectangle.VerticalAlignment = VerticalAlignment.Top;
+                                groupRectangle.Width = 10;
+                                groupRectangle.Height = 25;
+                                groupRectangle.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString((string)item["color"]));
+                                Toolbar.Children.Add(groupRectangle);
+                                groupRectangle.SetValue(Canvas.TopProperty, 5.0);
+                                groupRectangle.Name = groupName;
+                                var style = this.Resources["LinkerPill"];
+                                groupRectangle.SetValue(StyleProperty, style);
+                                LinkerGroups[groupName] = groupRectangle;
+                            }
+                            LinkerGroups[groupName].SetValue(Canvas.LeftProperty, baseLeft);
+                            baseLeft += increment;
+                            LinkerGroups[groupName].Visibility = Visibility.Visible;
+                        }
+                    }
+                    Window_Size_Changed();
+                });
+            });
+        }
+
+        public void FinsembleListener(object sender, FinsembleEventArgs message)
+        {
+            if (message.error != null)
+            {
+                dynamic error = JsonConvert.DeserializeObject<ExpandoObject>(message.error.ToString(), new ExpandoObjectConverter());
+            }
+            else
+            {
+                dynamic response = JsonConvert.DeserializeObject<ExpandoObject>(message.response.ToString(), new ExpandoObjectConverter());
+
+                var data = response.data;
+                foreach (KeyValuePair<string, object> kvp in data)
+                {
+
+                }
+            }
         }
 
         /**
          * Handle Snapping And Docking updates.
-         */ 
-        public void Docking_GroupUpdate(dynamic groups)
-        {
-            if (groups.dockingGroup != "")
-            {
-                Docking.Content = "@";
-                Docking.Visibility = Visibility.Visible;
-                Minimize.SetValue(Canvas.RightProperty, 105.0);
-                Docking.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF039BFF"));
-            }
-            else if (groups.snappingGroup != "")
-            {
-                Docking.Content = ">";
-                Docking.Visibility = Visibility.Visible;
-                Minimize.SetValue(Canvas.RightProperty, 105.0);
-                Docking.Background = Brushes.Transparent;
-            }
-            else
-            {
-                Docking.Visibility = Visibility.Hidden;
-                Minimize.SetValue(Canvas.RightProperty, 70.0);
-            }
-            Window_Size_Changed();
-        }
-
-        /*
-         * Linker Data Handler - TODO - not working
          */
-        public void LinkerSubscriber(object sender, LinkerEventArgs e)
+        public void Docking_GroupUpdate(object sender, dynamic groups)
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                SendData.Text = e.Message;
+                if (groups.dockingGroup != "")
+                {
+                    Docking.Content = "@";
+                    Docking.Visibility = Visibility.Visible;
+                    Minimize.SetValue(Canvas.RightProperty, 105.0);
+                    Docking.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF039BFF"));
+                }
+                else if (groups.snappingGroup != "")
+                {
+                    Docking.Content = ">";
+                    Docking.Visibility = Visibility.Visible;
+                    Minimize.SetValue(Canvas.RightProperty, 105.0);
+                    Docking.Background = Brushes.Transparent;
+                }
+                else
+                {
+                    Docking.Visibility = Visibility.Hidden;
+                    Minimize.SetValue(Canvas.RightProperty, 70.0);
+                }
+                Window_Size_Changed();
             });
         }
 
@@ -137,17 +213,17 @@ namespace WpfApp1
          */
         private void Toolbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            docking.StartMove(sender, e);
+            finsemble.docking.StartMove(sender, e);
         }
 
         private void Toolbar_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            docking.EndMove(sender, e);
+            finsemble.docking.EndMove(sender, e);
         }
 
         private void Toolbar_MouseMove(object sender, MouseEventArgs e)
         {
-            docking.Move(sender, e);
+            finsemble.docking.Move(sender, e);
         }
 
         /*
@@ -158,27 +234,27 @@ namespace WpfApp1
             var senderButton = (System.Windows.Controls.Button)sender;
             if (this.WindowState == System.Windows.WindowState.Maximized)
             {
-                docking.Restore();
+                this.WindowState = WindowState.Normal;
                 senderButton.Content = "3";
             }
             else
             {
-                docking.Maxmimize();
+                this.WindowState = WindowState.Maximized;
                 senderButton.Content = "#";
             }
         }
 
         /*
          * Minimize using docking
-         */ 
+         */
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            docking.Minimize();
+            this.WindowState = WindowState.Minimized;
         }
 
         /*
          * Close cleanly
-         */ 
+         */
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -189,17 +265,7 @@ namespace WpfApp1
          */
         private void Linker_Click(object sender, RoutedEventArgs e)
         {
-            linkerWindow.Left = this.Left;
-            linkerWindow.Top = this.Top + 35;
-
-            // BS Hack to get window to focus properly - https://stackoverflow.com/questions/21033262/force-window-to-have-focus-when-opened
-
-            linkerWindow.Show();
-            linkerWindow.Owner = this;
-            linkerWindow.Activate();
-            linkerWindow.Topmost = true;
-            linkerWindow.Topmost = false;
-            linkerWindow.Focus();
+            finsemble.linkerClient.ShowLinkerWindow();
         }
 
         /*
@@ -255,11 +321,11 @@ namespace WpfApp1
         {
             if (Docking.Content == "@")
             {
-                docking.LeaveGroup(sender, e);
+                finsemble.docking.LeaveGroup();
             }
             else
             {
-                docking.FormGroup(sender, e);
+                finsemble.docking.FormGroup();
             }
         }
 
@@ -277,6 +343,11 @@ namespace WpfApp1
             Linker.SetValue(StyleProperty, buttonStyle);
             Docking.SetValue(StyleProperty, buttonStyle);
             Close.SetValue(StyleProperty, closeButtonStyle);
+        }
+
+        private void AppSuites_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void Window_LostFocus(object sender, EventArgs e)
@@ -297,44 +368,23 @@ namespace WpfApp1
          */
         private void Window_Size_Changed()
         {
-            double LeftWidths = 35 + LinkerGroups.Count * 15;
+            int LinkerGroupCount = LinkerGroups.Where(g => g.Value.Visibility == Visibility.Visible).Count();
+            double LeftWidths = 35 + LinkerGroupCount * 15;
             double RightWidths = 105;
             if (Docking.IsVisible) RightWidths = 140;
             Title.SetValue(Canvas.LeftProperty, LeftWidths);
-            Title.Width = this.Width - LeftWidths - RightWidths;
-        }
-
-        /*
-         * Catch restores for Docking - TODO - move this to docking.
-         */
-        private void Window_StateChanged(object sender, EventArgs e)
-        {
-            if(this.WindowState == WindowState.Normal)
-            {
-                docking.Restore();
-            }
+            var titleWidth = this.Width - LeftWidths - RightWidths;
+            if (titleWidth < 0) titleWidth = 0;
+            Title.Width = titleWidth;
         }
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            
-            linkerClient.publish(new JObject { ["dataType"] = "symbol", ["data"] = SendData.Text });
+            finsemble.linkerClient.Publish(new JObject {
+                ["dataType"] = "symbol",
+                ["data"] = SendData.Text
+            });
         }
 
-        public void GotFinsembleClose()
-        {
-            sendCloseToFinsemble = false;
-            linkerWindow.Close();
-            this.Close();
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (sendCloseToFinsemble)
-            {
-                linkerWindow.Close();
-                docking.Close();
-            }
-        }
     }
 }
