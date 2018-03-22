@@ -27,6 +27,14 @@ namespace WpfApp2
         private string componentType = "Unknown";
         private string top, left, height, width, uuid;
 
+        private void SpawnChart_Click(object sender, RoutedEventArgs e)
+        {
+            finsemble.SendCommand("LauncherClient.spawn", new List<JToken> {
+                "Advanced Chart",
+                new JObject { }
+            }, (s, a) => { });
+        }
+
         private void Send_Click(object sender, RoutedEventArgs e)
         {
             finsemble.SendCommand("LinkerClient.publish", new List<JToken>

@@ -64,6 +64,7 @@ namespace ChartIQ.Finsemble
         private DateTime lastStateChanged = DateTime.Now;
 
         public EventHandler<dynamic> DockingGroupUpdateHandler;
+        public bool hidden = false;
 
         private bool sendCloseToFinsemble = true;
 
@@ -180,15 +181,17 @@ namespace ChartIQ.Finsemble
                     });
                     break;
                 case "hide":
+                    hidden = true;
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
-                        dockingWindow.Hide();
+                        dockingWindow.Opacity = 0.01;
                     });
                     break;
                 case "show":
+                    hidden = false;
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
-                        dockingWindow.Show();
+                        dockingWindow.Opacity = 1.0;
                     });
                     break;
                 /*case "groupUpdate":
@@ -418,7 +421,7 @@ namespace ChartIQ.Finsemble
         private void Resize(Point TopCorner, Point BottomCorner)
         {
             TimeSpan t = DateTime.Now - lastResizeSent;
-            if (t.TotalMilliseconds < 50) return;
+            if (t.TotalMilliseconds < 35) return;
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
                 dynamic props = new JObject
@@ -587,7 +590,7 @@ namespace ChartIQ.Finsemble
 
                 var y = mousePosition.Y;
                 var x = mousePosition.X;*/
-
+                
                 if (e.Message == MouseMessages.WM_LBUTTONUP)
                 {
                     resizing = false;
@@ -599,11 +602,18 @@ namespace ChartIQ.Finsemble
                     lastResizeSent = DateTime.Now;
                     MouseWatcher.Stop();
                     Mouse.Capture(null);
+                    dockingWindow.Opacity = 1.0;
                 }
                 else if (resizing && e.Message == MouseMessages.WM_MOUSEMOVE)
                 {
+                    Mouse.Capture(dockingWindow);
                     WindowResizeEndLocation = new Point(dockingWindow.Left, dockingWindow.Top);
                     WindowResizeEndBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
+
+                    if (hidden && dockingWindow.Opacity != 0.0)
+                    {
+                        dockingWindow.Opacity = 0.0;
+                    }
 
                     /*WindowResizeEndLocation = new Point(WindowLocation.X, WindowLocation.Y);
                     WindowResizeEndBottomRight = new Point(WindowBottomRight.X, WindowBottomRight.Y);

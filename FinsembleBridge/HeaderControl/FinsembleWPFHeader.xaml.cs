@@ -114,11 +114,22 @@ namespace ChartIQ.Finsemble
         private void Window_Deactivated(object sender, EventArgs e)
         {
             Toolbar.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#233958"));
+            Linker.Style = (Style)this.Resources["InactiveToolbarRegularButton"];
+            DockingButton.Style = (Style)this.Resources["InactiveToolbarRegularButton"];
+            Emitter.Style = (Style)this.Resources["InactiveToolbarRegularLabel"];
+            Maximize.Style = (Style)this.Resources["InactiveToolbarRegularButton"];
+            Minimize.Style = (Style)this.Resources["InactiveToolbarRegularButton"];
+
         }
 
         private void Window_Activated(object sender, EventArgs e)
         {
             Toolbar.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#133f7c"));
+            Linker.Style = (Style)this.Resources["ToolbarRegularButton"];
+            DockingButton.Style = (Style)this.Resources["ToolbarRegularButton"];
+            Emitter.Style = (Style)this.Resources["ToolbarRegularLabel"];
+            Maximize.Style = (Style)this.Resources["ToolbarRegularButton"];
+            Minimize.Style = (Style)this.Resources["ToolbarRegularButton"];
         }
 
         private void Docking_GroupUpdate(object sender, dynamic groups)
