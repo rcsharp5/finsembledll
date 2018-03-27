@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using ChartIQ.Finsemble;
 using Newtonsoft.Json.Linq;
 
-namespace WpfApp2
+namespace FinsembleWPFDemo
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -29,24 +29,24 @@ namespace WpfApp2
 
         private void SpawnChart_Click(object sender, RoutedEventArgs e)
         {
-            finsemble.SendCommand("LauncherClient.spawn", new List<JToken> {
+            finsemble.SendRPCMessage("LauncherClient.spawn", new List<object> {
                 "Advanced Chart",
                 new JObject { }
-            }, (s, a) => { });
+            }, (a) => { });
         }
 
         private void Send_Click(object sender, RoutedEventArgs e)
         {
-            finsemble.SendCommand("LinkerClient.publish", new List<JToken>
+            finsemble.SendRPCMessage("LinkerClient.publish", new List<object>
             {
                 new JObject {
                     ["dataType"] = "symbol",
                     ["data"] = DataToSend.Text
                 }
-            }, (s, args) => { });
+            }, (a) => { });
         }
 
-        public MainWindow(string FinsembleWindowName, string componentType, string top, string left, string height, string width, string uuid)
+        public MainWindow(string FinsembleWindowName, string uuid, string componentType, string top, string left, string height, string width, string openfinVersion)
         {
             if (!string.IsNullOrEmpty(FinsembleWindowName))
             {
@@ -68,7 +68,7 @@ namespace WpfApp2
             this.width = width;
             this.uuid = uuid;
 
-            finsemble = new FinsembleBridge(new System.Version("8.56.28.34"), windowName, componentType, this, uuid);
+            finsemble = new FinsembleBridge(new System.Version(openfinVersion), windowName, componentType, this, uuid);
             finsemble.Connect();
             finsemble.Connected += Bridge_Connected;
         }
@@ -134,15 +134,26 @@ namespace WpfApp2
 
             });
 
-            finsemble.SendCommand("LinkerClient.subscribe", new List<JToken>
+            finsemble.SendRPCMessage("LinkerClient.subscribe", new List<object>
             {
                 "symbol"
-            }, (s, args) =>
+            }, (args) =>
             {
                 Application.Current.Dispatcher.Invoke((Action)delegate //main thread
                 {
-                    DataToSend.Text = args.response["data"].ToString();
-                    DroppedData.Content = args.response["data"].ToString();
+                    dynamic data = args; //[0]?["data"]?.ToString();
+                    try {
+                        dynamic convertedData = data[0]["data"];
+                        DataToSend.Text = convertedData.ToString();
+                        DroppedData.Content = convertedData.ToString();
+                    } 
+                    catch
+                    {
+
+                    }
+
+                    //DataToSend.Text = args[0]?["data"]?.ToString();
+                    //DroppedData.Content = args.response["data"].ToString();
                 });
             });
         }

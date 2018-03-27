@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace WpfApp2
+namespace FinsembleWPFDemo
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -18,7 +18,7 @@ namespace WpfApp2
         {
             //base.OnStartup(e);
             string mainWindowName = "";
-            string top = null, left = null, height = null, width = null, componentType = null, uuid = null;
+            string top = null, left = null, height = null, width = null, componentType = null, uuid = null, openfinVersion = "8.56.28.34";
             if (e.Args.Length > 0)
             {
 
@@ -50,13 +50,17 @@ namespace WpfApp2
                         case "uuid":
                             uuid = argumentValue;
                             break;
+                        case "openfinVersion":
+                            openfinVersion = argumentValue;
+                            break;
+
                     }
 
 
                 }
             }
             //Debugger.Launch();
-            var mainWindow = new MainWindow(mainWindowName, componentType, top, left, height, width, uuid);
+            var mainWindow = new MainWindow(mainWindowName, uuid, componentType, top, left, height, width, openfinVersion);
         }
     }
 }

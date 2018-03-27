@@ -76,6 +76,8 @@ namespace ChartIQ.Finsemble
         /// </summary>
         public event EventHandler<UnhandledExceptionEventArgs> Error;
 
+        public delegate void RPCCallbackHandler(IList<object> args);
+
         #endregion
 
         public string componentType { private set; get; }
@@ -177,23 +179,24 @@ namespace ChartIQ.Finsemble
 
                 //this.uuid = runtime.Options.UUID;
 
-                routerClient = new RouterClient(this);
-                
-                storageClient = new StorageClient(this);
-                authenticationClient = new AuthenticationClient(this);
-                configClient = new ConfigClient(this); 
-                windowClient = new WindowClient(this); 
-                launcherClient = new LauncherClient(this); 
-                distributedStoreClient = new DistributedStoreClient(this);
-                linkerClient = new LinkerClient(this);
-                dragAndDropClient = new DragAndDropClient(this);
-                
+                routerClient = new RouterClient(this, (s, connected) => {
+                    storageClient = new StorageClient(this);
+                    authenticationClient = new AuthenticationClient(this);
+                    configClient = new ConfigClient(this);
+                    windowClient = new WindowClient(this);
+                    launcherClient = new LauncherClient(this);
+                    distributedStoreClient = new DistributedStoreClient(this);
+                    linkerClient = new LinkerClient(this);
+                    dragAndDropClient = new DragAndDropClient(this);
 
-                docking = new Docking(this, windowName + "-channel");
 
-                // Notify listeners that connection is complete.
-                // ToDo, wait for clients to be ready??
-                Connected?.Invoke(this, EventArgs.Empty);
+                    docking = new Docking(this, windowName + "-channel");
+
+                    // Notify listeners that connection is complete.
+                    // ToDo, wait for clients to be ready??
+                    Connected?.Invoke(this, EventArgs.Empty);
+                });
+                
             });
         }
 
@@ -219,18 +222,18 @@ namespace ChartIQ.Finsemble
         /// <example>
         /// <code>
         /// /* The router transmit API has two parameters, toChannel and event */
-        /// finsemble.SendCommand("RouterClient.transmit", new List&lt;JToken&gt; {
+        /// finsemble.SendRPCMessage("RouterClient.transmit", new List&lt;JToken&gt; {
         ///     "channel",
         ///     new JObject {
         ///         ["myData"] = "myData"
         ///     }
         /// }, (s, args) => {});
         /// 
-        /// finsemble.SendCommand("RouterClient.subscribe", new List&lt;JToken&gt; {
+        /// finsemble.SendRPCMessage("RouterClient.subscribe", new List&lt;JToken&gt; {
         ///     "myTopic"
         /// }, mySubHandler);
         /// 
-        /// finsemble.SendCommand("RouterClient.unsubscribe", new List&lt;JToken&gt; {
+        /// finsemble.SendRPCMessage("RouterClient.unsubscribe", new List&lt;JToken&gt; {
         ///     "myTopic"
         /// }, mySubHandler);
         /// 
@@ -245,47 +248,66 @@ namespace ChartIQ.Finsemble
         /// }, (s, args) => {});
         /// </code>
         /// </example>
-        /// <param name="apiCall">Name of the API call from the list above</param>
-        /// <param name="arguments">This is a JObject which contains all the parameters that the API call takes. Refer to our Javascript API for the parameters to each API call.</param>
-        /// <param name="callback">If the API has a callback, this will be used to call back.</param>
-        public void SendCommand(string apiCall, List<JToken> arguments, EventHandler<FinsembleEventArgs> callback)
+        /// <param name="endpoint">Name of the API call from the list above</param>
+        /// <param name="args">This is a JObject which contains all the parameters that the API call takes. Refer to our Javascript API for the parameters to each API call.</param>
+        /// <param name="cb">If the API has a callback, this will be used to call back.</param>
+        public void SendRPCMessage(string endpoint, IList<object> args, RPCCallbackHandler cb = null)
         {
-            switch(apiCall) {
-                case "RouterClient.transmit":                    
-                    routerClient.Transmit((string)arguments[0], arguments[1]);
+            var jargs = new List<JToken>();
+            for (int i = 0; i < args.Count; ++i)
+            {
+                jargs.Add(JObjectExtensions.ConvertObjectToJToken(args[i]));
+            }
+            SendRPCMessage(endpoint, jargs, (sender, a) => {
+                object objectFromJSON = JObjectExtensions.ConvertJObjectToObject(a.response);
+                var listToSend = new List<object>();
+                listToSend.Add(objectFromJSON);
+                if(cb != null)
+                {
+                    cb(listToSend);
+                }
+            });
+        }
+
+        public void SendRPCMessage(string endpoint, List<JToken> args, EventHandler<FinsembleEventArgs> cb)
+        {
+            switch (endpoint)
+            {
+                case "RouterClient.transmit":
+                    routerClient.Transmit((string)args[0], args[1]);
                     break;
                 case "RouterClient.addListener":
-                    routerClient.AddListener((string)arguments[0], callback);
+                    routerClient.AddListener((string)args[0], cb);
                     break;
                 case "RouterClient.removeListener":
-                    routerClient.RemoveListener((string)arguments[0], callback);
+                    routerClient.RemoveListener((string)args[0], cb);
                     break;
                 case "RouterClient.publish":
-                    routerClient.Publish((string)arguments[0], arguments[1]);
+                    routerClient.Publish((string)args[0], args[1]);
                     break;
                 case "RouterClient.subscribe":
-                    routerClient.Subscribe((string)arguments[0], callback);
+                    routerClient.Subscribe((string)args[0], cb);
                     break;
                 case "RouterClient.unsubscribe":
-                    routerClient.Unsubscribe((string)arguments[0], callback);
+                    routerClient.Unsubscribe((string)args[0], cb);
                     break;
                 case "RouterClient.query":
-                    routerClient.Query((string)arguments[0], arguments[1], arguments[2] as JObject, callback);
+                    routerClient.Query((string)args[0], args[1], args[2] as JObject, cb);
                     break;
                 case "LinkerClient.publish":
-                    linkerClient.Publish(arguments[0] as JObject);
+                    linkerClient.Publish(args[0] as JObject);
                     break;
                 case "LinkerClient.subscribe":
-                    linkerClient.Subscribe((string)arguments[0], callback);
+                    linkerClient.Subscribe((string)args[0], cb);
                     break;
                 case "LauncherClient.spawn":
-                    launcherClient.Spawn((string)arguments[0], arguments[1] as JObject, callback);
+                    launcherClient.Spawn((string)args[0], args[1] as JObject, cb);
                     break;
                 case "LauncherClient.showWindow":
-                    launcherClient.ShowWindow(arguments[0] as JObject, arguments[1] as JObject, callback);
+                    launcherClient.ShowWindow(args[0] as JObject, args[1] as JObject, cb);
                     break;
                 case "ConfigClient.getValue":
-                    configClient.GetValue(arguments[0] as JObject, callback);
+                    configClient.GetValue(args[0] as JObject, cb);
                     break;
                 default:
                     throw new Exception("This API does not exist or is not yet supported");

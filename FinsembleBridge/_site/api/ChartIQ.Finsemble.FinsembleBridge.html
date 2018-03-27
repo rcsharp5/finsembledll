@@ -391,8 +391,8 @@ possible.</p>
   </div>
   
   
-  <a id="ChartIQ_Finsemble_FinsembleBridge_SendCommand_" data-uid="ChartIQ.Finsemble.FinsembleBridge.SendCommand*"></a>
-  <h4 id="ChartIQ_Finsemble_FinsembleBridge_SendCommand_System_String_System_Collections_Generic_List_Newtonsoft_Json_Linq_JToken__System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__" data-uid="ChartIQ.Finsemble.FinsembleBridge.SendCommand(System.String,System.Collections.Generic.List{Newtonsoft.Json.Linq.JToken},System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})">SendCommand(String, List&lt;JToken&gt;, EventHandler&lt;FinsembleEventArgs&gt;)</h4>
+  <a id="ChartIQ_Finsemble_FinsembleBridge_SendRPCMessage_" data-uid="ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage*"></a>
+  <h4 id="ChartIQ_Finsemble_FinsembleBridge_SendRPCMessage_System_String_System_Collections_Generic_IList_System_Object__ChartIQ_Finsemble_FinsembleBridge_RPCCallbackHandler_" data-uid="ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage(System.String,System.Collections.Generic.IList{System.Object},ChartIQ.Finsemble.FinsembleBridge.RPCCallbackHandler)">SendRPCMessage(String, IList&lt;Object&gt;, FinsembleBridge.RPCCallbackHandler)</h4>
   <div class="markdown level1 summary"><p>Use this command to execute Finsemble API calls remotely. Specify all the arguments as a list and the callback for the callback or eventHandler.</p>
 <p>Supported API Calls:
 <ul><li>RouterClient.transmit: same as Javascript API</li><li>RouterClient.addListener: same as Javascript API</li><li>RouterClient.removeListener: same as Javascript API</li><li>RouterClient.publish: same as Javascript API</li><li>RouterClient.subscribe: does not return a subscribeID</li><li>RouterClient.unsubscribe: takes parameters[&quot;topic&quot;] and the same callback that was passed to subscribe.</li><li>RouterClient.query: same as Javascript API</li><li>LinkerClient.publish: does not use the callback, does not support the channels option.</li><li>LinkerClient.subscribe: same as Javascript API</li><li>LauncherClient.spawn: same as Javascript API</li><li>LauncherClient.showWindow: same as Javascript API</li><li>ConfigClient.getValue: same as Javascript API</li></ul></p>
@@ -400,7 +400,7 @@ possible.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SendCommand(string apiCall, List&lt;JToken&gt; arguments, EventHandler&lt;FinsembleEventArgs&gt; callback)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SendRPCMessage(string endpoint, IList&lt;object&gt; args, FinsembleBridge.RPCCallbackHandler cb = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -414,38 +414,38 @@ possible.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">apiCall</span></td>
+        <td><span class="parametername">endpoint</span></td>
         <td><p>Name of the API call from the list above</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">Newtonsoft.Json.Linq.JToken</span>&gt;</td>
-        <td><span class="parametername">arguments</span></td>
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><span class="parametername">args</span></td>
         <td><p>This is a JObject which contains all the parameters that the API call takes. Refer to our Javascript API for the parameters to each API call.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.EventHandler</span>&lt;<a class="xref" href="ChartIQ.Finsemble.FinsembleEventArgs.html">FinsembleEventArgs</a>&gt;</td>
-        <td><span class="parametername">callback</span></td>
+        <td><a class="xref" href="ChartIQ.Finsemble.FinsembleBridge.RPCCallbackHandler.html">FinsembleBridge.RPCCallbackHandler</a></td>
+        <td><span class="parametername">cb</span></td>
         <td><p>If the API has a callback, this will be used to call back.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="ChartIQ_Finsemble_FinsembleBridge_SendCommand_System_String_System_Collections_Generic_List_Newtonsoft_Json_Linq_JToken__System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs___examples">Examples</h5>
+  <h5 id="ChartIQ_Finsemble_FinsembleBridge_SendRPCMessage_System_String_System_Collections_Generic_IList_System_Object__ChartIQ_Finsemble_FinsembleBridge_RPCCallbackHandler__examples">Examples</h5>
   <pre><code>/* The router transmit API has two parameters, toChannel and event */
-finsemble.SendCommand(&quot;RouterClient.transmit&quot;, new List&lt;JToken> {
+finsemble.SendRPCMessage(&quot;RouterClient.transmit&quot;, new List&lt;JToken> {
     &quot;channel&quot;,
     new JObject {
         [&quot;myData&quot;] = &quot;myData&quot;
     }
 }, (s, args) => {});
 
-finsemble.SendCommand(&quot;RouterClient.subscribe&quot;, new List&lt;JToken> {
+finsemble.SendRPCMessage(&quot;RouterClient.subscribe&quot;, new List&lt;JToken> {
     &quot;myTopic&quot;
 }, mySubHandler);
 
-finsemble.SendCommand(&quot;RouterClient.unsubscribe&quot;, new List&lt;JToken> {
+finsemble.SendRPCMessage(&quot;RouterClient.unsubscribe&quot;, new List&lt;JToken> {
     &quot;myTopic&quot;
 }, mySubHandler);
 
@@ -459,6 +459,43 @@ finsemble.SendCommand(&quot;LinkerClient.publish&quot;, new new List&lt;JToken> 
     }
 }, (s, args) => {});</code></pre>
 
+  
+  
+  <a id="ChartIQ_Finsemble_FinsembleBridge_SendRPCMessage_" data-uid="ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage*"></a>
+  <h4 id="ChartIQ_Finsemble_FinsembleBridge_SendRPCMessage_System_String_System_Collections_Generic_List_Newtonsoft_Json_Linq_JToken__System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__" data-uid="ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage(System.String,System.Collections.Generic.List{Newtonsoft.Json.Linq.JToken},System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})">SendRPCMessage(String, List&lt;JToken&gt;, EventHandler&lt;FinsembleEventArgs&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SendRPCMessage(string endpoint, List&lt;JToken&gt; args, EventHandler&lt;FinsembleEventArgs&gt; cb)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">endpoint</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">Newtonsoft.Json.Linq.JToken</span>&gt;</td>
+        <td><span class="parametername">args</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.EventHandler</span>&lt;<a class="xref" href="ChartIQ.Finsemble.FinsembleEventArgs.html">FinsembleEventArgs</a>&gt;</td>
+        <td><span class="parametername">cb</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="ChartIQ_Finsemble_FinsembleBridge_ShutdownApplication_" data-uid="ChartIQ.Finsemble.FinsembleBridge.ShutdownApplication*"></a>

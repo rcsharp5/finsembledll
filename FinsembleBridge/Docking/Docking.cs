@@ -487,6 +487,7 @@ namespace ChartIQ.Finsemble
                 dynamic thisWindowGroups = new ExpandoObject();
                 thisWindowGroups.dockingGroup = "";
                 thisWindowGroups.snappingGroup = "";
+                thisWindowGroups.topRight = false;
                 foreach (var item in groupData)
                 {
                     var windowsInGroup = item.Value["windowNames"] as JArray;
@@ -495,6 +496,10 @@ namespace ChartIQ.Finsemble
                         if ((bool)item.Value["isMovable"])
                         {
                             thisWindowGroups.dockingGroup = item.Key;
+                            if((string)item.Value["topRightWindow"] == bridge.windowName)
+                            {
+                                thisWindowGroups.topRight = true;
+                            }
                         }
                         else
                         {

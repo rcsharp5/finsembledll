@@ -99,9 +99,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FinsembleBridge\FinsembleBridge.csproj">
+    <ProjectReference Include="..\FinsembleBridge\Finsemble.csproj">
       <Project>{dd9676c0-71ab-4ca2-9ccf-930d3c047258}</Project>
-      <Name>FinsembleBridge</Name>
+      <Name>Finsemble</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -138,6 +138,7 @@ namespace ChartIQ.Finsemble
             {
                 this.dockingGroup = groups.dockingGroup;
                 this.snappingGroup = groups.snappingGroup;
+                Minimize.Visibility = Visibility.Visible;
                 if (groups.dockingGroup != "")
                 {
                     DockingButton.Content = "@";
@@ -145,6 +146,10 @@ namespace ChartIQ.Finsemble
                     DockingButton.Visibility = Visibility.Visible;
                     Minimize.SetValue(Canvas.RightProperty, 96.0);
                     DockingButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF039BFF"));
+                    if (!groups.topRight)
+                    {
+                        Minimize.Visibility = Visibility.Hidden;
+                    }
                 }
                 else if (groups.snappingGroup != "")
                 {

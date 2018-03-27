@@ -21,10 +21,12 @@ namespace ChartIQ.Finsemble
         private Dictionary<string, EventHandler<FinsembleEventArgs>> publishListeners = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
         private Dictionary<string, EventHandler<FinsembleEventArgs>> queryIDResponseHandlerMap = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
         private Dictionary<string, string> subscribeIDTopicMap = new Dictionary<string, string>();
+        private EventHandler<bool> connected;
 
-        internal RouterClient(FinsembleBridge bridge)
+        internal RouterClient(FinsembleBridge bridge, EventHandler<bool> connected)
         {
             this.bridge = bridge;
+            this.connected = connected;
             this.clientName = "RouterClient." + bridge.windowName;
             var Handshake = new JObject(
                 new JProperty("header",
@@ -105,7 +107,7 @@ namespace ChartIQ.Finsemble
                     }
                     break;
                 case "initialHandshakeResponse":
-                    
+                    connected(this, true);
                     break;
             }
         }
