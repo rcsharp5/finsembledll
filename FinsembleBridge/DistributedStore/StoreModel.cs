@@ -19,7 +19,7 @@ namespace ChartIQ.Finsemble
         private RouterClient routerClient;
         private Dictionary<string, EventHandler<FinsembleEventArgs>> storeEventListeners = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
 
-        internal StoreModel(JObject parameters, FinsembleBridge bridge)
+        internal StoreModel(JObject parameters, Finsemble bridge)
         {
             //store, name, global, values, clients
             this.name = (string)parameters["name"];

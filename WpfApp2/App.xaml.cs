@@ -19,48 +19,9 @@ namespace FinsembleWPFDemo
             //base.OnStartup(e);
             string mainWindowName = "";
             string top = null, left = null, height = null, width = null, componentType = null, uuid = null, openfinVersion = "8.56.28.34";
-            if (e.Args.Length > 0)
-            {
-
-                for (var i = 0; i < e.Args.Length; i++)
-                {
-                    var argument = e.Args[i].Split(new char[] { '=' }, 2);
-                    var argumentName = argument[0];
-                    var argumentValue = argument[1];
-                    switch (argumentName)
-                    {
-                        case "top":
-                            top = argumentValue;
-                            break;
-                        case "left":
-                            left = argumentValue;
-                            break;
-                        case "width":
-                            width = argumentValue;
-                            break;
-                        case "height":
-                            height = argumentValue;
-                            break;
-                        case "finsembleWindowName":
-                            mainWindowName = argumentValue;
-                            break;
-                        case "componentType":
-                            componentType = argumentValue;
-                            break;
-                        case "uuid":
-                            uuid = argumentValue;
-                            break;
-                        case "openfinVersion":
-                            openfinVersion = argumentValue;
-                            break;
-
-                    }
-
-
-                }
-            }
+            
             //Debugger.Launch();
-            var mainWindow = new MainWindow(mainWindowName, uuid, componentType, top, left, height, width, openfinVersion);
+            var mainWindow = new MainWindow(e.Args);
         }
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

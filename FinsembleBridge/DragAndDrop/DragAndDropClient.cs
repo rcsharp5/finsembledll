@@ -13,7 +13,7 @@ namespace ChartIQ.Finsemble
 {
     public class DragAndDropClient
     {
-        FinsembleBridge bridge;
+        Finsemble bridge;
         RouterClient routerClient;
         public Dictionary<string, EventHandler<FinsembleEventArgs>> receivers { private set; get; } = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
         public delegate JObject emitter();
@@ -24,7 +24,7 @@ namespace ChartIQ.Finsemble
         Control scrim;
         enum ShareMethod { Drop, Spawn, Linker }
 
-        public DragAndDropClient(FinsembleBridge bridge)
+        public DragAndDropClient(Finsemble bridge)
         {
             this.bridge = bridge;
             routerClient = bridge.routerClient;

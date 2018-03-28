@@ -12,8 +12,8 @@ namespace ChartIQ.Finsemble
     /// </summary>
     internal class DistributedStoreClient
     {
-        FinsembleBridge bridge;
-        internal DistributedStoreClient(FinsembleBridge bridge)
+        Finsemble bridge;
+        internal DistributedStoreClient(Finsemble bridge)
         {
             this.bridge = bridge;
         }

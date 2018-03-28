@@ -81,7 +81,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.DragAndDropClient.html",
-          "hash": "cmzEn/B1HwyVqPqgrNtlEQ=="
+          "hash": "1Qqo5QQ32lM8R8/SgrLVbg=="
         }
       },
       "is_incremental": false,
@@ -89,11 +89,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.FinsembleBridge.RPCCallbackHandler.yml",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.Finsemble.RPCCallbackHandler.yml",
       "output": {
         ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.FinsembleBridge.RPCCallbackHandler.html",
-          "hash": "khi/crrORR+rc3kamKIr+A=="
+          "relative_path": "api/ChartIQ.Finsemble.Finsemble.RPCCallbackHandler.html",
+          "hash": "R2aPMUlsS0bKTpt6NYanUQ=="
         }
       },
       "is_incremental": false,
@@ -101,11 +101,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.FinsembleBridge.yml",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.Finsemble.yml",
       "output": {
         ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.FinsembleBridge.html",
-          "hash": "AuEPhHlbvsHWfb1eplfUFQ=="
+          "relative_path": "api/ChartIQ.Finsemble.Finsemble.html",
+          "hash": "ykDMY8SOibRcxISCDzSAKQ=="
         }
       },
       "is_incremental": false,
@@ -129,7 +129,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.FinsembleWPFHeader.html",
-          "hash": "7Q2lH7Yj18dt2ws+kDbGcA=="
+          "hash": "WAjEBh6umU+TVT9JQvC3nA=="
         }
       },
       "is_incremental": false,
@@ -141,7 +141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.html",
-          "hash": "GcaUb1ifk+m/jrigi3cgdw=="
+          "hash": "zBP0a20ugcmEeLg/xzsWOg=="
         }
       },
       "is_incremental": false,
@@ -153,7 +153,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "t+Yf6WZbWeNYaNPz08FTQw=="
+          "hash": "Y5SnB+DoT4mVmo8IKd25jA=="
         }
       },
       "is_incremental": false,

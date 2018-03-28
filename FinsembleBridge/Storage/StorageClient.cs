@@ -14,7 +14,7 @@ namespace ChartIQ.Finsemble
     {
         private RouterClient routerClient;
 
-        internal StorageClient(FinsembleBridge bridge)
+        internal StorageClient(Finsemble bridge)
         {
             this.routerClient = bridge.routerClient;
         }

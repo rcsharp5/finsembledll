@@ -17,7 +17,7 @@ namespace ChartIQ.Finsemble
     /// </summary>
     internal class RouterClient
     {
-        private FinsembleBridge bridge;
+        private Finsemble bridge;
         private string clientName;
         private Dictionary<string, EventHandler<FinsembleEventArgs>> transmitListeners = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
         private Dictionary<string, EventHandler<FinsembleEventArgs>> publishListeners = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
@@ -26,7 +26,7 @@ namespace ChartIQ.Finsemble
         private EventHandler<bool> connectHandler;
         private bool connected = false;
 
-        internal RouterClient(FinsembleBridge bridge, EventHandler<bool> connectHandler)
+        internal RouterClient(Finsemble bridge, EventHandler<bool> connectHandler)
         {
             this.bridge = bridge;
             this.connectHandler = connectHandler;

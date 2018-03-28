@@ -12,10 +12,10 @@ namespace ChartIQ.Finsemble
     /// </summary>
     public class AuthenticationClient
     {
-        private FinsembleBridge bridge;
+        private Finsemble bridge;
         private RouterClient routerClient;
 
-        internal AuthenticationClient(FinsembleBridge bridge)
+        internal AuthenticationClient(Finsemble bridge)
         {
             this.bridge = bridge;
             routerClient = bridge.routerClient;

@@ -21,7 +21,7 @@ namespace ChartIQ.Finsemble
     /// </summary>
     public partial class FinsembleWPFHeader : UserControl
     {
-        public FinsembleBridge bridge;
+        public Finsemble bridge;
         private SortedDictionary<string, Button> LinkerGroups = new SortedDictionary<string, Button>();
         private string dockingGroup, snappingGroup;
         private bool dragging = true;
@@ -91,7 +91,7 @@ namespace ChartIQ.Finsemble
             Window_Size_Changed();
         }
 
-        public void setBridge(FinsembleBridge finsemble)
+        public void setBridge(Finsemble finsemble)
         {
             bridge = finsemble;
             bridge.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;

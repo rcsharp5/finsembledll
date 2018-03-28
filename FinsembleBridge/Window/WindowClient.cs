@@ -13,7 +13,7 @@ namespace ChartIQ.Finsemble
     /// </summary>
     internal class WindowClient
     {
-        private FinsembleBridge bridge;
+        private Finsemble bridge;
         public JObject windowIdentifier { private set; get; }
         private StorageClient storageClient;
         private ConfigClient configClient;
@@ -22,7 +22,7 @@ namespace ChartIQ.Finsemble
         private const string WORKSPACE_CACHE_TOPIC = "finsemble.workspace.cache";
         private JObject options;
 
-        internal WindowClient(FinsembleBridge bridge)
+        internal WindowClient(Finsemble bridge)
         {
             this.bridge = bridge;
             this.storageClient = bridge.storageClient;

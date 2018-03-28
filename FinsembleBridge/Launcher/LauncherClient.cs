@@ -13,12 +13,12 @@ namespace ChartIQ.Finsemble
     /// </summary>
     internal class LauncherClient
     {
-        private FinsembleBridge bridge;
+        private Finsemble bridge;
         private RouterClient routerClient;
         private WindowClient windowClient;
         public EventHandler<FinsembleEventArgs> windowGroupUpdateHandler;
 
-        internal LauncherClient(FinsembleBridge bridge)
+        internal LauncherClient(Finsemble bridge)
         {
             this.bridge = bridge;
             routerClient = bridge.routerClient;

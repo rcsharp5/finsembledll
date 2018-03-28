@@ -23,14 +23,11 @@ namespace FinsembleWPFDemo
     /// </summary>
     public partial class MainWindow : Window
     {
-        private FinsembleBridge finsemble;
-        private string windowName;
-        private string componentType = "Unknown";
-        private string top, left, height, width, uuid;
+        private Finsemble FSBL;
 
         private void SpawnChart_Click(object sender, RoutedEventArgs e)
         {
-            finsemble.SendRPCMessage("LauncherClient.spawn", new List<JToken> {
+            FSBL.RPC("LauncherClient.spawn", new List<JToken> {
                 "Advanced Chart",
                 new JObject { }
             }, (s, a) => { });
@@ -38,7 +35,7 @@ namespace FinsembleWPFDemo
 
         private void Send_Click(object sender, RoutedEventArgs e)
         {
-            finsemble.SendRPCMessage("LinkerClient.publish", new List<JToken>
+            FSBL.RPC("LinkerClient.publish", new List<JToken>
             {
                 new JObject {
                     ["dataType"] = "symbol",
@@ -47,64 +44,25 @@ namespace FinsembleWPFDemo
             }, (s, a) => { });
         }
 
-        public MainWindow(string FinsembleWindowName, string uuid, string componentType, string top, string left, string height, string width, string openfinVersion)
+        public MainWindow(string[] args)
         {
-            if (!string.IsNullOrEmpty(FinsembleWindowName))
-            {
-                windowName = FinsembleWindowName;
-            }
-            else
-            {
-                windowName = Guid.NewGuid().ToString();
-            }
-
-            if (!string.IsNullOrEmpty(componentType))
-            {
-                this.componentType = componentType;
-            }
-
-            this.top = top;
-            this.left = left;
-            this.height = height;
-            this.width = width;
-            this.uuid = uuid;
-
-            finsemble = new FinsembleBridge(new System.Version(openfinVersion), windowName, componentType, this, uuid);
-            finsemble.Connect();
-            finsemble.Connected += Bridge_Connected;
-
+            FSBL = new Finsemble(args, this);
+            FSBL.Connect();
+            FSBL.Connected += Bridge_Connected;
         }
 
         private void Bridge_Connected(object sender, EventArgs e)
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-            // Initialize this Window and show it
-            InitializeComponent();
-                FinsembleHeader.setBridge(finsemble);
-                if (!string.IsNullOrEmpty(top))
-                {
-                    this.Top = Double.Parse(top);
-                }
+                // Initialize this Window and show it
+                InitializeComponent();
+                FinsembleHeader.setBridge(FSBL);
+                
 
-                if (!string.IsNullOrEmpty(left))
-                {
-                    this.Left = Double.Parse(left);
-                }
+                FSBL.dragAndDropClient.SetScrim(Scrim);
 
-                if (!string.IsNullOrEmpty(height))
-                {
-                    this.Height = Double.Parse(height);
-                }
-
-                if (!string.IsNullOrEmpty(width))
-                {
-                    this.Width = Double.Parse(width);
-                }
-
-                finsemble.dragAndDropClient.SetScrim(Scrim);
-
-                finsemble.dragAndDropClient.AddReceivers(new List<KeyValuePair<string, EventHandler<FinsembleEventArgs>>>()
+                FSBL.dragAndDropClient.AddReceivers(new List<KeyValuePair<string, EventHandler<FinsembleEventArgs>>>()
                 {
                 new KeyValuePair<string, EventHandler<FinsembleEventArgs>>("symbol", (s, args) =>
                 {
@@ -120,7 +78,7 @@ namespace FinsembleWPFDemo
                 })
                 });
 
-                finsemble.dragAndDropClient.SetEmitters(new List<KeyValuePair<string, DragAndDropClient.emitter>>()
+                FSBL.dragAndDropClient.SetEmitters(new List<KeyValuePair<string, DragAndDropClient.emitter>>()
                 {
                 new KeyValuePair<string, DragAndDropClient.emitter>("symbol", () =>
                 {
@@ -136,7 +94,7 @@ namespace FinsembleWPFDemo
 
             });
 
-            finsemble.SendRPCMessage("LinkerClient.subscribe", new List<JToken>
+            FSBL.RPC("LinkerClient.subscribe", new List<JToken>
             {
                 "symbol"
             }, (sensder, args) =>

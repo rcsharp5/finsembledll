@@ -22,7 +22,7 @@ namespace Authentication
     /// </summary>
     public partial class MainWindow : Window
     {
-        private FinsembleBridge finsemble;
+        private Finsemble finsemble;
         private string windowName;
         private string componentType = "Unknown";
         private string top, left, height, width, uuid;
@@ -34,29 +34,9 @@ namespace Authentication
 
         private bool loggedIn = false;
 
-        public MainWindow(string FinsembleWindowName, string componentType, string top, string left, string height, string width, string uuid)
+        public MainWindow(string[] args)
         {
-            if (!string.IsNullOrEmpty(FinsembleWindowName))
-            {
-                windowName = FinsembleWindowName;
-            }
-            else
-            {
-                windowName = Guid.NewGuid().ToString();
-            }
-
-            if (!string.IsNullOrEmpty(componentType))
-            {
-                this.componentType = componentType;
-            }
-
-            this.top = top;
-            this.left = left;
-            this.height = height;
-            this.width = width;
-            this.uuid = uuid;
-
-            finsemble = new FinsembleBridge(new System.Version("8.56.28.34"), windowName, componentType, this, uuid);
+            finsemble = new Finsemble(args, this);
             finsemble.Connect();
             finsemble.Connected += Bridge_Connected;
         }
@@ -67,25 +47,6 @@ namespace Authentication
             {
                 // Initialize this Window and show it
                 InitializeComponent();
-                if (!string.IsNullOrEmpty(top))
-                {
-                    this.Top = Double.Parse(top);
-                }
-
-                if (!string.IsNullOrEmpty(left))
-                {
-                    this.Left = Double.Parse(left);
-                }
-
-                if (!string.IsNullOrEmpty(height))
-                {
-                    this.Height = Double.Parse(height);
-                }
-
-                if (!string.IsNullOrEmpty(width))
-                {
-                    this.Width = Double.Parse(width);
-                }
                 this.Show();
 
             });

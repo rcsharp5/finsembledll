@@ -30,7 +30,7 @@ namespace ChartIQ.Finsemble
     /// </code>
     /// </example>
     /// </summary>
-    public partial class FinsembleBridge : IDisposable
+    public partial class Finsemble : IDisposable
     {
         /// <summary>
         /// The logger
@@ -45,7 +45,7 @@ namespace ChartIQ.Finsemble
         /// Version must match the version of OpenFin used by Finsemble for inter-application communication to be
         /// possible.
         /// </remarks>
-        public Version OpenFinVersion { get; private set; }
+        public string openFinVersion { get; private set; } = "8.56.28.36";
         #endregion
 
         /// <summary>
@@ -80,9 +80,9 @@ namespace ChartIQ.Finsemble
 
         #endregion
 
-        public string componentType { private set; get; }
-        public string windowName { private set; get; }
-        public string uuid { private set; get; }
+        public string componentType { private set; get; } = "Unknown";
+        public string windowName { private set; get; } = Guid.NewGuid().ToString();
+        public string uuid { private set; get; } = Guid.NewGuid().ToString();
 
         internal RouterClient routerClient { private set; get; }
         public AuthenticationClient authenticationClient { private set; get; }
@@ -104,26 +104,84 @@ namespace ChartIQ.Finsemble
             {"windowClient", new List<string> {"storageService"} }
         };
 
+        string top = null, left = null, height = null, width = null;
         /// <summary>
         /// Initializes a new instance of the FinsembleBridge class. This is how you interact with Finsemble. All the clients will be part of the bridge.
         /// </summary>
-        /// <param name="openFinVersion">The version of the OpenFin runtime to which to connect</param>
-        /// <param name="windowName">The windowName parameter passed as a command line parameter when launched from Finsemble.</param>
-        /// <param name="componentType">The componentType parameter passed as a command line parameter when launched from Finsemble.</param>
-        /// <param name="window">The window that will be Finsembleized</param>
-        /// <param name="uuid">The uuid parameter passed as a command line parameter when launched from Finsemble.</param>
-        public FinsembleBridge(Version openFinVersion, string windowName, string componentType, System.Windows.Window window, string uuid)
+        public Finsemble(string[] args, System.Windows.Window window)
         {
+            if (args.Length > 0)
+            {
+                for (var i = 0; i < args.Length; i++)
+                {
+                    var argument = args[i].Split(new char[] { '=' }, 2);
+                    var argumentName = argument[0];
+                    var argumentValue = argument[1];
+                    switch (argumentName)
+                    {
+                        case "top":
+                            top = argumentValue;
+                            break;
+                        case "left":
+                            left = argumentValue;
+                            break;
+                        case "width":
+                            width = argumentValue;
+                            break;
+                        case "height":
+                            height = argumentValue;
+                            break;
+                        case "finsembleWindowName":
+                            windowName = argumentValue;
+                            break;
+                        case "componentType":
+                            componentType = argumentValue;
+                            break;
+                        case "uuid":
+                            uuid = argumentValue;
+                            break;
+                        case "openfinVersion":
+                            openFinVersion = argumentValue;
+                            break;
+                    }
+                }
+            }
+
             Logger.Debug(
                 "Initializing new instance of FinsembleBridge:\n" +
                 $"\tVersion: {openFinVersion}\n");
 
-            OpenFinVersion = openFinVersion;
-            this.windowName = windowName;
-            this.componentType = componentType;
+            //OpenFinVersion = openFinVersion;
+            //this.windowName = windowName;
+            //this.componentType = componentType;
             this.window = window;
-            this.uuid = uuid;
+            window.Loaded += Window_Loaded;
+            //this.uuid = uuid;
         }
+
+        private void Window_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(top))
+            {
+                window.Top = Double.Parse(top);
+            }
+
+            if (!string.IsNullOrEmpty(left))
+            {
+                window.Left = Double.Parse(left);
+            }
+
+            if (!string.IsNullOrEmpty(height))
+            {
+                window.Height = Double.Parse(height);
+            }
+
+            if (!string.IsNullOrEmpty(width))
+            {
+                window.Width = Double.Parse(width);
+            }
+        }
+
 
         /// <summary>
         /// Connect to Finsemble.
@@ -139,7 +197,7 @@ namespace ChartIQ.Finsemble
 
             var runtimeOptions = new RuntimeOptions
             {
-                Version = OpenFinVersion.ToString(),
+                Version = openFinVersion,
             };
 
             runtime = Runtime.GetRuntimeInstance(runtimeOptions);
@@ -251,14 +309,14 @@ namespace ChartIQ.Finsemble
         /// <param name="endpoint">Name of the API call from the list above</param>
         /// <param name="args">This is a JObject which contains all the parameters that the API call takes. Refer to our Javascript API for the parameters to each API call.</param>
         /// <param name="cb">If the API has a callback, this will be used to call back.</param>
-        private void SendRPCMessage(string endpoint, IList<object> args, RPCCallbackHandler cb = null)
+        private void RPC(string endpoint, IList<object> args, RPCCallbackHandler cb = null)
         {
             var jargs = new List<JToken>();
             for (int i = 0; i < args.Count; ++i)
             {
                 jargs.Add(JObjectExtensions.ConvertObjectToJToken(args[i]));
             }
-            SendRPCMessage(endpoint, jargs, (sender, a) => {
+            RPC(endpoint, jargs, (sender, a) => {
                 object objectFromJSON = JObjectExtensions.ConvertJObjectToObject(a.response);
                 var listToSend = new List<object>();
                 listToSend.Add(objectFromJSON);
@@ -269,7 +327,7 @@ namespace ChartIQ.Finsemble
             });
         }
 
-        public void SendRPCMessage(string endpoint, List<JToken> args, EventHandler<FinsembleEventArgs> cb)
+        public void RPC(string endpoint, List<JToken> args, EventHandler<FinsembleEventArgs> cb)
         {
             switch (endpoint)
             {

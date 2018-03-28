@@ -49,12 +49,12 @@ references:
   commentId: T:ChartIQ.Finsemble.DragAndDropClient
   fullName: ChartIQ.Finsemble.DragAndDropClient
   nameWithType: DragAndDropClient
-- uid: ChartIQ.Finsemble.DragAndDropClient.#ctor(ChartIQ.Finsemble.FinsembleBridge)
-  name: DragAndDropClient(FinsembleBridge)
-  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient__ctor_ChartIQ_Finsemble_FinsembleBridge_
-  commentId: M:ChartIQ.Finsemble.DragAndDropClient.#ctor(ChartIQ.Finsemble.FinsembleBridge)
-  fullName: ChartIQ.Finsemble.DragAndDropClient.DragAndDropClient(ChartIQ.Finsemble.FinsembleBridge)
-  nameWithType: DragAndDropClient.DragAndDropClient(FinsembleBridge)
+- uid: ChartIQ.Finsemble.DragAndDropClient.#ctor(ChartIQ.Finsemble.Finsemble)
+  name: DragAndDropClient(Finsemble)
+  href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient__ctor_ChartIQ_Finsemble_Finsemble_
+  commentId: M:ChartIQ.Finsemble.DragAndDropClient.#ctor(ChartIQ.Finsemble.Finsemble)
+  fullName: ChartIQ.Finsemble.DragAndDropClient.DragAndDropClient(ChartIQ.Finsemble.Finsemble)
+  nameWithType: DragAndDropClient.DragAndDropClient(Finsemble)
 - uid: ChartIQ.Finsemble.DragAndDropClient.#ctor*
   name: DragAndDropClient
   href: api/ChartIQ.Finsemble.DragAndDropClient.html#ChartIQ_Finsemble_DragAndDropClient__ctor_
@@ -175,183 +175,186 @@ references:
   commentId: Overload:ChartIQ.Finsemble.DragAndDropClient.SetScrim
   fullName: ChartIQ.Finsemble.DragAndDropClient.SetScrim
   nameWithType: DragAndDropClient.SetScrim
-- uid: ChartIQ.Finsemble.FinsembleBridge
-  name: FinsembleBridge
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html
-  commentId: T:ChartIQ.Finsemble.FinsembleBridge
-  fullName: ChartIQ.Finsemble.FinsembleBridge
-  nameWithType: FinsembleBridge
-- uid: ChartIQ.Finsemble.FinsembleBridge.#ctor(System.Version,System.String,System.String,System.Windows.Window,System.String)
-  name: FinsembleBridge(Version, String, String, Window, String)
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge__ctor_System_Version_System_String_System_String_System_Windows_Window_System_String_
-  commentId: M:ChartIQ.Finsemble.FinsembleBridge.#ctor(System.Version,System.String,System.String,System.Windows.Window,System.String)
-  fullName: ChartIQ.Finsemble.FinsembleBridge.FinsembleBridge(System.Version, System.String, System.String, System.Windows.Window, System.String)
-  nameWithType: FinsembleBridge.FinsembleBridge(Version, String, String, Window, String)
-- uid: ChartIQ.Finsemble.FinsembleBridge.#ctor*
-  name: FinsembleBridge
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge__ctor_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.#ctor
-  fullName: ChartIQ.Finsemble.FinsembleBridge.FinsembleBridge
-  nameWithType: FinsembleBridge.FinsembleBridge
-- uid: ChartIQ.Finsemble.FinsembleBridge.authenticationClient
+- uid: ChartIQ.Finsemble.Finsemble
+  name: Finsemble
+  href: api/ChartIQ.Finsemble.Finsemble.html
+  commentId: T:ChartIQ.Finsemble.Finsemble
+  fullName: ChartIQ.Finsemble.Finsemble
+  nameWithType: Finsemble
+- uid: ChartIQ.Finsemble.Finsemble.#ctor(System.String[],System.Windows.Window)
+  name: Finsemble(String[], Window)
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble__ctor_System_String___System_Windows_Window_
+  commentId: M:ChartIQ.Finsemble.Finsemble.#ctor(System.String[],System.Windows.Window)
+  name.vb: Finsemble(String(), Window)
+  fullName: ChartIQ.Finsemble.Finsemble.Finsemble(System.String[], System.Windows.Window)
+  fullName.vb: ChartIQ.Finsemble.Finsemble.Finsemble(System.String(), System.Windows.Window)
+  nameWithType: Finsemble.Finsemble(String[], Window)
+  nameWithType.vb: Finsemble.Finsemble(String(), Window)
+- uid: ChartIQ.Finsemble.Finsemble.#ctor*
+  name: Finsemble
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble__ctor_
+  commentId: Overload:ChartIQ.Finsemble.Finsemble.#ctor
+  fullName: ChartIQ.Finsemble.Finsemble.Finsemble
+  nameWithType: Finsemble.Finsemble
+- uid: ChartIQ.Finsemble.Finsemble.authenticationClient
   name: authenticationClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_authenticationClient
-  commentId: P:ChartIQ.Finsemble.FinsembleBridge.authenticationClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.authenticationClient
-  nameWithType: FinsembleBridge.authenticationClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.authenticationClient*
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_authenticationClient
+  commentId: P:ChartIQ.Finsemble.Finsemble.authenticationClient
+  fullName: ChartIQ.Finsemble.Finsemble.authenticationClient
+  nameWithType: Finsemble.authenticationClient
+- uid: ChartIQ.Finsemble.Finsemble.authenticationClient*
   name: authenticationClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_authenticationClient_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.authenticationClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.authenticationClient
-  nameWithType: FinsembleBridge.authenticationClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.componentType
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_authenticationClient_
+  commentId: Overload:ChartIQ.Finsemble.Finsemble.authenticationClient
+  fullName: ChartIQ.Finsemble.Finsemble.authenticationClient
+  nameWithType: Finsemble.authenticationClient
+- uid: ChartIQ.Finsemble.Finsemble.componentType
   name: componentType
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_componentType
-  commentId: P:ChartIQ.Finsemble.FinsembleBridge.componentType
-  fullName: ChartIQ.Finsemble.FinsembleBridge.componentType
-  nameWithType: FinsembleBridge.componentType
-- uid: ChartIQ.Finsemble.FinsembleBridge.componentType*
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_componentType
+  commentId: P:ChartIQ.Finsemble.Finsemble.componentType
+  fullName: ChartIQ.Finsemble.Finsemble.componentType
+  nameWithType: Finsemble.componentType
+- uid: ChartIQ.Finsemble.Finsemble.componentType*
   name: componentType
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_componentType_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.componentType
-  fullName: ChartIQ.Finsemble.FinsembleBridge.componentType
-  nameWithType: FinsembleBridge.componentType
-- uid: ChartIQ.Finsemble.FinsembleBridge.Connect
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_componentType_
+  commentId: Overload:ChartIQ.Finsemble.Finsemble.componentType
+  fullName: ChartIQ.Finsemble.Finsemble.componentType
+  nameWithType: Finsemble.componentType
+- uid: ChartIQ.Finsemble.Finsemble.Connect
   name: Connect()
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_Connect
-  commentId: M:ChartIQ.Finsemble.FinsembleBridge.Connect
-  fullName: ChartIQ.Finsemble.FinsembleBridge.Connect()
-  nameWithType: FinsembleBridge.Connect()
-- uid: ChartIQ.Finsemble.FinsembleBridge.Connect*
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_Connect
+  commentId: M:ChartIQ.Finsemble.Finsemble.Connect
+  fullName: ChartIQ.Finsemble.Finsemble.Connect()
+  nameWithType: Finsemble.Connect()
+- uid: ChartIQ.Finsemble.Finsemble.Connect*
   name: Connect
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_Connect_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.Connect
-  fullName: ChartIQ.Finsemble.FinsembleBridge.Connect
-  nameWithType: FinsembleBridge.Connect
-- uid: ChartIQ.Finsemble.FinsembleBridge.Connected
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_Connect_
+  commentId: Overload:ChartIQ.Finsemble.Finsemble.Connect
+  fullName: ChartIQ.Finsemble.Finsemble.Connect
+  nameWithType: Finsemble.Connect
+- uid: ChartIQ.Finsemble.Finsemble.Connected
   name: Connected
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_Connected
-  commentId: E:ChartIQ.Finsemble.FinsembleBridge.Connected
-  fullName: ChartIQ.Finsemble.FinsembleBridge.Connected
-  nameWithType: FinsembleBridge.Connected
-- uid: ChartIQ.Finsemble.FinsembleBridge.Disconnected
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_Connected
+  commentId: E:ChartIQ.Finsemble.Finsemble.Connected
+  fullName: ChartIQ.Finsemble.Finsemble.Connected
+  nameWithType: Finsemble.Connected
+- uid: ChartIQ.Finsemble.Finsemble.Disconnected
   name: Disconnected
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_Disconnected
-  commentId: E:ChartIQ.Finsemble.FinsembleBridge.Disconnected
-  fullName: ChartIQ.Finsemble.FinsembleBridge.Disconnected
-  nameWithType: FinsembleBridge.Disconnected
-- uid: ChartIQ.Finsemble.FinsembleBridge.Dispose
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_Disconnected
+  commentId: E:ChartIQ.Finsemble.Finsemble.Disconnected
+  fullName: ChartIQ.Finsemble.Finsemble.Disconnected
+  nameWithType: Finsemble.Disconnected
+- uid: ChartIQ.Finsemble.Finsemble.Dispose
   name: Dispose()
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_Dispose
-  commentId: M:ChartIQ.Finsemble.FinsembleBridge.Dispose
-  fullName: ChartIQ.Finsemble.FinsembleBridge.Dispose()
-  nameWithType: FinsembleBridge.Dispose()
-- uid: ChartIQ.Finsemble.FinsembleBridge.Dispose*
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_Dispose
+  commentId: M:ChartIQ.Finsemble.Finsemble.Dispose
+  fullName: ChartIQ.Finsemble.Finsemble.Dispose()
+  nameWithType: Finsemble.Dispose()
+- uid: ChartIQ.Finsemble.Finsemble.Dispose*
   name: Dispose
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_Dispose_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.Dispose
-  fullName: ChartIQ.Finsemble.FinsembleBridge.Dispose
-  nameWithType: FinsembleBridge.Dispose
-- uid: ChartIQ.Finsemble.FinsembleBridge.dragAndDropClient
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_Dispose_
+  commentId: Overload:ChartIQ.Finsemble.Finsemble.Dispose
+  fullName: ChartIQ.Finsemble.Finsemble.Dispose
+  nameWithType: Finsemble.Dispose
+- uid: ChartIQ.Finsemble.Finsemble.dragAndDropClient
   name: dragAndDropClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_dragAndDropClient
-  commentId: P:ChartIQ.Finsemble.FinsembleBridge.dragAndDropClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.dragAndDropClient
-  nameWithType: FinsembleBridge.dragAndDropClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.dragAndDropClient*
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_dragAndDropClient
+  commentId: P:ChartIQ.Finsemble.Finsemble.dragAndDropClient
+  fullName: ChartIQ.Finsemble.Finsemble.dragAndDropClient
+  nameWithType: Finsemble.dragAndDropClient
+- uid: ChartIQ.Finsemble.Finsemble.dragAndDropClient*
   name: dragAndDropClient
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_dragAndDropClient_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.dragAndDropClient
-  fullName: ChartIQ.Finsemble.FinsembleBridge.dragAndDropClient
-  nameWithType: FinsembleBridge.dragAndDropClient
-- uid: ChartIQ.Finsemble.FinsembleBridge.Error
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_dragAndDropClient_
+  commentId: Overload:ChartIQ.Finsemble.Finsemble.dragAndDropClient
+  fullName: ChartIQ.Finsemble.Finsemble.dragAndDropClient
+  nameWithType: Finsemble.dragAndDropClient
+- uid: ChartIQ.Finsemble.Finsemble.Error
   name: Error
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_Error
-  commentId: E:ChartIQ.Finsemble.FinsembleBridge.Error
-  fullName: ChartIQ.Finsemble.FinsembleBridge.Error
-  nameWithType: FinsembleBridge.Error
-- uid: ChartIQ.Finsemble.FinsembleBridge.OpenFinVersion
-  name: OpenFinVersion
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_OpenFinVersion
-  commentId: P:ChartIQ.Finsemble.FinsembleBridge.OpenFinVersion
-  fullName: ChartIQ.Finsemble.FinsembleBridge.OpenFinVersion
-  nameWithType: FinsembleBridge.OpenFinVersion
-- uid: ChartIQ.Finsemble.FinsembleBridge.OpenFinVersion*
-  name: OpenFinVersion
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_OpenFinVersion_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.OpenFinVersion
-  fullName: ChartIQ.Finsemble.FinsembleBridge.OpenFinVersion
-  nameWithType: FinsembleBridge.OpenFinVersion
-- uid: ChartIQ.Finsemble.FinsembleBridge.RPCCallbackHandler
-  name: FinsembleBridge.RPCCallbackHandler
-  href: api/ChartIQ.Finsemble.FinsembleBridge.RPCCallbackHandler.html
-  commentId: T:ChartIQ.Finsemble.FinsembleBridge.RPCCallbackHandler
-  fullName: ChartIQ.Finsemble.FinsembleBridge.RPCCallbackHandler
-  nameWithType: FinsembleBridge.RPCCallbackHandler
-- uid: ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage(System.String,System.Collections.Generic.List{Newtonsoft.Json.Linq.JToken},System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: SendRPCMessage(String, List<JToken>, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_SendRPCMessage_System_String_System_Collections_Generic_List_Newtonsoft_Json_Linq_JToken__System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage(System.String,System.Collections.Generic.List{Newtonsoft.Json.Linq.JToken},System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: SendRPCMessage(String, List(Of JToken), EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage(System.String, System.Collections.Generic.List<Newtonsoft.Json.Linq.JToken>, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage(System.String, System.Collections.Generic.List(Of Newtonsoft.Json.Linq.JToken), System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: FinsembleBridge.SendRPCMessage(String, List<JToken>, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: FinsembleBridge.SendRPCMessage(String, List(Of JToken), EventHandler(Of FinsembleEventArgs))
-- uid: ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage*
-  name: SendRPCMessage
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_SendRPCMessage_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage
-  fullName: ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage
-  nameWithType: FinsembleBridge.SendRPCMessage
-- uid: ChartIQ.Finsemble.FinsembleBridge.ShutdownApplication
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_Error
+  commentId: E:ChartIQ.Finsemble.Finsemble.Error
+  fullName: ChartIQ.Finsemble.Finsemble.Error
+  nameWithType: Finsemble.Error
+- uid: ChartIQ.Finsemble.Finsemble.openFinVersion
+  name: openFinVersion
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_openFinVersion
+  commentId: P:ChartIQ.Finsemble.Finsemble.openFinVersion
+  fullName: ChartIQ.Finsemble.Finsemble.openFinVersion
+  nameWithType: Finsemble.openFinVersion
+- uid: ChartIQ.Finsemble.Finsemble.openFinVersion*
+  name: openFinVersion
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_openFinVersion_
+  commentId: Overload:ChartIQ.Finsemble.Finsemble.openFinVersion
+  fullName: ChartIQ.Finsemble.Finsemble.openFinVersion
+  nameWithType: Finsemble.openFinVersion
+- uid: ChartIQ.Finsemble.Finsemble.RPC(System.String,System.Collections.Generic.List{Newtonsoft.Json.Linq.JToken},System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
+  name: RPC(String, List<JToken>, EventHandler<FinsembleEventArgs>)
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_RPC_System_String_System_Collections_Generic_List_Newtonsoft_Json_Linq_JToken__System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
+  commentId: M:ChartIQ.Finsemble.Finsemble.RPC(System.String,System.Collections.Generic.List{Newtonsoft.Json.Linq.JToken},System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
+  name.vb: RPC(String, List(Of JToken), EventHandler(Of FinsembleEventArgs))
+  fullName: ChartIQ.Finsemble.Finsemble.RPC(System.String, System.Collections.Generic.List<Newtonsoft.Json.Linq.JToken>, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
+  fullName.vb: ChartIQ.Finsemble.Finsemble.RPC(System.String, System.Collections.Generic.List(Of Newtonsoft.Json.Linq.JToken), System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
+  nameWithType: Finsemble.RPC(String, List<JToken>, EventHandler<FinsembleEventArgs>)
+  nameWithType.vb: Finsemble.RPC(String, List(Of JToken), EventHandler(Of FinsembleEventArgs))
+- uid: ChartIQ.Finsemble.Finsemble.RPC*
+  name: RPC
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_RPC_
+  commentId: Overload:ChartIQ.Finsemble.Finsemble.RPC
+  fullName: ChartIQ.Finsemble.Finsemble.RPC
+  nameWithType: Finsemble.RPC
+- uid: ChartIQ.Finsemble.Finsemble.RPCCallbackHandler
+  name: Finsemble.RPCCallbackHandler
+  href: api/ChartIQ.Finsemble.Finsemble.RPCCallbackHandler.html
+  commentId: T:ChartIQ.Finsemble.Finsemble.RPCCallbackHandler
+  fullName: ChartIQ.Finsemble.Finsemble.RPCCallbackHandler
+  nameWithType: Finsemble.RPCCallbackHandler
+- uid: ChartIQ.Finsemble.Finsemble.ShutdownApplication
   name: ShutdownApplication()
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_ShutdownApplication
-  commentId: M:ChartIQ.Finsemble.FinsembleBridge.ShutdownApplication
-  fullName: ChartIQ.Finsemble.FinsembleBridge.ShutdownApplication()
-  nameWithType: FinsembleBridge.ShutdownApplication()
-- uid: ChartIQ.Finsemble.FinsembleBridge.ShutdownApplication*
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_ShutdownApplication
+  commentId: M:ChartIQ.Finsemble.Finsemble.ShutdownApplication
+  fullName: ChartIQ.Finsemble.Finsemble.ShutdownApplication()
+  nameWithType: Finsemble.ShutdownApplication()
+- uid: ChartIQ.Finsemble.Finsemble.ShutdownApplication*
   name: ShutdownApplication
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_ShutdownApplication_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.ShutdownApplication
-  fullName: ChartIQ.Finsemble.FinsembleBridge.ShutdownApplication
-  nameWithType: FinsembleBridge.ShutdownApplication
-- uid: ChartIQ.Finsemble.FinsembleBridge.uuid
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_ShutdownApplication_
+  commentId: Overload:ChartIQ.Finsemble.Finsemble.ShutdownApplication
+  fullName: ChartIQ.Finsemble.Finsemble.ShutdownApplication
+  nameWithType: Finsemble.ShutdownApplication
+- uid: ChartIQ.Finsemble.Finsemble.uuid
   name: uuid
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_uuid
-  commentId: P:ChartIQ.Finsemble.FinsembleBridge.uuid
-  fullName: ChartIQ.Finsemble.FinsembleBridge.uuid
-  nameWithType: FinsembleBridge.uuid
-- uid: ChartIQ.Finsemble.FinsembleBridge.uuid*
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_uuid
+  commentId: P:ChartIQ.Finsemble.Finsemble.uuid
+  fullName: ChartIQ.Finsemble.Finsemble.uuid
+  nameWithType: Finsemble.uuid
+- uid: ChartIQ.Finsemble.Finsemble.uuid*
   name: uuid
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_uuid_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.uuid
-  fullName: ChartIQ.Finsemble.FinsembleBridge.uuid
-  nameWithType: FinsembleBridge.uuid
-- uid: ChartIQ.Finsemble.FinsembleBridge.window
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_uuid_
+  commentId: Overload:ChartIQ.Finsemble.Finsemble.uuid
+  fullName: ChartIQ.Finsemble.Finsemble.uuid
+  nameWithType: Finsemble.uuid
+- uid: ChartIQ.Finsemble.Finsemble.window
   name: window
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_window
-  commentId: P:ChartIQ.Finsemble.FinsembleBridge.window
-  fullName: ChartIQ.Finsemble.FinsembleBridge.window
-  nameWithType: FinsembleBridge.window
-- uid: ChartIQ.Finsemble.FinsembleBridge.window*
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_window
+  commentId: P:ChartIQ.Finsemble.Finsemble.window
+  fullName: ChartIQ.Finsemble.Finsemble.window
+  nameWithType: Finsemble.window
+- uid: ChartIQ.Finsemble.Finsemble.window*
   name: window
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_window_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.window
-  fullName: ChartIQ.Finsemble.FinsembleBridge.window
-  nameWithType: FinsembleBridge.window
-- uid: ChartIQ.Finsemble.FinsembleBridge.windowName
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_window_
+  commentId: Overload:ChartIQ.Finsemble.Finsemble.window
+  fullName: ChartIQ.Finsemble.Finsemble.window
+  nameWithType: Finsemble.window
+- uid: ChartIQ.Finsemble.Finsemble.windowName
   name: windowName
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_windowName
-  commentId: P:ChartIQ.Finsemble.FinsembleBridge.windowName
-  fullName: ChartIQ.Finsemble.FinsembleBridge.windowName
-  nameWithType: FinsembleBridge.windowName
-- uid: ChartIQ.Finsemble.FinsembleBridge.windowName*
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_windowName
+  commentId: P:ChartIQ.Finsemble.Finsemble.windowName
+  fullName: ChartIQ.Finsemble.Finsemble.windowName
+  nameWithType: Finsemble.windowName
+- uid: ChartIQ.Finsemble.Finsemble.windowName*
   name: windowName
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_windowName_
-  commentId: Overload:ChartIQ.Finsemble.FinsembleBridge.windowName
-  fullName: ChartIQ.Finsemble.FinsembleBridge.windowName
-  nameWithType: FinsembleBridge.windowName
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_windowName_
+  commentId: Overload:ChartIQ.Finsemble.Finsemble.windowName
+  fullName: ChartIQ.Finsemble.Finsemble.windowName
+  nameWithType: Finsemble.windowName
 - uid: ChartIQ.Finsemble.FinsembleEventArgs
   name: FinsembleEventArgs
   href: api/ChartIQ.Finsemble.FinsembleEventArgs.html
@@ -430,12 +433,12 @@ references:
   commentId: Overload:ChartIQ.Finsemble.FinsembleWPFHeader.InitializeComponent
   fullName: ChartIQ.Finsemble.FinsembleWPFHeader.InitializeComponent
   nameWithType: FinsembleWPFHeader.InitializeComponent
-- uid: ChartIQ.Finsemble.FinsembleWPFHeader.setBridge(ChartIQ.Finsemble.FinsembleBridge)
-  name: setBridge(FinsembleBridge)
-  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_setBridge_ChartIQ_Finsemble_FinsembleBridge_
-  commentId: M:ChartIQ.Finsemble.FinsembleWPFHeader.setBridge(ChartIQ.Finsemble.FinsembleBridge)
-  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.setBridge(ChartIQ.Finsemble.FinsembleBridge)
-  nameWithType: FinsembleWPFHeader.setBridge(FinsembleBridge)
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.setBridge(ChartIQ.Finsemble.Finsemble)
+  name: setBridge(Finsemble)
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_setBridge_ChartIQ_Finsemble_Finsemble_
+  commentId: M:ChartIQ.Finsemble.FinsembleWPFHeader.setBridge(ChartIQ.Finsemble.Finsemble)
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.setBridge(ChartIQ.Finsemble.Finsemble)
+  nameWithType: FinsembleWPFHeader.setBridge(Finsemble)
 - uid: ChartIQ.Finsemble.FinsembleWPFHeader.setBridge*
   name: setBridge
   href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_setBridge_

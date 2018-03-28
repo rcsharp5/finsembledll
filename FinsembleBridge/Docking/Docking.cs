@@ -21,7 +21,7 @@ namespace ChartIQ.Finsemble
     /// </summary>
     internal class Docking
     {
-        FinsembleBridge bridge;
+        Finsemble bridge;
         RouterClient routerClient;
         string dockingChannel;
         Window dockingWindow;
@@ -71,7 +71,7 @@ namespace ChartIQ.Finsemble
 
         double dpiX, dpiY;
 
-        internal Docking(FinsembleBridge _bridge, string channel)
+        internal Docking(Finsemble _bridge, string channel)
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
@@ -137,6 +137,13 @@ namespace ChartIQ.Finsemble
                         return;
                     }
 
+                    var dtop = Double.Parse(top);
+                    var dleft = Double.Parse(left);
+                    var dheight = Double.Parse(height);
+                    var dwidth = Double.Parse(width);
+                    if (dheight < 32) dheight = 32;
+                    if (dwidth < 1) dwidth = 1;
+
                     /*Debug.Write(top + " ");
                     Debug.Write(left + " ");
                     Debug.Write(width + " ");
@@ -145,25 +152,13 @@ namespace ChartIQ.Finsemble
 
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
-                        if (!string.IsNullOrEmpty(top)) dockingWindow.Top = Double.Parse(top);
-
-                        if (!string.IsNullOrEmpty(left)) dockingWindow.Left = Double.Parse(left);
-
-
-                        if (!string.IsNullOrEmpty(height))
-                        {
-                            double h = Math.Abs(Double.Parse(height));
-                            if (h > 0) dockingWindow.Height = h;
-                        }
-
-
-                        if (!string.IsNullOrEmpty(width))
-                        {
-                            double w = Math.Abs(Double.Parse(width));
-                            if (w > 0) dockingWindow.Width = w;
-                        }
-
-                        WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
+                        var topLeftChanged = false;
+                        if (dockingWindow.Top != dtop) { dockingWindow.Top = dtop; topLeftChanged = true; }
+                        if (dockingWindow.Left != dleft) { dockingWindow.Left = dleft; topLeftChanged = true; }
+                        if (dockingWindow.Height != dheight) dockingWindow.Height = dheight;
+                        if (dockingWindow.Width != dwidth) dockingWindow.Width = dwidth;
+                        
+                        if (topLeftChanged) WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
                         WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
                     });
                     break;

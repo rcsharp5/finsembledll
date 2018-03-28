@@ -17,7 +17,7 @@ namespace ChartIQ.Finsemble
     /// </summary>
     internal class LinkerClient
     {
-        private FinsembleBridge bridge;
+        private Finsemble bridge;
         private WindowClient windowClient;
         private RouterClient routerClient;
         private LauncherClient launcherClient;
@@ -31,7 +31,7 @@ namespace ChartIQ.Finsemble
         private List<string> channelListenerList = new List<string>();
         bool readyToPersistState = false;
 
-        internal LinkerClient(FinsembleBridge bridge)
+        internal LinkerClient(Finsemble bridge)
         {
             this.bridge = bridge;
             windowClient = bridge.windowClient;
