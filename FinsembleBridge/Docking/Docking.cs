@@ -40,6 +40,7 @@ namespace ChartIQ.Finsemble
 
         const int WM_SIZING = 0x0214;
         const int WM_MOVING = 0x0216;
+        const int WM_LBUTTONDOWN = 0x201;
 
         const int WMSZ_BOTTOM = 6;
         const int WMSZ_BOTTOMLEFT = 7;
@@ -573,6 +574,10 @@ namespace ChartIQ.Finsemble
                     resizeScale = scale;
 
 
+                    break;
+                case WM_LBUTTONDOWN:
+                    dockingWindow.Activate();
+                    bHandled = false;
                     break;
 
             }
