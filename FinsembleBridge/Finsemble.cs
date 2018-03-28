@@ -76,7 +76,7 @@ namespace ChartIQ.Finsemble
         /// </summary>
         public event EventHandler<UnhandledExceptionEventArgs> Error;
 
-        public delegate void RPCCallbackHandler(IList<object> args);
+        public delegate void RPCCallbackHandler(JToken error, JToken response);
 
         #endregion
 
@@ -309,25 +309,27 @@ namespace ChartIQ.Finsemble
         /// <param name="endpoint">Name of the API call from the list above</param>
         /// <param name="args">This is a JObject which contains all the parameters that the API call takes. Refer to our Javascript API for the parameters to each API call.</param>
         /// <param name="cb">If the API has a callback, this will be used to call back.</param>
-        private void RPC(string endpoint, IList<object> args, RPCCallbackHandler cb = null)
+        public void RPC(string endpoint, JArray args, RPCCallbackHandler cb = null)
         {
-            var jargs = new List<JToken>();
-            for (int i = 0; i < args.Count; ++i)
+            var l = new List<JToken>();
+            foreach (var item in args)
             {
-                jargs.Add(JObjectExtensions.ConvertObjectToJToken(args[i]));
+                l.Add(item);
             }
-            RPC(endpoint, jargs, (sender, a) => {
-                object objectFromJSON = JObjectExtensions.ConvertJObjectToObject(a.response);
-                var listToSend = new List<object>();
-                listToSend.Add(objectFromJSON);
-                if(cb != null)
-                {
-                    cb(listToSend);
-                }
+            RPC(endpoint, l, (s, a) => {
+                cb?.Invoke(a.error, a.response);
             });
         }
 
-        public void RPC(string endpoint, List<JToken> args, EventHandler<FinsembleEventArgs> cb)
+        public void RPC(string endpoint, List<JToken> args, RPCCallbackHandler cb = null)
+        {
+            RPC(endpoint, args, (s, a) =>
+            {
+                cb?.Invoke(a.error, a.response);
+            });
+        }
+
+        private void RPC(string endpoint, List<JToken> args, EventHandler<FinsembleEventArgs> cb)
         {
             switch (endpoint)
             {

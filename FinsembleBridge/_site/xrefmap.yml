@@ -286,15 +286,21 @@ references:
   commentId: Overload:ChartIQ.Finsemble.Finsemble.openFinVersion
   fullName: ChartIQ.Finsemble.Finsemble.openFinVersion
   nameWithType: Finsemble.openFinVersion
-- uid: ChartIQ.Finsemble.Finsemble.RPC(System.String,System.Collections.Generic.List{Newtonsoft.Json.Linq.JToken},System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name: RPC(String, List<JToken>, EventHandler<FinsembleEventArgs>)
-  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_RPC_System_String_System_Collections_Generic_List_Newtonsoft_Json_Linq_JToken__System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__
-  commentId: M:ChartIQ.Finsemble.Finsemble.RPC(System.String,System.Collections.Generic.List{Newtonsoft.Json.Linq.JToken},System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
-  name.vb: RPC(String, List(Of JToken), EventHandler(Of FinsembleEventArgs))
-  fullName: ChartIQ.Finsemble.Finsemble.RPC(System.String, System.Collections.Generic.List<Newtonsoft.Json.Linq.JToken>, System.EventHandler<ChartIQ.Finsemble.FinsembleEventArgs>)
-  fullName.vb: ChartIQ.Finsemble.Finsemble.RPC(System.String, System.Collections.Generic.List(Of Newtonsoft.Json.Linq.JToken), System.EventHandler(Of ChartIQ.Finsemble.FinsembleEventArgs))
-  nameWithType: Finsemble.RPC(String, List<JToken>, EventHandler<FinsembleEventArgs>)
-  nameWithType.vb: Finsemble.RPC(String, List(Of JToken), EventHandler(Of FinsembleEventArgs))
+- uid: ChartIQ.Finsemble.Finsemble.RPC(System.String,Newtonsoft.Json.Linq.JArray,ChartIQ.Finsemble.Finsemble.RPCCallbackHandler)
+  name: RPC(String, JArray, Finsemble.RPCCallbackHandler)
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_RPC_System_String_Newtonsoft_Json_Linq_JArray_ChartIQ_Finsemble_Finsemble_RPCCallbackHandler_
+  commentId: M:ChartIQ.Finsemble.Finsemble.RPC(System.String,Newtonsoft.Json.Linq.JArray,ChartIQ.Finsemble.Finsemble.RPCCallbackHandler)
+  fullName: ChartIQ.Finsemble.Finsemble.RPC(System.String, Newtonsoft.Json.Linq.JArray, ChartIQ.Finsemble.Finsemble.RPCCallbackHandler)
+  nameWithType: Finsemble.RPC(String, JArray, Finsemble.RPCCallbackHandler)
+- uid: ChartIQ.Finsemble.Finsemble.RPC(System.String,System.Collections.Generic.List{Newtonsoft.Json.Linq.JToken},ChartIQ.Finsemble.Finsemble.RPCCallbackHandler)
+  name: RPC(String, List<JToken>, Finsemble.RPCCallbackHandler)
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_RPC_System_String_System_Collections_Generic_List_Newtonsoft_Json_Linq_JToken__ChartIQ_Finsemble_Finsemble_RPCCallbackHandler_
+  commentId: M:ChartIQ.Finsemble.Finsemble.RPC(System.String,System.Collections.Generic.List{Newtonsoft.Json.Linq.JToken},ChartIQ.Finsemble.Finsemble.RPCCallbackHandler)
+  name.vb: RPC(String, List(Of JToken), Finsemble.RPCCallbackHandler)
+  fullName: ChartIQ.Finsemble.Finsemble.RPC(System.String, System.Collections.Generic.List<Newtonsoft.Json.Linq.JToken>, ChartIQ.Finsemble.Finsemble.RPCCallbackHandler)
+  fullName.vb: ChartIQ.Finsemble.Finsemble.RPC(System.String, System.Collections.Generic.List(Of Newtonsoft.Json.Linq.JToken), ChartIQ.Finsemble.Finsemble.RPCCallbackHandler)
+  nameWithType: Finsemble.RPC(String, List<JToken>, Finsemble.RPCCallbackHandler)
+  nameWithType.vb: Finsemble.RPC(String, List(Of JToken), Finsemble.RPCCallbackHandler)
 - uid: ChartIQ.Finsemble.Finsemble.RPC*
   name: RPC
   href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_RPC_

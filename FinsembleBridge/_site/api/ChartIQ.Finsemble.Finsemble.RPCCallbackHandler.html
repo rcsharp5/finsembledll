@@ -79,7 +79,7 @@
   <h6><strong>Assembly</strong>: FinsembleBridge.dll</h6>
   <h5 id="ChartIQ_Finsemble_Finsemble_RPCCallbackHandler_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public delegate void RPCCallbackHandler(IList&lt;object&gt; args);</code></pre>
+    <pre><code class="lang-csharp hljs">public delegate void RPCCallbackHandler(JToken error, JToken response);</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -92,8 +92,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<span class="xref">System.Object</span>&gt;</td>
-        <td><span class="parametername">args</span></td>
+        <td><span class="xref">Newtonsoft.Json.Linq.JToken</span></td>
+        <td><span class="parametername">error</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Newtonsoft.Json.Linq.JToken</span></td>
+        <td><span class="parametername">response</span></td>
         <td></td>
       </tr>
     </tbody>

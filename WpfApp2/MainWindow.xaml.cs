@@ -58,7 +58,6 @@ namespace FinsembleWPFDemo
                 // Initialize this Window and show it
                 InitializeComponent();
                 FinsembleHeader.setBridge(FSBL);
-                
 
                 FSBL.dragAndDropClient.SetScrim(Scrim);
 
@@ -97,12 +96,12 @@ namespace FinsembleWPFDemo
             FSBL.RPC("LinkerClient.subscribe", new List<JToken>
             {
                 "symbol"
-            }, (sensder, args) =>
+            }, (error, response) =>
             {
                 Application.Current.Dispatcher.Invoke((Action)delegate //main thread
                 {
-                    DataToSend.Text = args.response?["data"]?.ToString();
-                    DroppedData.Content = args.response?["data"]?.ToString();
+                    DataToSend.Text = response?["data"]?.ToString();
+                    DroppedData.Content = response?["data"]?.ToString();
                 });
             });
         }
