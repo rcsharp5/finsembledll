@@ -55,7 +55,7 @@ namespace Authentication
 
                 }
             }
-            Debugger.Launch();
+            
             var mainWindow = new MainWindow(mainWindowName, componentType, top, left, height, width, uuid);
         }
     }

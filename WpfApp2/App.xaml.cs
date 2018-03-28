@@ -62,5 +62,10 @@ namespace FinsembleWPFDemo
             //Debugger.Launch();
             var mainWindow = new MainWindow(mainWindowName, uuid, componentType, top, left, height, width, openfinVersion);
         }
+
+        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show("An Unhandled Exception has occured. Please Check your event Logs.");
+        }
     }
 }

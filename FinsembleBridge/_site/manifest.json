@@ -105,7 +105,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.FinsembleBridge.html",
-          "hash": "skd0IXjCG1QbtOmuPtAL/Q=="
+          "hash": "AuEPhHlbvsHWfb1eplfUFQ=="
         }
       },
       "is_incremental": false,
@@ -185,11 +185,11 @@
           "details": "Processor TocDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         },
-        "ConceptualDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build"
         },
-        "ManagedReferenceDocumentProcessor": {
+        "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build"
         }

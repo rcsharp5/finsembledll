@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ChartIQ.Finsemble;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 namespace FinsembleWPFDemo
 {
@@ -29,21 +30,21 @@ namespace FinsembleWPFDemo
 
         private void SpawnChart_Click(object sender, RoutedEventArgs e)
         {
-            finsemble.SendRPCMessage("LauncherClient.spawn", new List<object> {
+            finsemble.SendRPCMessage("LauncherClient.spawn", new List<JToken> {
                 "Advanced Chart",
                 new JObject { }
-            }, (a) => { });
+            }, (s, a) => { });
         }
 
         private void Send_Click(object sender, RoutedEventArgs e)
         {
-            finsemble.SendRPCMessage("LinkerClient.publish", new List<object>
+            finsemble.SendRPCMessage("LinkerClient.publish", new List<JToken>
             {
                 new JObject {
                     ["dataType"] = "symbol",
                     ["data"] = DataToSend.Text
                 }
-            }, (a) => { });
+            }, (s, a) => { });
         }
 
         public MainWindow(string FinsembleWindowName, string uuid, string componentType, string top, string left, string height, string width, string openfinVersion)
@@ -71,14 +72,15 @@ namespace FinsembleWPFDemo
             finsemble = new FinsembleBridge(new System.Version(openfinVersion), windowName, componentType, this, uuid);
             finsemble.Connect();
             finsemble.Connected += Bridge_Connected;
+
         }
 
         private void Bridge_Connected(object sender, EventArgs e)
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                // Initialize this Window and show it
-                InitializeComponent();
+            // Initialize this Window and show it
+            InitializeComponent();
                 FinsembleHeader.setBridge(finsemble);
                 if (!string.IsNullOrEmpty(top))
                 {
@@ -104,56 +106,45 @@ namespace FinsembleWPFDemo
 
                 finsemble.dragAndDropClient.AddReceivers(new List<KeyValuePair<string, EventHandler<FinsembleEventArgs>>>()
                 {
-                    new KeyValuePair<string, EventHandler<FinsembleEventArgs>>("symbol", (s, args) =>
+                new KeyValuePair<string, EventHandler<FinsembleEventArgs>>("symbol", (s, args) =>
+                {
+                    var data = args.response["data"]?["symbol"]?["symbol"];
+                    if(data != null)
                     {
-                        var data = args.response["data"]?["symbol"]?["symbol"];
-                        if(data != null)
+                        Application.Current.Dispatcher.Invoke((Action)delegate //main thread
                         {
-                            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
-                            {
-                                DroppedData.Content = data.ToString();
-                                DataToSend.Text = data.ToString();
-                            });
-                        };
-                    })
+                            DroppedData.Content = data.ToString();
+                            DataToSend.Text = data.ToString();
+                        });
+                    };
+                })
                 });
 
                 finsemble.dragAndDropClient.SetEmitters(new List<KeyValuePair<string, DragAndDropClient.emitter>>()
                 {
-                    new KeyValuePair<string, DragAndDropClient.emitter>("symbol", () =>
+                new KeyValuePair<string, DragAndDropClient.emitter>("symbol", () =>
+                {
+                    return new JObject
                     {
-                        return new JObject
-                        {
-                            ["symbol"] = DataToSend.Text,
-                            ["description"] = "Symbol " + DataToSend.Text
-                        };
-                    })
+                        ["symbol"] = DataToSend.Text,
+                        ["description"] = "Symbol " + DataToSend.Text
+                    };
+                })
                 });
 
                 this.Show();
 
             });
 
-            finsemble.SendRPCMessage("LinkerClient.subscribe", new List<object>
+            finsemble.SendRPCMessage("LinkerClient.subscribe", new List<JToken>
             {
                 "symbol"
-            }, (args) =>
+            }, (sensder, args) =>
             {
                 Application.Current.Dispatcher.Invoke((Action)delegate //main thread
                 {
-                    dynamic data = args; //[0]?["data"]?.ToString();
-                    try {
-                        dynamic convertedData = data[0]["data"];
-                        DataToSend.Text = convertedData.ToString();
-                        DroppedData.Content = convertedData.ToString();
-                    } 
-                    catch
-                    {
-
-                    }
-
-                    //DataToSend.Text = args[0]?["data"]?.ToString();
-                    //DroppedData.Content = args.response["data"].ToString();
+                    DataToSend.Text = args.response?["data"]?.ToString();
+                    DroppedData.Content = args.response?["data"]?.ToString();
                 });
             });
         }

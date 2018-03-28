@@ -289,15 +289,6 @@ references:
   commentId: T:ChartIQ.Finsemble.FinsembleBridge.RPCCallbackHandler
   fullName: ChartIQ.Finsemble.FinsembleBridge.RPCCallbackHandler
   nameWithType: FinsembleBridge.RPCCallbackHandler
-- uid: ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage(System.String,System.Collections.Generic.IList{System.Object},ChartIQ.Finsemble.FinsembleBridge.RPCCallbackHandler)
-  name: SendRPCMessage(String, IList<Object>, FinsembleBridge.RPCCallbackHandler)
-  href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_SendRPCMessage_System_String_System_Collections_Generic_IList_System_Object__ChartIQ_Finsemble_FinsembleBridge_RPCCallbackHandler_
-  commentId: M:ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage(System.String,System.Collections.Generic.IList{System.Object},ChartIQ.Finsemble.FinsembleBridge.RPCCallbackHandler)
-  name.vb: SendRPCMessage(String, IList(Of Object), FinsembleBridge.RPCCallbackHandler)
-  fullName: ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage(System.String, System.Collections.Generic.IList<System.Object>, ChartIQ.Finsemble.FinsembleBridge.RPCCallbackHandler)
-  fullName.vb: ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage(System.String, System.Collections.Generic.IList(Of System.Object), ChartIQ.Finsemble.FinsembleBridge.RPCCallbackHandler)
-  nameWithType: FinsembleBridge.SendRPCMessage(String, IList<Object>, FinsembleBridge.RPCCallbackHandler)
-  nameWithType.vb: FinsembleBridge.SendRPCMessage(String, IList(Of Object), FinsembleBridge.RPCCallbackHandler)
 - uid: ChartIQ.Finsemble.FinsembleBridge.SendRPCMessage(System.String,System.Collections.Generic.List{Newtonsoft.Json.Linq.JToken},System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})
   name: SendRPCMessage(String, List<JToken>, EventHandler<FinsembleEventArgs>)
   href: api/ChartIQ.Finsemble.FinsembleBridge.html#ChartIQ_Finsemble_FinsembleBridge_SendRPCMessage_System_String_System_Collections_Generic_List_Newtonsoft_Json_Linq_JToken__System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__

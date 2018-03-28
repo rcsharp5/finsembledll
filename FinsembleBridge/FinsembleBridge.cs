@@ -251,7 +251,7 @@ namespace ChartIQ.Finsemble
         /// <param name="endpoint">Name of the API call from the list above</param>
         /// <param name="args">This is a JObject which contains all the parameters that the API call takes. Refer to our Javascript API for the parameters to each API call.</param>
         /// <param name="cb">If the API has a callback, this will be used to call back.</param>
-        public void SendRPCMessage(string endpoint, IList<object> args, RPCCallbackHandler cb = null)
+        private void SendRPCMessage(string endpoint, IList<object> args, RPCCallbackHandler cb = null)
         {
             var jargs = new List<JToken>();
             for (int i = 0; i < args.Count; ++i)

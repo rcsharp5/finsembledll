@@ -36,46 +36,52 @@ namespace ChartIQ.Finsemble
         {
             Application.Current.Dispatcher.Invoke((Action)delegate //main thread
             {
-                var channels = args.response["channels"] as JArray;
-                var allChannels = args.response["allChannels"] as JArray;
-
-                // Hide all LinkerGroups
-                foreach (var item in LinkerGroups)
+                try
                 {
-                    item.Value.Visibility = Visibility.Hidden;
-                }
+                    var channels = args.response["channels"] as JArray;
+                    var allChannels = args.response["allChannels"] as JArray;
 
-                // Loop through Channels
-                Double baseLeft = 36.0;
-                Double increment = 12;
-                foreach (JObject item in allChannels)
-                {
-                    var groupName = (string)item["name"];
-                    // check if in this group
-                    if (channels.Where(jt => jt.Value<string>() == groupName).Count() > 0)
+                    // Hide all LinkerGroups
+                    foreach (var item in LinkerGroups)
                     {
-                        if (!LinkerGroups.ContainsKey(groupName))
-                        {
-                            var groupRectangle = new Button();
-                            groupRectangle.HorizontalAlignment = HorizontalAlignment.Left;
-                            groupRectangle.VerticalAlignment = VerticalAlignment.Center;
-                            groupRectangle.Width = 7;
-                            groupRectangle.Height = 20;
-                            groupRectangle.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString((string)item["color"]));
-                            Toolbar.Children.Add(groupRectangle);
-                            groupRectangle.SetValue(Canvas.TopProperty, (Toolbar.ActualHeight - groupRectangle.Height) / 2);
-                            groupRectangle.Name = groupName;
-                            var style = this.Resources["LinkerPillStyle"];
-                            groupRectangle.SetValue(StyleProperty, style);
-                            LinkerGroups[groupName] = groupRectangle;
-                            groupRectangle.Click += LinkerPill_Click;
-                        }
-                        LinkerGroups[groupName].SetValue(Canvas.LeftProperty, baseLeft);
-                        baseLeft += increment;
-                        LinkerGroups[groupName].Visibility = Visibility.Visible;
+                        item.Value.Visibility = Visibility.Hidden;
                     }
+
+                    // Loop through Channels
+                    Double baseLeft = 36.0;
+                    Double increment = 12;
+                    foreach (JObject item in allChannels)
+                    {
+                        var groupName = (string)item["name"];
+                        // check if in this group
+                        if (channels.Where(jt => jt.Value<string>() == groupName).Count() > 0)
+                        {
+                            if (!LinkerGroups.ContainsKey(groupName))
+                            {
+                                var groupRectangle = new Button();
+                                groupRectangle.HorizontalAlignment = HorizontalAlignment.Left;
+                                groupRectangle.VerticalAlignment = VerticalAlignment.Center;
+                                groupRectangle.Width = 7;
+                                groupRectangle.Height = 20;
+                                groupRectangle.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString((string)item["color"]));
+                                Toolbar.Children.Add(groupRectangle);
+                                groupRectangle.SetValue(Canvas.TopProperty, (Toolbar.ActualHeight - groupRectangle.Height) / 2);
+                                groupRectangle.Name = groupName;
+                                var style = this.Resources["LinkerPillStyle"];
+                                groupRectangle.SetValue(StyleProperty, style);
+                                LinkerGroups[groupName] = groupRectangle;
+                                groupRectangle.Click += LinkerPill_Click;
+                            }
+                            LinkerGroups[groupName].SetValue(Canvas.LeftProperty, baseLeft);
+                            baseLeft += increment;
+                            LinkerGroups[groupName].Visibility = Visibility.Visible;
+                        }
+                    }
+                    Window_Size_Changed();
+                } catch
+                {
+
                 }
-                Window_Size_Changed();
             });
         }
 

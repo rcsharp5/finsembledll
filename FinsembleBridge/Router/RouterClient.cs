@@ -2,9 +2,11 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 
 namespace ChartIQ.Finsemble
@@ -21,12 +23,13 @@ namespace ChartIQ.Finsemble
         private Dictionary<string, EventHandler<FinsembleEventArgs>> publishListeners = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
         private Dictionary<string, EventHandler<FinsembleEventArgs>> queryIDResponseHandlerMap = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
         private Dictionary<string, string> subscribeIDTopicMap = new Dictionary<string, string>();
-        private EventHandler<bool> connected;
+        private EventHandler<bool> connectHandler;
+        private bool connected = false;
 
-        internal RouterClient(FinsembleBridge bridge, EventHandler<bool> connected)
+        internal RouterClient(FinsembleBridge bridge, EventHandler<bool> connectHandler)
         {
             this.bridge = bridge;
-            this.connected = connected;
+            this.connectHandler = connectHandler;
             this.clientName = "RouterClient." + bridge.windowName;
             var Handshake = new JObject(
                 new JProperty("header",
@@ -42,7 +45,22 @@ namespace ChartIQ.Finsemble
             {
                 bridge.window.Closing += Window_Closing;
             });
+            var timer = new Timer(100);
+            timer.Elapsed += (s, e) => {
+                if(!connected) //retry handshake until connected
+                {
+                    bridge.runtime.InterApplicationBus.Publish("RouterService", Handshake); //TODO: wait for handshake response
+                } else
+                {
+                    timer.AutoReset = false;
+                    timer.Enabled = false;
+                }
+            };
+            timer.AutoReset = true;
+            timer.Enabled = true;
+
         }
+
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -107,7 +125,9 @@ namespace ChartIQ.Finsemble
                     }
                     break;
                 case "initialHandshakeResponse":
-                    connected(this, true);
+                    Debug.WriteLine("Router Connected");
+                    connected = true;
+                    connectHandler(this, true);
                     break;
             }
         }
