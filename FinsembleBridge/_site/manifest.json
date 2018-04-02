@@ -24,7 +24,7 @@
           "hash": "JoavORvjWWsnQMp4FlppaQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -48,7 +48,7 @@
           "hash": "Y5OvPgPtTvm7S4v47g9AnA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -129,31 +129,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.FinsembleWPFHeader.html",
-          "hash": "HZL7D06ZaCrI1ycmnrp8ig=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.HeaderControl.FinsembleWinformsHeader.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.HeaderControl.FinsembleWinformsHeader.html",
-          "hash": "zHflI9w0giya/zaSTReDoQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.HeaderControl.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.HeaderControl.html",
-          "hash": "LCDQV+kr9tHO9QdThauzfg=="
+          "hash": "4l15+hEddc/UQqs4cnR9vw=="
         }
       },
       "is_incremental": false,
@@ -177,7 +153,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "T7rMgtItFqG0Ahzcyvx04Q=="
+          "hash": "Y5SnB+DoT4mVmo8IKd25jA=="
         }
       },
       "is_incremental": false,
@@ -199,8 +175,7 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": false,
-        "details": "Disable incremental build by force rebuild option.",
+        "can_incremental": true,
         "incrementalPhase": "build"
       },
       "processors": {
@@ -209,20 +184,20 @@
           "details": "Processor TocDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
+        "ConceptualDocumentProcessor": {
+          "can_incremental": true,
           "incrementalPhase": "build"
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
           "incrementalPhase": "build"
         }
       }
     },
     {
       "status": {
-        "can_incremental": false,
-        "details": "Cannot support incremental post processing, the reason is: it's disabled.",
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
         "incrementalPhase": "postProcessing"
       },
       "processors": {}
