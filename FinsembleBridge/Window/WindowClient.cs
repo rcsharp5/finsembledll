@@ -93,7 +93,7 @@ namespace ChartIQ.Finsemble
                     ["topic"] = WORKSPACE_CACHE_TOPIC,
                     ["key"] = containerHash,
                     ["value"] = storageValue
-                }, (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs e) { });
+                }, delegate (object s, FinsembleEventArgs e) { });
             } catch(Exception e)
             {
                 MessageBox.Show(e.Message);

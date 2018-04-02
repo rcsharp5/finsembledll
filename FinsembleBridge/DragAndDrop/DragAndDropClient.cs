@@ -36,28 +36,30 @@ namespace ChartIQ.Finsemble
                 dynamic a = scrim;
                 if ((string)args.response["header"]["origin"]!="RouterClient." + bridge.windowName && CanReceiveData(dataBeingShared))
                 {
-                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    Application.Current.Dispatcher.Invoke(delegate
                     {
                         scrim.AllowDrop = true;
                         try
                         {
                             a.Text = "*";
-                        } catch
+                        }
+                        catch
                         {
                             try
                             {
                                 a.Content = "*";
-                            } catch
+                            }
+                            catch
                             {
 
                             }
                         }
-                        scrim.Background = new SolidColorBrush(Color.FromArgb(237,32,104,195));
+                        scrim.Background = new SolidColorBrush(Color.FromArgb(237, 32, 104, 195));
                         scrim.Visibility = Visibility.Visible;
                     });
                 } else
                 {
-                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    Application.Current.Dispatcher.Invoke(delegate
                     {
                         scrim.AllowDrop = false;
                         try
@@ -75,7 +77,7 @@ namespace ChartIQ.Finsemble
 
                             }
                         }
-                        scrim.Background = new SolidColorBrush(Color.FromArgb(237,150,10,5));
+                        scrim.Background = new SolidColorBrush(Color.FromArgb(237, 150, 10, 5));
                         scrim.Visibility = Visibility.Visible;
                     });
                 }
@@ -85,7 +87,7 @@ namespace ChartIQ.Finsemble
             routerClient.AddListener(DRAG_END_CHANNEL, (s, args) =>
             {
                 if (scrim == null) return;
-                Application.Current.Dispatcher.Invoke((Action)delegate
+                Application.Current.Dispatcher.Invoke(delegate
                 {
                     scrim.Visibility = Visibility.Hidden;
                 });
@@ -123,7 +125,7 @@ namespace ChartIQ.Finsemble
         {
             scrim = c;
             scrim.PreviewDrop += Scrim_PreviewDrop;
-            scrim.FontFamily = new FontFamily(new Uri("pack://application:,,,/FinsembleBridge;component/Resources/"), "./#finfont"); ///FinsembleBridge;component/Resources/#finfont
+            scrim.FontFamily = new FontFamily(new Uri("pack://application:,,,/Finsemble;component/Resources/"), "./#finfont"); ///FinsembleBridge;component/Resources/#finfont
             scrim.FontSize = 100;
             scrim.Foreground = new SolidColorBrush(Colors.White);
         }

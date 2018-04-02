@@ -43,7 +43,7 @@ namespace Authentication
 
         private void Bridge_Connected(object sender, EventArgs e)
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 // Initialize this Window and show it
                 InitializeComponent();

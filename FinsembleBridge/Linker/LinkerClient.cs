@@ -91,7 +91,7 @@ namespace ChartIQ.Finsemble
                 linkerStore.AddListener(new JObject
                 {
                     ["field"] = "clients." + key
-                }, (EventHandler<FinsembleEventArgs>)delegate (object sender4, FinsembleEventArgs args4)
+                }, delegate (object sender4, FinsembleEventArgs args4)
                 {
                     var newChannelsObject = args4.response?["data"]?["value"]?["channels"] as JObject;
                     var newChannelsArray = new JArray { };
@@ -122,7 +122,7 @@ namespace ChartIQ.Finsemble
                 });
 
                 linkerStore.AddListener(null,
-                (EventHandler<FinsembleEventArgs>)delegate (object sender4, FinsembleEventArgs args4)
+                delegate (object sender4, FinsembleEventArgs args4)
                 {
                     var newAllChannels = args4.response?["data"]?["storeData"]?["values"]?["channels"] as JArray;
                     if (newAllChannels != null) allChannels = newAllChannels;
@@ -142,7 +142,7 @@ namespace ChartIQ.Finsemble
                 {
                     ["field"] = "Finsemble_Linker",
                     ["value"] = channels
-                }, (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs e) { });
+                }, delegate (object s, FinsembleEventArgs e) { });
             }
             catch (Exception e)
             {
@@ -198,7 +198,7 @@ namespace ChartIQ.Finsemble
             {
                 ["field"] = "clients." + key,
                 ["value"] = clients[key]
-            }, (EventHandler<FinsembleEventArgs>)delegate (object sender, FinsembleEventArgs args) { });
+            }, delegate (object sender, FinsembleEventArgs args) { });
         }
 
         /// <summary>
@@ -364,7 +364,7 @@ namespace ChartIQ.Finsemble
                 ["windowIdentifier"] = windowClient.windowIdentifier
             };
 
-            routerClient.Query("Finsemble.LinkerWindow.SetActiveChannels", data, new JObject { }, (EventHandler<FinsembleEventArgs>)delegate (object sender, FinsembleEventArgs e)
+            routerClient.Query("Finsemble.LinkerWindow.SetActiveChannels", data, new JObject { }, delegate (object sender, FinsembleEventArgs e)
             {
                 Application.Current.Dispatcher.Invoke((Action)delegate //main thread
                 {

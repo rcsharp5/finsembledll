@@ -12,7 +12,7 @@
           "hash": "7yfAWnpl2NeoUQOb4OFUFw=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -24,7 +24,7 @@
           "hash": "JoavORvjWWsnQMp4FlppaQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -48,7 +48,7 @@
           "hash": "Y5OvPgPtTvm7S4v47g9AnA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -57,10 +57,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.AuthenticationClient.html",
-          "hash": "D99CppWGcMvcXJ2BZ0FouQ=="
+          "hash": "oAZbmD1RuPLEr/sEo6Q7VQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -69,10 +69,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.DragAndDropClient.emitter.html",
-          "hash": "fAo45ZdGIeyzZg6Gu9xDkw=="
+          "hash": "eaT8qOnBttxNFWeUg1c2RQ=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -81,10 +81,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.DragAndDropClient.html",
-          "hash": "1Qqo5QQ32lM8R8/SgrLVbg=="
+          "hash": "KceTIEwKzWlo7iCXHCpJkg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -93,10 +93,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.Finsemble.RPCCallbackHandler.html",
-          "hash": "4QKpyS+4CZKii7ExtdGZEg=="
+          "hash": "Q9pEw8VVApGKCN2svRTyFg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -105,10 +105,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.Finsemble.html",
-          "hash": "Bfs9xxsjkr61Ucqe73/I6w=="
+          "hash": "OID1iJaneoaHsTlx3q9AeA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -117,10 +117,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.FinsembleEventArgs.html",
-          "hash": "ZOja+BulXpk2qtNH/osagQ=="
+          "hash": "ye3s6UxsBNbf9LSeLEiJRA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -129,10 +129,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.FinsembleWPFHeader.html",
-          "hash": "WAjEBh6umU+TVT9JQvC3nA=="
+          "hash": "3lWZB/fEZQ6QBhkCDmFPAg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -144,7 +144,7 @@
           "hash": "zBP0a20ugcmEeLg/xzsWOg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -175,8 +175,7 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": false,
-        "details": "Disable incremental build by force rebuild option.",
+        "can_incremental": true,
         "incrementalPhase": "build"
       },
       "processors": {
@@ -186,19 +185,19 @@
           "incrementalPhase": "build"
         },
         "ConceptualDocumentProcessor": {
-          "can_incremental": false,
+          "can_incremental": true,
           "incrementalPhase": "build"
         },
         "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
+          "can_incremental": true,
           "incrementalPhase": "build"
         }
       }
     },
     {
       "status": {
-        "can_incremental": false,
-        "details": "Cannot support incremental post processing, the reason is: it's disabled.",
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
         "incrementalPhase": "postProcessing"
       },
       "processors": {}

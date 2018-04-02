@@ -10,9 +10,10 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using EventHook;
-using EventHook.Hooks;
+/*using EventHook;
+using EventHook.Hooks;*/
 using System.Diagnostics;
+
 
 namespace ChartIQ.Finsemble
 {
@@ -28,7 +29,7 @@ namespace ChartIQ.Finsemble
         string dockingWindowName;
         bool moving = false;
         bool resizing = false;
-        double resizeScale;
+        /*double resizeScale;*/
         int resizeHandle;
         Point startPosition;
 
@@ -40,7 +41,10 @@ namespace ChartIQ.Finsemble
 
         const int WM_SIZING = 0x0214;
         const int WM_MOVING = 0x0216;
+        const int WM_MOUSEMOVE = 0x200;
         const int WM_LBUTTONDOWN = 0x201;
+        const int WM_LBUTTONUP = 0x202;
+        const int WM_EXITSIZEMOVE = 0x232;
 
         const int WMSZ_BOTTOM = 6;
         const int WMSZ_BOTTOMLEFT = 7;
@@ -50,6 +54,120 @@ namespace ChartIQ.Finsemble
         const int WMSZ_TOP = 3;
         const int WMSZ_TOPLEFT = 4;
         const int WMSZ_TOPRIGHT = 5;
+        
+
+        private WIN32Rectangle windowRect;
+        private WIN32Rectangle newWindowRect;
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool GetWindowRect(IntPtr hWnd, out WIN32Rectangle lpRect);
+
+        [DllImport("user32.dll", CharSet = CharSet.Ansi)]
+        static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPStr)]string lpszDeviceName, int iModeNum, out DEVMODE lpDevMode, uint dwFlags);
+
+        [DllImport("kernel32.dll", ExactSpelling = true)]
+        public static extern IntPtr GlobalSize(IntPtr handle);     
+        
+        //https://referencesource.microsoft.com/#System.Windows.Forms/winforms/Managed/System/WinForms/NativeMethods.cs,478d6b005e9903a6
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        public struct DEVMODE
+        {
+            private const int CCHDEVICENAME = 32;
+            private const int CCHFORMNAME = 32;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = CCHDEVICENAME)]
+            public string dmDeviceName;
+            public short dmSpecVersion;
+            public short dmDriverVersion;
+            public short dmSize;
+            public short dmDriverExtra;
+            public int dmFields;
+            public int dmPositionX;
+            public int dmPositionY;
+            public ScreenOrientation dmDisplayOrientation;
+            public int dmDisplayFixedOutput;
+            public short dmColor;
+            public short dmDuplex;
+            public short dmYResolution;
+            public short dmTTOption;
+            public short dmCollate;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = CCHFORMNAME)]
+            public string dmFormName;
+            public short dmLogPixels;
+            public int dmBitsPerPel;
+            public int dmPelsWidth;
+            public int dmPelsHeight;
+            public int dmDisplayFlags;
+            public int dmDisplayFrequency;
+            public int dmICMMethod;
+            public int dmICMIntent;
+            public int dmMediaType;
+            public int dmDitherType;
+            public int dmReserved1;
+            public int dmReserved2;
+            public int dmPanningWidth;
+            public int dmPanningHeight;
+        }
+
+        //https://referencesource.microsoft.com/#System.Windows.Forms/winforms/Managed/System/WinForms/ScreenOrientation.cs,29768eea794e249c
+        public enum ScreenOrientation
+        {
+            /// <include file='doc\ScreenOrientation.uex' path='docs/doc[@for="Day.Angle0"]/*' />
+            /// <devdoc>
+            ///    <para>
+            ///       The screen is oriented at 0 degrees
+            ///    </para>
+            /// </devdoc>
+            Angle0 = 0,
+
+            /// <include file='doc\ScreenOrientation.uex' path='docs/doc[@for="Day.Angle90"]/*' />
+            /// <devdoc>
+            ///    <para>
+            ///       The screen is oriented at 90 degrees
+            ///    </para>
+            /// </devdoc>
+            Angle90 = 1,
+
+            /// <include file='doc\ScreenOrientation.uex' path='docs/doc[@for="Day.Angle180"]/*' />
+            /// <devdoc>
+            ///    <para>
+            ///       The screen is oriented at 180 degrees.
+            ///    </para>
+            /// </devdoc>
+            Angle180 = 2,
+
+            /// <include file='doc\ScreenOrientation.uex' path='docs/doc[@for="Day.Angle270"]/*' />
+            /// <devdoc>
+            ///    <para>
+            ///       The screen is oriented at 270 degrees.
+            ///    </para>
+            /// </devdoc>
+            Angle270 = 3,
+        }
+
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool EnumDisplayDevices(string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, uint dwFlags);
+
+        [DllImport("user32.dll")]
+        public static extern int EnumDisplaySettings(string deviceName, int modeNum, ref DEVMODE devMode);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct DISPLAY_DEVICE
+        {
+            public int cb;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string DeviceName;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceString;
+            public int StateFlags;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceID;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceKey;
+        }
 
         [StructLayout(LayoutKind.Sequential)]
         private struct WIN32Rectangle
@@ -73,7 +191,7 @@ namespace ChartIQ.Finsemble
 
         internal Docking(Finsemble _bridge, string channel)
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 this.bridge = _bridge;
                 routerClient = bridge.routerClient;
@@ -85,8 +203,21 @@ namespace ChartIQ.Finsemble
                 dockingWindow.Activated += Window_Activated;
                 dockingWindow.StateChanged += DockingWindow_StateChanged;
                 bridge.runtime.InterApplicationBus.subscribe("*", dockingChannel, Got_Docking_Message);
-                MouseWatcher.OnMouseInput += MouseWatcher_OnMouseInput;
+                //dockingWindow.GotMouseCapture += DockingWindow_GotMouseCapture;
+                //dockingWindow.LostMouseCapture += DockingWindow_LostMouseCapture;
+                //MouseWatcher.OnMouseInput += MouseWatcher_OnMouseInput;
             });
+
+        }
+
+        private void DockingWindow_LostMouseCapture(object sender, MouseEventArgs e)
+        {
+            Debug.WriteLine("Lost Mouse Capture");
+        }
+
+        private void DockingWindow_GotMouseCapture(object sender, MouseEventArgs e)
+        {
+            Debug.WriteLine("Got Mouse Capture");
         }
 
         private void DockingWindow_StateChanged(object sender, EventArgs e)
@@ -150,20 +281,40 @@ namespace ChartIQ.Finsemble
                     Debug.Write(height + " ");
                     Debug.WriteLine("");*/
 
-                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    Application.Current.Dispatcher.Invoke(delegate
                     {
                         var topLeftChanged = false;
                         if (dockingWindow.Top != dtop) { dockingWindow.Top = dtop; topLeftChanged = true; }
                         if (dockingWindow.Left != dleft) { dockingWindow.Left = dleft; topLeftChanged = true; }
                         if (dockingWindow.Height != dheight) dockingWindow.Height = dheight;
                         if (dockingWindow.Width != dwidth) dockingWindow.Width = dwidth;
-                        
+
                         if (topLeftChanged) WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
                         WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
                     });
+
+                    //If we have unscaled values then set the windowRect
+                    /*var unscaledTop = jsonMessage.GetValue("unscaledTop").ToString();
+                    var unscaledLeft = jsonMessage.GetValue("unscaledLeft").ToString();
+                    var unscaledBottom = jsonMessage.GetValue("unscaledBottom").ToString();
+                    var unscaledRight = jsonMessage.GetValue("unscaledRight").ToString();
+
+                    if (string.IsNullOrEmpty(unscaledTop)
+                    || string.IsNullOrEmpty(unscaledLeft)
+                    || string.IsNullOrEmpty(unscaledBottom)
+                    || string.IsNullOrEmpty(unscaledRight))
+                    {
+                        return;
+                    }
+
+                    windowRect.Top = int.Parse(unscaledTop);
+                    windowRect.Left = int.Parse(unscaledLeft);
+                    windowRect.Bottom = int.Parse(unscaledBottom);
+                    windowRect.Right = int.Parse(unscaledRight);*/
+
                     break;
                 case "bringToFront":
-                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    Application.Current.Dispatcher.Invoke(delegate
                     {
                         dockingWindow.Topmost = true;
                         dockingWindow.Topmost = false;
@@ -171,7 +322,7 @@ namespace ChartIQ.Finsemble
                     });
                     break;
                 case "setOpacity":
-                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    Application.Current.Dispatcher.Invoke(delegate
                     {
                         if (!resizing)
                         {
@@ -181,16 +332,18 @@ namespace ChartIQ.Finsemble
                     break;
                 case "hide":
                     hidden = true;
-                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    Application.Current.Dispatcher.Invoke(delegate
                     {
-                        dockingWindow.Opacity = 0.01;
+                        dockingWindow.Opacity = 0.0;
+                        //dockingWindow.Hide();
                     });
                     break;
                 case "show":
                     hidden = false;
-                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    Application.Current.Dispatcher.Invoke(delegate
                     {
                         dockingWindow.Opacity = 1.0;
+                        //dockingWindow.Show();
                     });
                     break;
                 /*case "groupUpdate":
@@ -204,25 +357,25 @@ namespace ChartIQ.Finsemble
                     });
                     break;*/
                 case "minimize":
-                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    Application.Current.Dispatcher.Invoke(delegate
                     {
                         if (dockingWindow.WindowState != WindowState.Minimized) dockingWindow.WindowState = WindowState.Minimized;
                     });
                     break;
                 case "restore":
-                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    Application.Current.Dispatcher.Invoke(delegate
                     {
                         if (dockingWindow.WindowState != WindowState.Normal) dockingWindow.WindowState = WindowState.Normal;
                     });
                     break;
                 case "maximize":
-                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    Application.Current.Dispatcher.Invoke(delegate
                     {
                         if (dockingWindow.WindowState != WindowState.Maximized) dockingWindow.WindowState = WindowState.Maximized;
                     });
                     break;
                 case "close":
-                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    Application.Current.Dispatcher.Invoke(delegate
                     {
                         sendCloseToFinsemble = false;
                         dockingWindow.Close();
@@ -233,7 +386,7 @@ namespace ChartIQ.Finsemble
 
         private void Minimize()
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 //dockingWindow.WindowState = WindowState.Minimized;
                 dynamic props = new ExpandoObject();
@@ -245,7 +398,7 @@ namespace ChartIQ.Finsemble
 
         private void Maxmimize()
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 //dockingWindow.WindowState = WindowState.Maximized;
                 dynamic props = new ExpandoObject();
@@ -257,7 +410,7 @@ namespace ChartIQ.Finsemble
 
         private void Restore()
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 //dockingWindow.WindowState = WindowState.Normal;
                 dynamic props = new ExpandoObject();
@@ -269,7 +422,7 @@ namespace ChartIQ.Finsemble
 
         private void Hide()
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 dockingWindow.Hide();
                 dynamic props = new ExpandoObject();
@@ -281,7 +434,7 @@ namespace ChartIQ.Finsemble
 
         private void Show()
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 dockingWindow.Show();
                 dynamic props = new ExpandoObject();
@@ -293,7 +446,7 @@ namespace ChartIQ.Finsemble
 
         private void BringToFront()
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 //dockingWindow.BringIntoView();
                 dynamic props = new ExpandoObject();
@@ -305,7 +458,7 @@ namespace ChartIQ.Finsemble
 
         internal void Close()
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 dynamic props = new ExpandoObject();
                 props.windowName = dockingWindowName;
@@ -321,7 +474,9 @@ namespace ChartIQ.Finsemble
         /// <param name="e"></param>
         public void StartMove(dynamic sender, MouseButtonEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            if (resizing) return;
+            Debug.WriteLine("start move");
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 sender.CaptureMouse();
                 moving = true;
@@ -332,6 +487,7 @@ namespace ChartIQ.Finsemble
                 props.left = dockingWindow.Left;
                 props.width = dockingWindow.Width;
                 props.height = dockingWindow.Height;
+                props.scaled = true;
                 props.windowAction = "startMove";
                 bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
             });
@@ -344,9 +500,10 @@ namespace ChartIQ.Finsemble
         {
             if (moving)
             {
+                Debug.WriteLine("move");
                 TimeSpan t = DateTime.Now - lastMoveSent;
                 if (t.TotalMilliseconds < 20) return;
-                Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                Application.Current.Dispatcher.Invoke(delegate //main thread
                 {
                     var currentPosition = e.GetPosition(dockingWindow);
                     double differenceX = currentPosition.X - startPosition.X;
@@ -358,6 +515,7 @@ namespace ChartIQ.Finsemble
                     props.top = dockingWindow.Top + differenceY;
                     props.left = dockingWindow.Left + differenceX;
                     props.windowAction = "move";
+                    props.scaled = true;
                     bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
                     lastMoveSent = DateTime.Now;
                 });
@@ -370,7 +528,8 @@ namespace ChartIQ.Finsemble
         /// </summary>
         public void EndMove(object sender, MouseButtonEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Debug.WriteLine("end move");
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 dynamic props = new ExpandoObject();
                 props.windowName = dockingWindowName;
@@ -386,7 +545,7 @@ namespace ChartIQ.Finsemble
         /// </summary>
         public void FormGroup()
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 routerClient.Transmit("DockingService.formGroup", new JObject
                 {
@@ -400,7 +559,7 @@ namespace ChartIQ.Finsemble
         /// </summary>
         public void LeaveGroup()
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 routerClient.Query("DockingService.leaveGroup", new JObject
                 {
@@ -421,7 +580,7 @@ namespace ChartIQ.Finsemble
         {
             TimeSpan t = DateTime.Now - lastResizeSent;
             if (t.TotalMilliseconds < 35) return;
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 dynamic props = new JObject
                 {
@@ -444,9 +603,32 @@ namespace ChartIQ.Finsemble
             });
         }
 
+        private void Resize(WIN32Rectangle newWindowRect, bool force = false)
+        {
+            if (!force)
+            {
+                TimeSpan t = DateTime.Now - lastResizeSent;
+                if (t.TotalMilliseconds < 35) return;
+            }
+            var props = new JObject
+            {
+                ["windowName"] = dockingWindowName,
+                ["width"] = newWindowRect.Right - newWindowRect.Left,
+                ["height"] = newWindowRect.Bottom - newWindowRect.Top,
+                ["top"] = newWindowRect.Top,
+                ["left"] = newWindowRect.Left,
+                ["bottom"] = newWindowRect.Bottom,
+                ["right"] = newWindowRect.Right,
+                ["scaled"] = false,
+                ["windowAction"] = "resize"
+            };
+            bridge.SendRPCCommand("NativeWindow", props.ToString(), this.dockingChannel);
+            lastResizeSent = DateTime.Now;
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 WindowInteropHelper helper = new WindowInteropHelper(dockingWindow);
                 HwndSource.FromHwnd(helper.Handle).AddHook(HwndMessageHook);
@@ -476,7 +658,7 @@ namespace ChartIQ.Finsemble
 
             });
 
-            routerClient.Subscribe("Finsemble.WorkspaceService.groupUpdate", (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs args)
+            routerClient.Subscribe("Finsemble.WorkspaceService.groupUpdate", delegate (object s, FinsembleEventArgs args)
             {
                 var groupData = args.response?["data"]?["groupData"] as JObject;
                 if (groupData == null) return;
@@ -492,7 +674,7 @@ namespace ChartIQ.Finsemble
                         if ((bool)item.Value["isMovable"])
                         {
                             thisWindowGroups.dockingGroup = item.Key;
-                            if((string)item.Value["topRightWindow"] == bridge.windowName)
+                            if ((string)item.Value["topRightWindow"] == bridge.windowName)
                             {
                                 thisWindowGroups.topRight = true;
                             }
@@ -523,163 +705,101 @@ namespace ChartIQ.Finsemble
             switch (msg)
             {
                 case WM_SIZING:
-                    if (!resizing)
-                    {
-                        TimeSpan t = DateTime.Now - lastResizeSent;
-                        if (t.TotalMilliseconds < 250) return IntPtr.Zero; //stop resizing events from firing after resizeended - may or may not be a problem now
-                        MouseWatcher.Start(); //start watching the mouse for movements and mouseup. Once watching starts, somehow resize ends so using the watcher also to resize
-                    }
-                    else //ignore if we are already resizing
-                    {
-                        bHandled = true;
-                        return IntPtr.Zero;
-                    }
-                    resizing = true;
-
-                    int sizeType = (int)wParam;
-                    resizeHandle = sizeType;
-                    double scale = 1;
-
-                    WIN32Rectangle rectangle = (WIN32Rectangle)Marshal.PtrToStructure(lParam, typeof(WIN32Rectangle));
-
-                    switch (sizeType)
-                    {
-                        case WMSZ_BOTTOM:
-                        case WMSZ_BOTTOMLEFT:
-                        case WMSZ_LEFT:
-                        case WMSZ_BOTTOMRIGHT:
-                            //get scale from top
-                            scale = rectangle.Top / WindowLocation.Y;
-                            break;
-
-                        case WMSZ_RIGHT:
-                        case WMSZ_TOP:
-                        case WMSZ_TOPRIGHT:
-                            //get dpi from left
-                            scale = rectangle.Left / WindowLocation.X;
-                            break;
-
-                        case WMSZ_TOPLEFT:
-                            //get dpi from right
-                            scale = rectangle.Right / WindowBottomRight.X;
-                            break;
-
-                    }
                     bHandled = true;
-                    resizeScale = scale;
 
+                    if (!resizing) {
+                        GetWindowRect(hWnd, out windowRect);
+                        resizing = true;
+                        Debug.WriteLine("resize start");
+                    }
+
+                    Debug.WriteLine("resizing: " + resizing.ToString());
+
+                    newWindowRect = (WIN32Rectangle)Marshal.PtrToStructure(lParam, typeof(WIN32Rectangle));
+                    Marshal.StructureToPtr(windowRect, lParam, true);
+
+                    resizeHandle = (int)wParam;
+                                        
+                    Resize(newWindowRect);
+                    /*switch (resizeHandle)
+                    {
+                        case WMSZ_LEFT:
+                            WindowResizeEndLocation.X = newWindowRect.;
+                            break;
+                        case WMSZ_RIGHT:
+                            WindowResizeEndBottomRight.X = mousePosition.X;
+                            break;
+                        case WMSZ_TOP:
+                            WindowResizeEndLocation.Y = mousePosition.Y;
+                            break;
+                        case WMSZ_BOTTOM:
+                            WindowResizeEndBottomRight.Y = mousePosition.Y;
+                            break;
+                        case WMSZ_TOPLEFT:
+                            WindowResizeEndLocation.Y = mousePosition.Y;
+                            WindowResizeEndLocation.X = mousePosition.X;
+                            break;
+                        case WMSZ_TOPRIGHT:
+                            WindowResizeEndLocation.Y = mousePosition.Y;
+                            WindowResizeEndBottomRight.X = mousePosition.X;
+                            break;
+                        case WMSZ_BOTTOMLEFT:
+                            WindowResizeEndLocation.X = mousePosition.X;
+                            WindowResizeEndBottomRight.Y = mousePosition.Y;
+                            break;
+                        case WMSZ_BOTTOMRIGHT:
+                            WindowResizeEndBottomRight.Y = mousePosition.Y;
+                            WindowResizeEndBottomRight.X = mousePosition.X;
+                            break;
+                    }*/
+
+                        
+
+
+
+                    /*double scale = 1;
+                    Application.Current.Dispatcher.Invoke(delegate //main thread
+                    {
+                        scale = (rectangle.Right - rectangle.Left) / dockingWindow.Width;
+                        WindowResizeEndLocation = new Point(dockingWindow.Left, dockingWindow.Top);
+                        WindowResizeEndBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
+                        //Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
+                    });*/
 
                     break;
                 case WM_LBUTTONDOWN:
-                    dockingWindow.Activate();
-                    bHandled = false;
+                    if (!resizing)
+                    {
+                        dockingWindow.Activate();
+                        bHandled = false;
+                    }
+                    break;
+                case WM_EXITSIZEMOVE:
+                    if (resizing)
+                    {
+                        Debug.WriteLine("End Resize");
+                        bHandled = true;
+                        resizing = false;
+                        //Resize(newWindowRect, true);
+                        dynamic props = new ExpandoObject();
+                        props.windowName = dockingWindowName;
+                        props.windowAction = "endMove";
+                        bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+                        lastResizeSent = DateTime.Now;
+                        //Mouse.Capture(null);
+
+                        Application.Current.Dispatcher.Invoke(delegate
+                        {
+                            dockingWindow.Opacity = 1.0;
+                        });
+                    }
                     break;
 
             }
             return IntPtr.Zero;
         }
 
-        private void MouseWatcher_OnMouseInput(object sender, EventHook.MouseEventArgs e)
-        {
-            //var mousePosition = new Point(System.Windows.Forms.Cursor.Position.X, System.Windows.Forms.Cursor.Position.Y);
-            
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
-            {
-                /*if (Mouse.Captured == null) Mouse.Capture(dockingWindow);
-                var mousePosition = Mouse.GetPosition(dockingWindow);
-                //var mousePosition = dockingWindow.PointToScreen(RelativemousePosition);
-                mousePosition.X = mousePosition.X + dockingWindow.Left;
-                mousePosition.Y = mousePosition.Y + dockingWindow.Top;
-                //Mouse.Capture(null);
-                
 
-                //var y = e.Point.y / resizeScale;
-                //var x = e.Point.x / resizeScale;
-
-                var y = mousePosition.Y;
-                var x = mousePosition.X;*/
-                
-                if (e.Message == MouseMessages.WM_LBUTTONUP)
-                {
-                    resizing = false;
-                    Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
-                    dynamic props = new ExpandoObject();
-                    props.windowName = dockingWindowName;
-                    props.windowAction = "endMove";
-                    bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-                    lastResizeSent = DateTime.Now;
-                    MouseWatcher.Stop();
-                    Mouse.Capture(null);
-                    dockingWindow.Opacity = 1.0;
-                }
-                else if (resizing && e.Message == MouseMessages.WM_MOUSEMOVE)
-                {
-                    Mouse.Capture(dockingWindow);
-                    WindowResizeEndLocation = new Point(dockingWindow.Left, dockingWindow.Top);
-                    WindowResizeEndBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
-
-                    if (hidden && dockingWindow.Opacity != 0.0)
-                    {
-                        dockingWindow.Opacity = 0.0;
-                    }
-
-                    /*WindowResizeEndLocation = new Point(WindowLocation.X, WindowLocation.Y);
-                    WindowResizeEndBottomRight = new Point(WindowBottomRight.X, WindowBottomRight.Y);
-
-
-                    switch (resizeHandle)
-                    {
-                        case WMSZ_BOTTOM:
-
-                            WindowResizeEndBottomRight.Y = y;
-                            break;
-                        case WMSZ_BOTTOMLEFT:
-                            WindowResizeEndBottomRight.Y = y;
-                            WindowResizeEndLocation.X = x;
-                            break;
-                        case WMSZ_LEFT:
-                            WindowResizeEndLocation.X = x;
-                            break;
-                        case WMSZ_BOTTOMRIGHT:
-                            WindowResizeEndBottomRight.Y = y;
-                            WindowResizeEndBottomRight.X = x;
-                            break;
-                        case WMSZ_RIGHT:
-                            WindowResizeEndBottomRight.X = x;
-                            break;
-                        case WMSZ_TOP:
-                            WindowResizeEndLocation.Y = y;
-                            break;
-                        case WMSZ_TOPRIGHT:
-                            WindowResizeEndLocation.Y = y;
-                            WindowResizeEndBottomRight.X = x;
-                            break;
-                        case WMSZ_TOPLEFT:
-                            WindowResizeEndLocation.Y = y;
-                            WindowResizeEndLocation.X = x;
-                            break;
-                    }*/
-
-                    Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
-
-                    /*Debug.WriteLine(WindowResizeEndLocation);
-                    Debug.WriteLine(WindowResizeEndBottomRight);
-                    Debug.WriteLine(mousePosition);*/
-
-                    Debug.WriteLine(dockingWindow.Top);
-                    Debug.WriteLine(dockingWindow.Left);
-                    Debug.WriteLine(dockingWindow.ActualHeight);
-                    Debug.WriteLine(dockingWindow.ActualWidth);
-
-                }
-
-            });
-
-            //var y = mousePosition.Y;
-            //var x = mousePosition.X;
-
-            
-        }
 
     }
 }

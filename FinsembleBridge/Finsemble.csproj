@@ -7,8 +7,8 @@
     <ProjectGuid>{DD9676C0-71AB-4CA2-9CCF-930D3C047258}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FinsembleBridge</RootNamespace>
-    <AssemblyName>FinsembleBridge</AssemblyName>
+    <RootNamespace>ChartIQ.Finsemble</RootNamespace>
+    <AssemblyName>Finsemble</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>

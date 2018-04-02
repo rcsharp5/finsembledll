@@ -34,7 +34,7 @@ namespace ChartIQ.Finsemble
 
         private void Linker_StateChange(object sender2, FinsembleEventArgs args)
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 try
                 {
@@ -78,7 +78,8 @@ namespace ChartIQ.Finsemble
                         }
                     }
                     Window_Size_Changed();
-                } catch
+                }
+                catch
                 {
 
                 }
@@ -96,14 +97,14 @@ namespace ChartIQ.Finsemble
             bridge = finsemble;
             bridge.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;
             bridge.linkerClient.OnStateChange(Linker_StateChange);
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 bridge.window.Activated += Window_Activated;
                 bridge.window.Deactivated += Window_Deactivated;
             });
             bridge.dragAndDropClient.AddEmitterChangeListener((s, e) =>
             {
-                Application.Current.Dispatcher.Invoke((Action)delegate
+                Application.Current.Dispatcher.Invoke(delegate
                 {
                     if (e)
                     {
@@ -140,7 +141,7 @@ namespace ChartIQ.Finsemble
 
         private void Docking_GroupUpdate(object sender, dynamic groups)
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 this.dockingGroup = groups.dockingGroup;
                 this.snappingGroup = groups.snappingGroup;
@@ -176,7 +177,7 @@ namespace ChartIQ.Finsemble
 
         private void Minimize_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 bridge.window.WindowState = WindowState.Minimized;
             });
@@ -207,7 +208,7 @@ namespace ChartIQ.Finsemble
             var senderButton = (System.Windows.Controls.Button)sender;
             if (bridge.window.WindowState == System.Windows.WindowState.Maximized)
             {
-                Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                Application.Current.Dispatcher.Invoke(delegate //main thread
                 {
                     bridge.window.WindowState = WindowState.Normal;
                 });
@@ -215,7 +216,7 @@ namespace ChartIQ.Finsemble
             }
             else
             {
-                Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                Application.Current.Dispatcher.Invoke(delegate //main thread
                 {
                     bridge.window.WindowState = WindowState.Maximized;
                 });

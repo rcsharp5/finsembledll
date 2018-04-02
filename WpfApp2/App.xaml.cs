@@ -16,10 +16,6 @@ namespace FinsembleWPFDemo
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            //base.OnStartup(e);
-            string mainWindowName = "";
-            string top = null, left = null, height = null, width = null, componentType = null, uuid = null, openfinVersion = "8.56.28.34";
-            
             //Debugger.Launch();
             var mainWindow = new MainWindow(e.Args);
         }

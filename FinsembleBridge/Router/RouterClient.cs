@@ -41,7 +41,7 @@ namespace ChartIQ.Finsemble
             );
             bridge.runtime.InterApplicationBus.Publish("RouterService", Handshake); //TODO: wait for handshake response
             bridge.runtime.InterApplicationBus.subscribe(clientName, OpenfinMessageHandler);
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 bridge.window.Closing += Window_Closing;
             });

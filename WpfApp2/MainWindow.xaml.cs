@@ -53,7 +53,7 @@ namespace FinsembleWPFDemo
 
         private void Bridge_Connected(object sender, EventArgs e)
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+            Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 // Initialize this Window and show it
                 InitializeComponent();
@@ -98,7 +98,7 @@ namespace FinsembleWPFDemo
                 "symbol"
             }, (error, response) =>
             {
-                Application.Current.Dispatcher.Invoke((Action)delegate //main thread
+                Application.Current.Dispatcher.Invoke(delegate //main thread
                 {
                     DataToSend.Text = response?["data"]?.ToString();
                     DroppedData.Content = response?["data"]?.ToString();

@@ -35,7 +35,8 @@ namespace ChartIQ.Finsemble
         /// <param name="args"></param>
         public void GetStore(JObject parameters, EventHandler<StoreModel> args)
         {
-            EventHandler<FinsembleEventArgs> handler = (EventHandler<FinsembleEventArgs>)delegate (object sender, FinsembleEventArgs e) {
+            EventHandler<FinsembleEventArgs> handler = delegate (object sender, FinsembleEventArgs e)
+            {
                 var store = new StoreModel(e.response["data"] as JObject, bridge);
                 args.Invoke(this, store);
             };
@@ -59,7 +60,8 @@ namespace ChartIQ.Finsemble
         /// <param name="args"></param>
         public void CreateStore(JObject parameters, EventHandler<StoreModel> args)
         {
-            EventHandler<FinsembleEventArgs> handler = (EventHandler<FinsembleEventArgs>)delegate (object sender, FinsembleEventArgs e) {
+            EventHandler<FinsembleEventArgs> handler = delegate (object sender, FinsembleEventArgs e)
+            {
                 var store = new StoreModel(e.response["data"] as JObject, bridge);
                 args.Invoke(this, store);
             };
