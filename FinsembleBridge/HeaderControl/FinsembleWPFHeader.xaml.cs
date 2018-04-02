@@ -92,7 +92,12 @@ namespace ChartIQ.Finsemble
             Window_Size_Changed();
         }
 
-        public void setBridge(Finsemble finsemble)
+        public void SetTitle(string title)
+        {
+            Title.Content = title;
+        }
+
+        public void SetBridge(Finsemble finsemble)
         {
             bridge = finsemble;
             bridge.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;

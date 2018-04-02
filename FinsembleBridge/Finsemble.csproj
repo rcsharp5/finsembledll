@@ -92,6 +92,12 @@
     <Compile Include="Docking\Docking.cs" />
     <Compile Include="DragAndDrop\DragAndDropClient.cs" />
     <Compile Include="Finsemble.cs" />
+    <Compile Include="HeaderControl\FinsembleWinformsHeader.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HeaderControl\FinsembleWinformsHeader.Designer.cs">
+      <DependentUpon>FinsembleWinformsHeader.cs</DependentUpon>
+    </Compile>
     <Compile Include="HeaderControl\FinsembleWPFHeader.xaml.cs">
       <DependentUpon>FinsembleWPFHeader.xaml</DependentUpon>
     </Compile>
@@ -114,7 +120,11 @@
     <Resource Include="Resources\finfont.ttf" />
     <None Include="toc.yml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="HeaderControl\FinsembleWinformsHeader.resx">
+      <DependentUpon>FinsembleWinformsHeader.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <Page Include="HeaderControl\FinsembleWPFHeader.xaml">
       <SubType>Designer</SubType>
