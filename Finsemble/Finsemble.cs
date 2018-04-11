@@ -85,6 +85,7 @@ namespace ChartIQ.Finsemble
         public string uuid { private set; get; } = Guid.NewGuid().ToString();
 
         internal RouterClient routerClient { private set; get; }
+        internal Logger logger { private set; get; }
         internal AuthenticationClient authenticationClient { private set; get; }
         internal DistributedStoreClient distributedStoreClient { private set; get; }
         internal StorageClient storageClient { private set; get; }
@@ -238,6 +239,7 @@ namespace ChartIQ.Finsemble
                 //this.uuid = runtime.Options.UUID;
 
                 routerClient = new RouterClient(this, (s, connected) => {
+                    logger = new Logger(this);
                     storageClient = new StorageClient(this);
                     authenticationClient = new AuthenticationClient(this);
                     configClient = new ConfigClient(this);
@@ -369,14 +371,33 @@ namespace ChartIQ.Finsemble
                 case "ConfigClient.getValue":
                     configClient.GetValue(args[0] as JObject, cb);
                     break;
-                case "AuthenticationClient.PublishAuthorization":
+                case "AuthenticationClient.publishAuthorization":
                     authenticationClient.PublishAuthorization<JObject>((string)args[0], args[1] as JObject);
                     break;
-                case "AuthenticationClient.GetCurrentCredentials":
+                case "AuthenticationClient.getCurrentCredentials":
                     authenticationClient.GetCurrentCredentials<JObject>((s, a) =>
                     {
                         cb(this, new FinsembleEventArgs(null, a));
                     });
+                    break;
+                case "Logger.error":
+                    JToken[] argsArray = args.ToArray();
+                    logger.Error(argsArray);
+                    break;
+                case "Logger.warn":
+                    logger.Warn(args.ToArray());
+                    break;
+                case "Logger.log":
+                    logger.Log(args.ToArray());
+                    break;
+                case "Logger.info":
+                    logger.Info(args.ToArray());
+                    break;
+                case "Logger.debug":
+                    logger.Debug(args.ToArray());
+                    break;
+                case "Logger.verbose":
+                    logger.Verbose(args.ToArray());
                     break;
                 default:
                     throw new Exception("This API does not exist or is not yet supported");

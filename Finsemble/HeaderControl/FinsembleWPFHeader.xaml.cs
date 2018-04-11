@@ -25,6 +25,8 @@ namespace ChartIQ.Finsemble
         private SortedDictionary<string, Button> LinkerGroups = new SortedDictionary<string, Button>();
         private string dockingGroup, snappingGroup;
         private bool dragging = true;
+        private Brush activeBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#133f7c"));
+        private Brush inactiveBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#233958"));
 
         public FinsembleWPFHeader()
         {
@@ -97,6 +99,34 @@ namespace ChartIQ.Finsemble
             Title.Content = title;
         }
 
+        public void SetActiveBackground(Brush background)
+        {
+            activeBackground = background;
+        }
+
+        public void SetInactiveBackground(Brush background)
+        {
+            inactiveBackground = background;
+        }
+
+        public void SetTitleFont(FontFamily fontFamily, double fontSize, FontStyle fontStyle, FontWeight fontWeight)
+        {
+            Title.FontFamily = fontFamily;
+            Title.FontSize = fontSize;
+            Title.FontStyle = fontStyle;
+            Title.FontWeight = fontWeight;
+        }
+
+        public void SetButtonHoverBackground(SolidColorBrush color)
+        {
+            this.Resources["Button.MouseOver.Background"] = color;
+        }
+
+        public void SetInactiveButtonHoverBackground(SolidColorBrush color)
+        {
+            this.Resources["InactiveButton.MouseOver.Background"] = color;
+        }
+
         public void SetBridge(Finsemble finsemble)
         {
             bridge = finsemble;
@@ -125,7 +155,7 @@ namespace ChartIQ.Finsemble
 
         private void Window_Deactivated(object sender, EventArgs e)
         {
-            Toolbar.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#233958"));
+            Toolbar.Background = inactiveBackground;
             Linker.Style = (Style)this.Resources["InactiveToolbarRegularButton"];
             DockingButton.Style = (Style)this.Resources["InactiveToolbarRegularButton"];
             Emitter.Style = (Style)this.Resources["InactiveToolbarRegularLabel"];
@@ -136,7 +166,7 @@ namespace ChartIQ.Finsemble
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            Toolbar.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#133f7c"));
+            Toolbar.Background = activeBackground;
             Linker.Style = (Style)this.Resources["ToolbarRegularButton"];
             DockingButton.Style = (Style)this.Resources["ToolbarRegularButton"];
             Emitter.Style = (Style)this.Resources["ToolbarRegularLabel"];

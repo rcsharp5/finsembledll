@@ -62,6 +62,10 @@ namespace WPFExample
                 // Initialize this Window and show it
                 InitializeComponent(); // Initialize after Finsemble is connected
                 FinsembleHeader.SetBridge(FSBL); // The Header Control needs a connected finsemble instance
+                FinsembleHeader.SetActiveBackground(new SolidColorBrush(Colors.Red));
+                FinsembleHeader.SetInactiveBackground(new SolidColorBrush(Colors.DarkRed));
+                FinsembleHeader.SetButtonHoverBackground(new SolidColorBrush(Colors.Purple));
+                FinsembleHeader.SetInactiveButtonHoverBackground(new SolidColorBrush(Colors.Yellow));
 
                 FSBL.dragAndDropClient.SetScrim(Scrim); // The Scrim Label Control is used for drag and drop.
 
@@ -111,6 +115,27 @@ namespace WPFExample
                     DroppedData.Content = response?["data"]?.ToString();
                 });
             });
+
+            FSBL.RPC("Logger.error", new List<JToken> {
+                "Error Test"
+            });
+
+            FSBL.RPC("Logger.log", new List<JToken> {
+                "Log Test"
+            });
+
+            FSBL.RPC("Logger.debug", new List<JToken> {
+                "Debug Test"
+            });
+
+            FSBL.RPC("Logger.info", new List<JToken> {
+                "Info Test"
+            });
+
+            FSBL.RPC("Logger.verbose", new List<JToken> {
+                "Verbose Test"
+            });
+
         }
     }
 }

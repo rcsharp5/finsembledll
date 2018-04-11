@@ -427,6 +427,18 @@ references:
   commentId: Overload:ChartIQ.Finsemble.FinsembleWPFHeader.InitializeComponent
   fullName: ChartIQ.Finsemble.FinsembleWPFHeader.InitializeComponent
   nameWithType: FinsembleWPFHeader.InitializeComponent
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.SetActiveBackground(System.Windows.Media.Brush)
+  name: SetActiveBackground(Brush)
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_SetActiveBackground_System_Windows_Media_Brush_
+  commentId: M:ChartIQ.Finsemble.FinsembleWPFHeader.SetActiveBackground(System.Windows.Media.Brush)
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.SetActiveBackground(System.Windows.Media.Brush)
+  nameWithType: FinsembleWPFHeader.SetActiveBackground(Brush)
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.SetActiveBackground*
+  name: SetActiveBackground
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_SetActiveBackground_
+  commentId: Overload:ChartIQ.Finsemble.FinsembleWPFHeader.SetActiveBackground
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.SetActiveBackground
+  nameWithType: FinsembleWPFHeader.SetActiveBackground
 - uid: ChartIQ.Finsemble.FinsembleWPFHeader.SetBridge(ChartIQ.Finsemble.Finsemble)
   name: SetBridge(Finsemble)
   href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_SetBridge_ChartIQ_Finsemble_Finsemble_
@@ -439,6 +451,42 @@ references:
   commentId: Overload:ChartIQ.Finsemble.FinsembleWPFHeader.SetBridge
   fullName: ChartIQ.Finsemble.FinsembleWPFHeader.SetBridge
   nameWithType: FinsembleWPFHeader.SetBridge
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.SetButtonHoverBackground(System.Windows.Media.SolidColorBrush)
+  name: SetButtonHoverBackground(SolidColorBrush)
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_SetButtonHoverBackground_System_Windows_Media_SolidColorBrush_
+  commentId: M:ChartIQ.Finsemble.FinsembleWPFHeader.SetButtonHoverBackground(System.Windows.Media.SolidColorBrush)
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.SetButtonHoverBackground(System.Windows.Media.SolidColorBrush)
+  nameWithType: FinsembleWPFHeader.SetButtonHoverBackground(SolidColorBrush)
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.SetButtonHoverBackground*
+  name: SetButtonHoverBackground
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_SetButtonHoverBackground_
+  commentId: Overload:ChartIQ.Finsemble.FinsembleWPFHeader.SetButtonHoverBackground
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.SetButtonHoverBackground
+  nameWithType: FinsembleWPFHeader.SetButtonHoverBackground
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.SetInactiveBackground(System.Windows.Media.Brush)
+  name: SetInactiveBackground(Brush)
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_SetInactiveBackground_System_Windows_Media_Brush_
+  commentId: M:ChartIQ.Finsemble.FinsembleWPFHeader.SetInactiveBackground(System.Windows.Media.Brush)
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.SetInactiveBackground(System.Windows.Media.Brush)
+  nameWithType: FinsembleWPFHeader.SetInactiveBackground(Brush)
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.SetInactiveBackground*
+  name: SetInactiveBackground
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_SetInactiveBackground_
+  commentId: Overload:ChartIQ.Finsemble.FinsembleWPFHeader.SetInactiveBackground
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.SetInactiveBackground
+  nameWithType: FinsembleWPFHeader.SetInactiveBackground
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.SetInactiveButtonHoverBackground(System.Windows.Media.SolidColorBrush)
+  name: SetInactiveButtonHoverBackground(SolidColorBrush)
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_SetInactiveButtonHoverBackground_System_Windows_Media_SolidColorBrush_
+  commentId: M:ChartIQ.Finsemble.FinsembleWPFHeader.SetInactiveButtonHoverBackground(System.Windows.Media.SolidColorBrush)
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.SetInactiveButtonHoverBackground(System.Windows.Media.SolidColorBrush)
+  nameWithType: FinsembleWPFHeader.SetInactiveButtonHoverBackground(SolidColorBrush)
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.SetInactiveButtonHoverBackground*
+  name: SetInactiveButtonHoverBackground
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_SetInactiveButtonHoverBackground_
+  commentId: Overload:ChartIQ.Finsemble.FinsembleWPFHeader.SetInactiveButtonHoverBackground
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.SetInactiveButtonHoverBackground
+  nameWithType: FinsembleWPFHeader.SetInactiveButtonHoverBackground
 - uid: ChartIQ.Finsemble.FinsembleWPFHeader.SetTitle(System.String)
   name: SetTitle(String)
   href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_SetTitle_System_String_
@@ -451,3 +499,15 @@ references:
   commentId: Overload:ChartIQ.Finsemble.FinsembleWPFHeader.SetTitle
   fullName: ChartIQ.Finsemble.FinsembleWPFHeader.SetTitle
   nameWithType: FinsembleWPFHeader.SetTitle
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.SetTitleFont(System.Windows.Media.FontFamily,System.Double,System.Windows.FontStyle,System.Windows.FontWeight)
+  name: SetTitleFont(FontFamily, Double, FontStyle, FontWeight)
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_SetTitleFont_System_Windows_Media_FontFamily_System_Double_System_Windows_FontStyle_System_Windows_FontWeight_
+  commentId: M:ChartIQ.Finsemble.FinsembleWPFHeader.SetTitleFont(System.Windows.Media.FontFamily,System.Double,System.Windows.FontStyle,System.Windows.FontWeight)
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.SetTitleFont(System.Windows.Media.FontFamily, System.Double, System.Windows.FontStyle, System.Windows.FontWeight)
+  nameWithType: FinsembleWPFHeader.SetTitleFont(FontFamily, Double, FontStyle, FontWeight)
+- uid: ChartIQ.Finsemble.FinsembleWPFHeader.SetTitleFont*
+  name: SetTitleFont
+  href: api/ChartIQ.Finsemble.FinsembleWPFHeader.html#ChartIQ_Finsemble_FinsembleWPFHeader_SetTitleFont_
+  commentId: Overload:ChartIQ.Finsemble.FinsembleWPFHeader.SetTitleFont
+  fullName: ChartIQ.Finsemble.FinsembleWPFHeader.SetTitleFont
+  nameWithType: FinsembleWPFHeader.SetTitleFont
