@@ -780,7 +780,7 @@ namespace ChartIQ.Finsemble
                         Debug.WriteLine("End Resize");
                         bHandled = true;
                         resizing = false;
-                        //Resize(newWindowRect, true);
+                        Resize(newWindowRect, true);
                         dynamic props = new ExpandoObject();
                         props.windowName = dockingWindowName;
                         props.windowAction = "endMove";

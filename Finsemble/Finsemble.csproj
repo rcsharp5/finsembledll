@@ -92,8 +92,8 @@
     <Compile Include="Docking\Docking.cs" />
     <Compile Include="DragAndDrop\DragAndDropClient.cs" />
     <Compile Include="Finsemble.cs" />
-    <Compile Include="HeaderControl\FinsembleWPFHeader.xaml.cs">
-      <DependentUpon>FinsembleWPFHeader.xaml</DependentUpon>
+    <Compile Include="HeaderControl\WPFWindowTitleBar.xaml.cs">
+      <DependentUpon>WPFWindowTitleBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Launcher\LauncherClient.cs" />
     <Compile Include="Linker\LinkerClient.cs" />
@@ -116,7 +116,7 @@
     <None Include="toc.yml" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="HeaderControl\FinsembleWPFHeader.xaml">
+    <Page Include="HeaderControl\WPFWindowTitleBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

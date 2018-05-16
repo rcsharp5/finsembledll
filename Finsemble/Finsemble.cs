@@ -115,6 +115,7 @@ namespace ChartIQ.Finsemble
             {
                 for (var i = 0; i < args.Length; i++)
                 {
+                    if (!args[i].Contains("=")) continue;
                     var argument = args[i].Split(new char[] { '=' }, 2);
                     var argumentName = argument[0];
                     var argumentValue = argument[1];
@@ -152,12 +153,11 @@ namespace ChartIQ.Finsemble
                 "Initializing new instance of FinsembleBridge:\n" +
                 $"\tVersion: {openFinVersion}\n");
 
-            //OpenFinVersion = openFinVersion;
-            //this.windowName = windowName;
-            //this.componentType = componentType;
             this.window = window;
-            window.Loaded += Window_Loaded;
-            //this.uuid = uuid;
+            if (window != null)
+            {
+                window.Loaded += Window_Loaded;
+            }
         }
 
         private void Window_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -243,14 +243,14 @@ namespace ChartIQ.Finsemble
                     storageClient = new StorageClient(this);
                     authenticationClient = new AuthenticationClient(this);
                     configClient = new ConfigClient(this);
-                    windowClient = new WindowClient(this);
+                    if (window != null) windowClient = new WindowClient(this);
                     launcherClient = new LauncherClient(this);
                     distributedStoreClient = new DistributedStoreClient(this);
                     linkerClient = new LinkerClient(this);
-                    dragAndDropClient = new DragAndDropClient(this);
+                    if (window != null) dragAndDropClient = new DragAndDropClient(this);
 
 
-                    docking = new Docking(this, windowName + "-channel");
+                    if (window != null) docking = new Docking(this, windowName + "-channel");
 
                     // Notify listeners that connection is complete.
                     // ToDo, wait for clients to be ready??

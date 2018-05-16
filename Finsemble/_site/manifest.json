@@ -12,7 +12,7 @@
           "hash": "7yfAWnpl2NeoUQOb4OFUFw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -24,7 +24,7 @@
           "hash": "JoavORvjWWsnQMp4FlppaQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -48,7 +48,7 @@
           "hash": "Y5OvPgPtTvm7S4v47g9AnA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -60,7 +60,7 @@
           "hash": "oAZbmD1RuPLEr/sEo6Q7VQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -72,7 +72,7 @@
           "hash": "eaT8qOnBttxNFWeUg1c2RQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -84,7 +84,7 @@
           "hash": "KceTIEwKzWlo7iCXHCpJkg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -96,7 +96,7 @@
           "hash": "Q9pEw8VVApGKCN2svRTyFg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -108,7 +108,7 @@
           "hash": "GM8gGvF4RTgWg0lKfSo6Hg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -120,19 +120,19 @@
           "hash": "ye3s6UxsBNbf9LSeLEiJRA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/ChartIQ.Finsemble.FinsembleWPFHeader.yml",
+      "source_relative_path": "obj/api/ChartIQ.Finsemble.WPFWindowTitleBar.yml",
       "output": {
         ".html": {
-          "relative_path": "api/ChartIQ.Finsemble.FinsembleWPFHeader.html",
-          "hash": "2dot9GT1GCI+YDRgQEPOLQ=="
+          "relative_path": "api/ChartIQ.Finsemble.WPFWindowTitleBar.html",
+          "hash": "AoC1YVwmQE3069GsLWx2Gw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -141,10 +141,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ChartIQ.Finsemble.html",
-          "hash": "zBP0a20ugcmEeLg/xzsWOg=="
+          "hash": "B22SUBsZeYWNd75DpxEHDg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -153,7 +153,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Y5SnB+DoT4mVmo8IKd25jA=="
+          "hash": "zZ9uNA0BGUgkhzEqQymMQA=="
         }
       },
       "is_incremental": false,
@@ -175,7 +175,8 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": true,
+        "can_incremental": false,
+        "details": "Disable incremental build by force rebuild option.",
         "incrementalPhase": "build"
       },
       "processors": {
@@ -185,19 +186,19 @@
           "incrementalPhase": "build"
         },
         "ConceptualDocumentProcessor": {
-          "can_incremental": true,
+          "can_incremental": false,
           "incrementalPhase": "build"
         },
         "ManagedReferenceDocumentProcessor": {
-          "can_incremental": true,
+          "can_incremental": false,
           "incrementalPhase": "build"
         }
       }
     },
     {
       "status": {
-        "can_incremental": true,
-        "details": "Can support incremental post processing.",
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: it's disabled.",
         "incrementalPhase": "postProcessing"
       },
       "processors": {}
