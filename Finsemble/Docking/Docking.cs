@@ -202,12 +202,18 @@ namespace ChartIQ.Finsemble
                 dockingWindow.Closing += Window_Closing;
                 dockingWindow.Activated += Window_Activated;
                 dockingWindow.StateChanged += DockingWindow_StateChanged;
-                bridge.runtime.InterApplicationBus.subscribe("*", dockingChannel, Got_Docking_Message);
+                bridge.runtime.InterApplicationBus.subscribe("*", dockingChannel, Got_Docking_Message); // Finsemble 2.3
+                routerClient.AddListener("FinsembleNativeActions." + bridge.windowName, Got_Docking_Message_Over_Router); // Finsemble 2.5+
                 //dockingWindow.GotMouseCapture += DockingWindow_GotMouseCapture;
                 //dockingWindow.LostMouseCapture += DockingWindow_LostMouseCapture;
                 //MouseWatcher.OnMouseInput += MouseWatcher_OnMouseInput;
             });
 
+        }
+
+        private void Got_Docking_Message_Over_Router(object sender, FinsembleEventArgs e)
+        {
+            Got_Docking_Message(null, null, e.response["data"]);
         }
 
         private void DockingWindow_LostMouseCapture(object sender, MouseEventArgs e)
