@@ -3,11 +3,13 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows;
+using Timer = System.Timers.Timer;
 
 namespace ChartIQ.Finsemble
 {
@@ -26,10 +28,8 @@ namespace ChartIQ.Finsemble
         private EventHandler<bool> connectHandler;
         private bool connected = false;
 
-        internal RouterClient(Finsemble bridge, EventHandler<bool> connectHandler)
+        public void Init()
         {
-            this.bridge = bridge;
-            this.connectHandler = connectHandler;
             this.clientName = "RouterClient." + bridge.windowName;
             var Handshake = new JObject(
                 new JProperty("header",
@@ -47,10 +47,11 @@ namespace ChartIQ.Finsemble
             });
             var timer = new Timer(100);
             timer.Elapsed += (s, e) => {
-                if(!connected) //retry handshake until connected
+                if (!connected) //retry handshake until connected
                 {
                     bridge.runtime.InterApplicationBus.Publish("RouterService", Handshake); //TODO: wait for handshake response
-                } else
+                }
+                else
                 {
                     timer.AutoReset = false;
                     timer.Enabled = false;
@@ -59,6 +60,11 @@ namespace ChartIQ.Finsemble
             timer.AutoReset = true;
             timer.Enabled = true;
 
+        }
+        internal RouterClient(Finsemble bridge, EventHandler<bool> connectHandler)
+        {
+            this.bridge = bridge;
+            this.connectHandler = connectHandler;
         }
 
 
@@ -100,7 +106,8 @@ namespace ChartIQ.Finsemble
             
             dynamic m = JsonConvert.DeserializeObject(message.ToString());
             FinsembleEventArgs args;
-            switch (m.header.type.Value)
+            var type = m.header.type.Value as string;
+            switch (type)
             {
                 case "transmit":
                     args = new FinsembleEventArgs(null, message as JObject);
@@ -125,8 +132,10 @@ namespace ChartIQ.Finsemble
                     }
                     break;
                 case "initialHandshakeResponse":
+                  //  if (connected) break;
                     Debug.WriteLine("Router Connected");
                     connected = true;
+                 
                     connectHandler(this, true);
                     break;
             }

@@ -90,8 +90,8 @@ namespace ChartIQ.Finsemble
         internal DistributedStoreClient distributedStoreClient { private set; get; }
         internal StorageClient storageClient { private set; get; }
         internal WindowClient windowClient { private set; get; }
-        internal LauncherClient launcherClient { private set; get; }
-        internal LinkerClient linkerClient { private set; get; }
+        internal LauncherClient launcherClient { private set;  get; }
+        public  LinkerClient LinkerClient {  set; get; }
         internal ConfigClient configClient { private set; get; }
         public DragAndDropClient dragAndDropClient { private set; get; }
         
@@ -238,28 +238,32 @@ namespace ChartIQ.Finsemble
 
                 //this.uuid = runtime.Options.UUID;
 
-                routerClient = new RouterClient(this, (s, connected) => {
-                    logger = new Logger(this);
-                    storageClient = new StorageClient(this);
-                    authenticationClient = new AuthenticationClient(this);
-                    configClient = new ConfigClient(this);
-                    if (window != null) windowClient = new WindowClient(this);
-                    launcherClient = new LauncherClient(this);
-                    distributedStoreClient = new DistributedStoreClient(this);
-                    linkerClient = new LinkerClient(this);
-                    if (window != null) dragAndDropClient = new DragAndDropClient(this);
+                routerClient = new RouterClient(this, Connect);
 
-
-                    if (window != null) docking = new Docking(this, windowName + "-channel");
-
-                    // Notify listeners that connection is complete.
-                    // ToDo, wait for clients to be ready??
-                    Connected?.Invoke(this, EventArgs.Empty);
-                });
-                
+                routerClient.Init();
             });
         }
 
+        private void Connect(object sender, bool connected)
+        {
+            logger = new Logger(this);
+            storageClient = new StorageClient(this);
+            authenticationClient = new AuthenticationClient(this);
+            configClient = new ConfigClient(this);
+            if (window != null) windowClient = new WindowClient(this);
+            launcherClient = new LauncherClient(this);
+            distributedStoreClient = new DistributedStoreClient(this);
+            LinkerClient = new LinkerClient(this);
+            if (window != null) dragAndDropClient = new DragAndDropClient(this);
+
+
+            if (window != null) docking = new Docking(this, windowName + "-channel");
+
+            // Notify listeners that connection is complete.
+            // ToDo, wait for clients to be ready??
+            Connected?.Invoke(this, EventArgs.Empty);
+
+        }
         /// <summary>
         /// Use this command to execute Finsemble API calls remotely. Specify all the arguments as a list and the callback for the callback or eventHandler.
         /// 
@@ -357,10 +361,10 @@ namespace ChartIQ.Finsemble
                     routerClient.Query((string)args[0], args[1], args[2] as JObject, cb);
                     break;
                 case "LinkerClient.publish":
-                    linkerClient.Publish(args[0] as JObject);
+                    LinkerClient.Publish(args[0] as JObject);
                     break;
                 case "LinkerClient.subscribe":
-                    linkerClient.Subscribe((string)args[0], cb);
+                    LinkerClient.Subscribe((string)args[0], cb);
                     break;
                 case "LauncherClient.spawn":
                     launcherClient.Spawn((string)args[0], args[1] as JObject, cb);
