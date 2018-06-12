@@ -298,7 +298,7 @@ namespace ChartIQ.Finsemble
                     DockingButton.Content = "@";
                     DockingButton.ToolTip = "Detach Window";
                     DockingButton.Visibility = Visibility.Visible;
-                    Minimize.SetValue(Canvas.RightProperty, 96.0);
+                    Minimize.SetValue(Canvas.RightProperty, Close.ActualWidth * 3);
                     DockingButton.Background = dockingButtonDockedBackground;
                     if (!groups.topRight)
                     {
@@ -310,13 +310,13 @@ namespace ChartIQ.Finsemble
                     DockingButton.Content = ">";
                     DockingButton.ToolTip = "Attach Windows";
                     DockingButton.Visibility = Visibility.Visible;
-                    Minimize.SetValue(Canvas.RightProperty, 96.0);
+                    Minimize.SetValue(Canvas.RightProperty, Close.ActualWidth * 3);
                     DockingButton.Background = Brushes.Transparent;
                 }
                 else
                 {
                     DockingButton.Visibility = Visibility.Hidden;
-                    Minimize.SetValue(Canvas.RightProperty, 64.0);
+                    Minimize.SetValue(Canvas.RightProperty, Close.ActualWidth * 2);
                 }
                 Window_Size_Changed();
             });
@@ -504,7 +504,14 @@ namespace ChartIQ.Finsemble
             Title.SetValue(Canvas.LeftProperty, LeftWidths);
             Close.SetValue(Canvas.RightProperty, 0.0);
             Maximize.SetValue(Canvas.RightProperty, Close.ActualWidth * 1);
-            Minimize.SetValue(Canvas.RightProperty, Close.ActualWidth * 2);
+            if (DockingButton.Visibility == Visibility.Visible)
+            {
+                Minimize.SetValue(Canvas.RightProperty, Close.ActualWidth * 3);
+                DockingButton.SetValue(Canvas.RightProperty, Close.ActualWidth * 2);
+            } else
+            {
+                Minimize.SetValue(Canvas.RightProperty, Close.ActualWidth * 2);
+            }
 
             var titleWidth = Toolbar.ActualWidth - LeftWidths - RightWidths;
             if (titleWidth < 0) titleWidth = 0;
