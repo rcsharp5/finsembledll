@@ -378,8 +378,7 @@ namespace ChartIQ.Finsemble
 
         private void Linker_Click(object sender, RoutedEventArgs e)
         {
-            bridge.LinkerClient.ShowLinkerWindow();
-
+            bridge.LinkerClient.ShowLinkerWindow(0, Linker.ActualHeight);
         }
 
         private List<string> getWindowList(string linkerChannel, bool includeAppSuites, bool includeDockedGroups)
