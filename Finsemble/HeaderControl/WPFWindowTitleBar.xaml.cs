@@ -27,11 +27,13 @@ namespace ChartIQ.Finsemble
         private bool dragging = true;
         private Brush activeBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#133f7c"));
         private Brush inactiveBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#233958"));
+
         private Brush dockingButtonDockedBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF039BFF"));
 
         public WPFWindowTitleBar()
         {
             InitializeComponent();
+            ParentContainer.SizeChanged += FinsembleHeader_SizeChanged;
             Toolbar.SizeChanged += FinsembleHeader_SizeChanged;
         }
 
@@ -49,9 +51,10 @@ namespace ChartIQ.Finsemble
                     {
                         item.Value.Visibility = Visibility.Hidden;
                     }
+                    if (LinkerButton.Visibility != Visibility.Visible) { return;}
 
                     // Loop through Channels
-                    Double baseLeft = 36.0;
+                    Double baseLeft = Linker.ActualWidth + 4;
                     Double increment = 12;
                     foreach (JObject item in allChannels)
                     {
@@ -92,6 +95,25 @@ namespace ChartIQ.Finsemble
 
         private void FinsembleHeader_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            var height = ParentContainer.ActualHeight;
+            Toolbar.Height = height;
+
+            Linker.Height = height;
+            DockingButton.Height = height;
+            Emitter.Height = height;
+            Maximize.Height = height;
+            Minimize.Height = height;
+            Close.Height = height;
+            Title.Height = height;
+
+            Linker.Width = height;
+            DockingButton.Width = height;
+            Emitter.Width = height;
+            Maximize.Width = height;
+            Minimize.Width = height;
+            Close.Width = height;
+            
+
             Window_Size_Changed();
         }
 
@@ -110,12 +132,65 @@ namespace ChartIQ.Finsemble
             inactiveBackground = background;
         }
 
+        /// <summary>
+        /// Set Font For Title. Use null for Family, Style and Weight to not change. Use 0 for Size to not change.
+        /// </summary>
+        /// <param name="fontFamily"></param>
+        /// <param name="fontSize"></param>
+        /// <param name="fontStyle"></param>
+        /// <param name="fontWeight"></param>
         public void SetTitleFont(FontFamily fontFamily, double fontSize, FontStyle fontStyle, FontWeight fontWeight)
         {
-            Title.FontFamily = fontFamily;
-            Title.FontSize = fontSize;
-            Title.FontStyle = fontStyle;
-            Title.FontWeight = fontWeight;
+            if (fontFamily != null) Title.FontFamily = fontFamily;
+            if (fontSize != 0) Title.FontSize = fontSize;
+            if (fontStyle != null) Title.FontStyle = fontStyle;
+            if (fontWeight != null) Title.FontWeight = fontWeight;
+        }
+
+        /// <summary>
+        /// Set Font For Buttons. Use null for Family, Style and Weight to not change. Use 0 for Size to not change.
+        /// </summary>
+        /// <param name="fontFamily"></param>
+        /// <param name="fontSize"></param>
+        /// <param name="fontStyle"></param>
+        /// <param name="fontWeight"></param>
+        public void SetButtonFont(FontFamily fontFamily, double fontSize, FontStyle fontStyle, FontWeight fontWeight)
+        {
+            if (fontFamily != null) {
+                Linker.FontFamily = fontFamily;
+                DockingButton.FontFamily = fontFamily;
+                Emitter.FontFamily = fontFamily;
+                Maximize.FontFamily = fontFamily;
+                Minimize.FontFamily = fontFamily;
+                Close.FontFamily = fontFamily;
+            }
+            if (fontSize != 0)
+            {
+                Linker.FontSize = fontSize;
+                DockingButton.FontSize = fontSize;
+                Emitter.FontSize = fontSize;
+                Maximize.FontSize = fontSize;
+                Minimize.FontSize = fontSize;
+                Close.FontSize = fontSize;
+            }
+            if (fontStyle != null)
+            {
+                Linker.FontStyle = fontStyle;
+                DockingButton.FontStyle = fontStyle;
+                Emitter.FontStyle = fontStyle;
+                Maximize.FontStyle = fontStyle;
+                Minimize.FontStyle = fontStyle;
+                Close.FontStyle = fontStyle;
+            }
+            if (fontWeight != null)
+            {
+                Linker.FontWeight = fontWeight;
+                DockingButton.FontWeight = fontWeight;
+                Emitter.FontWeight = fontWeight;
+                Maximize.FontWeight = fontWeight;
+                Minimize.FontWeight = fontWeight;
+                Close.FontWeight = fontWeight;
+            }
         }
 
         public void SetButtonHoverBackground(SolidColorBrush color)
@@ -162,11 +237,12 @@ namespace ChartIQ.Finsemble
             Close.Foreground = color;
         }
 
+        public Button LinkerButton => Linker;
         public void SetBridge(Finsemble finsemble)
         {
             bridge = finsemble;
             bridge.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;
-            bridge.linkerClient.OnStateChange(Linker_StateChange);
+            bridge.LinkerClient.OnStateChange(Linker_StateChange);
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 bridge.window.Activated += Window_Activated;
@@ -302,7 +378,7 @@ namespace ChartIQ.Finsemble
 
         private void Linker_Click(object sender, RoutedEventArgs e)
         {
-            bridge.linkerClient.ShowLinkerWindow();
+            bridge.LinkerClient.ShowLinkerWindow();
 
         }
 
@@ -318,7 +394,7 @@ namespace ChartIQ.Finsemble
                 var linkerChannelTask = linkerChannelTaskCompletionSource.Task;
                 var channels = new JArray();
                 channels.Add(linkerChannel);
-                bridge.linkerClient.GetLinkedComponents(new JObject { ["channels"] = channels }, (s, args) =>
+                bridge.LinkerClient.GetLinkedComponents(new JObject { ["channels"] = channels }, (s, args) =>
                 {
                     var linkedWindowList = (args.response as JArray).ToObject<List<string>>();
                     linkerChannelTaskCompletionSource.SetResult(linkedWindowList);
@@ -417,15 +493,19 @@ namespace ChartIQ.Finsemble
         private void Window_Size_Changed()
         {
             int LinkerGroupCount = LinkerGroups.Where(g => g.Value.Visibility == Visibility.Visible).Count();
-            double LeftWidths = 32 + LinkerGroupCount * 12;
-            double RightWidths = 96;
+            double LeftWidths = Linker.ActualWidth + LinkerGroupCount * 12;
+            double RightWidths = Linker.ActualWidth * 3;
             if (Emitter.Visibility == Visibility.Visible)
             {
                 Emitter.SetValue(Canvas.LeftProperty, LeftWidths);
-                LeftWidths += 32;
+                LeftWidths += Linker.ActualWidth;
             }
-            if (DockingButton.IsVisible) RightWidths = 128;
+            if (DockingButton.IsVisible) RightWidths = Linker.ActualWidth * 4;
             Title.SetValue(Canvas.LeftProperty, LeftWidths);
+            Close.SetValue(Canvas.RightProperty, 0.0);
+            Maximize.SetValue(Canvas.RightProperty, Close.ActualWidth * 1);
+            Minimize.SetValue(Canvas.RightProperty, Close.ActualWidth * 2);
+
             var titleWidth = Toolbar.ActualWidth - LeftWidths - RightWidths;
             if (titleWidth < 0) titleWidth = 0;
             Title.Width = titleWidth;
