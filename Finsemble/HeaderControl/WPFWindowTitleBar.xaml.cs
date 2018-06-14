@@ -249,7 +249,7 @@ namespace ChartIQ.Finsemble
             bridge.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;
             bridge.LinkerClient.OnStateChange(Linker_StateChange);
             if (bridge.componentConfig["foreign"]["components"]["Window Manager"]["showLinker"] != null) showLinker = (bool) bridge.componentConfig["foreign"]["components"]["Window Manager"]["showLinker"];
-            Linker.Visibility = Visibility.Hidden;
+            if (!showLinker) Linker.Visibility = Visibility.Hidden;
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 bridge.window.Activated += Window_Activated;
