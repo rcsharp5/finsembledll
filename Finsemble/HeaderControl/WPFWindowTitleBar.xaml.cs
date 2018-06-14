@@ -27,6 +27,9 @@ namespace ChartIQ.Finsemble
         private bool dragging = true;
         private Brush activeBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#133f7c"));
         private Brush inactiveBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#233958"));
+        private bool showLinker = true;
+        double buttonHeight = 32;
+        double buttonWidth = 32;
 
         private Brush dockingButtonDockedBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF039BFF"));
 
@@ -54,7 +57,8 @@ namespace ChartIQ.Finsemble
                     if (LinkerButton.Visibility != Visibility.Visible) { return;}
 
                     // Loop through Channels
-                    Double baseLeft = Linker.ActualWidth + 4;
+                    Double baseLeft = buttonWidth + 4;
+                    if (!showLinker) baseLeft -= buttonWidth;
                     Double increment = 12;
                     foreach (JObject item in allChannels)
                     {
@@ -95,23 +99,24 @@ namespace ChartIQ.Finsemble
 
         private void FinsembleHeader_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var height = ParentContainer.ActualHeight;
-            Toolbar.Height = height;
+            buttonHeight = ParentContainer.ActualHeight;
+            buttonWidth = ParentContainer.ActualHeight; // currently buttons are square and all same size
+            Toolbar.Height = buttonHeight;
 
-            Linker.Height = height;
-            DockingButton.Height = height;
-            Emitter.Height = height;
-            Maximize.Height = height;
-            Minimize.Height = height;
-            Close.Height = height;
-            Title.Height = height;
+            Linker.Height = buttonHeight;
+            DockingButton.Height = buttonHeight;
+            Emitter.Height = buttonHeight;
+            Maximize.Height = buttonHeight;
+            Minimize.Height = buttonHeight;
+            Close.Height = buttonHeight;
+            Title.Height = buttonHeight;
 
-            Linker.Width = height;
-            DockingButton.Width = height;
-            Emitter.Width = height;
-            Maximize.Width = height;
-            Minimize.Width = height;
-            Close.Width = height;
+            Linker.Width = buttonWidth;
+            DockingButton.Width = buttonWidth;
+            Emitter.Width = buttonWidth;
+            Maximize.Width = buttonWidth;
+            Minimize.Width = buttonWidth;
+            Close.Width = buttonWidth;
             
 
             Window_Size_Changed();
@@ -243,6 +248,8 @@ namespace ChartIQ.Finsemble
             bridge = finsemble;
             bridge.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;
             bridge.LinkerClient.OnStateChange(Linker_StateChange);
+            if (bridge.componentConfig["foreign"]["components"]["Window Manager"]["showLinker"] != null) showLinker = (bool) bridge.componentConfig["foreign"]["components"]["Window Manager"]["showLinker"];
+            Linker.Visibility = Visibility.Hidden;
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 bridge.window.Activated += Window_Activated;
@@ -298,7 +305,7 @@ namespace ChartIQ.Finsemble
                     DockingButton.Content = "@";
                     DockingButton.ToolTip = "Detach Window";
                     DockingButton.Visibility = Visibility.Visible;
-                    Minimize.SetValue(Canvas.RightProperty, Close.ActualWidth * 3);
+                    Minimize.SetValue(Canvas.RightProperty, buttonWidth * 3);
                     DockingButton.Background = dockingButtonDockedBackground;
                     if (!groups.topRight)
                     {
@@ -310,13 +317,13 @@ namespace ChartIQ.Finsemble
                     DockingButton.Content = ">";
                     DockingButton.ToolTip = "Attach Windows";
                     DockingButton.Visibility = Visibility.Visible;
-                    Minimize.SetValue(Canvas.RightProperty, Close.ActualWidth * 3);
+                    Minimize.SetValue(Canvas.RightProperty, buttonWidth * 3);
                     DockingButton.Background = Brushes.Transparent;
                 }
                 else
                 {
                     DockingButton.Visibility = Visibility.Hidden;
-                    Minimize.SetValue(Canvas.RightProperty, Close.ActualWidth * 2);
+                    Minimize.SetValue(Canvas.RightProperty, buttonWidth * 2);
                 }
                 Window_Size_Changed();
             });
@@ -492,24 +499,30 @@ namespace ChartIQ.Finsemble
         private void Window_Size_Changed()
         {
             int LinkerGroupCount = LinkerGroups.Where(g => g.Value.Visibility == Visibility.Visible).Count();
-            double LeftWidths = Linker.ActualWidth + LinkerGroupCount * 12;
-            double RightWidths = Linker.ActualWidth * 3;
+            double LeftWidths = buttonWidth + LinkerGroupCount * 12;
+            double RightWidths = buttonWidth * 3;
+
+            if (!showLinker)
+            {
+                LeftWidths -= buttonWidth;
+            }
+
             if (Emitter.Visibility == Visibility.Visible)
             {
                 Emitter.SetValue(Canvas.LeftProperty, LeftWidths);
-                LeftWidths += Linker.ActualWidth;
+                LeftWidths += buttonWidth;
             }
-            if (DockingButton.IsVisible) RightWidths = Linker.ActualWidth * 4;
+            if (DockingButton.IsVisible) RightWidths = buttonWidth * 4;
             Title.SetValue(Canvas.LeftProperty, LeftWidths);
             Close.SetValue(Canvas.RightProperty, 0.0);
-            Maximize.SetValue(Canvas.RightProperty, Close.ActualWidth * 1);
+            Maximize.SetValue(Canvas.RightProperty, buttonWidth);
             if (DockingButton.Visibility == Visibility.Visible)
             {
-                Minimize.SetValue(Canvas.RightProperty, Close.ActualWidth * 3);
-                DockingButton.SetValue(Canvas.RightProperty, Close.ActualWidth * 2);
+                Minimize.SetValue(Canvas.RightProperty, buttonWidth * 3);
+                DockingButton.SetValue(Canvas.RightProperty, buttonWidth * 2);
             } else
             {
-                Minimize.SetValue(Canvas.RightProperty, Close.ActualWidth * 2);
+                Minimize.SetValue(Canvas.RightProperty, buttonWidth * 2);
             }
 
             var titleWidth = Toolbar.ActualWidth - LeftWidths - RightWidths;

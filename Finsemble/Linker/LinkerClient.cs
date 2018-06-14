@@ -3,6 +3,7 @@ using ChartIQ.Finsemble;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Newtonsoft.Json;
 using System.Windows;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace ChartIQ.Finsemble
     /// <para>End users create linkages by assigning components to "channels". Our default implementation represents channels by color. When a component is assigned to channel "purple", publish and subscribe messages are only received by other components assigned to that channel. If you're using Finsemble's built in Linker component, you won't have to code this. The Linker component does the work of assigning and unassigning its associated component to the selected channel. However, the Linker API exposes functionality so that you can manage channels programatically if you choose. You could use these functions to build your own Linker Component using a different paradigm, or apply intelligently link components based on your own business logic. *Note, it is not necessary to stick to a color convention. Channels are simple strings and so can be anything.*</para>
     /// <para>Behind the scenes, the Linker Service coordinates Linker activity between components. It keeps track of the available channels and channel assignments. It uses a dedicated distributed store to maintain this information and also persists the information to workspaces.</para>
     /// </summary>
-    internal class LinkerClient
+    public class LinkerClient
     {
         private Finsemble bridge;
         private WindowClient windowClient;
@@ -30,7 +31,7 @@ namespace ChartIQ.Finsemble
         private Dictionary<string, EventHandler<FinsembleEventArgs>> linkerSubscribers = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
         private List<string> channelListenerList = new List<string>();
         bool readyToPersistState = false;
-
+        //private bool _useExplicitChannels = false;
         internal LinkerClient(Finsemble bridge)
         {
             this.bridge = bridge;
@@ -163,13 +164,16 @@ namespace ChartIQ.Finsemble
                 linkerSubscribers[topic]?.Invoke(this, new FinsembleEventArgs(null, new JObject
                 {
                     ["data"] = args.response["data"]?["data"],
-                    ["header"] = args.response["header"]
+                    ["header"] = args.response["header"],
+                    ["channelid"] = args.response["header"]["channel"],
+                    ["origin"] = args.response["header"]["origin"]
                 }));
             }
         }
 
         private void UpdateListeners()
         {
+            //if (_useExplicitChannels) return;
             // Remove listeners
             for (var i = channelListenerList.Count - 1; i >= 0; i--)
             {
@@ -232,6 +236,33 @@ namespace ChartIQ.Finsemble
             UpdateClientInStore(keyToUse);
         }
 
+        /*public void LinkToExplicitChannelList(string[] newChannels)
+        {
+            _useExplicitChannels = true;
+
+            // Remove listeners
+            for (var i = channelListenerList.Count - 1; i >= 0; i--)
+            {
+                var item = channelListenerList[i];
+                if (channels.Where(jt => jt.Value<string>() == item.ToString()).Count() == 0)
+                {
+                    channelListenerList.RemoveAt(i);
+                    routerClient.RemoveListener(item.ToString(), handleListeners);
+                }
+            }
+
+            // Add new ones
+            foreach (var item in newChannels)
+            {
+                if (!channelListenerList.Contains(item.ToString()))
+                {
+                    channelListenerList.Add(item.ToString());
+                    routerClient.AddListener(item.ToString(), handleListeners);
+                }
+            }
+
+        }*/
+
         /// <summary>
         /// Unlinks a component from a Linker channel.
         /// </summary>
@@ -264,18 +295,24 @@ namespace ChartIQ.Finsemble
             {
                 foreach (var item in channels)
                 {
-                    routerClient.Transmit((string)item + '.' + (string)parameters["dataType"], new JObject
-                    {
-                        ["type"] = (string)parameters["dataType"],
-                        ["data"] = parameters["data"]
-                    });
-                    routerClient.Transmit((string)item, new JObject
-                    {
-                        ["type"] = (string)parameters["dataType"],
-                        ["data"] = parameters["data"]
-                    });
+                   PublishToChannel(item,parameters);
                 }
             }
+        }
+
+        public void PublishToChannel(JToken channel,JObject parameters)
+        {
+            
+            routerClient.Transmit((string)channel + '.' + (string)parameters["dataType"], new JObject
+            {
+                ["type"] = (string)parameters["dataType"],
+                ["data"] = parameters["data"]
+            });
+            routerClient.Transmit((string) channel, new JObject
+            {
+                ["type"] = (string) parameters["dataType"],
+                ["data"] = parameters["data"]
+            });
         }
 
         /// <summary>

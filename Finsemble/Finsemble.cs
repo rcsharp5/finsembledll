@@ -51,7 +51,7 @@ namespace ChartIQ.Finsemble
         /// <summary>
         /// The instance of the OpenFin used by this example.
         /// </summary>
-        internal Runtime runtime {get; private set;}
+        internal Runtime runtime { get; private set; }
 
         #region Instance constants
         /// <summary>
@@ -90,10 +90,11 @@ namespace ChartIQ.Finsemble
         internal DistributedStoreClient distributedStoreClient { private set; get; }
         internal StorageClient storageClient { private set; get; }
         internal WindowClient windowClient { private set; get; }
-        internal LauncherClient launcherClient { private set;  get; }
-        public  LinkerClient LinkerClient {  set; get; }
+        internal LauncherClient launcherClient { private set; get; }
+        public LinkerClient LinkerClient { set; get; }
         internal ConfigClient configClient { private set; get; }
         public DragAndDropClient dragAndDropClient { private set; get; }
+        public JObject componentConfig {internal set; get;}
         
         public System.Windows.Window window { private set; get; }
         internal Docking docking;
@@ -250,18 +251,27 @@ namespace ChartIQ.Finsemble
             storageClient = new StorageClient(this);
             authenticationClient = new AuthenticationClient(this);
             configClient = new ConfigClient(this);
-            if (window != null) windowClient = new WindowClient(this);
-            launcherClient = new LauncherClient(this);
-            distributedStoreClient = new DistributedStoreClient(this);
-            LinkerClient = new LinkerClient(this);
-            if (window != null) dragAndDropClient = new DragAndDropClient(this);
+            configClient.GetValue(new JObject
+            {
+                ["field"] = "finsemble.components." + this.componentType
+            }, (s, a) =>
+            {
+                this.componentConfig = (JObject)a.response["data"];
+                if (this.componentConfig == null) this.componentConfig = new JObject();
+                if (window != null) windowClient = new WindowClient(this);
+                launcherClient = new LauncherClient(this);
+                distributedStoreClient = new DistributedStoreClient(this);
+                LinkerClient = new LinkerClient(this);
+                if (window != null) dragAndDropClient = new DragAndDropClient(this);
 
 
-            if (window != null) docking = new Docking(this, windowName + "-channel");
+                if (window != null) docking = new Docking(this, windowName + "-channel");
 
-            // Notify listeners that connection is complete.
-            // ToDo, wait for clients to be ready??
-            Connected?.Invoke(this, EventArgs.Empty);
+                // Notify listeners that connection is complete.
+                // ToDo, wait for clients to be ready??
+                Connected?.Invoke(this, EventArgs.Empty);
+            });
+            
 
         }
         /// <summary>
