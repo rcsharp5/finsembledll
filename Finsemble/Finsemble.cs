@@ -93,7 +93,7 @@ namespace ChartIQ.Finsemble
         internal LauncherClient launcherClient { private set; get; }
         public LinkerClient LinkerClient { set; get; }
         internal ConfigClient configClient { private set; get; }
-        public DragAndDropClient dragAndDropClient { private set; get; }
+        public DragAndDropClient DragAndDropClient { private set; get; }
         public JObject componentConfig {internal set; get;}
         
         public System.Windows.Window window { private set; get; }
@@ -262,7 +262,7 @@ namespace ChartIQ.Finsemble
                 launcherClient = new LauncherClient(this);
                 distributedStoreClient = new DistributedStoreClient(this);
                 LinkerClient = new LinkerClient(this);
-                if (window != null) dragAndDropClient = new DragAndDropClient(this);
+                if (window != null) DragAndDropClient = new DragAndDropClient(this);
 
 
                 if (window != null) docking = new Docking(this, windowName + "-channel");

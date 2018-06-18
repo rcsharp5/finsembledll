@@ -255,7 +255,7 @@ namespace ChartIQ.Finsemble
                 bridge.window.Activated += Window_Activated;
                 bridge.window.Deactivated += Window_Deactivated;
             });
-            bridge.dragAndDropClient.AddEmitterChangeListener((s, e) =>
+            bridge.DragAndDropClient.AddEmitterChangeListener((s, e) =>
             {
                 Application.Current.Dispatcher.Invoke(delegate
                 {
@@ -552,7 +552,7 @@ namespace ChartIQ.Finsemble
         private void Label_MouseDown(object sender, MouseButtonEventArgs e)
         {
             dragging = true;
-            bridge.dragAndDropClient.DragStartWithData(sender);
+            bridge.DragAndDropClient.DragStartWithData(sender);
         }
 
         private void AppSuites_Click(object sender, RoutedEventArgs e)

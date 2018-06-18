@@ -193,14 +193,14 @@
   </table>
   
   
-  <a id="ChartIQ_Finsemble_LinkerClient_linkToChannel_" data-uid="ChartIQ.Finsemble.LinkerClient.linkToChannel*"></a>
-  <h4 id="ChartIQ_Finsemble_LinkerClient_linkToChannel_System_String_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__" data-uid="ChartIQ.Finsemble.LinkerClient.linkToChannel(System.String,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})">linkToChannel(String, JObject, EventHandler&lt;FinsembleEventArgs&gt;)</h4>
+  <a id="ChartIQ_Finsemble_LinkerClient_LinkToChannel_" data-uid="ChartIQ.Finsemble.LinkerClient.LinkToChannel*"></a>
+  <h4 id="ChartIQ_Finsemble_LinkerClient_LinkToChannel_System_String_Newtonsoft_Json_Linq_JObject_System_EventHandler_ChartIQ_Finsemble_FinsembleEventArgs__" data-uid="ChartIQ.Finsemble.LinkerClient.LinkToChannel(System.String,Newtonsoft.Json.Linq.JObject,System.EventHandler{ChartIQ.Finsemble.FinsembleEventArgs})">LinkToChannel(String, JObject, EventHandler&lt;FinsembleEventArgs&gt;)</h4>
   <div class="markdown level1 summary"><p>Add a component to a Linker channel programatically. Components will begin receiving any new contexts published to this channel but will not receive the currently established context.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void linkToChannel(string channel, JObject windowIdentifier, EventHandler&lt;FinsembleEventArgs&gt; callback)</code></pre>
+    <pre><code class="lang-csharp hljs">public void LinkToChannel(string channel, JObject windowIdentifier, EventHandler&lt;FinsembleEventArgs&gt; callback)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -262,7 +262,7 @@
   
   <a id="ChartIQ_Finsemble_LinkerClient_Publish_" data-uid="ChartIQ.Finsemble.LinkerClient.Publish*"></a>
   <h4 id="ChartIQ_Finsemble_LinkerClient_Publish_Newtonsoft_Json_Linq_JObject_" data-uid="ChartIQ.Finsemble.LinkerClient.Publish(Newtonsoft.Json.Linq.JObject)">Publish(JObject)</h4>
-  <div class="markdown level1 summary"><p>Publish a piece of data. The data will be published to all channels that the component is linked to. Foreign components that are linked to those channels will receive the data if they have subscribed to this dataType. They can then use that data to synchronize their internal state. See Subscribe</p>
+  <div class="markdown level1 summary"><p>Publish a piece of data. Foreign components that are linked to the channels published on will receive the data if they have subscribed to this dataType. They can then use that data to synchronize their internal state. See Subscribe</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -282,7 +282,7 @@
       <tr>
         <td><span class="xref">Newtonsoft.Json.Linq.JObject</span></td>
         <td><span class="parametername">parameters</span></td>
-        <td><p>parameters[&quot;dataType&quot;] is a string that represents the data type. paramters[&quot;data&quot;] is a JObject/JArray representing the data.</p>
+        <td><p>parameters[&quot;dataType&quot;] is a string that represents the data type. paramters[&quot;data&quot;] is a JObject/JArray representing the data. parameters[&quot;channels&quot;] is a JArray representing a list of channels to publish on. If not specified, default is to publish on all channels</p>
 </td>
       </tr>
     </tbody>
