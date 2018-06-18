@@ -211,7 +211,7 @@ namespace ChartIQ.Finsemble
         /// <param name="channel"></param>
         /// <param name="windowIdentifier">If windowIdentifier is null, it uses current window.</param>
         /// <param name="callback"></param>
-        public void linkToChannel(string channel, JObject windowIdentifier, EventHandler<FinsembleEventArgs> callback)
+        public void LinkToChannel(string channel, JObject windowIdentifier, EventHandler<FinsembleEventArgs> callback)
         {
             string keyToUse = key;
             if (windowIdentifier == null)
@@ -286,14 +286,18 @@ namespace ChartIQ.Finsemble
         }
 
         /// <summary>
-        /// Publish a piece of data. The data will be published to all channels that the component is linked to. Foreign components that are linked to those channels will receive the data if they have subscribed to this dataType. They can then use that data to synchronize their internal state. See Subscribe
+        /// Publish a piece of data. Foreign components that are linked to the channels published on will receive the data if they have subscribed to this dataType. They can then use that data to synchronize their internal state. See Subscribe
         /// </summary>
-        /// <param name="parameters">parameters["dataType"] is a string that represents the data type. paramters["data"] is a JObject/JArray representing the data.</param>
+        /// <param name="parameters">parameters["dataType"] is a string that represents the data type. paramters["data"] is a JObject/JArray representing the data. parameters["channels"] is a JArray representing a list of channels to publish on. If not specified, default is to publish on all channels</param>
         public void Publish(JObject parameters)
         {
-            if (channels != null)
+            JArray publishChannels;
+            if (parameters["channels"] != null) publishChannels = (JArray)parameters["channels"];
+            else publishChannels = channels;
+                
+            if (publishChannels != null)
             {
-                foreach (var item in channels)
+                foreach (var item in publishChannels)
                 {
                    PublishToChannel(item,parameters);
                 }
@@ -301,8 +305,7 @@ namespace ChartIQ.Finsemble
         }
 
         public void PublishToChannel(JToken channel,JObject parameters)
-        {
-            
+        {            
             routerClient.Transmit((string)channel + '.' + (string)parameters["dataType"], new JObject
             {
                 ["type"] = (string)parameters["dataType"],
