@@ -32,7 +32,7 @@ namespace ChartIQ.Finsemble
         private List<string> channelListenerList = new List<string>();
         bool readyToPersistState = false;
         //private bool _useExplicitChannels = false;
-        internal LinkerClient(Finsemble bridge)
+        internal LinkerClient(Finsemble bridge, EventHandler<bool> readyCallback)
         {
             this.bridge = bridge;
             windowClient = bridge.windowClient;
@@ -84,6 +84,8 @@ namespace ChartIQ.Finsemble
                                 ["allChannels"] = allChannels
                             }
                         ));
+
+                        readyCallback(this, true);
 
                     };
                     bridge.windowClient.GetComponentState(new JObject { ["field"] = "Finsemble_Linker" }, linkerStateHandler);

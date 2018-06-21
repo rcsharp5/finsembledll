@@ -261,15 +261,16 @@ namespace ChartIQ.Finsemble
                 if (window != null) windowClient = new WindowClient(this);
                 launcherClient = new LauncherClient(this);
                 distributedStoreClient = new DistributedStoreClient(this);
-                LinkerClient = new LinkerClient(this);
                 if (window != null) DragAndDropClient = new DragAndDropClient(this);
-
-
                 if (window != null) docking = new Docking(this, windowName + "-channel");
+
+                LinkerClient = new LinkerClient(this, (s2, a2) => {
+                    Connected?.Invoke(this, EventArgs.Empty);
+                });
 
                 // Notify listeners that connection is complete.
                 // ToDo, wait for clients to be ready??
-                Connected?.Invoke(this, EventArgs.Empty);
+                
             });
             
 
