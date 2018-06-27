@@ -95,6 +95,7 @@ namespace ChartIQ.Finsemble
         internal ConfigClient configClient { private set; get; }
         public DragAndDropClient DragAndDropClient { private set; get; }
         public JObject componentConfig {internal set; get;}
+        private int openFinConnectionRetryAttempts = 0;
         
         public System.Windows.Window window { private set; get; }
         internal Docking docking;
@@ -184,6 +185,32 @@ namespace ChartIQ.Finsemble
             }
         }
 
+        private void OFConnect()
+        {
+            try
+            {
+                runtime.Connect(() =>
+                {
+                    Logger.Info("Connected to OpenFin Runtime.");
+
+                //this.uuid = runtime.Options.UUID;
+
+                routerClient = new RouterClient(this, Connect);
+
+                    routerClient.Init();
+                });
+                openFinConnectionRetryAttempts++;
+            } catch (Exception e)
+            {
+                if (openFinConnectionRetryAttempts < 5)
+                {
+                    OFConnect();
+                } else
+                {
+                    throw e;
+                }
+            }
+        }
 
         /// <summary>
         /// Connect to Finsemble.
@@ -233,16 +260,7 @@ namespace ChartIQ.Finsemble
             };
 
             // Connect to the OpenFin runtime.
-            runtime.Connect(() =>
-            {
-                Logger.Info("Connected to OpenFin Runtime.");
-
-                //this.uuid = runtime.Options.UUID;
-
-                routerClient = new RouterClient(this, Connect);
-
-                routerClient.Init();
-            });
+            OFConnect();
         }
 
         private void Connect(object sender, bool connected)
