@@ -107,6 +107,8 @@ namespace WPFExample
                     })
                 });
 
+                FSBL.LinkerClient.LinkToChannel("group2", null, (s, a) => { });
+
                 this.Show();
 
             });

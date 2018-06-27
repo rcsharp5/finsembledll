@@ -22,6 +22,7 @@ namespace WPFExample
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
+            //Debugger.Launch();
             MessageBox.Show("An Unhandled Exception has occured. Please Check your event Logs.");
         }
     }
