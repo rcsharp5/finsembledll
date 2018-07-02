@@ -29,4 +29,18 @@ namespace ChartIQ.Finsemble
             this.response = response;
         }
     }
+
+    public class FinsembleQueryArgs : EventArgs
+    {
+        public JObject error { get; private set; }
+        public JToken response { get; private set; }
+        public Action<JToken> sendQueryMessage {get; private set;}
+
+        public FinsembleQueryArgs(JObject error, JToken response, Action<JToken> sendQueryMessage)
+        {
+            this.error = error;
+            this.response = response;
+            this.sendQueryMessage = sendQueryMessage;
+        }
+    }
 }

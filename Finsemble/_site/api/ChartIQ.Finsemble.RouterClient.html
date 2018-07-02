@@ -107,7 +107,7 @@ Currently AddPubSubResponder, AddResponder, RemovePubSubResponder, RemoveRespond
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="ChartIQ.Finsemble.html">ChartIQ.Finsemble</a></h6>
-  <h6><strong>Assembly</strong>: FinsembleBridge.dll</h6>
+  <h6><strong>Assembly</strong>: Finsemble.dll</h6>
   <h5 id="ChartIQ_Finsemble_RouterClient_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class RouterClient</code></pre>
@@ -143,6 +143,38 @@ Currently AddPubSubResponder, AddResponder, RemovePubSubResponder, RemoveRespond
       <tr>
         <td><span class="xref">System.EventHandler</span>&lt;<a class="xref" href="ChartIQ.Finsemble.FinsembleEventArgs.html">FinsembleEventArgs</a>&gt;</td>
         <td><span class="parametername">callback</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="ChartIQ_Finsemble_RouterClient_AddResponder_" data-uid="ChartIQ.Finsemble.RouterClient.AddResponder*"></a>
+  <h4 id="ChartIQ_Finsemble_RouterClient_AddResponder_System_String_System_EventHandler_ChartIQ_Finsemble_FinsembleQueryArgs__" data-uid="ChartIQ.Finsemble.RouterClient.AddResponder(System.String,System.EventHandler{ChartIQ.Finsemble.FinsembleQueryArgs})">AddResponder(String, EventHandler&lt;FinsembleQueryArgs&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddResponder(string channel, EventHandler&lt;FinsembleQueryArgs&gt; responseHandler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">channel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.EventHandler</span>&lt;<a class="xref" href="ChartIQ.Finsemble.FinsembleQueryArgs.html">FinsembleQueryArgs</a>&gt;</td>
+        <td><span class="parametername">responseHandler</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -252,6 +284,38 @@ Currently AddPubSubResponder, AddResponder, RemovePubSubResponder, RemoveRespond
       <tr>
         <td><span class="xref">System.EventHandler</span>&lt;<a class="xref" href="ChartIQ.Finsemble.FinsembleEventArgs.html">FinsembleEventArgs</a>&gt;</td>
         <td><span class="parametername">callback</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="ChartIQ_Finsemble_RouterClient_RemoveResponder_" data-uid="ChartIQ.Finsemble.RouterClient.RemoveResponder*"></a>
+  <h4 id="ChartIQ_Finsemble_RouterClient_RemoveResponder_System_String_System_Boolean_" data-uid="ChartIQ.Finsemble.RouterClient.RemoveResponder(System.String,System.Boolean)">RemoveResponder(String, Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveResponder(string channel, bool modifyCollection = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">channel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">modifyCollection</span></td>
         <td></td>
       </tr>
     </tbody>

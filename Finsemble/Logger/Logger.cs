@@ -14,7 +14,7 @@ namespace ChartIQ.Finsemble
 
         public Logger(Finsemble bridge)
         {
-            routerClient = bridge.routerClient;
+            routerClient = bridge.RouterClient;
             this.bridge = bridge;
             routerClient.Query("logger.service.register", new JObject
             {

@@ -21,7 +21,7 @@ namespace ChartIQ.Finsemble
         internal LauncherClient(Finsemble bridge)
         {
             this.bridge = bridge;
-            routerClient = bridge.routerClient;
+            routerClient = bridge.RouterClient;
             windowClient = bridge.windowClient;
 
             // Heartbeat

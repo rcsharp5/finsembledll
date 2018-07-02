@@ -18,7 +18,7 @@ namespace ChartIQ.Finsemble
         internal AuthenticationClient(Finsemble bridge)
         {
             this.bridge = bridge;
-            routerClient = bridge.routerClient;
+            routerClient = bridge.RouterClient;
         }
 
         /// <summary>

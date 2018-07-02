@@ -17,7 +17,7 @@ namespace ChartIQ.Finsemble
         internal ConfigClient(Finsemble bridge)
         {
             this.bridge = bridge;
-            this.routerClient = bridge.routerClient;
+            this.routerClient = bridge.RouterClient;
         }
 
         /// <summary>

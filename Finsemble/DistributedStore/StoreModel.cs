@@ -26,7 +26,7 @@ namespace ChartIQ.Finsemble
             this.global = (bool)parameters["global"];
             this.values = parameters["values"] as JObject; // these come back but are currently not used for global stores.
             this.clients = parameters["clients"] as JObject;
-            routerClient = bridge.routerClient;
+            routerClient = bridge.RouterClient;
         }
 
         /// <summary>

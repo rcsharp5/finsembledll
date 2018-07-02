@@ -40,7 +40,7 @@ namespace ChartIQ.Finsemble
                 var store = new StoreModel(e.response["data"] as JObject, bridge);
                 args.Invoke(this, store);
             };
-            bridge.routerClient.Query("storeService.getStore", parameters, new JObject { }, handler );
+            bridge.RouterClient.Query("storeService.getStore", parameters, new JObject { }, handler );
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace ChartIQ.Finsemble
                 var store = new StoreModel(e.response["data"] as JObject, bridge);
                 args.Invoke(this, store);
             };
-            bridge.routerClient.Query("storeService.createStore", parameters, new JObject { }, handler);
+            bridge.RouterClient.Query("storeService.createStore", parameters, new JObject { }, handler);
         }
 
 

@@ -36,7 +36,7 @@ namespace ChartIQ.Finsemble
         {
             this.bridge = bridge;
             windowClient = bridge.windowClient;
-            routerClient = bridge.routerClient;
+            routerClient = bridge.RouterClient;
             launcherClient = bridge.launcherClient;
             key = (bridge.windowName + "::" + bridge.uuid).Replace('.', '_');
 

@@ -27,7 +27,7 @@ namespace ChartIQ.Finsemble
         public DragAndDropClient(Finsemble bridge)
         {
             this.bridge = bridge;
-            routerClient = bridge.routerClient;
+            routerClient = bridge.RouterClient;
             
             routerClient.AddListener(DRAG_START_CHANNEL, (s, args) =>
             {

@@ -194,7 +194,7 @@ namespace ChartIQ.Finsemble
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 this.bridge = _bridge;
-                routerClient = bridge.routerClient;
+                routerClient = bridge.RouterClient;
                 this.dockingChannel = channel;
                 this.dockingWindow = bridge.window;
                 this.dockingWindowName = bridge.windowName;
@@ -207,6 +207,10 @@ namespace ChartIQ.Finsemble
                 //dockingWindow.GotMouseCapture += DockingWindow_GotMouseCapture;
                 //dockingWindow.LostMouseCapture += DockingWindow_LostMouseCapture;
                 //MouseWatcher.OnMouseInput += MouseWatcher_OnMouseInput;
+                routerClient.AddListener("LauncherService.shutdownRequest", (s, e) =>
+                {
+                    sendCloseToFinsemble = false;
+                });
             });
 
         }

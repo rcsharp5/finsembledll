@@ -17,18 +17,19 @@ namespace ChartIQ.Finsemble
     /// This module contains the RouterClient for sending and receiving events between Finsemble components and services.
     /// Currently AddPubSubResponder, AddResponder, RemovePubSubResponder, RemoveResponder are not supported.
     /// </summary>
-    internal class RouterClient
+    public class RouterClient
     {
         private Finsemble bridge;
         private string clientName;
         private Dictionary<string, EventHandler<FinsembleEventArgs>> transmitListeners = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
         private Dictionary<string, EventHandler<FinsembleEventArgs>> publishListeners = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
         private Dictionary<string, EventHandler<FinsembleEventArgs>> queryIDResponseHandlerMap = new Dictionary<string, EventHandler<FinsembleEventArgs>>();
+        private Dictionary<string, EventHandler<FinsembleQueryArgs>> responderMap = new Dictionary<string, EventHandler<FinsembleQueryArgs>>();
         private Dictionary<string, string> subscribeIDTopicMap = new Dictionary<string, string>();
         private EventHandler<bool> connectHandler;
         private bool connected = false;
 
-        public void Init()
+        internal void Init()
         {
             this.clientName = "RouterClient." + bridge.windowName;
             var Handshake = new JObject(
@@ -98,6 +99,11 @@ namespace ChartIQ.Finsemble
                 );
                 bridge.runtime.InterApplicationBus.Publish("RouterService", RemoveListenerMessage);
             }
+
+            foreach (var item in responderMap)
+            {
+                RemoveResponder(item.Key, false);
+            }
         }
 
         // All messages from Finsemble are handled by this.
@@ -106,6 +112,7 @@ namespace ChartIQ.Finsemble
             
             dynamic m = JsonConvert.DeserializeObject(message.ToString());
             FinsembleEventArgs args;
+            FinsembleQueryArgs qargs;
             var type = m.header.type.Value as string;
             switch (type)
             {
@@ -114,6 +121,26 @@ namespace ChartIQ.Finsemble
                     if (transmitListeners.ContainsKey(m.header.channel.Value))
                     {
                         transmitListeners[m.header.channel.Value]?.Invoke(this, args);
+                    }
+                    break;
+                case "query":
+                    qargs = new FinsembleQueryArgs(null, message as JObject, (e) => {
+                        var queryMessage = new JObject
+                        {
+                            ["header"] = new JObject
+                            {
+                                ["origin"] = clientName,
+                                ["type"] = "queryResponse",
+                                ["queryID"] = m.header.queryID,
+                                ["error"] = m.error
+                            },
+                           ["data"] = e
+                        };
+                        bridge.runtime.InterApplicationBus.Publish("RouterService", queryMessage);
+                    });
+                    if (responderMap.ContainsKey(m.header.channel.Value))
+                    {
+                        responderMap[m.header.channel.Value]?.Invoke(this, qargs);
                     }
                     break;
                 case "queryResponse":
@@ -196,6 +223,19 @@ namespace ChartIQ.Finsemble
         public void RemoveListener(string channel, EventHandler<FinsembleEventArgs> callback)
         {
             transmitListeners[channel] -= callback;
+            if (transmitListeners.Count == 0)
+            {
+                var removeListenerMessage = new JObject
+                {
+                    ["header"] = new JObject
+                    {
+                        ["origin"] = clientName,
+                        ["type"] = "removeListener",
+                        ["channel"] = channel
+                    }
+                };
+                bridge.runtime.InterApplicationBus.Publish("RouterService", removeListenerMessage);
+            }
         }
 
         /// <summary>
@@ -281,6 +321,63 @@ namespace ChartIQ.Finsemble
         public void Unsubscribe(string topic, EventHandler<FinsembleEventArgs> responseHandler)
         {
             publishListeners[topic] -= responseHandler;
+            if (publishListeners.Count == 0)
+            {
+                var unsubscribeMessage = new JObject
+                {
+                    ["header"] = new JObject {
+                        ["origin"] = clientName,
+                        ["type"] = "unsubscribe",
+                        ["subscribeID"] = subscribeIDTopicMap[topic],
+                        ["topic"] = topic
+                    }
+                };
+                bridge.runtime.InterApplicationBus.Publish("RouterService", unsubscribeMessage);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="responseHandler"></param>
+        public void AddResponder(string channel, EventHandler<FinsembleQueryArgs> responseHandler)
+        {
+            if(!responderMap.ContainsKey(channel))
+            {
+                responderMap.Add(channel, responseHandler);
+                var AddResponderMessage = new JObject
+                {
+                    ["header"] = new JObject
+                    {
+                        ["origin"] = clientName,
+			            ["type"] = "addResponder",
+			            ["channel"] = channel
+                    }
+                };
+                bridge.runtime.InterApplicationBus.Publish("RouterService", AddResponderMessage);
+            } else
+            {
+                responseHandler(this, new FinsembleQueryArgs(new JObject { "Responder Already Exists" }, null, null));
+            }
+        }
+
+        public void RemoveResponder(string channel, bool modifyCollection = true)
+        {
+            if (responderMap.ContainsKey(channel))
+            {
+                if (modifyCollection) responderMap.Remove(channel);
+                var removeResponderMessage = new JObject
+                {
+                    ["header"] = new JObject
+                    {
+                        ["origin"] = clientName,
+                        ["type"] = "removeResponder",
+                        ["channel"] = channel
+                    }
+                };
+                bridge.runtime.InterApplicationBus.Publish("RouterService", removeResponderMessage);
+            }
         }
  
     }

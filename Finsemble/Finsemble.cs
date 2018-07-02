@@ -84,7 +84,7 @@ namespace ChartIQ.Finsemble
         public string windowName { private set; get; } = Guid.NewGuid().ToString();
         public string uuid { private set; get; } = Guid.NewGuid().ToString();
 
-        internal RouterClient routerClient { private set; get; }
+        public RouterClient RouterClient { private set; get; }
         internal Logger logger { private set; get; }
         internal AuthenticationClient authenticationClient { private set; get; }
         internal DistributedStoreClient distributedStoreClient { private set; get; }
@@ -195,9 +195,9 @@ namespace ChartIQ.Finsemble
 
                 //this.uuid = runtime.Options.UUID;
 
-                routerClient = new RouterClient(this, Connect);
+                RouterClient = new RouterClient(this, Connect);
 
-                    routerClient.Init();
+                    RouterClient.Init();
                 });
                 openFinConnectionRetryAttempts++;
             } catch (Exception e)
@@ -369,25 +369,25 @@ namespace ChartIQ.Finsemble
             switch (endpoint)
             {
                 case "RouterClient.transmit":
-                    routerClient.Transmit((string)args[0], args[1]);
+                    RouterClient.Transmit((string)args[0], args[1]);
                     break;
                 case "RouterClient.addListener":
-                    routerClient.AddListener((string)args[0], cb);
+                    RouterClient.AddListener((string)args[0], cb);
                     break;
                 case "RouterClient.removeListener":
-                    routerClient.RemoveListener((string)args[0], cb);
+                    RouterClient.RemoveListener((string)args[0], cb);
                     break;
                 case "RouterClient.publish":
-                    routerClient.Publish((string)args[0], args[1]);
+                    RouterClient.Publish((string)args[0], args[1]);
                     break;
                 case "RouterClient.subscribe":
-                    routerClient.Subscribe((string)args[0], cb);
+                    RouterClient.Subscribe((string)args[0], cb);
                     break;
                 case "RouterClient.unsubscribe":
-                    routerClient.Unsubscribe((string)args[0], cb);
+                    RouterClient.Unsubscribe((string)args[0], cb);
                     break;
                 case "RouterClient.query":
-                    routerClient.Query((string)args[0], args[1], args[2] as JObject, cb);
+                    RouterClient.Query((string)args[0], args[1], args[2] as JObject, cb);
                     break;
                 case "LinkerClient.publish":
                     LinkerClient.Publish(args[0] as JObject);
@@ -545,7 +545,7 @@ namespace ChartIQ.Finsemble
 
         public void ShutdownApplication()
         {
-            routerClient.Transmit("Application.shutdown", new JObject { });
+            RouterClient.Transmit("Application.shutdown", new JObject { });
         }
 
         // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
