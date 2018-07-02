@@ -55,6 +55,22 @@ namespace WPFExample
             FSBL.Connected += Finsemble_Connected;
         }
 
+
+        private void HandleShutdown()
+        {
+            FSBL.RouterClient.AddListener("LauncherService.shutdownRequest", (s, e) => {
+                FSBL.RouterClient.Transmit("LauncherService.shutdownResponse", new JObject
+                {
+                    ["waitForMe"] = false,
+                    ["name"] = FSBL.windowName
+                });
+                Application.Current.Dispatcher.Invoke(delegate //main thread
+                {
+                    Application.Current.Shutdown();
+                });
+            });
+        }
+
         private void Finsemble_Connected(object sender, EventArgs e)
         {
             Application.Current.Dispatcher.Invoke(delegate //main thread
@@ -62,6 +78,16 @@ namespace WPFExample
                 // Initialize this Window and show it
                 InitializeComponent(); // Initialize after Finsemble is connected
                 FinsembleHeader.SetBridge(FSBL); // The Header Control needs a connected finsemble instance
+
+
+                FSBL.HandleClose((action) =>
+                {
+                    //handle things here that need to happen before close
+                    //when done call action() -> action is of type Action
+                    //currently this will only be called when close is initiated by Finsemble shutdown/restart.
+                    //will not happen when workspaces switch. This is being worked on in finsemble.
+                    action();
+                });
 
                 //Styling the Finsemble Header
                 /* 
@@ -154,5 +180,6 @@ namespace WPFExample
         {
             FSBL.LinkerClient.LinkToChannel("group1", null, (s, r) => { });
         }
+
     }
 }
