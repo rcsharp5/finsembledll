@@ -59,6 +59,8 @@ namespace ChartIQ.Finsemble
         private WIN32Rectangle windowRect;
         private WIN32Rectangle newWindowRect;
 
+        internal Action<Action> closeAction;
+
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool GetWindowRect(IntPtr hWnd, out WIN32Rectangle lpRect);
@@ -207,12 +209,33 @@ namespace ChartIQ.Finsemble
                 //dockingWindow.GotMouseCapture += DockingWindow_GotMouseCapture;
                 //dockingWindow.LostMouseCapture += DockingWindow_LostMouseCapture;
                 //MouseWatcher.OnMouseInput += MouseWatcher_OnMouseInput;
-                routerClient.AddListener("LauncherService.shutdownRequest", (s, e) =>
+                /*routerClient.AddListener("LauncherService.shutdownRequest", (s, e) =>
                 {
                     sendCloseToFinsemble = false;
+                });*/
+                routerClient.AddResponder(dockingWindowName + ".closeRequested", (s, e) =>
+                {
+                    sendCloseToFinsemble = false;
+                    if (closeAction != null && e.response["data"]["shuttingDown"] != null) // only call close handler while shutting down. doing on workspace switch does not work yet
+                    {
+                        closeAction(() =>
+                        {
+                            e.sendQueryMessage(new JObject { ["close"] = true });
+                            Application.Current.Dispatcher.Invoke(delegate //main thread
+                            {
+                                dockingWindow.Close();
+                            });
+                        });
+                    } else
+                    {
+                        e.sendQueryMessage(new JObject { ["close"] = true });
+                        Application.Current.Dispatcher.Invoke(delegate //main thread
+                        {
+                            dockingWindow.Close();
+                        });
+                    }
                 });
             });
-
         }
 
         private void Got_Docking_Message_Over_Router(object sender, FinsembleEventArgs e)

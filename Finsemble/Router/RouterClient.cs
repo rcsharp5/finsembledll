@@ -358,7 +358,7 @@ namespace ChartIQ.Finsemble
                 bridge.runtime.InterApplicationBus.Publish("RouterService", AddResponderMessage);
             } else
             {
-                responseHandler(this, new FinsembleQueryArgs(new JObject { "Responder Already Exists" }, null, null));
+                responseHandler(this, new FinsembleQueryArgs(new JObject { ["error"] = "Responder Already Exists" }, null, null));
             }
         }
 

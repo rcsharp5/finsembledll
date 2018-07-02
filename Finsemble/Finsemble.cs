@@ -263,6 +263,11 @@ namespace ChartIQ.Finsemble
             OFConnect();
         }
 
+        public void HandleClose(Action<Action> callOnClose)
+        {
+            docking.closeAction = callOnClose;
+        }
+
         private void Connect(object sender, bool connected)
         {
             logger = new Logger(this);
