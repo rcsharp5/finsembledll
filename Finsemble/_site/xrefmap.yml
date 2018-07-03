@@ -274,6 +274,21 @@ references:
   commentId: E:ChartIQ.Finsemble.Finsemble.Error
   fullName: ChartIQ.Finsemble.Finsemble.Error
   nameWithType: Finsemble.Error
+- uid: ChartIQ.Finsemble.Finsemble.HandleClose(System.Action{System.Action})
+  name: HandleClose(Action<Action>)
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_HandleClose_System_Action_System_Action__
+  commentId: M:ChartIQ.Finsemble.Finsemble.HandleClose(System.Action{System.Action})
+  name.vb: HandleClose(Action(Of Action))
+  fullName: ChartIQ.Finsemble.Finsemble.HandleClose(System.Action<System.Action>)
+  fullName.vb: ChartIQ.Finsemble.Finsemble.HandleClose(System.Action(Of System.Action))
+  nameWithType: Finsemble.HandleClose(Action<Action>)
+  nameWithType.vb: Finsemble.HandleClose(Action(Of Action))
+- uid: ChartIQ.Finsemble.Finsemble.HandleClose*
+  name: HandleClose
+  href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_HandleClose_
+  commentId: Overload:ChartIQ.Finsemble.Finsemble.HandleClose
+  fullName: ChartIQ.Finsemble.Finsemble.HandleClose
+  nameWithType: Finsemble.HandleClose
 - uid: ChartIQ.Finsemble.Finsemble.LinkerClient
   name: LinkerClient
   href: api/ChartIQ.Finsemble.Finsemble.html#ChartIQ_Finsemble_Finsemble_LinkerClient
