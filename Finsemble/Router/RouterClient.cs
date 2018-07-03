@@ -44,7 +44,7 @@ namespace ChartIQ.Finsemble
             bridge.runtime.InterApplicationBus.subscribe(clientName, OpenfinMessageHandler);
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
-                bridge.window.Closing += Window_Closing;
+                if (bridge.window != null) bridge.window.Closing += Window_Closing;
             });
             var timer = new Timer(100);
             timer.Elapsed += (s, e) => {

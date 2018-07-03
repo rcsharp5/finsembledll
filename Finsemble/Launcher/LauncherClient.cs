@@ -23,6 +23,19 @@ namespace ChartIQ.Finsemble
             this.bridge = bridge;
             routerClient = bridge.RouterClient;
             windowClient = bridge.windowClient;
+            // Window Groups
+            windowClient.GetComponentState(new JObject
+            {
+                ["field"] = "finsemble:windowGroups"
+            }, (err, groups) => {
+                if (groups.response != null)
+                {
+                    AddToGroups(new JObject
+                    {
+                        ["groupNames"] = groups.response
+                    }, SubscribeToGroupUpdates);
+                }
+            });
 
             // Heartbeat
             var timer = new Timer();
@@ -37,19 +50,7 @@ namespace ChartIQ.Finsemble
             };
             timer.Enabled = true;
 
-            // Window Groups
-            windowClient.GetComponentState(new JObject
-            {
-                ["field"] = "finsemble:windowGroups"
-            }, (err, groups) => {
-                if (groups.response != null)
-                {
-                    AddToGroups(new JObject
-                    {
-                        ["groupNames"] = groups.response
-                    }, SubscribeToGroupUpdates);
-                }
-            });
+            
         }
 
         private void SubscribeToGroupUpdates(object sender, FinsembleEventArgs e)

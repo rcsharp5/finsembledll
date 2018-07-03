@@ -14,6 +14,7 @@ namespace WindowlessExample
         public MyClass (string[] args)
         {
             FSBL = new Finsemble(args, null);
+            FSBL.Connect();
             FSBL.Connected += FSBL_Connected;
         }
 
@@ -22,6 +23,8 @@ namespace WindowlessExample
             FSBL.RPC("Logger.log", new List<JToken> {
                 "Log Test"
             });
+
+            
         }
     }
 }

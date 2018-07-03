@@ -23,7 +23,7 @@ namespace ChartIQ.Finsemble
                 ["uuid"] = bridge.uuid,
                 ["windowName"] = bridge.windowName
             }, new JObject { }, (s, a) => { });
-            bridge.window.Closing += Window_Closing;
+            if (bridge.window != null) bridge.window.Closing += Window_Closing;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

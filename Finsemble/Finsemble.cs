@@ -281,7 +281,7 @@ namespace ChartIQ.Finsemble
             {
                 this.componentConfig = (JObject)a.response["data"];
                 if (this.componentConfig == null) this.componentConfig = new JObject();
-                if (window != null) windowClient = new WindowClient(this);
+                windowClient = new WindowClient(this);
                 launcherClient = new LauncherClient(this);
                 distributedStoreClient = new DistributedStoreClient(this);
                 if (window != null) DragAndDropClient = new DragAndDropClient(this);
