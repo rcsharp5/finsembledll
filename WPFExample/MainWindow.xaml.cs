@@ -55,22 +55,6 @@ namespace WPFExample
             FSBL.Connected += Finsemble_Connected;
         }
 
-
-        private void HandleShutdown()
-        {
-            FSBL.RouterClient.AddListener("LauncherService.shutdownRequest", (s, e) => {
-                FSBL.RouterClient.Transmit("LauncherService.shutdownResponse", new JObject
-                {
-                    ["waitForMe"] = false,
-                    ["name"] = FSBL.windowName
-                });
-                Application.Current.Dispatcher.Invoke(delegate //main thread
-                {
-                    Application.Current.Shutdown();
-                });
-            });
-        }
-
         private void Finsemble_Connected(object sender, EventArgs e)
         {
             Application.Current.Dispatcher.Invoke(delegate //main thread
