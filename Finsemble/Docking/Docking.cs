@@ -216,26 +216,44 @@ namespace ChartIQ.Finsemble
                 routerClient.AddResponder(dockingWindowName + ".closeRequested", (s, e) =>
                 {
                     sendCloseToFinsemble = false;
-                    if (closeAction != null && e.response["data"]["shuttingDown"] != null) // only call close handler while shutting down. doing on workspace switch does not work yet
+
+                    if (closeAction != null && e.response["data"]["shuttingDown"] != null) // only call close handler while shutting down. doing on workspace switch does not work yet
+                    {
+                        closeAction(() => CloseWindow(e));
+                    }
+                    else
                     {
-                        closeAction(() =>
-                        {
-                            e.sendQueryMessage(new JObject { ["close"] = true });
-                            Application.Current.Dispatcher.Invoke(delegate //main thread
-                            {
-                                dockingWindow.Close();
-                            });
-                        });
-                    } else
-                    {
-                        e.sendQueryMessage(new JObject { ["close"] = true });
-                        Application.Current.Dispatcher.Invoke(delegate //main thread
-                        {
-                            dockingWindow.Close();
-                        });
+                        CloseWindow(e);
                     }
                 });
             });
+        }
+
+        private void CloseWindow(FinsembleQueryArgs e)
+        {
+            HandleWindowActuallyClosed(e);
+            RequestWindowToClose();
+        }
+
+        private void HandleWindowActuallyClosed(FinsembleQueryArgs fqa)
+        {
+            dockingWindow.Closed += (s, e) =>
+            {
+                ReportWindowClosed(fqa);
+            };
+        }
+
+        private void RequestWindowToClose()
+        {
+            Application.Current.Dispatcher.Invoke(delegate //main thread
+            {
+                dockingWindow.Close();// this is and may cause user interaction in Application in response to 'Closing' event
+            });
+        }
+
+        private void ReportWindowClosed(FinsembleQueryArgs fqa)
+        {
+            fqa.sendQueryMessage(new JObject { ["close"] = true });
         }
 
         private void Got_Docking_Message_Over_Router(object sender, FinsembleEventArgs e)

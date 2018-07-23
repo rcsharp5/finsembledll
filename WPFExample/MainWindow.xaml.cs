@@ -63,15 +63,18 @@ namespace WPFExample
                 InitializeComponent(); // Initialize after Finsemble is connected
                 FinsembleHeader.SetBridge(FSBL); // The Header Control needs a connected finsemble instance
 
-
-                FSBL.HandleClose((action) =>
+                // This still works:
+                /*FSBL.HandleClose((action) =>
                 {
                     //handle things here that need to happen before close
                     //when done call action() -> action is of type Action
                     //currently this will only be called when close is initiated by Finsemble shutdown/restart.
                     //will not happen when workspaces switch. This is being worked on in finsemble.
                     action();
-                });
+                });*/
+
+                // But, now this should be sufficient now for handling close requested by Finsemble: 
+                this.Closing += MainWindow_Closing;
 
                 //Styling the Finsemble Header
                 /* 
@@ -158,6 +161,16 @@ namespace WPFExample
             });
             */
 
+        }
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            /*if (MessageBox.Show("Close Application?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                // Cancel Closing
+                e.Cancel = true;
+            }*/
+            
         }
 
         private void LinkToGroup_Click(object sender, RoutedEventArgs e)
