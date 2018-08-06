@@ -25,8 +25,8 @@ namespace ChartIQ.Finsemble
         private SortedDictionary<string, Button> LinkerGroups = new SortedDictionary<string, Button>();
         private string dockingGroup, snappingGroup;
         private bool dragging = true;
-        private Brush activeBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#133f7c"));
-        private Brush inactiveBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#233958"));
+        private Brush activeBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3C4C58"));
+        private Brush inactiveBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#303D47"));
         private bool showLinker = true;
         double buttonHeight = 32;
         double buttonWidth = 32;
