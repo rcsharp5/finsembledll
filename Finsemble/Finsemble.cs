@@ -94,9 +94,9 @@ namespace ChartIQ.Finsemble
         public LinkerClient LinkerClient { set; get; }
         internal ConfigClient configClient { private set; get; }
         public DragAndDropClient DragAndDropClient { private set; get; }
-        public JObject componentConfig {internal set; get;}
+        public JObject componentConfig { internal set; get; }
         private int openFinConnectionRetryAttempts = 0;
-        
+
         public System.Windows.Window window { private set; get; }
         internal Docking docking;
         private Dictionary<string, List<string>> dependencies = new Dictionary<string, List<string>>()
@@ -106,6 +106,8 @@ namespace ChartIQ.Finsemble
             {"linkerClient", new List<string> {"linkerService"} },
             {"windowClient", new List<string> {"storageService"} }
         };
+
+        private bool isFinsembleConnected = false;
 
         string top = null, left = null, height = null, width = null;
         /// <summary>
@@ -193,19 +195,21 @@ namespace ChartIQ.Finsemble
                 {
                     Logger.Info("Connected to OpenFin Runtime.");
 
-                //this.uuid = runtime.Options.UUID;
+                    //this.uuid = runtime.Options.UUID;
 
-                RouterClient = new RouterClient(this, Connect);
+                    RouterClient = new RouterClient(this, Connect);
 
                     RouterClient.Init();
                 });
                 openFinConnectionRetryAttempts++;
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 if (openFinConnectionRetryAttempts < 5)
                 {
                     OFConnect();
-                } else
+                }
+                else
                 {
                     throw e;
                 }
@@ -270,6 +274,9 @@ namespace ChartIQ.Finsemble
 
         private void Connect(object sender, bool connected)
         {
+            // Do not attempt to connect more than once. This causes the Window to close prematurely from responders firing because of errors.
+            if (isFinsembleConnected) return;
+            isFinsembleConnected = true;
             logger = new Logger(this);
             storageClient = new StorageClient(this);
             authenticationClient = new AuthenticationClient(this);
@@ -293,9 +300,9 @@ namespace ChartIQ.Finsemble
 
                 // Notify listeners that connection is complete.
                 // ToDo, wait for clients to be ready??
-                
+
             });
-            
+
 
         }
         /// <summary>
