@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using System.Windows;
 
 namespace WPFExample
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+	/// <summary>
+	/// Interaction logic for App.xaml
+	/// </summary>
+	public partial class App : Application
     {
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -23,7 +17,7 @@ namespace WPFExample
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             Debugger.Launch();
-            MessageBox.Show("An Unhandled Exception has occured. Please Check your event Logs.");
+            MessageBox.Show("An Unhandled Exception has occurred. Please Check your event Logs.");
         }
     }
 }
