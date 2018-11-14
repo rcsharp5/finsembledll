@@ -248,7 +248,14 @@ namespace ChartIQ.Finsemble
             bridge = finsemble;
             bridge.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;
             bridge.LinkerClient.OnStateChange(Linker_StateChange);
-            if (bridge.componentConfig["foreign"]["components"]["Window Manager"]["showLinker"] != null) showLinker = (bool) bridge.componentConfig["foreign"]["components"]["Window Manager"]["showLinker"];
+			if ((bridge.componentConfig["foreign"] != null) && 
+				(bridge.componentConfig["foreign"]["components"] != null) && 
+				(bridge.componentConfig["foreign"]["components"]["Window Manager"] != null) &&
+				(bridge.componentConfig["foreign"]["components"]["Window Manager"]["showLinker"] != null))
+			{
+				showLinker = (bool)bridge.componentConfig["foreign"]["components"]["Window Manager"]["showLinker"];
+			}
+
             if (!showLinker) Linker.Visibility = Visibility.Hidden;
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
