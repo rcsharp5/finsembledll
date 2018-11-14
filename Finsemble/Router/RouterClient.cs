@@ -40,8 +40,8 @@ namespace ChartIQ.Finsemble
                     )
                 )
             );
-            bridge.runtime.InterApplicationBus.Publish("RouterService", Handshake); //TODO: wait for handshake response
-            bridge.runtime.InterApplicationBus.subscribe(clientName, OpenfinMessageHandler);
+            bridge.Publish(Handshake); //TODO: wait for handshake response
+            bridge.Subscribe(clientName, MessageHandler);
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 if (bridge.window != null) bridge.window.Closing += Window_Closing;
@@ -50,7 +50,7 @@ namespace ChartIQ.Finsemble
             timer.Elapsed += (s, e) => {
                 if (!connected) //retry handshake until connected
                 {
-                    bridge.runtime.InterApplicationBus.Publish("RouterService", Handshake); //TODO: wait for handshake response
+                    bridge.Publish(Handshake); //TODO: wait for handshake response
                 }
                 else
                 {
@@ -82,7 +82,7 @@ namespace ChartIQ.Finsemble
                        )
                    )
                 );
-                bridge.runtime.InterApplicationBus.Publish("RouterService", RemoveListenerMessage);
+                bridge.Publish(RemoveListenerMessage);
             }
 
             foreach (var item in publishListeners)
@@ -97,7 +97,7 @@ namespace ChartIQ.Finsemble
                        )
                    )
                 );
-                bridge.runtime.InterApplicationBus.Publish("RouterService", RemoveListenerMessage);
+                bridge.Publish(RemoveListenerMessage);
             }
 
             foreach (var item in responderMap)
@@ -107,7 +107,7 @@ namespace ChartIQ.Finsemble
         }
 
         // All messages from Finsemble are handled by this.
-        private void OpenfinMessageHandler(string sourceUuid, string topic, object message)
+        private void MessageHandler(string topic, object message)
         {
             
             dynamic m = JsonConvert.DeserializeObject(message.ToString());
@@ -136,7 +136,7 @@ namespace ChartIQ.Finsemble
                             },
                            ["data"] = e
                         };
-                        bridge.runtime.InterApplicationBus.Publish("RouterService", queryMessage);
+                        bridge.Publish(queryMessage);
                     });
                     if (responderMap.ContainsKey(m.header.channel.Value))
                     {
@@ -185,7 +185,7 @@ namespace ChartIQ.Finsemble
                 ),
                 new JProperty("data", data)
             );
-            bridge.runtime.InterApplicationBus.Publish("RouterService", TransmitMessage);
+            bridge.Publish(TransmitMessage);
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace ChartIQ.Finsemble
                        )
                    )
                 );
-                bridge.runtime.InterApplicationBus.Publish("RouterService", AddListenerMessage);
+                bridge.Publish(AddListenerMessage);
             }
             else
             {
@@ -234,7 +234,7 @@ namespace ChartIQ.Finsemble
                         ["channel"] = channel
                     }
                 };
-                bridge.runtime.InterApplicationBus.Publish("RouterService", removeListenerMessage);
+                bridge.Publish(removeListenerMessage);
             }
         }
 
@@ -259,7 +259,7 @@ namespace ChartIQ.Finsemble
                 ),
                 new JProperty("data", data)
             );
-            bridge.runtime.InterApplicationBus.Publish("RouterService", QueryMessage);
+            bridge.Publish(QueryMessage);
             queryIDResponseHandlerMap.Add(queryID, responseHandler);
         }
 
@@ -280,15 +280,15 @@ namespace ChartIQ.Finsemble
                 ),
                 new JProperty("data", data)
             );
-            bridge.runtime.InterApplicationBus.Publish("RouterService", PublishMessage);
+            bridge.Publish(PublishMessage);
         }
 
-        /// <summary>
-        /// Subscribe to a PubSub Responder. Each responder topic can have many subscribers (local in this window or remote in other windows). Each subscriber immediately (but asyncronouly) receives back current state in a notify; new notifys are receive for each publish sent to the same topic.
-        /// </summary>
-        /// <param name="topic"></param>
-        /// <param name="responseHandler"></param>
-        public void Subscribe(string topic, EventHandler<FinsembleEventArgs> responseHandler)
+		/// <summary>
+		/// Subscribe to a PubSub Responder. Each responder topic can have many subscribers (local in this window or remote in other windows). Each subscriber immediately (but asynchronously) receives back current state in a notify; new notifies are receive for each publish sent to the same topic.
+		/// </summary>
+		/// <param name="topic"></param>
+		/// <param name="responseHandler"></param>
+		public void Subscribe(string topic, EventHandler<FinsembleEventArgs> responseHandler)
         {
             if (!publishListeners.ContainsKey(topic))
             {
@@ -305,7 +305,7 @@ namespace ChartIQ.Finsemble
                        )
                    )
                 );
-                bridge.runtime.InterApplicationBus.Publish("RouterService", AddSubscribeMessage);
+                bridge.Publish(AddSubscribeMessage);
             }
             else
             {
@@ -332,7 +332,7 @@ namespace ChartIQ.Finsemble
                         ["topic"] = topic
                     }
                 };
-                bridge.runtime.InterApplicationBus.Publish("RouterService", unsubscribeMessage);
+                bridge.Publish(unsubscribeMessage);
             }
         }
 
@@ -355,7 +355,7 @@ namespace ChartIQ.Finsemble
 			            ["channel"] = channel
                     }
                 };
-                bridge.runtime.InterApplicationBus.Publish("RouterService", AddResponderMessage);
+                bridge.Publish(AddResponderMessage);
             } else
             {
                 responseHandler(this, new FinsembleQueryArgs(new JObject { ["error"] = "Responder Already Exists" }, null, null));
@@ -376,7 +376,7 @@ namespace ChartIQ.Finsemble
                         ["channel"] = channel
                     }
                 };
-                bridge.runtime.InterApplicationBus.Publish("RouterService", removeResponderMessage);
+                bridge.Publish(removeResponderMessage);
             }
         }
  

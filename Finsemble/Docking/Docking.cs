@@ -204,7 +204,7 @@ namespace ChartIQ.Finsemble
                 dockingWindow.Closing += Window_Closing;
                 dockingWindow.Activated += Window_Activated;
                 dockingWindow.StateChanged += DockingWindow_StateChanged;
-                bridge.runtime.InterApplicationBus.subscribe("*", dockingChannel, Got_Docking_Message); // Finsemble 2.3
+                bridge.Subscribe(dockingChannel, Got_Docking_Message); // Finsemble 2.3
                 routerClient.AddListener("FinsembleNativeActions." + bridge.windowName, Got_Docking_Message_Over_Router); // Finsemble 2.5+
                 //dockingWindow.GotMouseCapture += DockingWindow_GotMouseCapture;
                 //dockingWindow.LostMouseCapture += DockingWindow_LostMouseCapture;
@@ -258,7 +258,7 @@ namespace ChartIQ.Finsemble
 
         private void Got_Docking_Message_Over_Router(object sender, FinsembleEventArgs e)
         {
-            Got_Docking_Message(null, null, e.response["data"]);
+            Got_Docking_Message(null, e.response["data"] as JObject);
         }
 
         private void DockingWindow_LostMouseCapture(object sender, MouseEventArgs e)
@@ -297,15 +297,14 @@ namespace ChartIQ.Finsemble
             routerClient.Transmit(dockingWindowName + ".focused", new JObject { });
         }
 
-        private void Got_Docking_Message(string sourceUuid, string topic, object message)
+        private void Got_Docking_Message(string topic, JObject message)
         {
-            var joMessage = message as JObject;
-            var action = joMessage.GetValue("action").ToString();
+            var action = message.GetValue("action").ToString();
 
             switch (action)
             {
                 case "setBounds":
-                    var jsonMessage = joMessage.GetValue("bounds") as JObject;
+                    var jsonMessage = message.GetValue("bounds") as JObject;
                     var top = jsonMessage.GetValue("top").ToString();
                     var left = jsonMessage.GetValue("left").ToString();
                     var height = jsonMessage.GetValue("height").ToString();
@@ -377,7 +376,7 @@ namespace ChartIQ.Finsemble
                     {
                         if (!resizing)
                         {
-                            dockingWindow.Opacity = Double.Parse(joMessage.GetValue("opacity").ToString());
+                            dockingWindow.Opacity = Double.Parse(message.GetValue("opacity").ToString());
                         }
                     });
                     break;
@@ -519,7 +518,7 @@ namespace ChartIQ.Finsemble
         }
 
         /// <summary>
-        /// Call from MouseDown event of control in Window Header that is responsible for moving the the window
+        /// Call from MouseDown event of control in Window Header that is responsible for moving the window
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -545,7 +544,7 @@ namespace ChartIQ.Finsemble
         }
 
         /// <summary>
-        /// Call from MouseMove event of control in Window Header that is responsible for moving the the window
+        /// Call from MouseMove event of control in Window Header that is responsible for moving the window
         /// </summary>
         public void Move(object sender, System.Windows.Input.MouseEventArgs e)
         {
@@ -575,7 +574,7 @@ namespace ChartIQ.Finsemble
         }
 
         /// <summary>
-        /// Call from MouseUp event of control in Window Header that is responsible for moving the the window
+        /// Call from MouseUp event of control in Window Header that is responsible for moving the window
         /// </summary>
         public void EndMove(object sender, MouseButtonEventArgs e)
         {

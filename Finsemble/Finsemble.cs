@@ -51,7 +51,7 @@ namespace ChartIQ.Finsemble
         /// <summary>
         /// The instance of the OpenFin used by this example.
         /// </summary>
-        internal Runtime runtime { get; private set; }
+        private Runtime Runtime { get; set; }
 
         #region Instance constants
         /// <summary>
@@ -83,8 +83,10 @@ namespace ChartIQ.Finsemble
         public string componentType { private set; get; } = "Unknown";
         public string windowName { private set; get; } = Guid.NewGuid().ToString();
         public string uuid { private set; get; } = Guid.NewGuid().ToString();
+		public bool useIAC { get; private set; } = false;
 
-        public RouterClient RouterClient { private set; get; }
+
+		public RouterClient RouterClient { private set; get; }
         internal Logger logger { private set; get; }
         internal AuthenticationClient authenticationClient { private set; get; }
         internal DistributedStoreClient distributedStoreClient { private set; get; }
@@ -149,6 +151,17 @@ namespace ChartIQ.Finsemble
                         case "openfinVersion":
                             openFinVersion = argumentValue;
                             break;
+						case "iac":
+							try
+							{
+								useIAC = Boolean.Parse(argumentValue);
+							}
+							catch
+							{
+								// If there is an error parsing, default to false.
+								useIAC = false;
+							}
+							break;
                         case "securityRealm":
                             securityRealm = argumentValue;
                             break;
@@ -194,7 +207,7 @@ namespace ChartIQ.Finsemble
         {
             try
             {
-                runtime.Connect(() =>
+                Runtime.Connect(() =>
                 {
                     Logger.Info("Connected to OpenFin Runtime.");
 
@@ -225,7 +238,7 @@ namespace ChartIQ.Finsemble
         public void Connect()
         {
             Logger.Debug("Connect called");
-            if (runtime != null)
+            if (Runtime != null)
             {
                 // Already connected
                 return;
@@ -241,10 +254,10 @@ namespace ChartIQ.Finsemble
                 runtimeOptions.SecurityRealm = securityRealm;
             }
 
-            runtime = Runtime.GetRuntimeInstance(runtimeOptions);
+            Runtime = Runtime.GetRuntimeInstance(runtimeOptions);
 
             // Set up error handler.
-            runtime.Error += (s, e) =>
+            Runtime.Error += (s, e) =>
             {
                 try
                 {
@@ -263,7 +276,7 @@ namespace ChartIQ.Finsemble
             };
 
             // Set up disconnected handler
-            runtime.Disconnected += (s, e) =>
+            Runtime.Disconnected += (s, e) =>
             {
                 Logger.Info("Disconnected from OpenFin runtime.");
 
@@ -313,6 +326,7 @@ namespace ChartIQ.Finsemble
 
 
         }
+
         /// <summary>
         /// Use this command to execute Finsemble API calls remotely. Specify all the arguments as a list and the callback for the callback or eventHandler.
         /// 
@@ -460,13 +474,13 @@ namespace ChartIQ.Finsemble
         private void Disconnect()
         {
             Logger.Info("Disconnect called");
-            if (runtime == null)
+            if (Runtime == null)
             {
                 // Already disconnected
                 return;
             }
 
-            runtime.Disconnect(() => { });
+            Runtime.Disconnect(() => { });
         }
 
         /// <summary>
@@ -497,7 +511,7 @@ namespace ChartIQ.Finsemble
                 ["args"] = args
             };
 
-            runtime.InterApplicationBus.publish(topic, message);
+            Runtime.InterApplicationBus.publish(topic, message);
         }
 
         /// <summary>
@@ -540,8 +554,28 @@ namespace ChartIQ.Finsemble
                 message.Add("callbackChannel", callbackChannel);
             }
 
-            runtime.InterApplicationBus.publish(topic, message);
+            Runtime.InterApplicationBus.publish(topic, message);
         }
+
+		internal void Publish(JObject message)
+		{
+			if (Runtime != null)
+			{
+				Runtime.InterApplicationBus.Publish("RouterService", message);
+			}
+		}
+
+		internal void Subscribe(string topic, MessageHandler listener)
+		{
+			if (Runtime != null)
+			{
+				Runtime.InterApplicationBus.subscribe("*", topic, (s, t, m) =>
+				{
+					var joMessage = m as JObject;
+					listener(t, joMessage);
+				});
+			}
+		}
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
@@ -557,7 +591,7 @@ namespace ChartIQ.Finsemble
 
                 Disconnect();
 
-                runtime = null;
+                Runtime = null;
 
                 disposedValue = true;
             }
@@ -584,4 +618,9 @@ namespace ChartIQ.Finsemble
         }
         #endregion
     }
+}
+
+namespace ChartIQ.Finsemble
+{
+	internal delegate void MessageHandler(string topic, JObject message);
 }
