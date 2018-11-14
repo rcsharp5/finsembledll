@@ -48,6 +48,8 @@ namespace ChartIQ.Finsemble
         public string openFinVersion { get; private set; } = "8.56.28.36";
         #endregion
 
+        public string securityRealm { get; private set; }
+
         /// <summary>
         /// The instance of the OpenFin used by this example.
         /// </summary>
@@ -149,6 +151,9 @@ namespace ChartIQ.Finsemble
                         case "openfinVersion":
                             openFinVersion = argumentValue;
                             break;
+                        case "securityRealm":
+                            securityRealm = argumentValue;
+                            break;
                     }
                 }
             }
@@ -232,6 +237,11 @@ namespace ChartIQ.Finsemble
             {
                 Version = openFinVersion,
             };
+
+            if (!String.IsNullOrEmpty(securityRealm))
+            {
+                runtimeOptions.SecurityRealm = securityRealm;
+            }
 
             runtime = Runtime.GetRuntimeInstance(runtimeOptions);
 
