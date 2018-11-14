@@ -1,36 +1,34 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Reflection;
 using log4net;
 using Newtonsoft.Json.Linq;
 using Openfin.Desktop;
-using System.Collections.Generic;
-using System.Windows.Controls;
 
 namespace ChartIQ.Finsemble
 {
-    /// <summary>
-    /// This is the Main Class used to access Finsemble in a .NET Application. Once connected, several Finsemble APIs can be used using the SendCommand method.
-    /// <example>
-    /// Connecting to Finsemble:
-    /// <code>
-    /// /*windowName, componentType and uuid are provided as command line parameters when the application is launched by Finsemble*/
-    /// var finsemble = new FinsembleBridge(openFinVersion, windowName, componentType, window, uuid);
-    /// finsemble.Connect += Finsemble_Connected;
-    /// </code>
-    /// 
-    /// Using the Clients once connected:
-    /// <code>
-    /// private void Finsemble_Connected(object sender, EventArgs e) {
-    ///     finsemble.SendCommand("LinkerClient.publish", new JObject {
-    ///         ["dataType"] = "symbol",
-    ///         ["data"] = "AAPL"
-    ///     });
-    /// }
-    /// </code>
-    /// </example>
-    /// </summary>
-    public partial class Finsemble : IDisposable
+	/// <summary>
+	/// This is the Main Class used to access Finsemble in a .NET Application. Once connected, several Finsemble APIs can be used using the SendCommand method.
+	/// <example>
+	/// Connecting to Finsemble:
+	/// <code>
+	/// /*windowName, componentType and uuid are provided as command line parameters when the application is launched by Finsemble*/
+	/// var finsemble = new FinsembleBridge(openFinVersion, windowName, componentType, window, uuid);
+	/// finsemble.Connect += Finsemble_Connected;
+	/// </code>
+	/// 
+	/// Using the Clients once connected:
+	/// <code>
+	/// private void Finsemble_Connected(object sender, EventArgs e) {
+	///     finsemble.SendCommand("LinkerClient.publish", new JObject {
+	///         ["dataType"] = "symbol",
+	///         ["data"] = "AAPL"
+	///     });
+	/// }
+	/// </code>
+	/// </example>
+	/// </summary>
+	public partial class Finsemble : IDisposable
     {
         /// <summary>
         /// The logger
@@ -320,18 +318,18 @@ namespace ChartIQ.Finsemble
         /// 
         /// Supported API Calls:
         /// <list type="bullet">
-        /// <item><term>RouterClient.transmit: </term> <description>same as Javascript API</description></item>
-        /// <item><term>RouterClient.addListener: </term> <description>same as Javascript API</description></item>
-        /// <item><term>RouterClient.removeListener: </term> <description>same as Javascript API</description></item>
-        /// <item><term>RouterClient.publish: </term> <description>same as Javascript API</description></item>
+        /// <item><term>RouterClient.transmit: </term> <description>same as JavaScript API</description></item>
+        /// <item><term>RouterClient.addListener: </term> <description>same as JavaScript API</description></item>
+        /// <item><term>RouterClient.removeListener: </term> <description>same as JavaScript API</description></item>
+        /// <item><term>RouterClient.publish: </term> <description>same as JavaScript API</description></item>
         /// <item><term>RouterClient.subscribe: </term> <description>does not return a subscribeID</description></item>
         /// <item><term>RouterClient.unsubscribe: </term> <description>takes parameters["topic"] and the same callback that was passed to subscribe.</description></item>
-        /// <item><term>RouterClient.query: </term> <description>same as Javascript API</description></item>
+        /// <item><term>RouterClient.query: </term> <description>same as JavaScript API</description></item>
         /// <item><term>LinkerClient.publish: </term> <description>does not use the callback, does not support the channels option.</description></item>
-        /// <item><term>LinkerClient.subscribe: </term> <description>same as Javascript API</description></item>
-        /// <item><term>LauncherClient.spawn: </term> <description>same as Javascript API</description></item>
-        /// <item><term>LauncherClient.showWindow: </term> <description>same as Javascript API</description></item>
-        /// <item><term>ConfigClient.getValue: </term> <description>same as Javascript API</description></item>
+        /// <item><term>LinkerClient.subscribe: </term> <description>same as JavaScript API</description></item>
+        /// <item><term>LauncherClient.spawn: </term> <description>same as JavaScript API</description></item>
+        /// <item><term>LauncherClient.showWindow: </term> <description>same as JavaScript API</description></item>
+        /// <item><term>ConfigClient.getValue: </term> <description>same as JavaScript API</description></item>
         /// </list>
         /// </summary>
         /// <example>
@@ -353,7 +351,7 @@ namespace ChartIQ.Finsemble
         /// }, mySubHandler);
         /// 
         /// /* Linker.publish takes params */
-        /// finsemble.SendCommand("LinkerClient.publish", new new List&lt;JToken&gt; { 
+        /// finsemble.SendCommand("LinkerClient.publish", new List&lt;JToken&gt; { 
         ///     new JObject {
         ///         ["dataType"] = "myType",
         ///         ["data"] = new JObject {
@@ -364,7 +362,7 @@ namespace ChartIQ.Finsemble
         /// </code>
         /// </example>
         /// <param name="endpoint">Name of the API call from the list above</param>
-        /// <param name="args">This is a JObject which contains all the parameters that the API call takes. Refer to our Javascript API for the parameters to each API call.</param>
+        /// <param name="args">This is a JObject which contains all the parameters that the API call takes. Refer to our JavaScript API for the parameters to each API call.</param>
         /// <param name="cb">If the API has a callback, this will be used to call back.</param>
         public void RPC(string endpoint, JArray args, RPCCallbackHandler cb = null)
         {
