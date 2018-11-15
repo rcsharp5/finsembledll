@@ -52,7 +52,12 @@ namespace ChartIQ.Finsemble
 		/// <summary>
 		/// The instance of the OpenFin used by this example.
 		/// </summary>
-		private Runtime Runtime { get; set; }
+		private Runtime Runtime;
+
+		/// <summary>
+		/// The web socket connection used when IAC is enabled.
+		/// </summary>
+		private WebSocket webSocket;
 
 		#region Instance constants
 		/// <summary>
@@ -311,14 +316,20 @@ namespace ChartIQ.Finsemble
 
 		private void ElectronConnect()
 		{
+			if (webSocket != null)
+			{
+				Logger.Warn("Multiple attempts to connect web socket");
+				return;
+			}
+
 			if (string.IsNullOrWhiteSpace(serverAddress))
 			{
 				throw new ArgumentException("IAC is enabled, but no server address was specified.");
 			}
 
 			Logger.Info($"Connecting to web socket: {serverAddress}");
-			var websocket = new WebSocket(serverAddress);
-			websocket.Opened += (s, e) =>
+			webSocket = new WebSocket(serverAddress);
+			webSocket.Opened += (s, e) =>
 			{
 				Logger.Info("Web socket connection opened");
 
@@ -327,19 +338,19 @@ namespace ChartIQ.Finsemble
 				RouterClient.Init();
 			};
 
-			websocket.Closed += (s, e) => Logger.Debug("Web socket connection closed");
+			webSocket.Closed += (s, e) => Logger.Debug("Web socket connection closed");
 
-			websocket.DataReceived += (s, e) => Logger.Debug("Web socket data received");
-			websocket.MessageReceived += (s, e) => Logger.Debug($"Web socket message received: {e.Message}");
-			websocket.Error += (s, e) =>
+			webSocket.DataReceived += (s, e) => Logger.Debug("Web socket data received");
+			webSocket.MessageReceived += (s, e) => Logger.Debug($"Web socket message received: {e.Message}");
+			webSocket.Error += (s, e) =>
 			{
 				Logger.Error("Error from Electron web socket", e.Exception);
-				
+
 				// Notify listeners there was an error
 				Error?.Invoke(this, new UnhandledExceptionEventArgs(e.Exception, false));
 			};
 
-			websocket.Open();
+			webSocket.Open();
 		}
 
 
@@ -616,7 +627,11 @@ namespace ChartIQ.Finsemble
 
 		internal void Publish(JObject message)
 		{
-			if (Runtime != null)
+			if (useIAC)
+			{
+				// TODO: Figure out how to send messages
+				webSocket.Send("RouterService");
+			} else
 			{
 				Runtime.InterApplicationBus.Publish("RouterService", message);
 			}
@@ -624,7 +639,16 @@ namespace ChartIQ.Finsemble
 
 		internal void Subscribe(string topic, MessageHandler listener)
 		{
-			if (Runtime != null)
+			if (useIAC)
+			{
+				webSocket.MessageReceived += (s, e) =>
+				{
+					// TODO: Figure out how to subscribe to messages
+					var joMessage = JObject.Parse(e.Message);
+					listener(topic, joMessage);
+				};
+			}
+			else
 			{
 				Runtime.InterApplicationBus.subscribe("*", topic, (s, t, m) =>
 				{
