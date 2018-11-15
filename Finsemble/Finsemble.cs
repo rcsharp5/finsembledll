@@ -4,7 +4,8 @@ using System.Reflection;
 using log4net;
 using Newtonsoft.Json.Linq;
 using Openfin.Desktop;
-using WebSocket4Net;
+using SocketIOClient;
+using SocketIOClient.Messages;
 
 namespace ChartIQ.Finsemble
 {
@@ -57,7 +58,7 @@ namespace ChartIQ.Finsemble
 		/// <summary>
 		/// The web socket connection used when IAC is enabled.
 		/// </summary>
-		private WebSocket webSocket;
+		private Client socket;
 
 		#region Instance constants
 		/// <summary>
@@ -314,45 +315,46 @@ namespace ChartIQ.Finsemble
 			}
 		}
 
-		private void ElectronConnect()
-		{
-			if (webSocket != null)
-			{
-				Logger.Warn("Multiple attempts to connect web socket");
-				return;
-			}
+private void ElectronConnect()
+{
+	if (socket != null)
+	{
+		Logger.Warn("Multiple attempts to connect web socket");
+		return;
+	}
 
-			if (string.IsNullOrWhiteSpace(serverAddress))
-			{
-				throw new ArgumentException("IAC is enabled, but no server address was specified.");
-			}
+	if (string.IsNullOrWhiteSpace(serverAddress))
+	{
+		throw new ArgumentException("IAC is enabled, but no server address was specified.");
+	}
 
-			Logger.Info($"Connecting to web socket: {serverAddress}");
-			webSocket = new WebSocket(serverAddress);
-			webSocket.Opened += (s, e) =>
-			{
-				Logger.Info("Web socket connection opened");
+	Logger.Info($"Connecting to web socket: {serverAddress}");
+	socket = new Client(serverAddress);
+	socket.ConnectionRetryAttempt += (s, e) => Logger.Debug("Socket connection retry");
+	socket.Error += (s, e) =>
+	{
+		Logger.Error("Error from Electron web socket", e.Exception);
 
-				RouterClient = new RouterClient(this, Connect);
+		// Notify listeners there was an error
+		Error?.Invoke(this, new UnhandledExceptionEventArgs(e.Exception, false));
+	};
 
-				RouterClient.Init();
-			};
+	socket.HeartBeatTimerEvent += (s, e) => Logger.Debug("Socket heart beat timer event");
+	socket.Message += (s, e) => Logger.Debug($"Web socket message received: {e.Message}");
+	socket.On("connect", (fn) => Logger.Debug("Socket connect"));
 
-			webSocket.Closed += (s, e) => Logger.Debug("Web socket connection closed");
+	socket.Opened += (s, e) =>
+	{
+		Logger.Info("Web socket connection opened");
 
-			webSocket.DataReceived += (s, e) => Logger.Debug("Web socket data received");
-			webSocket.MessageReceived += (s, e) => Logger.Debug($"Web socket message received: {e.Message}");
-			webSocket.Error += (s, e) =>
-			{
-				Logger.Error("Error from Electron web socket", e.Exception);
+		RouterClient = new RouterClient(this, Connect);
 
-				// Notify listeners there was an error
-				Error?.Invoke(this, new UnhandledExceptionEventArgs(e.Exception, false));
-			};
+		RouterClient.Init();
+	};
+	socket.SocketConnectionClosed += (s, e) => Logger.Debug("Socket connection closed");
 
-			webSocket.Open();
-		}
-
+	socket.Connect();
+}
 
 		public void HandleClose(Action<Action> callOnClose)
 		{
@@ -630,8 +632,10 @@ namespace ChartIQ.Finsemble
 			if (useIAC)
 			{
 				// TODO: Figure out how to send messages
-				webSocket.Send("RouterService");
-			} else
+				IMessage msg = null;
+				socket.Send(msg);
+			}
+			else
 			{
 				Runtime.InterApplicationBus.Publish("RouterService", message);
 			}
@@ -641,10 +645,10 @@ namespace ChartIQ.Finsemble
 		{
 			if (useIAC)
 			{
-				webSocket.MessageReceived += (s, e) =>
+				socket.Message += (s, e) =>
 				{
 					// TODO: Figure out how to subscribe to messages
-					var joMessage = JObject.Parse(e.Message);
+					JObject joMessage = null;
 					listener(topic, joMessage);
 				};
 			}
