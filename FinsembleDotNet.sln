@@ -1,11 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finsemble", "Finsemble\Finsemble.csproj", "{DD9676C0-71AB-4CA2-9CCF-930D3C047258}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationExample", "AuthenticationExample\AuthenticationExample.csproj", "{815ADC60-447D-445B-A875-B50218956A07}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DD9676C0-71AB-4CA2-9CCF-930D3C047258} = {DD9676C0-71AB-4CA2-9CCF-930D3C047258}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFExample", "WPFExample\WPFExample.csproj", "{B6FB5104-A0EA-479A-8BFC-4DFE207CEB24}"
 EndProject
@@ -36,5 +39,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9DC687B6-6E72-4A54-BC72-B0F7E7066962}
 	EndGlobalSection
 EndGlobal

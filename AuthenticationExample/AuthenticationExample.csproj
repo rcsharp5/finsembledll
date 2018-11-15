@@ -37,9 +37,6 @@
     <StartupObject>AuthenticationExample.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Finsemble">
-      <HintPath>..\Finsemble\bin\Debug\Finsemble.dll</HintPath>
-    </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
     </Reference>
@@ -115,6 +112,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Finsemble\Finsemble.csproj">
+      <Project>{dd9676c0-71ab-4ca2-9ccf-930d3c047258}</Project>
+      <Name>Finsemble</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
