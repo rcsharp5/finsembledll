@@ -353,7 +353,7 @@ private void ElectronConnect()
 	};
 	socket.SocketConnectionClosed += (s, e) => Logger.Debug("Socket connection closed");
 
-	socket.Connect();
+	var endpoint = socket.Connect("router");
 }
 
 		public void HandleClose(Action<Action> callOnClose)
