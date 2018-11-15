@@ -335,8 +335,8 @@ namespace ChartIQ.Finsemble
 			{
 				Logger.Error("Error from Electron web socket", e.Exception);
 
-		// Notify listeners there was an error
-		Error?.Invoke(this, new UnhandledExceptionEventArgs(e.Exception, false));
+				// Notify listeners there was an error
+				Error?.Invoke(this, new UnhandledExceptionEventArgs(e.Exception, false));
 			};
 
 			socket.HeartBeatTimerEvent += (s, e) => Logger.Debug("Socket heart beat timer event");
@@ -351,6 +351,7 @@ namespace ChartIQ.Finsemble
 
 				RouterClient.Init();
 			};
+
 			socket.SocketConnectionClosed += (s, e) => Logger.Debug("Socket connection closed");
 
 			var endpoint = socket.Connect("router");
