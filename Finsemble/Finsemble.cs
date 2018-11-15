@@ -315,46 +315,46 @@ namespace ChartIQ.Finsemble
 			}
 		}
 
-private void ElectronConnect()
-{
-	if (socket != null)
-	{
-		Logger.Warn("Multiple attempts to connect web socket");
-		return;
-	}
+		private void ElectronConnect()
+		{
+			if (socket != null)
+			{
+				Logger.Warn("Multiple attempts to connect web socket");
+				return;
+			}
 
-	if (string.IsNullOrWhiteSpace(serverAddress))
-	{
-		throw new ArgumentException("IAC is enabled, but no server address was specified.");
-	}
+			if (string.IsNullOrWhiteSpace(serverAddress))
+			{
+				throw new ArgumentException("IAC is enabled, but no server address was specified.");
+			}
 
-	Logger.Info($"Connecting to web socket: {serverAddress}");
-	socket = new Client(serverAddress);
-	socket.ConnectionRetryAttempt += (s, e) => Logger.Debug("Socket connection retry");
-	socket.Error += (s, e) =>
-	{
-		Logger.Error("Error from Electron web socket", e.Exception);
+			Logger.Info($"Connecting to web socket: {serverAddress}");
+			socket = new Client(serverAddress);
+			socket.ConnectionRetryAttempt += (s, e) => Logger.Debug("Socket connection retry");
+			socket.Error += (s, e) =>
+			{
+				Logger.Error("Error from Electron web socket", e.Exception);
 
 		// Notify listeners there was an error
 		Error?.Invoke(this, new UnhandledExceptionEventArgs(e.Exception, false));
-	};
+			};
 
-	socket.HeartBeatTimerEvent += (s, e) => Logger.Debug("Socket heart beat timer event");
-	socket.Message += (s, e) => Logger.Debug($"Web socket message received: {e.Message}");
-	socket.On("connect", (fn) => Logger.Debug("Socket connect"));
+			socket.HeartBeatTimerEvent += (s, e) => Logger.Debug("Socket heart beat timer event");
+			socket.Message += (s, e) => Logger.Debug($"Web socket message received: {e.Message}");
+			socket.On("connect", (fn) => Logger.Debug("Socket connect"));
 
-	socket.Opened += (s, e) =>
-	{
-		Logger.Info("Web socket connection opened");
+			socket.Opened += (s, e) =>
+			{
+				Logger.Info("Web socket connection opened");
 
-		RouterClient = new RouterClient(this, Connect);
+				RouterClient = new RouterClient(this, Connect);
 
-		RouterClient.Init();
-	};
-	socket.SocketConnectionClosed += (s, e) => Logger.Debug("Socket connection closed");
+				RouterClient.Init();
+			};
+			socket.SocketConnectionClosed += (s, e) => Logger.Debug("Socket connection closed");
 
-	var endpoint = socket.Connect("router");
-}
+			var endpoint = socket.Connect("router");
+		}
 
 		public void HandleClose(Action<Action> callOnClose)
 		{
