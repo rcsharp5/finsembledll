@@ -327,7 +327,9 @@ namespace ChartIQ.Finsemble
 				throw new ArgumentException("IAC is enabled, but no server address was specified.");
 			}
 
-			socket = IO.Socket(serverAddress);
+			var manager = new Manager(new Uri(serverAddress), new IO.Options());
+			socket = manager.Socket("/router");
+
 			socket.On(Socket.EVENT_ERROR, (e) =>
 			{
 				var exception = (Quobject.EngineIoClientDotNet.Client.EngineIOException)e;
@@ -345,8 +347,6 @@ namespace ChartIQ.Finsemble
 
 				RouterClient.Init();
 			});
-
-			//var endpoint = socket.Connect("router");
 		}
 
 		public void HandleClose(Action<Action> callOnClose)
