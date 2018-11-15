@@ -4,8 +4,7 @@ using System.Reflection;
 using log4net;
 using Newtonsoft.Json.Linq;
 using Openfin.Desktop;
-using SocketIOClient;
-using SocketIOClient.Messages;
+using Quobject.SocketIoClientDotNet.Client;
 
 namespace ChartIQ.Finsemble
 {
@@ -58,7 +57,7 @@ namespace ChartIQ.Finsemble
 		/// <summary>
 		/// The web socket connection used when IAC is enabled.
 		/// </summary>
-		private Client socket;
+		private Socket socket;
 
 		#region Instance constants
 		/// <summary>
@@ -328,33 +327,25 @@ namespace ChartIQ.Finsemble
 				throw new ArgumentException("IAC is enabled, but no server address was specified.");
 			}
 
-			Logger.Info($"Connecting to web socket: {serverAddress}");
-			socket = new Client(serverAddress);
-			socket.ConnectionRetryAttempt += (s, e) => Logger.Debug("Socket connection retry");
-			socket.Error += (s, e) =>
+			socket = IO.Socket(serverAddress);
+			socket.On(Socket.EVENT_ERROR, (e) =>
 			{
-				Logger.Error("Error from Electron web socket", e.Exception);
+				Logger.Error("Error from Electron web socket");
 
 				// Notify listeners there was an error
-				Error?.Invoke(this, new UnhandledExceptionEventArgs(e.Exception, false));
-			};
+				Error?.Invoke(this, new UnhandledExceptionEventArgs("Error from Electron web socket", false));
+			});
 
-			socket.HeartBeatTimerEvent += (s, e) => Logger.Debug("Socket heart beat timer event");
-			socket.Message += (s, e) => Logger.Debug($"Web socket message received: {e.Message}");
-			socket.On("connect", (fn) => Logger.Debug("Socket connect"));
-
-			socket.Opened += (s, e) =>
+			socket.On(Socket.EVENT_CONNECT, (fn) => 
 			{
 				Logger.Info("Web socket connection opened");
 
 				RouterClient = new RouterClient(this, Connect);
 
 				RouterClient.Init();
-			};
+			});
 
-			socket.SocketConnectionClosed += (s, e) => Logger.Debug("Socket connection closed");
-
-			var endpoint = socket.Connect("router");
+			//var endpoint = socket.Connect("router");
 		}
 
 		public void HandleClose(Action<Action> callOnClose)
@@ -633,8 +624,7 @@ namespace ChartIQ.Finsemble
 			if (useIAC)
 			{
 				// TODO: Figure out how to send messages
-				IMessage msg = null;
-				socket.Send(msg);
+				//socket.Send();
 			}
 			else
 			{
@@ -646,12 +636,12 @@ namespace ChartIQ.Finsemble
 		{
 			if (useIAC)
 			{
-				socket.Message += (s, e) =>
-				{
-					// TODO: Figure out how to subscribe to messages
-					JObject joMessage = null;
-					listener(topic, joMessage);
-				};
+				//socket.Message += (s, e) =>
+				//{
+				//	// TODO: Figure out how to subscribe to messages
+				//	JObject joMessage = null;
+				//	listener(topic, joMessage);
+				//};
 			}
 			else
 			{
