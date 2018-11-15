@@ -330,13 +330,14 @@ namespace ChartIQ.Finsemble
 			socket = IO.Socket(serverAddress);
 			socket.On(Socket.EVENT_ERROR, (e) =>
 			{
-				Logger.Error("Error from Electron web socket");
+				var exception = (Quobject.EngineIoClientDotNet.Client.EngineIOException)e;
+				Logger.Error("Error from Electron web socket", exception);
 
 				// Notify listeners there was an error
-				Error?.Invoke(this, new UnhandledExceptionEventArgs("Error from Electron web socket", false));
+				Error?.Invoke(this, new UnhandledExceptionEventArgs(exception, false));
 			});
 
-			socket.On(Socket.EVENT_CONNECT, (fn) => 
+			socket.On(Socket.EVENT_CONNECT, () => 
 			{
 				Logger.Info("Web socket connection opened");
 
