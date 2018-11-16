@@ -634,11 +634,21 @@ namespace ChartIQ.Finsemble
 		{
 			if (useIAC)
 			{
+				if (socket == null)
+				{
+					throw new InvalidOperationException("Calling socket connection for publish before it is initialized.");
+				}
+
 				// TODO: Figure out how to send messages
-				//socket.Send();
+				socket.Emit("ROUTER_SERVICE", message);
 			}
 			else
 			{
+				if (Runtime == null)
+				{
+					throw new InvalidOperationException("Calling OpenFin runtime for publish before it is initialized.");
+				}
+
 				Runtime.InterApplicationBus.Publish("RouterService", message);
 			}
 		}
@@ -647,15 +657,25 @@ namespace ChartIQ.Finsemble
 		{
 			if (useIAC)
 			{
-				//socket.Message += (s, e) =>
-				//{
-				//	// TODO: Figure out how to subscribe to messages
-				//	JObject joMessage = null;
-				//	listener(topic, joMessage);
-				//};
+				if (socket == null)
+				{
+					throw new InvalidOperationException("Calling socket connection for subscribe before it is initialized.");
+				}
+
+				socket.On(topic, (data) =>
+				{
+					// TODO: Figure out how to subscribe to messages
+					JObject joMessage = (JObject)data;
+					listener(topic, joMessage);
+				});
 			}
 			else
 			{
+				if (Runtime == null)
+				{
+					throw new InvalidOperationException("Calling OpenFin runtime for subscribe before it is initialized.");
+				}
+
 				Runtime.InterApplicationBus.subscribe("*", topic, (s, t, m) =>
 				{
 					var joMessage = m as JObject;
