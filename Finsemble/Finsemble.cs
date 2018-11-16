@@ -347,6 +347,16 @@ namespace ChartIQ.Finsemble
 
 				RouterClient.Init();
 			});
+
+			socket.On(Socket.EVENT_DISCONNECT, (data) =>
+			{
+				string message = data as string;
+
+				Logger.Info($"Disconnected from OpenFin runtime. Message: {message}");
+
+				// Notify listeners bridge is disconnected from OpenFin
+				Disconnected?.Invoke(this, EventArgs.Empty);
+			});
 		}
 
 		public void HandleClose(Action<Action> callOnClose)
