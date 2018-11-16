@@ -352,7 +352,7 @@ namespace ChartIQ.Finsemble
 			{
 				string message = data as string;
 
-				Logger.Info($"Disconnected from OpenFin runtime. Message: {message}");
+				Logger.Info($"Web socket connection disconnected. Message: {message}");
 
 				// Notify listeners bridge is disconnected from OpenFin
 				Disconnected?.Invoke(this, EventArgs.Empty);
