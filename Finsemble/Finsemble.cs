@@ -131,7 +131,18 @@ namespace ChartIQ.Finsemble
 					if (!args[i].Contains("=")) continue;
 					var argument = args[i].Split(new char[] { '=' }, 2);
 					var argumentName = argument[0];
+					if (argumentName.StartsWith("\"") && !argumentName.EndsWith("\""))
+					{
+						// TODO: Remove this. Horrible hack to work around quotes in arguments
+						argumentName = argumentName.Substring(1, argumentName.Length - 1);
+					}
 					var argumentValue = argument[1];
+					if (argumentValue.EndsWith("\"") && !argumentValue.StartsWith("\""))
+					{
+						// TODO: Remove this. Horrible hack to work around quotes in arguments
+						argumentValue = argumentValue.Substring(0, argumentValue.Length - 2);
+					}
+
 					switch (argumentName)
 					{
 						case "top":
