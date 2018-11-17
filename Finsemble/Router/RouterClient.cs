@@ -40,7 +40,7 @@ namespace ChartIQ.Finsemble
                     )
                 )
             );
-            bridge.Publish(Handshake); //TODO: wait for handshake response
+            bridge.Publish("RouterService", Handshake); //TODO: wait for handshake response
             bridge.Subscribe(clientName, MessageHandler);
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
@@ -50,7 +50,7 @@ namespace ChartIQ.Finsemble
             timer.Elapsed += (s, e) => {
                 if (!connected) //retry handshake until connected
                 {
-                    bridge.Publish(Handshake); //TODO: wait for handshake response
+                    bridge.Publish("RouterService", Handshake); //TODO: wait for handshake response
                 }
                 else
                 {
@@ -82,7 +82,7 @@ namespace ChartIQ.Finsemble
                        )
                    )
                 );
-                bridge.Publish(RemoveListenerMessage);
+                bridge.Publish("RouterService", RemoveListenerMessage);
             }
 
             foreach (var item in publishListeners)
@@ -97,7 +97,7 @@ namespace ChartIQ.Finsemble
                        )
                    )
                 );
-                bridge.Publish(RemoveListenerMessage);
+                bridge.Publish("RouterService", RemoveListenerMessage);
             }
 
             foreach (var item in responderMap)
@@ -136,7 +136,7 @@ namespace ChartIQ.Finsemble
                             },
                            ["data"] = e
                         };
-                        bridge.Publish(queryMessage);
+                        bridge.Publish("RouterService", queryMessage);
                     });
                     if (responderMap.ContainsKey(m.header.channel.Value))
                     {
@@ -185,7 +185,7 @@ namespace ChartIQ.Finsemble
                 ),
                 new JProperty("data", data)
             );
-            bridge.Publish(TransmitMessage);
+            bridge.Publish("RouterService", TransmitMessage);
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace ChartIQ.Finsemble
                        )
                    )
                 );
-                bridge.Publish(AddListenerMessage);
+                bridge.Publish("RouterService", AddListenerMessage);
             }
             else
             {
@@ -234,7 +234,7 @@ namespace ChartIQ.Finsemble
                         ["channel"] = channel
                     }
                 };
-                bridge.Publish(removeListenerMessage);
+                bridge.Publish("RouterService", removeListenerMessage);
             }
         }
 
@@ -259,7 +259,7 @@ namespace ChartIQ.Finsemble
                 ),
                 new JProperty("data", data)
             );
-            bridge.Publish(QueryMessage);
+            bridge.Publish("RouterService", QueryMessage);
             queryIDResponseHandlerMap.Add(queryID, responseHandler);
         }
 
@@ -280,7 +280,7 @@ namespace ChartIQ.Finsemble
                 ),
                 new JProperty("data", data)
             );
-            bridge.Publish(PublishMessage);
+            bridge.Publish("RouterService", PublishMessage);
         }
 
 		/// <summary>
@@ -305,7 +305,7 @@ namespace ChartIQ.Finsemble
                        )
                    )
                 );
-                bridge.Publish(AddSubscribeMessage);
+                bridge.Publish("RouterService", AddSubscribeMessage);
             }
             else
             {
@@ -332,7 +332,7 @@ namespace ChartIQ.Finsemble
                         ["topic"] = topic
                     }
                 };
-                bridge.Publish(unsubscribeMessage);
+                bridge.Publish("RouterService", unsubscribeMessage);
             }
         }
 
@@ -355,7 +355,7 @@ namespace ChartIQ.Finsemble
 			            ["channel"] = channel
                     }
                 };
-                bridge.Publish(AddResponderMessage);
+                bridge.Publish("RouterService", AddResponderMessage);
             } else
             {
                 responseHandler(this, new FinsembleQueryArgs(new JObject { ["error"] = "Responder Already Exists" }, null, null));
@@ -376,7 +376,7 @@ namespace ChartIQ.Finsemble
                         ["channel"] = channel
                     }
                 };
-                bridge.Publish(removeResponderMessage);
+                bridge.Publish("RouterService", removeResponderMessage);
             }
         }
  

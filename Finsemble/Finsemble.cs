@@ -140,7 +140,7 @@ namespace ChartIQ.Finsemble
 					if (argumentValue.EndsWith("\"") && !argumentValue.StartsWith("\""))
 					{
 						// TODO: Remove this. Horrible hack to work around quotes in arguments
-						argumentValue = argumentValue.Substring(0, argumentValue.Length - 2);
+						argumentValue = argumentValue.Substring(0, argumentValue.Length - 1);
 					}
 
 					switch (argumentName)
@@ -595,7 +595,7 @@ namespace ChartIQ.Finsemble
 				["args"] = args
 			};
 
-			Runtime.InterApplicationBus.publish(topic, message);
+			Publish(topic, message);
 		}
 
 		/// <summary>
@@ -638,10 +638,10 @@ namespace ChartIQ.Finsemble
 				message.Add("callbackChannel", callbackChannel);
 			}
 
-			Runtime.InterApplicationBus.publish(topic, message);
+			Publish(topic, message);
 		}
 
-		internal void Publish(JObject message)
+		internal void Publish(string topic, JObject message)
 		{
 			if (useIAC)
 			{
@@ -650,10 +650,16 @@ namespace ChartIQ.Finsemble
 					throw new InvalidOperationException("Calling socket connection for publish before it is initialized.");
 				}
 
+				if ("RouterService".Equals(topic))
+				{
+					// Change topic for IAC
+					topic = "ROUTER_SERVICE";
+				}
+
 				// Modifying to meet format expected by the router.
 				var routerMessage = new JObject();
 				routerMessage["clientMessage"] = message;
-				socket.Emit("ROUTER_SERVICE", routerMessage);
+				socket.Emit(topic, routerMessage);
 			}
 			else
 			{
@@ -662,7 +668,7 @@ namespace ChartIQ.Finsemble
 					throw new InvalidOperationException("Calling OpenFin runtime for publish before it is initialized.");
 				}
 
-				Runtime.InterApplicationBus.Publish("RouterService", message);
+				Runtime.InterApplicationBus.Publish(topic, message);
 			}
 		}
 
