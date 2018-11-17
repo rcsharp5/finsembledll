@@ -639,8 +639,10 @@ namespace ChartIQ.Finsemble
 					throw new InvalidOperationException("Calling socket connection for publish before it is initialized.");
 				}
 
-				// TODO: Figure out how to send messages
-				socket.Emit("ROUTER_SERVICE", message);
+				// Modifying to meet format expected by the router.
+				var routerMessage = new JObject();
+				routerMessage["clientMessage"] = message;
+				socket.Emit("ROUTER_SERVICE", routerMessage);
 			}
 			else
 			{
@@ -664,9 +666,9 @@ namespace ChartIQ.Finsemble
 
 				socket.On(topic, (data) =>
 				{
-					// TODO: Figure out how to subscribe to messages
 					JObject joMessage = (JObject)data;
-					listener(topic, joMessage);
+					JObject clientMessage = (JObject)joMessage["clientMessage"];
+					listener(topic, clientMessage);
 				});
 			}
 			else
