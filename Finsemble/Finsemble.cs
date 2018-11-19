@@ -101,7 +101,7 @@ namespace ChartIQ.Finsemble
 		internal WindowClient windowClient { private set; get; }
 		internal LauncherClient launcherClient { private set; get; }
 		public LinkerClient LinkerClient { set; get; }
-		internal ConfigClient configClient { private set; get; }
+		public ConfigClient ConfigClient { private set; get; }
 		public DragAndDropClient DragAndDropClient { private set; get; }
 		public JObject componentConfig { internal set; get; }
 		private int retryAttempts = 0;
@@ -383,8 +383,8 @@ namespace ChartIQ.Finsemble
 			logger = new Logger(this);
 			storageClient = new StorageClient(this);
 			authenticationClient = new AuthenticationClient(this);
-			configClient = new ConfigClient(this);
-			configClient.GetValue(new JObject
+			ConfigClient = new ConfigClient(this);
+			ConfigClient.GetValue(new JObject
 			{
 				["field"] = "finsemble.components." + this.componentType
 			}, (s, a) =>
@@ -520,7 +520,7 @@ namespace ChartIQ.Finsemble
 					launcherClient.ShowWindow(args[0] as JObject, args[1] as JObject, cb);
 					break;
 				case "ConfigClient.getValue":
-					configClient.GetValue(args[0] as JObject, cb);
+					ConfigClient.GetValue(args[0] as JObject, cb);
 					break;
 				case "AuthenticationClient.publishAuthorization":
 					authenticationClient.PublishAuthorization<JObject>((string)args[0], args[1] as JObject);
