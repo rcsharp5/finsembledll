@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
 using ChartIQ.Finsemble;
+using log4net;
 using Newtonsoft.Json.Linq;
 
 namespace WPFExample
@@ -12,12 +14,18 @@ namespace WPFExample
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		/// <summary>
+		/// The logger
+		/// </summary>
+		private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
 		private Finsemble FSBL;
 
-		private void SpawnChart_Click(object sender, RoutedEventArgs e)
+		private void SpawnComponent_Click(object sender, RoutedEventArgs e)
 		{
+			string componentName = ComponentSelect.SelectedValue.ToString();
 			FSBL.RPC("LauncherClient.spawn", new List<JToken> {
-				"Advanced Chart",
+				componentName,
 				new JObject { ["addToWorkspace"] = true }
 			}, (s, a) => { });
 		}
@@ -103,8 +111,29 @@ namespace WPFExample
 
 				FSBL.LinkerClient.LinkToChannel("group2", null, (s, a) => { });
 
-				this.Show();
+				FSBL.ConfigClient.GetValue(new JObject { ["field"] = "finsemble.components" }, (routerClient, response) =>
+				{
+					if (response.error != null)
+					{
+						Logger.Error(response.error);
+						return;
+					}
 
+					var components = (JObject)response.response?["data"];
+					foreach (var property in components?.Properties())
+					{
+						object value = components?[property.Name]?["foreign"]?["components"]?["App Launcher"]?["launchableByUser"];
+						if ((value != null) && bool.Parse(value.ToString()))
+						{
+							Application.Current.Dispatcher.Invoke(delegate //main thread
+							{
+								ComponentSelect.Items.Add(property.Name);
+							});
+						}
+					}
+				});
+
+				this.Show();
 			});
 
 			// Subscribe to Finsemble Linker Channels
