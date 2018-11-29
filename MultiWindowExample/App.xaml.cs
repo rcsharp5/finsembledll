@@ -33,8 +33,59 @@ namespace MultiWindowExample
 		#region ISingleInstanceApp Members
 		public bool SignalExternalCommandLineArgs(IList<string> args)
 		{
+			if (args.Count < 2)
+			{
+				// Invalid number of arguments
+				return true;
+			}
+
+			string name = args[1];
+
 			// handle command line arguments of second instance
+			Window window = CreeateWindow(name);
+
+			if (window != null)
+			{
+				// TODO: register with Finsemble
+				window.Show();
+			}
+
 			return true;
+		}
+
+		private static Window CreeateWindow(string name)
+		{
+			Window window = null;
+			switch (name)
+			{
+				case "Window1":
+					{
+						window = new Window1();
+						break;
+					}
+				case "Window2":
+					{
+						window = new Window2();
+						break;
+					}
+				case "Window3":
+					{
+						window = new Window3();
+						break;
+					}
+				case "Window4":
+					{
+						window = new Window4();
+						break;
+					}
+				default:
+					{
+						// Unknown window, ignore
+						break;
+					}
+			}
+
+			return window;
 		}
 		#endregion
 
