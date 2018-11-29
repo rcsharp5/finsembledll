@@ -48,8 +48,8 @@ namespace WPFExample
 		public MainWindow(string[] args)
 		{
 			FSBL = new Finsemble(args, this); // Finsemble needs the command line arguments to connect and also this Window to manage snapping, docking etc.
-			FSBL.Connect();
 			FSBL.Connected += Finsemble_Connected;
+			FSBL.Connect();
 		}
 
 		private void Finsemble_Connected(object sender, EventArgs e)
