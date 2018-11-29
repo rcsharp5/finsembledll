@@ -37,6 +37,9 @@
     <StartupObject>MultiWindowExample.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Remoting" />
@@ -126,6 +129,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Finsemble\Finsemble.csproj">
+      <Project>{dd9676c0-71ab-4ca2-9ccf-930d3c047258}</Project>
+      <Name>Finsemble</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
