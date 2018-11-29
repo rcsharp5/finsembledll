@@ -99,7 +99,8 @@ namespace MultiWindowExample
 			{
 				// TODO: register with Finsemble
 				var fsbl = new Finsemble(args.ToArray(), window);
-				fsbl.Connected += (s, e) => { window.Show(); };
+				fsbl.Connected += (s, e) => { Current.Dispatcher.Invoke(window.Show); };
+				fsbl.Connect();
 			}
 
 			return true;
