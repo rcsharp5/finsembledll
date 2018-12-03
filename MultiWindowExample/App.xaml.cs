@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
 using ChartIQ.Finsemble;
+using log4net;
 using Microsoft.Shell;
 
 namespace MultiWindowExample
@@ -14,6 +16,11 @@ namespace MultiWindowExample
 	/// </summary>
 	public partial class App : Application, ISingleInstanceApp
 	{
+		/// <summary>
+		/// The logger
+		/// </summary>
+		private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
 		private const string Unique = "6bea6fc4-5d9c-4961-b39d-89addcd65a73";
 
 		/// <summary>
@@ -40,7 +47,7 @@ namespace MultiWindowExample
 		/// </summary>
 		/// <param name="name"></param>
 		/// <returns></returns>
-		private static Window CreeateWindow(string name)
+		private static Window CreateWindow(string name)
 		{
 			Window window = null;
 			switch (name)
@@ -93,13 +100,28 @@ namespace MultiWindowExample
 			string name = args[1];
 
 			// handle command line arguments of second instance
-			Window window = CreeateWindow(name);
+			Window window = CreateWindow(name);
 
-			if (window != null)
+			if (window == null)
 			{
-				// TODO: register with Finsemble
+				Logger.Error($"Could not create window: {name}");
+			} else
+			{
+				// Register with Finsemble
 				var fsbl = new Finsemble(args.ToArray(), window);
-				fsbl.Connected += (s, e) => { Current.Dispatcher.Invoke(window.Show); };
+				fsbl.Connected += (s, e) => {
+					IIntegratable fsblWin = window as IIntegratable;
+					if (fsblWin == null)
+					{
+						Logger.Warn($"The window \"{name}\" is not a window that can be integrated into Finsemble.");
+					} else
+					{
+						fsblWin.SetFinsemble(fsbl);
+					}
+
+					Current.Dispatcher.Invoke(window.Show);
+				};
+
 				fsbl.Connect();
 			}
 
