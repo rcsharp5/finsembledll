@@ -442,7 +442,7 @@ namespace ChartIQ.Finsemble
                 dynamic props = new ExpandoObject();
                 props.windowName = dockingWindowName;
                 props.windowAction = "minimize";
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
+				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
             });
         }
 
@@ -454,20 +454,19 @@ namespace ChartIQ.Finsemble
                 dynamic props = new ExpandoObject();
                 props.windowName = dockingWindowName;
                 props.windowAction = "maximize";
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-            });
+				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
+			});
         }
 
         private void Restore()
         {
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
-                //dockingWindow.WindowState = WindowState.Normal;
-                dynamic props = new ExpandoObject();
-                props.windowName = dockingWindowName;
-                props.windowAction = "restore";
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-            });
+				dynamic props = new ExpandoObject();
+				props.windowName = dockingWindowName;
+				props.windowAction = "restore";
+				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
+			});
         }
 
         private void Hide()
@@ -475,11 +474,11 @@ namespace ChartIQ.Finsemble
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 dockingWindow.Hide();
-                dynamic props = new ExpandoObject();
-                props.windowName = dockingWindowName;
-                props.windowAction = "hide";
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-            });
+				dynamic props = new ExpandoObject();
+				props.windowName = dockingWindowName;
+				props.windowAction = "hide";
+				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
+			});
         }
 
         private void Show()
@@ -487,34 +486,33 @@ namespace ChartIQ.Finsemble
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 dockingWindow.Show();
-                dynamic props = new ExpandoObject();
-                props.windowName = dockingWindowName;
-                props.windowAction = "show";
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-            });
+				dynamic props = new ExpandoObject();
+				props.windowName = dockingWindowName;
+				props.windowAction = "show";
+				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
+			});
         }
 
         private void BringToFront()
         {
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
-                //dockingWindow.BringIntoView();
-                dynamic props = new ExpandoObject();
-                props.windowName = dockingWindowName;
-                props.windowAction = "bringToFront";
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-            });
+				dynamic props = new ExpandoObject();
+				props.windowName = dockingWindowName;
+				props.windowAction = "bringToFront";
+				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
+			});
         }
 
         internal void Close()
         {
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
-                dynamic props = new ExpandoObject();
-                props.windowName = dockingWindowName;
-                props.windowAction = "close";
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-            });
+				dynamic props = new ExpandoObject();
+				props.windowName = dockingWindowName;
+				props.windowAction = "close";
+				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
+			});
         }
 
         /// <summary>
@@ -539,8 +537,8 @@ namespace ChartIQ.Finsemble
                 props.height = dockingWindow.Height;
                 props.scaled = true;
                 props.windowAction = "startMove";
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-            });
+				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
+			});
         }
 
         /// <summary>
@@ -566,9 +564,9 @@ namespace ChartIQ.Finsemble
                     props.left = dockingWindow.Left + differenceX;
                     props.windowAction = "move";
                     props.scaled = true;
-                    bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
                     lastMoveSent = DateTime.Now;
-                });
+					bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
+				});
             }
 
         }
@@ -584,8 +582,8 @@ namespace ChartIQ.Finsemble
                 dynamic props = new ExpandoObject();
                 props.windowName = dockingWindowName;
                 props.windowAction = "endMove";
-                bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-                moving = false;
+				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
+				moving = false;
                 Mouse.Capture(null);
             });
         }
@@ -648,7 +646,7 @@ namespace ChartIQ.Finsemble
                     },*/
                     ["windowAction"] = "resize"
                 };
-                bridge.SendRPCCommand("NativeWindow", props.ToString(), this.dockingChannel);
+				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
                 lastResizeSent = DateTime.Now;
             });
         }
@@ -672,8 +670,8 @@ namespace ChartIQ.Finsemble
                 ["scaled"] = false,
                 ["windowAction"] = "resize"
             };
-            bridge.SendRPCCommand("NativeWindow", props.ToString(), this.dockingChannel);
-            lastResizeSent = DateTime.Now;
+			bridge.RouterClient.Transmit("NativeWindow", props);
+			lastResizeSent = DateTime.Now;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -704,9 +702,8 @@ namespace ChartIQ.Finsemble
                     ["windowAction"] = "open"
                 };
 
-                bridge.SendRPCCommand("NativeWindow", props.ToString(), dockingChannel);
-
-            });
+				bridge.RouterClient.Transmit("NativeWindow", props);
+			});
 
             routerClient.Subscribe("Finsemble.WorkspaceService.groupUpdate", delegate (object s, FinsembleEventArgs args)
             {
@@ -834,8 +831,8 @@ namespace ChartIQ.Finsemble
                         dynamic props = new ExpandoObject();
                         props.windowName = dockingWindowName;
                         props.windowAction = "endMove";
-                        bridge.SendRPCCommand("NativeWindow", JObject.FromObject(props).ToString(), this.dockingChannel);
-                        lastResizeSent = DateTime.Now;
+						bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
+						lastResizeSent = DateTime.Now;
                         //Mouse.Capture(null);
 
                         Application.Current.Dispatcher.Invoke(delegate
