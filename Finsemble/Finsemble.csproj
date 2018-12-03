@@ -111,6 +111,9 @@
     <None Include="articles\toc.md" />
     <None Include="docfx.json" />
     <None Include="index.md" />
+    <None Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <Resource Include="Resources\finfont.ttf" />
     <None Include="toc.yml" />
