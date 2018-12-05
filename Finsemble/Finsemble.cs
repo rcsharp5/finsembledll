@@ -296,7 +296,8 @@ namespace ChartIQ.Finsemble
                 ["field"] = "finsemble.components." + this.componentType
             }, (s, a) =>
             {
-                this.componentConfig = (JObject)a.response["data"];
+                if (a.response?["data"] == null) return;
+                this.componentConfig = a.response["data"] as JObject;
                 if (this.componentConfig == null) this.componentConfig = new JObject();
                 windowClient = new WindowClient(this);
                 launcherClient = new LauncherClient(this);

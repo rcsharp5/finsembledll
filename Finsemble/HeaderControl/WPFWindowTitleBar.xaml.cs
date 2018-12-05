@@ -25,84 +25,6 @@ namespace ChartIQ.Finsemble
     /// </summary>
     public partial class WPFWindowTitleBar : UserControl
     {
-        /// <summary> 
-        /// The MouseAction structure contains mouse event data to be passed to
-        /// assimilation application by the WM_COPYDATA message.  
-        /// </summary> 
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        internal struct MouseAction
-        {
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-            public string main;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-            public string action;
-        }
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        internal struct CopyDataStruct
-        {
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-            public string json;
-        }
-
-        /// <summary> 
-        /// The COPYDATASTRUCT structure contains MouseAction data to be passed to 
-        /// assimilation application by the WM_COPYDATA message.  
-        /// </summary> 
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct COPYDATASTRUCT
-        {
-            public IntPtr dwData;       // Specifies data to be passed 
-            public int cbData;          // Specifies the data size in bytes 
-            public IntPtr lpData;       // Pointer to data to be passed 
-        }
-
-        /// <summary> 
-        /// The class exposes Windows APIs to be used in this code sample. 
-        /// </summary> 
-        [SuppressUnmanagedCodeSecurity]
-        internal class NativeMethod
-        {
-            /// <summary> 
-            /// Sends the specified message to a window or windows. The SendMessage  
-            /// function calls the window procedure for the specified window and does  
-            /// not return until the window procedure has processed the message.  
-            /// </summary> 
-            /// <param name="hWnd"> 
-            /// Handle to the window whose window procedure will receive the message. 
-            /// </param> 
-            /// <param name="Msg">Specifies the message to be sent.</param> 
-            /// <param name="wParam"> 
-            /// Specifies additional message-specific information. 
-            /// </param> 
-            /// <param name="lParam"> 
-            /// Specifies additional message-specific information. 
-            /// </param> 
-            /// <returns></returns> 
-            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-            public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, object p);
-
-            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-            public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, ref COPYDATASTRUCT lParam);
-
-            /// <summary> 
-            /// The FindWindow function retrieves a handle to the top-level window  
-            /// whose class name and window name match the specified strings. This  
-            /// function does not search child windows. This function does not  
-            /// perform a case-sensitive search. 
-            /// </summary> 
-            /// <param name="lpClassName">Class name</param> 
-            /// <param name="lpWindowName">Window caption</param> 
-            /// <returns></returns> 
-            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-            public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-        }
-
-        internal const int WM_COPYDATA = 0x004A;
-        internal const int WM_LBUTTONDOWN = 0x0201;
-        internal const int WM_LBUTTONUP = 0x0202;
-
         public Finsemble bridge;
         private SortedDictionary<string, Button> LinkerGroups = new SortedDictionary<string, Button>();
         private string dockingGroup, snappingGroup;
@@ -419,35 +341,6 @@ namespace ChartIQ.Finsemble
             });
         }
 
-        private void SendAction(IntPtr hwnd, string str)
-        {
-            IntPtr hAssimilationHwnd = NativeMethod.FindWindow(null, "FinSim");
-
-            if (hAssimilationHwnd == IntPtr.Zero)
-            {
-                // No assimilation found
-                return;
-            }
-
-            MouseAction action;
-            action.main = hwnd.ToString("X");
-            action.action = str;
-
-            CopyDataStruct message;
-            message.json = JsonConvert.SerializeObject(action);
-            int messageSize = Marshal.SizeOf(message);
-            IntPtr pMessage = Marshal.AllocHGlobal(messageSize);
-            Marshal.StructureToPtr(message, pMessage, true);
-
-            COPYDATASTRUCT cds = new COPYDATASTRUCT()
-            {
-                cbData = messageSize,
-                lpData = pMessage
-            };
-
-            NativeMethod.SendMessage(hAssimilationHwnd, WM_COPYDATA, hwnd, ref cds);
-        }
-
         private void Toolbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             //if (dragging)
@@ -455,35 +348,13 @@ namespace ChartIQ.Finsemble
             //    dragging = false;
             //    return;
             //}
-            //bridge.window.DragMove(); // this does the work
+            bridge.window.DragMove(); // this does the work
             //bridge.docking.StartMove(sender, e);
-
-
-            //::SetCapture(hWnd);
-            //IntPtr hAssimilationHwnd = NativeMethod.FindWindow(null, "FinSim");
-            //if (hAssimilationHwnd != IntPtr.Zero)
-            //{
-            //NativeMethod.SendMessage(hAssimilationHwnd, WM_LBUTTONDOWN, hwnd.Handle, null);
-            //}
-
-            HwndSource hwnd = HwndSource.FromVisual(this) as HwndSource;
-            SendAction(hwnd.Handle, "startMoving");
         }
 
         private void Toolbar_MouseUp(object sender, MouseButtonEventArgs e)
         {
             //bridge.docking.EndMove(sender, e);
-
-            HwndSource hwnd = HwndSource.FromVisual(this) as HwndSource;
-            SendAction(hwnd.Handle, "stopMoving");
-
-            //IntPtr hAssimilationHwnd = NativeMethod.FindWindow(null, "FinSim");
-            //if (hAssimilationHwnd != IntPtr.Zero)
-            //{
-            //    //::SetCapture(hWnd);
-            //    NativeMethod.SendMessage(hAssimilationHwnd, WM_LBUTTONUP, hwnd.Handle, null);
-            //    //::ReleaseCapture();
-            //}
         }
 
         private void Toolbar_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)

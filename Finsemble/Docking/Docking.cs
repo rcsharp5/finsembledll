@@ -681,8 +681,8 @@ namespace ChartIQ.Finsemble
         {
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
-                WindowInteropHelper helper = new WindowInteropHelper(dockingWindow);
-                HwndSource.FromHwnd(helper.Handle).AddHook(HwndMessageHook);
+                //WindowInteropHelper helper = new WindowInteropHelper(dockingWindow);
+                //HwndSource.FromHwnd(helper.Handle).AddHook(HwndMessageHook);
 
                 PresentationSource source = PresentationSource.FromVisual(dockingWindow);
 
