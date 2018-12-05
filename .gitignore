@@ -261,4 +261,4 @@ __pycache__/
 *.pyc
 
 Finsemble/
-log.txt
+**/log.txt
