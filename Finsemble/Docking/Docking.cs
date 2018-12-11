@@ -17,334 +17,334 @@ using System.Diagnostics;
 
 namespace ChartIQ.Finsemble
 {
-    /// <summary>
-    /// This handles window movements, resizes and docking group membership
-    /// </summary>
-    internal class Docking
-    {
-        Finsemble bridge;
-        RouterClient routerClient;
-        string dockingChannel;
-        Window dockingWindow;
-        string dockingWindowName;
-        bool moving = false;
-        bool resizing = false;
-        /*double resizeScale;*/
-        int resizeHandle;
-        Point startPosition;
+	/// <summary>
+	/// This handles window movements, resizes and docking group membership
+	/// </summary>
+	internal class Docking
+	{
+		Finsemble bridge;
+		RouterClient routerClient;
+		string dockingChannel;
+		Window dockingWindow;
+		string dockingWindowName;
+		bool moving = false;
+		bool resizing = false;
+		/*double resizeScale;*/
+		int resizeHandle;
+		Point startPosition;
 
-        private Point WindowLocation;
-        private Point WindowBottomRight;
+		private Point WindowLocation;
+		private Point WindowBottomRight;
 
-        private Point WindowResizeEndLocation;
-        private Point WindowResizeEndBottomRight;
+		private Point WindowResizeEndLocation;
+		private Point WindowResizeEndBottomRight;
 
-        const int WM_SIZING = 0x0214;
-        const int WM_MOVING = 0x0216;
-        const int WM_MOUSEMOVE = 0x200;
-        const int WM_LBUTTONDOWN = 0x201;
-        const int WM_LBUTTONUP = 0x202;
-        const int WM_EXITSIZEMOVE = 0x232;
+		const int WM_SIZING = 0x0214;
+		const int WM_MOVING = 0x0216;
+		const int WM_MOUSEMOVE = 0x200;
+		const int WM_LBUTTONDOWN = 0x201;
+		const int WM_LBUTTONUP = 0x202;
+		const int WM_EXITSIZEMOVE = 0x232;
 
-        const int WMSZ_BOTTOM = 6;
-        const int WMSZ_BOTTOMLEFT = 7;
-        const int WMSZ_BOTTOMRIGHT = 8;
-        const int WMSZ_LEFT = 1;
-        const int WMSZ_RIGHT = 2;
-        const int WMSZ_TOP = 3;
-        const int WMSZ_TOPLEFT = 4;
-        const int WMSZ_TOPRIGHT = 5;
-        
-
-        private WIN32Rectangle windowRect;
-        private WIN32Rectangle newWindowRect;
-
-        internal Action<Action> closeAction;
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool GetWindowRect(IntPtr hWnd, out WIN32Rectangle lpRect);
-
-        [DllImport("user32.dll", CharSet = CharSet.Ansi)]
-        static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPStr)]string lpszDeviceName, int iModeNum, out DEVMODE lpDevMode, uint dwFlags);
-
-        [DllImport("kernel32.dll", ExactSpelling = true)]
-        public static extern IntPtr GlobalSize(IntPtr handle);     
-        
-        //https://referencesource.microsoft.com/#System.Windows.Forms/winforms/Managed/System/WinForms/NativeMethods.cs,478d6b005e9903a6
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public struct DEVMODE
-        {
-            private const int CCHDEVICENAME = 32;
-            private const int CCHFORMNAME = 32;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = CCHDEVICENAME)]
-            public string dmDeviceName;
-            public short dmSpecVersion;
-            public short dmDriverVersion;
-            public short dmSize;
-            public short dmDriverExtra;
-            public int dmFields;
-            public int dmPositionX;
-            public int dmPositionY;
-            public ScreenOrientation dmDisplayOrientation;
-            public int dmDisplayFixedOutput;
-            public short dmColor;
-            public short dmDuplex;
-            public short dmYResolution;
-            public short dmTTOption;
-            public short dmCollate;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = CCHFORMNAME)]
-            public string dmFormName;
-            public short dmLogPixels;
-            public int dmBitsPerPel;
-            public int dmPelsWidth;
-            public int dmPelsHeight;
-            public int dmDisplayFlags;
-            public int dmDisplayFrequency;
-            public int dmICMMethod;
-            public int dmICMIntent;
-            public int dmMediaType;
-            public int dmDitherType;
-            public int dmReserved1;
-            public int dmReserved2;
-            public int dmPanningWidth;
-            public int dmPanningHeight;
-        }
-
-        //https://referencesource.microsoft.com/#System.Windows.Forms/winforms/Managed/System/WinForms/ScreenOrientation.cs,29768eea794e249c
-        public enum ScreenOrientation
-        {
-            /// <include file='doc\ScreenOrientation.uex' path='docs/doc[@for="Day.Angle0"]/*' />
-            /// <devdoc>
-            ///    <para>
-            ///       The screen is oriented at 0 degrees
-            ///    </para>
-            /// </devdoc>
-            Angle0 = 0,
-
-            /// <include file='doc\ScreenOrientation.uex' path='docs/doc[@for="Day.Angle90"]/*' />
-            /// <devdoc>
-            ///    <para>
-            ///       The screen is oriented at 90 degrees
-            ///    </para>
-            /// </devdoc>
-            Angle90 = 1,
-
-            /// <include file='doc\ScreenOrientation.uex' path='docs/doc[@for="Day.Angle180"]/*' />
-            /// <devdoc>
-            ///    <para>
-            ///       The screen is oriented at 180 degrees.
-            ///    </para>
-            /// </devdoc>
-            Angle180 = 2,
-
-            /// <include file='doc\ScreenOrientation.uex' path='docs/doc[@for="Day.Angle270"]/*' />
-            /// <devdoc>
-            ///    <para>
-            ///       The screen is oriented at 270 degrees.
-            ///    </para>
-            /// </devdoc>
-            Angle270 = 3,
-        }
+		const int WMSZ_BOTTOM = 6;
+		const int WMSZ_BOTTOMLEFT = 7;
+		const int WMSZ_BOTTOMRIGHT = 8;
+		const int WMSZ_LEFT = 1;
+		const int WMSZ_RIGHT = 2;
+		const int WMSZ_TOP = 3;
+		const int WMSZ_TOPLEFT = 4;
+		const int WMSZ_TOPRIGHT = 5;
 
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool EnumDisplayDevices(string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, uint dwFlags);
+		private WIN32Rectangle windowRect;
+		private WIN32Rectangle newWindowRect;
 
-        [DllImport("user32.dll")]
-        public static extern int EnumDisplaySettings(string deviceName, int modeNum, ref DEVMODE devMode);
+		internal Action<Action> closeAction;
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct DISPLAY_DEVICE
-        {
-            public int cb;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            public string DeviceName;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-            public string DeviceString;
-            public int StateFlags;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-            public string DeviceID;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-            public string DeviceKey;
-        }
+		[DllImport("user32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool GetWindowRect(IntPtr hWnd, out WIN32Rectangle lpRect);
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct WIN32Rectangle
-        {
-            public int Left;
-            public int Top;
-            public int Right;
-            public int Bottom;
-        }
+		[DllImport("user32.dll", CharSet = CharSet.Ansi)]
+		static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPStr)]string lpszDeviceName, int iModeNum, out DEVMODE lpDevMode, uint dwFlags);
 
-        private DateTime lastMoveSent = DateTime.Now;
-        private DateTime lastResizeSent = DateTime.Now;
-        private DateTime lastStateChanged = DateTime.Now;
+		[DllImport("kernel32.dll", ExactSpelling = true)]
+		public static extern IntPtr GlobalSize(IntPtr handle);
 
-        public EventHandler<dynamic> DockingGroupUpdateHandler;
-        public bool hidden = false;
+		//https://referencesource.microsoft.com/#System.Windows.Forms/winforms/Managed/System/WinForms/NativeMethods.cs,478d6b005e9903a6
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct DEVMODE
+		{
+			private const int CCHDEVICENAME = 32;
+			private const int CCHFORMNAME = 32;
 
-        private bool sendCloseToFinsemble = true;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = CCHDEVICENAME)]
+			public string dmDeviceName;
+			public short dmSpecVersion;
+			public short dmDriverVersion;
+			public short dmSize;
+			public short dmDriverExtra;
+			public int dmFields;
+			public int dmPositionX;
+			public int dmPositionY;
+			public ScreenOrientation dmDisplayOrientation;
+			public int dmDisplayFixedOutput;
+			public short dmColor;
+			public short dmDuplex;
+			public short dmYResolution;
+			public short dmTTOption;
+			public short dmCollate;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = CCHFORMNAME)]
+			public string dmFormName;
+			public short dmLogPixels;
+			public int dmBitsPerPel;
+			public int dmPelsWidth;
+			public int dmPelsHeight;
+			public int dmDisplayFlags;
+			public int dmDisplayFrequency;
+			public int dmICMMethod;
+			public int dmICMIntent;
+			public int dmMediaType;
+			public int dmDitherType;
+			public int dmReserved1;
+			public int dmReserved2;
+			public int dmPanningWidth;
+			public int dmPanningHeight;
+		}
 
-        double dpiX, dpiY;
+		//https://referencesource.microsoft.com/#System.Windows.Forms/winforms/Managed/System/WinForms/ScreenOrientation.cs,29768eea794e249c
+		public enum ScreenOrientation
+		{
+			/// <include file='doc\ScreenOrientation.uex' path='docs/doc[@for="Day.Angle0"]/*' />
+			/// <devdoc>
+			///    <para>
+			///       The screen is oriented at 0 degrees
+			///    </para>
+			/// </devdoc>
+			Angle0 = 0,
 
-        internal Docking(Finsemble _bridge, string channel)
-        {
-            Application.Current.Dispatcher.Invoke(delegate //main thread
-            {
-                this.bridge = _bridge;
-                routerClient = bridge.RouterClient;
-                this.dockingChannel = channel;
-                this.dockingWindow = bridge.window;
-                this.dockingWindowName = bridge.windowName;
-                dockingWindow.Loaded += Window_Loaded;
-                dockingWindow.Closing += Window_Closing;
-                dockingWindow.Activated += Window_Activated;
-                dockingWindow.StateChanged += DockingWindow_StateChanged;
-                bridge.Subscribe(dockingChannel, Got_Docking_Message); // Finsemble 2.3
-                routerClient.AddListener("FinsembleNativeActions." + bridge.windowName, Got_Docking_Message_Over_Router); // Finsemble 2.5+
-                //dockingWindow.GotMouseCapture += DockingWindow_GotMouseCapture;
-                //dockingWindow.LostMouseCapture += DockingWindow_LostMouseCapture;
-                //MouseWatcher.OnMouseInput += MouseWatcher_OnMouseInput;
-                /*routerClient.AddListener("LauncherService.shutdownRequest", (s, e) =>
-                {
-                    sendCloseToFinsemble = false;
-                });*/
-                routerClient.AddResponder(dockingWindowName + ".closeRequested", (s, e) =>
-                {
-                    sendCloseToFinsemble = false;
+			/// <include file='doc\ScreenOrientation.uex' path='docs/doc[@for="Day.Angle90"]/*' />
+			/// <devdoc>
+			///    <para>
+			///       The screen is oriented at 90 degrees
+			///    </para>
+			/// </devdoc>
+			Angle90 = 1,
 
-                    if (closeAction != null && e.response["data"]["shuttingDown"] != null) // only call close handler while shutting down. doing on workspace switch does not work yet
-                    {
-                        closeAction(() => CloseWindow(e));
-                    }
-                    else
-                    {
-                        CloseWindow(e);
-                    }
-                });
-            });
-        }
+			/// <include file='doc\ScreenOrientation.uex' path='docs/doc[@for="Day.Angle180"]/*' />
+			/// <devdoc>
+			///    <para>
+			///       The screen is oriented at 180 degrees.
+			///    </para>
+			/// </devdoc>
+			Angle180 = 2,
 
-        private void CloseWindow(FinsembleQueryArgs e)
-        {
-            HandleWindowActuallyClosed(e);
-            RequestWindowToClose();
-        }
+			/// <include file='doc\ScreenOrientation.uex' path='docs/doc[@for="Day.Angle270"]/*' />
+			/// <devdoc>
+			///    <para>
+			///       The screen is oriented at 270 degrees.
+			///    </para>
+			/// </devdoc>
+			Angle270 = 3,
+		}
 
-        private void HandleWindowActuallyClosed(FinsembleQueryArgs fqa)
-        {
-            dockingWindow.Closed += (s, e) =>
-            {
-                ReportWindowClosed(fqa);
-            };
-        }
 
-        private void RequestWindowToClose()
-        {
-            Application.Current.Dispatcher.Invoke(delegate //main thread
-            {
-                dockingWindow.Close();// this is and may cause user interaction in Application in response to 'Closing' event
-            });
-        }
+		[DllImport("user32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool EnumDisplayDevices(string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, uint dwFlags);
 
-        private void ReportWindowClosed(FinsembleQueryArgs fqa)
-        {
-            fqa.sendQueryMessage(new JObject { ["close"] = true });
-        }
+		[DllImport("user32.dll")]
+		public static extern int EnumDisplaySettings(string deviceName, int modeNum, ref DEVMODE devMode);
 
-        private void Got_Docking_Message_Over_Router(object sender, FinsembleEventArgs e)
-        {
-            Got_Docking_Message(null, e.response["data"] as JObject);
-        }
+		[StructLayout(LayoutKind.Sequential)]
+		public struct DISPLAY_DEVICE
+		{
+			public int cb;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+			public string DeviceName;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+			public string DeviceString;
+			public int StateFlags;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+			public string DeviceID;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+			public string DeviceKey;
+		}
 
-        private void DockingWindow_LostMouseCapture(object sender, MouseEventArgs e)
-        {
-            Debug.WriteLine("Lost Mouse Capture");
-        }
+		[StructLayout(LayoutKind.Sequential)]
+		private struct WIN32Rectangle
+		{
+			public int Left;
+			public int Top;
+			public int Right;
+			public int Bottom;
+		}
 
-        private void DockingWindow_GotMouseCapture(object sender, MouseEventArgs e)
-        {
-            Debug.WriteLine("Got Mouse Capture");
-        }
+		private DateTime lastMoveSent = DateTime.Now;
+		private DateTime lastResizeSent = DateTime.Now;
+		private DateTime lastStateChanged = DateTime.Now;
 
-        private void DockingWindow_StateChanged(object sender, EventArgs e)
-        {
-            // prevent strange infinite loop from window somehow activating while minimize is called from docking
-            TimeSpan t = DateTime.Now - lastStateChanged;
-            if (t.TotalMilliseconds < 50) return;
-            lastStateChanged = DateTime.Now;
-            var w = (Window)sender;
-            if (w.WindowState == WindowState.Normal)
-            {
-                Restore();
-            }
-            else if (w.WindowState == WindowState.Minimized)
-            {
-                Minimize();
-            }
-            else if (w.WindowState == WindowState.Maximized)
-            {
-                Maxmimize();
-            }
-        }
+		public EventHandler<dynamic> DockingGroupUpdateHandler;
+		public bool hidden = false;
 
-        private void Window_Activated(object sender, EventArgs e)
-        {
-            routerClient.Transmit(dockingWindowName + ".focused", new JObject { });
-        }
+		private bool sendCloseToFinsemble = true;
 
-        private void Got_Docking_Message(string topic, JObject message)
-        {
-            var action = message.GetValue("action").ToString();
+		double dpiX, dpiY;
 
-            switch (action)
-            {
-                case "setBounds":
-                    var jsonMessage = message.GetValue("bounds") as JObject;
-                    var top = jsonMessage.GetValue("top").ToString();
-                    var left = jsonMessage.GetValue("left").ToString();
-                    var height = jsonMessage.GetValue("height").ToString();
-                    var width = jsonMessage.GetValue("width").ToString();
+		internal Docking(Finsemble _bridge, string channel)
+		{
+			Application.Current.Dispatcher.Invoke(delegate //main thread
+			{
+				this.bridge = _bridge;
+				routerClient = bridge.RouterClient;
+				this.dockingChannel = channel;
+				this.dockingWindow = bridge.window;
+				this.dockingWindowName = bridge.windowName;
+				dockingWindow.Loaded += Window_Loaded;
+				dockingWindow.Closing += Window_Closing;
+				dockingWindow.Activated += Window_Activated;
+				dockingWindow.StateChanged += DockingWindow_StateChanged;
+				bridge.Subscribe(dockingChannel, Got_Docking_Message); // Finsemble 2.3
+				routerClient.AddListener("FinsembleNativeActions." + bridge.windowName, Got_Docking_Message_Over_Router); // Finsemble 2.5+
+																														  //dockingWindow.GotMouseCapture += DockingWindow_GotMouseCapture;
+																														  //dockingWindow.LostMouseCapture += DockingWindow_LostMouseCapture;
+																														  //MouseWatcher.OnMouseInput += MouseWatcher_OnMouseInput;
+																														  /*routerClient.AddListener("LauncherService.shutdownRequest", (s, e) =>
+																														  {
+																															  sendCloseToFinsemble = false;
+																														  });*/
+				routerClient.AddResponder(dockingWindowName + ".closeRequested", (s, e) =>
+				{
+					sendCloseToFinsemble = false;
 
-                    if (string.IsNullOrEmpty(top)
-                    || string.IsNullOrEmpty(left)
-                    || string.IsNullOrEmpty(width)
-                    || string.IsNullOrEmpty(height))
-                    {
-                        return;
-                    }
+					if (closeAction != null && e.response["data"]["shuttingDown"] != null) // only call close handler while shutting down. doing on workspace switch does not work yet
+					{
+						closeAction(() => CloseWindow(e));
+					}
+					else
+					{
+						CloseWindow(e);
+					}
+				});
+			});
+		}
 
-                    var dtop = Double.Parse(top);
-                    var dleft = Double.Parse(left);
-                    var dheight = Double.Parse(height);
-                    var dwidth = Double.Parse(width);
-                    if (dheight < 32) dheight = 32;
-                    if (dwidth < 1) dwidth = 1;
+		private void CloseWindow(FinsembleQueryArgs e)
+		{
+			HandleWindowActuallyClosed(e);
+			RequestWindowToClose();
+		}
 
-                    /*Debug.Write(top + " ");
+		private void HandleWindowActuallyClosed(FinsembleQueryArgs fqa)
+		{
+			dockingWindow.Closed += (s, e) =>
+			{
+				ReportWindowClosed(fqa);
+			};
+		}
+
+		private void RequestWindowToClose()
+		{
+			Application.Current.Dispatcher.Invoke(delegate //main thread
+			{
+				dockingWindow.Close();// this is and may cause user interaction in Application in response to 'Closing' event
+			});
+		}
+
+		private void ReportWindowClosed(FinsembleQueryArgs fqa)
+		{
+			fqa.sendQueryMessage(new JObject { ["close"] = true });
+		}
+
+		private void Got_Docking_Message_Over_Router(object sender, FinsembleEventArgs e)
+		{
+			Got_Docking_Message(null, e.response["data"] as JObject);
+		}
+
+		private void DockingWindow_LostMouseCapture(object sender, MouseEventArgs e)
+		{
+			Debug.WriteLine("Lost Mouse Capture");
+		}
+
+		private void DockingWindow_GotMouseCapture(object sender, MouseEventArgs e)
+		{
+			Debug.WriteLine("Got Mouse Capture");
+		}
+
+		private void DockingWindow_StateChanged(object sender, EventArgs e)
+		{
+			// prevent strange infinite loop from window somehow activating while minimize is called from docking
+			TimeSpan t = DateTime.Now - lastStateChanged;
+			if (t.TotalMilliseconds < 50) return;
+			lastStateChanged = DateTime.Now;
+			var w = (Window)sender;
+			if (w.WindowState == WindowState.Normal)
+			{
+				Restore();
+			}
+			else if (w.WindowState == WindowState.Minimized)
+			{
+				Minimize();
+			}
+			else if (w.WindowState == WindowState.Maximized)
+			{
+				Maxmimize();
+			}
+		}
+
+		private void Window_Activated(object sender, EventArgs e)
+		{
+			routerClient.Transmit(dockingWindowName + ".focused", new JObject { });
+		}
+
+		private void Got_Docking_Message(string topic, JObject message)
+		{
+			var action = message.GetValue("action").ToString();
+
+			switch (action)
+			{
+				case "setBounds":
+					var jsonMessage = message.GetValue("bounds") as JObject;
+					var top = jsonMessage.GetValue("top").ToString();
+					var left = jsonMessage.GetValue("left").ToString();
+					var height = jsonMessage.GetValue("height").ToString();
+					var width = jsonMessage.GetValue("width").ToString();
+
+					if (string.IsNullOrEmpty(top)
+					|| string.IsNullOrEmpty(left)
+					|| string.IsNullOrEmpty(width)
+					|| string.IsNullOrEmpty(height))
+					{
+						return;
+					}
+
+					var dtop = Double.Parse(top);
+					var dleft = Double.Parse(left);
+					var dheight = Double.Parse(height);
+					var dwidth = Double.Parse(width);
+					if (dheight < 32) dheight = 32;
+					if (dwidth < 1) dwidth = 1;
+
+					/*Debug.Write(top + " ");
                     Debug.Write(left + " ");
                     Debug.Write(width + " ");
                     Debug.Write(height + " ");
                     Debug.WriteLine("");*/
 
-                    Application.Current.Dispatcher.Invoke(delegate
-                    {
-                        var topLeftChanged = false;
-                        if (dockingWindow.Top != dtop) { dockingWindow.Top = dtop; topLeftChanged = true; }
-                        if (dockingWindow.Left != dleft) { dockingWindow.Left = dleft; topLeftChanged = true; }
-                        if (dockingWindow.Height != dheight) dockingWindow.Height = dheight;
-                        if (dockingWindow.Width != dwidth) dockingWindow.Width = dwidth;
+					Application.Current.Dispatcher.Invoke(delegate
+					{
+						var topLeftChanged = false;
+						if (dockingWindow.Top != dtop) { dockingWindow.Top = dtop; topLeftChanged = true; }
+						if (dockingWindow.Left != dleft) { dockingWindow.Left = dleft; topLeftChanged = true; }
+						if (dockingWindow.Height != dheight) dockingWindow.Height = dheight;
+						if (dockingWindow.Width != dwidth) dockingWindow.Width = dwidth;
 
-                        if (topLeftChanged) WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
-                        WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
-                    });
+						if (topLeftChanged) WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
+						WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
+					});
 
-                    //If we have unscaled values then set the windowRect
-                    /*var unscaledTop = jsonMessage.GetValue("unscaledTop").ToString();
+					//If we have unscaled values then set the windowRect
+					/*var unscaledTop = jsonMessage.GetValue("unscaledTop").ToString();
                     var unscaledLeft = jsonMessage.GetValue("unscaledLeft").ToString();
                     var unscaledBottom = jsonMessage.GetValue("unscaledBottom").ToString();
                     var unscaledRight = jsonMessage.GetValue("unscaledRight").ToString();
@@ -362,41 +362,41 @@ namespace ChartIQ.Finsemble
                     windowRect.Bottom = int.Parse(unscaledBottom);
                     windowRect.Right = int.Parse(unscaledRight);*/
 
-                    break;
-                case "bringToFront":
-                    Application.Current.Dispatcher.Invoke(delegate
-                    {
-                        dockingWindow.Topmost = true;
-                        dockingWindow.Topmost = false;
+					break;
+				case "bringToFront":
+					Application.Current.Dispatcher.Invoke(delegate
+					{
+						dockingWindow.Topmost = true;
+						dockingWindow.Topmost = false;
 
-                    });
-                    break;
-                case "setOpacity":
-                    Application.Current.Dispatcher.Invoke(delegate
-                    {
-                        if (!resizing)
-                        {
-                            dockingWindow.Opacity = Double.Parse(message.GetValue("opacity").ToString());
-                        }
-                    });
-                    break;
-                case "hide":
-                    hidden = true;
-                    Application.Current.Dispatcher.Invoke(delegate
-                    {
-                        dockingWindow.Opacity = 0.0;
-                        //dockingWindow.Hide();
-                    });
-                    break;
-                case "show":
-                    hidden = false;
-                    Application.Current.Dispatcher.Invoke(delegate
-                    {
-                        dockingWindow.Opacity = 1.0;
-                        //dockingWindow.Show();
-                    });
-                    break;
-                /*case "groupUpdate":
+					});
+					break;
+				case "setOpacity":
+					Application.Current.Dispatcher.Invoke(delegate
+					{
+						if (!resizing)
+						{
+							dockingWindow.Opacity = Double.Parse(message.GetValue("opacity").ToString());
+						}
+					});
+					break;
+				case "hide":
+					hidden = true;
+					Application.Current.Dispatcher.Invoke(delegate
+					{
+						dockingWindow.Opacity = 0.0;
+						//dockingWindow.Hide();
+					});
+					break;
+				case "show":
+					hidden = false;
+					Application.Current.Dispatcher.Invoke(delegate
+					{
+						dockingWindow.Opacity = 1.0;
+						//dockingWindow.Show();
+					});
+					break;
+				/*case "groupUpdate":
                     Application.Current.Dispatcher.Invoke((Action)delegate
                     {
                         jsonMessage = joMessage.GetValue("groupData") as JObject;
@@ -406,369 +406,370 @@ namespace ChartIQ.Finsemble
                         DockingGroupUpdateHandler?.Invoke(this, groupData);
                     });
                     break;*/
-                case "minimize":
-                    Application.Current.Dispatcher.Invoke(delegate
-                    {
-                        if (dockingWindow.WindowState != WindowState.Minimized) dockingWindow.WindowState = WindowState.Minimized;
-                    });
-                    break;
-                case "restore":
-                    Application.Current.Dispatcher.Invoke(delegate
-                    {
-                        if (dockingWindow.WindowState != WindowState.Normal) dockingWindow.WindowState = WindowState.Normal;
-                    });
-                    break;
-                case "maximize":
-                    Application.Current.Dispatcher.Invoke(delegate
-                    {
-                        if (dockingWindow.WindowState != WindowState.Maximized) dockingWindow.WindowState = WindowState.Maximized;
-                    });
-                    break;
-                case "close":
-                    Application.Current.Dispatcher.Invoke(delegate
-                    {
-                        sendCloseToFinsemble = false;
-                        dockingWindow.Close();
-                    });
-                    break;
-            }
-        }
+				case "minimize":
+					Application.Current.Dispatcher.Invoke(delegate
+					{
+						if (dockingWindow.WindowState != WindowState.Minimized) dockingWindow.WindowState = WindowState.Minimized;
+					});
+					break;
+				case "restore":
+					Application.Current.Dispatcher.Invoke(delegate
+					{
+						if (dockingWindow.WindowState != WindowState.Normal) dockingWindow.WindowState = WindowState.Normal;
+					});
+					break;
+				case "maximize":
+					Application.Current.Dispatcher.Invoke(delegate
+					{
+						if (dockingWindow.WindowState != WindowState.Maximized) dockingWindow.WindowState = WindowState.Maximized;
+					});
+					break;
+				case "close":
+					Application.Current.Dispatcher.Invoke(delegate
+					{
+						sendCloseToFinsemble = false;
+						dockingWindow.Close();
+					});
+					break;
+			}
+		}
 
-        private void Minimize()
-        {
-            Application.Current.Dispatcher.Invoke(delegate //main thread
-            {
-                //dockingWindow.WindowState = WindowState.Minimized;
-                dynamic props = new ExpandoObject();
-                props.windowName = dockingWindowName;
-                props.windowAction = "minimize";
-				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
-            });
-        }
-
-        private void Maxmimize()
-        {
-            Application.Current.Dispatcher.Invoke(delegate //main thread
-            {
-                //dockingWindow.WindowState = WindowState.Maximized;
-                dynamic props = new ExpandoObject();
-                props.windowName = dockingWindowName;
-                props.windowAction = "maximize";
+		private void Minimize()
+		{
+			Application.Current.Dispatcher.Invoke(delegate //main thread
+			{
+				//dockingWindow.WindowState = WindowState.Minimized;
+				dynamic props = new ExpandoObject();
+				props.windowName = dockingWindowName;
+				props.windowAction = "minimize";
 				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
 			});
-        }
+		}
 
-        private void Restore()
-        {
-            Application.Current.Dispatcher.Invoke(delegate //main thread
-            {
+		private void Maxmimize()
+		{
+			Application.Current.Dispatcher.Invoke(delegate //main thread
+			{
+				//dockingWindow.WindowState = WindowState.Maximized;
+				dynamic props = new ExpandoObject();
+				props.windowName = dockingWindowName;
+				props.windowAction = "maximize";
+				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
+			});
+		}
+
+		private void Restore()
+		{
+			Application.Current.Dispatcher.Invoke(delegate //main thread
+			{
 				dynamic props = new ExpandoObject();
 				props.windowName = dockingWindowName;
 				props.windowAction = "restore";
 				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
 			});
-        }
+		}
 
-        private void Hide()
-        {
-            Application.Current.Dispatcher.Invoke(delegate //main thread
-            {
-                dockingWindow.Hide();
+		private void Hide()
+		{
+			Application.Current.Dispatcher.Invoke(delegate //main thread
+			{
+				dockingWindow.Hide();
 				dynamic props = new ExpandoObject();
 				props.windowName = dockingWindowName;
 				props.windowAction = "hide";
 				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
 			});
-        }
+		}
 
-        private void Show()
-        {
-            Application.Current.Dispatcher.Invoke(delegate //main thread
-            {
-                dockingWindow.Show();
+		private void Show()
+		{
+			Application.Current.Dispatcher.Invoke(delegate //main thread
+			{
+				dockingWindow.Show();
 				dynamic props = new ExpandoObject();
 				props.windowName = dockingWindowName;
 				props.windowAction = "show";
 				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
 			});
-        }
+		}
 
-        private void BringToFront()
-        {
-            Application.Current.Dispatcher.Invoke(delegate //main thread
-            {
+		private void BringToFront()
+		{
+			Application.Current.Dispatcher.Invoke(delegate //main thread
+			{
 				dynamic props = new ExpandoObject();
 				props.windowName = dockingWindowName;
 				props.windowAction = "bringToFront";
 				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
 			});
-        }
+		}
 
-        internal void Close()
-        {
-            Application.Current.Dispatcher.Invoke(delegate //main thread
-            {
+		internal void Close()
+		{
+			Application.Current.Dispatcher.Invoke(delegate //main thread
+			{
 				dynamic props = new ExpandoObject();
 				props.windowName = dockingWindowName;
 				props.windowAction = "close";
 				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
 			});
-        }
+		}
 
-        /// <summary>
-        /// Call from MouseDown event of control in Window Header that is responsible for moving the window
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void StartMove(dynamic sender, MouseButtonEventArgs e)
-        {
-            if (resizing) return;
-            Debug.WriteLine("start move");
-            Application.Current.Dispatcher.Invoke(delegate //main thread
-            {
-                sender.CaptureMouse();
-                moving = true;
-                startPosition = e.GetPosition(dockingWindow);
-                dynamic props = new ExpandoObject();
-                props.windowName = dockingWindowName;
-                props.top = dockingWindow.Top;
-                props.left = dockingWindow.Left;
-                props.width = dockingWindow.Width;
-                props.height = dockingWindow.Height;
-                props.scaled = true;
-                props.windowAction = "startMove";
+		/// <summary>
+		/// Call from MouseDown event of control in Window Header that is responsible for moving the window
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		public void StartMove(dynamic sender, MouseButtonEventArgs e)
+		{
+			if (resizing) return;
+			Debug.WriteLine("start move");
+			Application.Current.Dispatcher.Invoke(delegate //main thread
+			{
+				sender.CaptureMouse();
+				moving = true;
+				startPosition = e.GetPosition(dockingWindow);
+				dynamic props = new ExpandoObject();
+				props.windowName = dockingWindowName;
+				props.top = dockingWindow.Top;
+				props.left = dockingWindow.Left;
+				props.width = dockingWindow.Width;
+				props.height = dockingWindow.Height;
+				props.scaled = true;
+				props.windowAction = "startMove";
 				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
 			});
-        }
+		}
 
-        /// <summary>
-        /// Call from MouseMove event of control in Window Header that is responsible for moving the window
-        /// </summary>
-        public void Move(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            if (moving)
-            {
-                Debug.WriteLine("move");
-                TimeSpan t = DateTime.Now - lastMoveSent;
-                if (t.TotalMilliseconds < 20) return;
-                Application.Current.Dispatcher.Invoke(delegate //main thread
-                {
-                    var currentPosition = e.GetPosition(dockingWindow);
-                    double differenceX = currentPosition.X - startPosition.X;
-                    double differenceY = currentPosition.Y - startPosition.Y;
-                    dynamic props = new ExpandoObject();
-                    props.windowName = dockingWindowName;
-                    props.width = dockingWindow.Width;
-                    props.height = dockingWindow.Height;
-                    props.top = dockingWindow.Top + differenceY;
-                    props.left = dockingWindow.Left + differenceX;
-                    props.windowAction = "move";
-                    props.scaled = true;
-                    lastMoveSent = DateTime.Now;
+		/// <summary>
+		/// Call from MouseMove event of control in Window Header that is responsible for moving the window
+		/// </summary>
+		public void Move(object sender, System.Windows.Input.MouseEventArgs e)
+		{
+			if (moving)
+			{
+				Debug.WriteLine("move");
+				TimeSpan t = DateTime.Now - lastMoveSent;
+				if (t.TotalMilliseconds < 20) return;
+				Application.Current.Dispatcher.Invoke(delegate //main thread
+				{
+					var currentPosition = e.GetPosition(dockingWindow);
+					double differenceX = currentPosition.X - startPosition.X;
+					double differenceY = currentPosition.Y - startPosition.Y;
+					dynamic props = new ExpandoObject();
+					props.windowName = dockingWindowName;
+					props.width = dockingWindow.Width;
+					props.height = dockingWindow.Height;
+					props.top = dockingWindow.Top + differenceY;
+					props.left = dockingWindow.Left + differenceX;
+					props.windowAction = "move";
+					props.scaled = true;
+					lastMoveSent = DateTime.Now;
 					bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
 				});
-            }
+			}
 
-        }
+		}
 
-        /// <summary>
-        /// Call from MouseUp event of control in Window Header that is responsible for moving the window
-        /// </summary>
-        public void EndMove(object sender, MouseButtonEventArgs e)
-        {
-            Debug.WriteLine("end move");
-            Application.Current.Dispatcher.Invoke(delegate //main thread
-            {
-                dynamic props = new ExpandoObject();
-                props.windowName = dockingWindowName;
-                props.windowAction = "endMove";
+		/// <summary>
+		/// Call from MouseUp event of control in Window Header that is responsible for moving the window
+		/// </summary>
+		public void EndMove(object sender, MouseButtonEventArgs e)
+		{
+			Debug.WriteLine("end move");
+			Application.Current.Dispatcher.Invoke(delegate //main thread
+			{
+				dynamic props = new ExpandoObject();
+				props.windowName = dockingWindowName;
+				props.windowAction = "endMove";
 				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
 				moving = false;
-                Mouse.Capture(null);
-            });
-        }
+				Mouse.Capture(null);
+			});
+		}
 
-        /// <summary>
-        /// Call to dock snapped window
-        /// </summary>
-        public void FormGroup()
-        {
-            Application.Current.Dispatcher.Invoke(delegate //main thread
-            {
-                routerClient.Transmit("DockingService.formGroup", new JObject
-                {
-                    ["windowName"] = bridge.windowName
-                });
-            });
-        }
+		/// <summary>
+		/// Call to dock snapped window
+		/// </summary>
+		public void FormGroup()
+		{
+			Application.Current.Dispatcher.Invoke(delegate //main thread
+			{
+				routerClient.Transmit("DockingService.formGroup", new JObject
+				{
+					["windowName"] = bridge.windowName
+				});
+			});
+		}
 
-        /// <summary>
-        /// Call to leave docking group
-        /// </summary>
-        public void LeaveGroup()
-        {
-            Application.Current.Dispatcher.Invoke(delegate //main thread
-            {
-                routerClient.Query("DockingService.leaveGroup", new JObject
-                {
-                    ["name"] = bridge.windowName
-                }, new JObject { }, (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs args) { });
-            });
-        }
+		/// <summary>
+		/// Call to leave docking group
+		/// </summary>
+		public void LeaveGroup()
+		{
+			Application.Current.Dispatcher.Invoke(delegate //main thread
+			{
+				routerClient.Query("DockingService.leaveGroup", new JObject
+				{
+					["name"] = bridge.windowName
+				}, new JObject { }, (EventHandler<FinsembleEventArgs>)delegate (object s, FinsembleEventArgs args) { });
+			});
+		}
 
-        public void GetWindowsInGroup(JObject parameters, EventHandler<FinsembleEventArgs> callback)
-        {
-            routerClient.Query("DockingService.getWindowsInGroup", new JObject { ["groupName"] = parameters["groupName"] }, new JObject { }, (sender, args) =>
-            {
-                callback(sender, new FinsembleEventArgs(args.error, args.response?["data"]));
-            });
-        }
+		public void GetWindowsInGroup(JObject parameters, EventHandler<FinsembleEventArgs> callback)
+		{
+			routerClient.Query("DockingService.getWindowsInGroup", new JObject { ["groupName"] = parameters["groupName"] }, new JObject { }, (sender, args) =>
+			{
+				callback(sender, new FinsembleEventArgs(args.error, args.response?["data"]));
+			});
+		}
 
-        private void Resize(Point TopCorner, Point BottomCorner)
-        {
-            TimeSpan t = DateTime.Now - lastResizeSent;
-            if (t.TotalMilliseconds < 35) return;
-            Application.Current.Dispatcher.Invoke(delegate //main thread
-            {
-                dynamic props = new JObject
-                {
-                    ["windowName"] = dockingWindowName,
-                    ["width"] = BottomCorner.X - TopCorner.X,
-                    ["height"] = BottomCorner.Y - TopCorner.Y,
-                    ["top"] = TopCorner.Y,
-                    ["left"] = TopCorner.X,
-                    ["bottom"] = BottomCorner.Y,
-                    ["right"] = BottomCorner.X,
-                    /*["mousePosition"] = new JObject
+		private void Resize(Point TopCorner, Point BottomCorner)
+		{
+			TimeSpan t = DateTime.Now - lastResizeSent;
+			if (t.TotalMilliseconds < 35) return;
+			Application.Current.Dispatcher.Invoke(delegate //main thread
+			{
+				dynamic props = new JObject
+				{
+					["windowName"] = dockingWindowName,
+					["width"] = BottomCorner.X - TopCorner.X,
+					["height"] = BottomCorner.Y - TopCorner.Y,
+					["top"] = TopCorner.Y,
+					["left"] = TopCorner.X,
+					["bottom"] = BottomCorner.Y,
+					["right"] = BottomCorner.X,
+					/*["mousePosition"] = new JObject
                     {
                         ["x"] = MousePosition.X,
                         ["y"] = MousePosition.Y
                     },*/
-                    ["windowAction"] = "resize"
-                };
+					["windowAction"] = "resize"
+				};
 				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
-                lastResizeSent = DateTime.Now;
-            });
-        }
+				lastResizeSent = DateTime.Now;
+			});
+		}
 
-        private void Resize(WIN32Rectangle newWindowRect, bool force = false)
-        {
-            if (!force)
-            {
-                TimeSpan t = DateTime.Now - lastResizeSent;
-                if (t.TotalMilliseconds < 35) return;
-            }
-            var props = new JObject
-            {
-                ["windowName"] = dockingWindowName,
-                ["width"] = newWindowRect.Right - newWindowRect.Left,
-                ["height"] = newWindowRect.Bottom - newWindowRect.Top,
-                ["top"] = newWindowRect.Top,
-                ["left"] = newWindowRect.Left,
-                ["bottom"] = newWindowRect.Bottom,
-                ["right"] = newWindowRect.Right,
-                ["scaled"] = false,
-                ["windowAction"] = "resize"
-            };
+		private void Resize(WIN32Rectangle newWindowRect, bool force = false)
+		{
+			if (!force)
+			{
+				TimeSpan t = DateTime.Now - lastResizeSent;
+				if (t.TotalMilliseconds < 35) return;
+			}
+			var props = new JObject
+			{
+				["windowName"] = dockingWindowName,
+				["width"] = newWindowRect.Right - newWindowRect.Left,
+				["height"] = newWindowRect.Bottom - newWindowRect.Top,
+				["top"] = newWindowRect.Top,
+				["left"] = newWindowRect.Left,
+				["bottom"] = newWindowRect.Bottom,
+				["right"] = newWindowRect.Right,
+				["scaled"] = false,
+				["windowAction"] = "resize"
+			};
 			bridge.RouterClient.Transmit("NativeWindow", props);
 			lastResizeSent = DateTime.Now;
-        }
+		}
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(delegate //main thread
-            {
-                WindowInteropHelper helper = new WindowInteropHelper(dockingWindow);
-                HwndSource.FromHwnd(helper.Handle).AddHook(HwndMessageHook);
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			Application.Current.Dispatcher.Invoke(delegate //main thread
+			{
+				WindowInteropHelper helper = new WindowInteropHelper(dockingWindow);
+				HwndSource.FromHwnd(helper.Handle).AddHook(HwndMessageHook);
 
-                PresentationSource source = PresentationSource.FromVisual(dockingWindow);
+				PresentationSource source = PresentationSource.FromVisual(dockingWindow);
 
-                if (source != null)
-                {
-                    dpiX = 96.0 * source.CompositionTarget.TransformToDevice.M11;
-                    dpiY = 96.0 * source.CompositionTarget.TransformToDevice.M22;
-                }
+				if (source != null)
+				{
+					dpiX = 96.0 * source.CompositionTarget.TransformToDevice.M11;
+					dpiY = 96.0 * source.CompositionTarget.TransformToDevice.M22;
+				}
 
-                WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
-                WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
+				WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
+				WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
 
-                var props = new JObject
-                {
-                    ["windowName"] = dockingWindowName,
-                    ["top"] = dockingWindow.Top,
-                    ["left"] = dockingWindow.Left,
-                    ["width"] = dockingWindow.Width,
-                    ["height"] = dockingWindow.Height,
-                    ["windowAction"] = "open"
-                };
+				var props = new JObject
+				{
+					["windowName"] = dockingWindowName,
+					["top"] = dockingWindow.Top,
+					["left"] = dockingWindow.Left,
+					["width"] = dockingWindow.Width,
+					["height"] = dockingWindow.Height,
+					["windowAction"] = "open"
+				};
 
 				bridge.RouterClient.Transmit("NativeWindow", props);
 			});
 
-            routerClient.Subscribe("Finsemble.WorkspaceService.groupUpdate", delegate (object s, FinsembleEventArgs args)
-            {
-                var groupData = args.response?["data"]?["groupData"] as JObject;
-                if (groupData == null) return;
-                dynamic thisWindowGroups = new ExpandoObject();
-                thisWindowGroups.dockingGroup = "";
-                thisWindowGroups.snappingGroup = "";
-                thisWindowGroups.topRight = false;
-                foreach (var item in groupData)
-                {
-                    var windowsInGroup = item.Value["windowNames"] as JArray;
-                    if (windowsInGroup.Where(window => (string)window == bridge.windowName).Count() > 0)
-                    {
-                        if ((bool)item.Value["isMovable"])
-                        {
-                            thisWindowGroups.dockingGroup = item.Key;
-                            if ((string)item.Value["topRightWindow"] == bridge.windowName)
-                            {
-                                thisWindowGroups.topRight = true;
-                            }
-                        }
-                        else
-                        {
-                            thisWindowGroups.snappingGroup = item.Key;
-                        }
-                    }
-                }
-                DockingGroupUpdateHandler?.Invoke(this, thisWindowGroups);
-            });
+			routerClient.Subscribe("Finsemble.WorkspaceService.groupUpdate", delegate (object s, FinsembleEventArgs args)
+			{
+				var groupData = args.response?["data"]?["groupData"] as JObject;
+				if (groupData == null) return;
+				dynamic thisWindowGroups = new ExpandoObject();
+				thisWindowGroups.dockingGroup = "";
+				thisWindowGroups.snappingGroup = "";
+				thisWindowGroups.topRight = false;
+				foreach (var item in groupData)
+				{
+					var windowsInGroup = item.Value["windowNames"] as JArray;
+					if (windowsInGroup.Where(window => (string)window == bridge.windowName).Count() > 0)
+					{
+						if ((bool)item.Value["isMovable"])
+						{
+							thisWindowGroups.dockingGroup = item.Key;
+							if ((string)item.Value["topRightWindow"] == bridge.windowName)
+							{
+								thisWindowGroups.topRight = true;
+							}
+						}
+						else
+						{
+							thisWindowGroups.snappingGroup = item.Key;
+						}
+					}
+				}
+				DockingGroupUpdateHandler?.Invoke(this, thisWindowGroups);
+			});
 
-        }
+		}
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (sendCloseToFinsemble)
-            {
-                this.Close();
-            }
-        }
+		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (sendCloseToFinsemble)
+			{
+				this.Close();
+			}
+		}
 
 
-        //https://stackoverflow.com/questions/12376141/intercept-a-move-event-in-a-wpf-window-before-the-move-happens-on-the-screen
-        private IntPtr HwndMessageHook(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool bHandled)
-        {
-            switch (msg)
-            {
-                case WM_SIZING:
-                    bHandled = true;
+		//https://stackoverflow.com/questions/12376141/intercept-a-move-event-in-a-wpf-window-before-the-move-happens-on-the-screen
+		private IntPtr HwndMessageHook(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool bHandled)
+		{
+			switch (msg)
+			{
+				case WM_SIZING:
+					bHandled = true;
 
-                    if (!resizing) {
-                        GetWindowRect(hWnd, out windowRect);
-                        resizing = true;
-                        Debug.WriteLine("resize start");
-                    }
+					if (!resizing)
+					{
+						GetWindowRect(hWnd, out windowRect);
+						resizing = true;
+						Debug.WriteLine("resize start");
+					}
 
-                    Debug.WriteLine("resizing: " + resizing.ToString());
+					Debug.WriteLine("resizing: " + resizing.ToString());
 
-                    newWindowRect = (WIN32Rectangle)Marshal.PtrToStructure(lParam, typeof(WIN32Rectangle));
-                    Marshal.StructureToPtr(windowRect, lParam, true);
+					newWindowRect = (WIN32Rectangle)Marshal.PtrToStructure(lParam, typeof(WIN32Rectangle));
+					Marshal.StructureToPtr(windowRect, lParam, true);
 
-                    resizeHandle = (int)wParam;
-                                        
-                    Resize(newWindowRect);
-                    /*switch (resizeHandle)
+					resizeHandle = (int)wParam;
+
+					Resize(newWindowRect);
+					/*switch (resizeHandle)
                     {
                         case WMSZ_LEFT:
                             WindowResizeEndLocation.X = newWindowRect.;
@@ -800,11 +801,11 @@ namespace ChartIQ.Finsemble
                             break;
                     }*/
 
-                        
 
 
 
-                    /*double scale = 1;
+
+					/*double scale = 1;
                     Application.Current.Dispatcher.Invoke(delegate //main thread
                     {
                         scale = (rectangle.Right - rectangle.Left) / dockingWindow.Width;
@@ -813,40 +814,40 @@ namespace ChartIQ.Finsemble
                         //Resize(WindowResizeEndLocation, WindowResizeEndBottomRight);
                     });*/
 
-                    break;
-                case WM_LBUTTONDOWN:
-                    if (!resizing)
-                    {
-                        dockingWindow.Activate();
-                        bHandled = false;
-                    }
-                    break;
-                case WM_EXITSIZEMOVE:
-                    if (resizing)
-                    {
-                        Debug.WriteLine("End Resize");
-                        bHandled = true;
-                        resizing = false;
-                        Resize(newWindowRect, true);
-                        dynamic props = new ExpandoObject();
-                        props.windowName = dockingWindowName;
-                        props.windowAction = "endMove";
+					break;
+				case WM_LBUTTONDOWN:
+					if (!resizing)
+					{
+						dockingWindow.Activate();
+						bHandled = false;
+					}
+					break;
+				case WM_EXITSIZEMOVE:
+					if (resizing)
+					{
+						Debug.WriteLine("End Resize");
+						bHandled = true;
+						resizing = false;
+						Resize(newWindowRect, true);
+						dynamic props = new ExpandoObject();
+						props.windowName = dockingWindowName;
+						props.windowAction = "endMove";
 						bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
 						lastResizeSent = DateTime.Now;
-                        //Mouse.Capture(null);
+						//Mouse.Capture(null);
 
-                        Application.Current.Dispatcher.Invoke(delegate
-                        {
-                            dockingWindow.Opacity = 1.0;
-                        });
-                    }
-                    break;
+						Application.Current.Dispatcher.Invoke(delegate
+						{
+							dockingWindow.Opacity = 1.0;
+						});
+					}
+					break;
 
-            }
-            return IntPtr.Zero;
-        }
+			}
+			return IntPtr.Zero;
+		}
 
 
 
-    }
+	}
 }
