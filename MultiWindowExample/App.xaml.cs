@@ -29,7 +29,10 @@ namespace MultiWindowExample
 		[STAThread]
 		public static void Main()
 		{
-			// Debugger.Launch();
+#if DEBUG
+			Debugger.Launch();
+#endif
+
 			if (SingleInstance<App>.InitializeAsFirstInstance(Unique))
 			{
 				var application = new App();
@@ -90,7 +93,10 @@ namespace MultiWindowExample
 		/// <returns></returns>
 		public bool SignalExternalCommandLineArgs(IList<string> args)
 		{
+#if DEBUG
 			Debugger.Launch();
+#endif
+
 			if (args.Count < 2)
 			{
 				// Invalid number of arguments
@@ -127,7 +133,7 @@ namespace MultiWindowExample
 
 			return true;
 		}
-		#endregion
+#endregion
 
 		/// <summary>
 		/// 
@@ -136,7 +142,10 @@ namespace MultiWindowExample
 		/// <param name="e"></param>
 		private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
 		{
+#if DEBUG
 			Debugger.Launch();
+#endif
+
 			MessageBox.Show("An Unhandled Exception has occurred. Please Check your event Logs.");
 		}
 	}

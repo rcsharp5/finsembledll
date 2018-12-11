@@ -19,15 +19,19 @@ namespace WPFExample
         {
 			Logger.Debug("OnStartup");
 
-            Debugger.Launch(); // uncomment to launch debugger when executing externally.
+#if DEBUG
+			Debugger.Launch();
+#endif
             var mainWindow = new MainWindow(e.Args); // send command line arguments to main window.
         }
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-			Logger.Error("An Unhandled Exception has occurred. Please Check your event Logs.", e.Exception);
+#if DEBUG
 			Debugger.Launch();
-            MessageBox.Show("An Unhandled Exception has occurred. Please Check your event Logs.");
+#endif
+			Logger.Error("An Unhandled Exception has occurred. Please Check your event Logs.", e.Exception);
+			MessageBox.Show("An Unhandled Exception has occurred. Please Check your event Logs.");
         }
     }
 }
