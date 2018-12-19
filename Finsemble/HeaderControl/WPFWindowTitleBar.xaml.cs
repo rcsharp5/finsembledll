@@ -13,6 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
+using Newtonsoft.Json;
+using System.Security;
 
 namespace ChartIQ.Finsemble
 {
@@ -117,7 +121,7 @@ namespace ChartIQ.Finsemble
             Maximize.Width = buttonWidth;
             Minimize.Width = buttonWidth;
             Close.Width = buttonWidth;
-            
+
 
             Window_Size_Changed();
         }
@@ -248,14 +252,7 @@ namespace ChartIQ.Finsemble
             bridge = finsemble;
             bridge.docking.DockingGroupUpdateHandler += Docking_GroupUpdate;
             bridge.LinkerClient.OnStateChange(Linker_StateChange);
-			if ((bridge.componentConfig["foreign"] != null) && 
-				(bridge.componentConfig["foreign"]["components"] != null) && 
-				(bridge.componentConfig["foreign"]["components"]["Window Manager"] != null) &&
-				(bridge.componentConfig["foreign"]["components"]["Window Manager"]["showLinker"] != null))
-			{
-				showLinker = (bool)bridge.componentConfig["foreign"]["components"]["Window Manager"]["showLinker"];
-			}
-
+            if (bridge.componentConfig?["foreign"]?["components"]?["Window Manager"]?["showLinker"] != null) showLinker = (bool) bridge.componentConfig["foreign"]["components"]["Window Manager"]["showLinker"];
             if (!showLinker) Linker.Visibility = Visibility.Hidden;
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
@@ -346,22 +343,23 @@ namespace ChartIQ.Finsemble
 
         private void Toolbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (dragging)
-            {
-                dragging = false;
-                return;
-            }
-            bridge.docking.StartMove(sender, e);
+            //if (dragging)
+            //{
+            //    dragging = false;
+            //    return;
+            //}
+            bridge.window.DragMove(); // this does the work
+            //bridge.docking.StartMove(sender, e);
         }
 
         private void Toolbar_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            bridge.docking.EndMove(sender, e);
+            //bridge.docking.EndMove(sender, e);
         }
 
         private void Toolbar_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            bridge.docking.Move(sender, e);
+            //bridge.docking.Move(sender, e);
         }
 
         private void Maximize_Click(object sender, RoutedEventArgs e)

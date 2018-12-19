@@ -644,132 +644,135 @@ namespace ChartIQ.Finsemble
                         ["x"] = MousePosition.X,
                         ["y"] = MousePosition.Y
                     },*/
-					["windowAction"] = "resize"
-				};
-				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
-				lastResizeSent = DateTime.Now;
-			});
-		}
+                    ["windowAction"] = "resize"
+                };
+                //bridge.SendRPCCommand("NativeWindow", props.ToString(), this.dockingChannel);
+                lastResizeSent = DateTime.Now;
+            });
+        }
 
-		private void Resize(WIN32Rectangle newWindowRect, bool force = false)
-		{
-			if (!force)
-			{
-				TimeSpan t = DateTime.Now - lastResizeSent;
-				if (t.TotalMilliseconds < 35) return;
-			}
-			var props = new JObject
-			{
-				["windowName"] = dockingWindowName,
-				["width"] = newWindowRect.Right - newWindowRect.Left,
-				["height"] = newWindowRect.Bottom - newWindowRect.Top,
-				["top"] = newWindowRect.Top,
-				["left"] = newWindowRect.Left,
-				["bottom"] = newWindowRect.Bottom,
-				["right"] = newWindowRect.Right,
-				["scaled"] = false,
-				["windowAction"] = "resize"
-			};
-			bridge.RouterClient.Transmit("NativeWindow", props);
-			lastResizeSent = DateTime.Now;
-		}
+        private void Resize(WIN32Rectangle newWindowRect, bool force = false)
+        {
+            if (!force)
+            {
+                TimeSpan t = DateTime.Now - lastResizeSent;
+                if (t.TotalMilliseconds < 35) return;
+            }
+            var props = new JObject
+            {
+                ["windowName"] = dockingWindowName,
+                ["width"] = newWindowRect.Right - newWindowRect.Left,
+                ["height"] = newWindowRect.Bottom - newWindowRect.Top,
+                ["top"] = newWindowRect.Top,
+                ["left"] = newWindowRect.Left,
+                ["bottom"] = newWindowRect.Bottom,
+                ["right"] = newWindowRect.Right,
+                ["scaled"] = false,
+                ["windowAction"] = "resize"
+            };
+            //bridge.SendRPCCommand("NativeWindow", props.ToString(), this.dockingChannel);
+            lastResizeSent = DateTime.Now;
+        }
 
-		private void Window_Loaded(object sender, RoutedEventArgs e)
-		{
-			Application.Current.Dispatcher.Invoke(delegate //main thread
-			{
-				WindowInteropHelper helper = new WindowInteropHelper(dockingWindow);
-				HwndSource.FromHwnd(helper.Handle).AddHook(HwndMessageHook);
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(delegate //main thread
+            {
+                //WindowInteropHelper helper = new WindowInteropHelper(dockingWindow);
+                //HwndSource.FromHwnd(helper.Handle).AddHook(HwndMessageHook);
 
-				PresentationSource source = PresentationSource.FromVisual(dockingWindow);
+                PresentationSource source = PresentationSource.FromVisual(dockingWindow);
 
-				if (source != null)
-				{
-					dpiX = 96.0 * source.CompositionTarget.TransformToDevice.M11;
-					dpiY = 96.0 * source.CompositionTarget.TransformToDevice.M22;
-				}
+                if (source != null)
+                {
+                    dpiX = 96.0 * source.CompositionTarget.TransformToDevice.M11;
+                    dpiY = 96.0 * source.CompositionTarget.TransformToDevice.M22;
+                }
 
-				WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
-				WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
+                WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
+                WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
 
-				var props = new JObject
-				{
-					["windowName"] = dockingWindowName,
-					["top"] = dockingWindow.Top,
-					["left"] = dockingWindow.Left,
-					["width"] = dockingWindow.Width,
-					["height"] = dockingWindow.Height,
-					["windowAction"] = "open"
-				};
+                IntPtr windowHandle = new WindowInteropHelper(dockingWindow).Handle;
 
-				bridge.RouterClient.Transmit("NativeWindow", props);
-			});
+                var props = new JObject
+                {
+                    ["windowName"] = dockingWindowName,
+                    ["top"] = dockingWindow.Top,
+                    ["left"] = dockingWindow.Left,
+                    ["width"] = dockingWindow.Width,
+                    ["height"] = dockingWindow.Height,
+                    ["windowHandle"] = windowHandle.ToString(),
+                    ["windowAction"] = "open"
+                };
 
-			routerClient.Subscribe("Finsemble.WorkspaceService.groupUpdate", delegate (object s, FinsembleEventArgs args)
-			{
-				var groupData = args.response?["data"]?["groupData"] as JObject;
-				if (groupData == null) return;
-				dynamic thisWindowGroups = new ExpandoObject();
-				thisWindowGroups.dockingGroup = "";
-				thisWindowGroups.snappingGroup = "";
-				thisWindowGroups.topRight = false;
-				foreach (var item in groupData)
-				{
-					var windowsInGroup = item.Value["windowNames"] as JArray;
-					if (windowsInGroup.Where(window => (string)window == bridge.windowName).Count() > 0)
-					{
-						if ((bool)item.Value["isMovable"])
-						{
-							thisWindowGroups.dockingGroup = item.Key;
-							if ((string)item.Value["topRightWindow"] == bridge.windowName)
-							{
-								thisWindowGroups.topRight = true;
-							}
-						}
-						else
-						{
-							thisWindowGroups.snappingGroup = item.Key;
-						}
-					}
-				}
-				DockingGroupUpdateHandler?.Invoke(this, thisWindowGroups);
-			});
+                //bridge.SendRPCCommand("NativeWindow", props.ToString(), dockingChannel);
 
-		}
+            });
 
-		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if (sendCloseToFinsemble)
-			{
-				this.Close();
-			}
-		}
+            routerClient.Subscribe("Finsemble.WorkspaceService.groupUpdate", delegate (object s, FinsembleEventArgs args)
+            {
+                var groupData = args.response?["data"]?["groupData"] as JObject;
+                if (groupData == null) return;
+                dynamic thisWindowGroups = new ExpandoObject();
+                thisWindowGroups.dockingGroup = "";
+                thisWindowGroups.snappingGroup = "";
+                thisWindowGroups.topRight = false;
+                foreach (var item in groupData)
+                {
+                    var windowsInGroup = item.Value["windowNames"] as JArray;
+                    if (windowsInGroup.Where(window => (string)window == bridge.windowName).Count() > 0)
+                    {
+                        if ((bool)item.Value["isMovable"])
+                        {
+                            thisWindowGroups.dockingGroup = item.Key;
+                            if ((string)item.Value["topRightWindow"] == bridge.windowName)
+                            {
+                                thisWindowGroups.topRight = true;
+                            }
+                        }
+                        else
+                        {
+                            thisWindowGroups.snappingGroup = item.Key;
+                        }
+                    }
+                }
+                DockingGroupUpdateHandler?.Invoke(this, thisWindowGroups);
+            });
+
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!e.Cancel && sendCloseToFinsemble)
+            {
+                this.Close();
+            }
+        }
 
 
-		//https://stackoverflow.com/questions/12376141/intercept-a-move-event-in-a-wpf-window-before-the-move-happens-on-the-screen
-		private IntPtr HwndMessageHook(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool bHandled)
-		{
-			switch (msg)
-			{
-				case WM_SIZING:
-					bHandled = true;
+        //https://stackoverflow.com/questions/12376141/intercept-a-move-event-in-a-wpf-window-before-the-move-happens-on-the-screen
+        private IntPtr HwndMessageHook(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool bHandled)
+        {
+            switch (msg)
+            {
+                case WM_SIZING:
+                    bHandled = true;
 
-					if (!resizing)
-					{
-						GetWindowRect(hWnd, out windowRect);
-						resizing = true;
-						Debug.WriteLine("resize start");
-					}
+                    if (!resizing) {
+                        GetWindowRect(hWnd, out windowRect);
+                        resizing = true;
+                        Debug.WriteLine("resize start");
+                    }
 
-					Debug.WriteLine("resizing: " + resizing.ToString());
+                    Debug.WriteLine("resizing: " + resizing.ToString());
 
-					newWindowRect = (WIN32Rectangle)Marshal.PtrToStructure(lParam, typeof(WIN32Rectangle));
-					Marshal.StructureToPtr(windowRect, lParam, true);
+                    newWindowRect = (WIN32Rectangle)Marshal.PtrToStructure(lParam, typeof(WIN32Rectangle));
+                    Marshal.StructureToPtr(windowRect, lParam, true);
 
-					resizeHandle = (int)wParam;
+                    resizeHandle = (int)wParam;
 
-					Resize(newWindowRect);
-					/*switch (resizeHandle)
+                    Resize(newWindowRect);
+                    /*switch (resizeHandle)
                     {
                         case WMSZ_LEFT:
                             WindowResizeEndLocation.X = newWindowRect.;

@@ -17,7 +17,7 @@ namespace ChartIQ.Finsemble
 	/// var finsemble = new FinsembleBridge(openFinVersion, windowName, componentType, window, uuid);
 	/// finsemble.Connect += Finsemble_Connected;
 	/// </code>
-	/// 
+	///
 	/// Using the Clients once connected:
 	/// <code>
 	/// private void Finsemble_Connected(object sender, EventArgs e) {
@@ -350,7 +350,7 @@ namespace ChartIQ.Finsemble
 				Error?.Invoke(this, new UnhandledExceptionEventArgs(exception, false));
 			});
 
-			socket.On(Socket.EVENT_CONNECT, () => 
+			socket.On(Socket.EVENT_CONNECT, () =>
 			{
 				Logger.Info("Web socket connection opened");
 
@@ -412,7 +412,7 @@ namespace ChartIQ.Finsemble
 
 		/// <summary>
 		/// Use this command to execute Finsemble API calls remotely. Specify all the arguments as a list and the callback for the callback or eventHandler.
-		/// 
+		///
 		/// Supported API Calls:
 		/// <list type="bullet">
 		/// <item><term>RouterClient.transmit: </term> <description>same as JavaScript API</description></item>
@@ -438,17 +438,17 @@ namespace ChartIQ.Finsemble
 		///         ["myData"] = "myData"
 		///     }
 		/// }, (s, args) => {});
-		/// 
+		///
 		/// finsemble.SendRPCMessage("RouterClient.subscribe", new List&lt;JToken&gt; {
 		///     "myTopic"
 		/// }, mySubHandler);
-		/// 
+		///
 		/// finsemble.SendRPCMessage("RouterClient.unsubscribe", new List&lt;JToken&gt; {
 		///     "myTopic"
 		/// }, mySubHandler);
-		/// 
+		///
 		/// /* Linker.publish takes params */
-		/// finsemble.SendCommand("LinkerClient.publish", new List&lt;JToken&gt; { 
+		/// finsemble.SendCommand("LinkerClient.publish", new List&lt;JToken&gt; {
 		///     new JObject {
 		///         ["dataType"] = "myType",
 		///         ["data"] = new JObject {

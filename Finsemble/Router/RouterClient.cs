@@ -69,22 +69,26 @@ namespace ChartIQ.Finsemble
 			this.connectHandler = connectHandler;
 		}
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (e.Cancel)
+            {
+                return;
+            }
 
-		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			foreach (var item in transmitListeners)
-			{
-				var RemoveListenerMessage = new JObject(
-				   new JProperty("header",
-					   new JObject(
-						   new JProperty("origin", clientName),
-						   new JProperty("type", "removeListener"),
-						   new JProperty("channel", item.Key)
-					   )
-				   )
-				);
-				bridge.Publish("RouterService", RemoveListenerMessage);
-			}
+            foreach (var item in transmitListeners)
+            {
+                var RemoveListenerMessage = new JObject(
+                   new JProperty("header",
+                       new JObject(
+                           new JProperty("origin", clientName),
+                           new JProperty("type", "removeListener"),
+                           new JProperty("channel", item.Key)
+                       )
+                   )
+                );
+                bridge.Publish("RouterService", RemoveListenerMessage);
+            }
 
 			foreach (var item in publishListeners)
 			{
@@ -316,7 +320,7 @@ namespace ChartIQ.Finsemble
 		}
 
 		/// <summary>
-		/// Unsubscribe from PubSub responder so no more notifications received (but doesn't affect other subscriptions). 
+		/// Unsubscribe from PubSub responder so no more notifications received (but doesn't affect other subscriptions).
 		/// </summary>
 		/// <param name="topic"></param>
 		/// <param name="responseHandler"></param>
@@ -340,7 +344,7 @@ namespace ChartIQ.Finsemble
 		}
 
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		/// <param name="channel"></param>
 		/// <param name="responseHandler"></param>

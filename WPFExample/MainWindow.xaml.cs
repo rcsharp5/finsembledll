@@ -47,6 +47,10 @@ namespace WPFExample
 		/// <param name="args"></param>
 		public MainWindow(string[] args)
 		{
+
+			// Trigger actions on close when requested by Finsemble, e.g.:
+			this.Closing += MainWindow_Closing;
+
 			FSBL = new Finsemble(args, this); // Finsemble needs the command line arguments to connect and also this Window to manage snapping, docking etc.
 			FSBL.Connected += Finsemble_Connected;
 			FSBL.Connect();
@@ -59,9 +63,6 @@ namespace WPFExample
 				// Initialize this Window and show it
 				InitializeComponent(); // Initialize after Finsemble is connected
 				FinsembleHeader.SetBridge(FSBL); // The Header Control needs a connected finsemble instance
-
-				// Trigger actions on close when requested by Finsemble, e.g.:
-				this.Closing += MainWindow_Closing;
 
 				//Styling the Finsemble Header
 				FinsembleHeader.SetActiveBackground(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3C4C58")));
