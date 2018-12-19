@@ -166,7 +166,19 @@ namespace ChartIQ.Finsemble
             if (window != null)
             {
                 window.Loaded += Window_Loaded;
+                window.Closed += Window_Closed;
             }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            // Put to closed event
+            RouterClient.Transmit("Assimilation.windowClosed", new JObject
+            {
+                ["windowName"] = windowName,
+                ["removeFromDocking"] = true,
+                ["removeFromLauncher"] = true
+            });
         }
 
         private void Window_Loaded(object sender, System.Windows.RoutedEventArgs e)

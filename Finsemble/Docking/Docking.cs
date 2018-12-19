@@ -746,7 +746,7 @@ namespace ChartIQ.Finsemble
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (sendCloseToFinsemble)
+            if (!e.Cancel && sendCloseToFinsemble)
             {
                 this.Close();
             }

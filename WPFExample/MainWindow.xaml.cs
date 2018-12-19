@@ -50,6 +50,9 @@ namespace WPFExample
         /// <param name="args"></param>
         public MainWindow(string[] args)
         {
+            // Trigger actions on close when requested by Finsemble, e.g.:
+            this.Closing += MainWindow_Closing;
+
             FSBL = new Finsemble(args, this); // Finsemble needs the command line arguments to connect and also this Window to manage snapping, docking etc.
             FSBL.Connect();
             FSBL.Connected += Finsemble_Connected;
@@ -62,9 +65,6 @@ namespace WPFExample
                 // Initialize this Window and show it
                 InitializeComponent(); // Initialize after Finsemble is connected
                 FinsembleHeader.SetBridge(FSBL); // The Header Control needs a connected finsemble instance
-
-                // Trigger actions on close when requested by Finsemble, e.g.:
-                this.Closing += MainWindow_Closing;
 
                 //Styling the Finsemble Header
                 FinsembleHeader.SetActiveBackground(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3C4C58")));
@@ -162,13 +162,14 @@ namespace WPFExample
         /// <param name="e"></param>
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            /*if (MessageBox.Show("Close Application?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            if (MessageBox.Show("Close Application?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
             {
                 // Cancel Closing
                 e.Cancel = true;
-            }*/
+                return;
+            }
         }
-
+    
         private void LinkToGroup_Click(object sender, RoutedEventArgs e)
         {
             FSBL.LinkerClient.LinkToChannel("group1", null, (s, r) => { });
