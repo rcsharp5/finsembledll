@@ -162,12 +162,12 @@ namespace WPFExample
         /// <param name="e"></param>
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (MessageBox.Show("Close Application?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            /*if (MessageBox.Show("Close Application?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
             {
                 // Cancel Closing
                 e.Cancel = true;
                 return;
-            }
+            }*/
         }
     
         private void LinkToGroup_Click(object sender, RoutedEventArgs e)

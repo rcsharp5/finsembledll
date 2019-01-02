@@ -28,7 +28,7 @@ namespace ChartIQ.Finsemble
         public Finsemble bridge;
         private SortedDictionary<string, Button> LinkerGroups = new SortedDictionary<string, Button>();
         private string dockingGroup, snappingGroup;
-        private bool dragging = true;
+        private bool dragging = false;
         private Brush activeBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3C4C58"));
         private Brush inactiveBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#303D47"));
         private bool showLinker = true;
@@ -343,11 +343,11 @@ namespace ChartIQ.Finsemble
 
         private void Toolbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //if (dragging)
-            //{
-            //    dragging = false;
-            //    return;
-            //}
+            if (dragging)
+            {
+                dragging = false;
+                return;
+            }
             bridge.window.DragMove(); // this does the work
             //bridge.docking.StartMove(sender, e);
         }
