@@ -121,7 +121,7 @@ namespace ChartIQ.Finsemble
             Maximize.Width = buttonWidth;
             Minimize.Width = buttonWidth;
             Close.Width = buttonWidth;
-            
+
 
             Window_Size_Changed();
         }
