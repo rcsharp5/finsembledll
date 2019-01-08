@@ -28,7 +28,10 @@ namespace ChartIQ.Finsemble
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            routerClient.Query("logger.service.unregister", new JObject { ["clientName"] = bridge.windowName }, new JObject { }, (s, a) => { });
+            if (!e.Cancel)
+            {
+                routerClient.Query("logger.service.unregister", new JObject { ["clientName"] = bridge.windowName }, new JObject { }, (s, a) => { });
+            }
         }
 
         private void formatAndSendMessage(string category, string type, params JToken[] args)

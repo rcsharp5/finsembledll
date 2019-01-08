@@ -71,6 +71,11 @@ namespace ChartIQ.Finsemble
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (e.Cancel)
+            {
+                return;
+            }
+
             foreach (var item in transmitListeners)
             {
                 var RemoveListenerMessage = new JObject(

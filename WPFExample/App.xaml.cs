@@ -19,7 +19,7 @@ namespace WPFExample
         {
 			Logger.Debug("OnStartup");
 
-            Debugger.Launch(); // uncomment to launch debugger when executing externally.
+            //Debugger.Launch(); // uncomment to launch debugger when executing externally.
             var mainWindow = new MainWindow(e.Args); // send command line arguments to main window.
         }
 

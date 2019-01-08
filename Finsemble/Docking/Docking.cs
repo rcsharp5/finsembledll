@@ -681,8 +681,8 @@ namespace ChartIQ.Finsemble
         {
             Application.Current.Dispatcher.Invoke(delegate //main thread
             {
-                WindowInteropHelper helper = new WindowInteropHelper(dockingWindow);
-                HwndSource.FromHwnd(helper.Handle).AddHook(HwndMessageHook);
+                //WindowInteropHelper helper = new WindowInteropHelper(dockingWindow);
+                //HwndSource.FromHwnd(helper.Handle).AddHook(HwndMessageHook);
 
                 PresentationSource source = PresentationSource.FromVisual(dockingWindow);
 
@@ -695,6 +695,8 @@ namespace ChartIQ.Finsemble
                 WindowLocation = new Point(dockingWindow.Left, dockingWindow.Top);
                 WindowBottomRight = new Point(dockingWindow.Left + dockingWindow.Width, dockingWindow.Top + dockingWindow.Height);
 
+                IntPtr windowHandle = new WindowInteropHelper(dockingWindow).Handle;
+
                 var props = new JObject
                 {
                     ["windowName"] = dockingWindowName,
@@ -702,6 +704,7 @@ namespace ChartIQ.Finsemble
                     ["left"] = dockingWindow.Left,
                     ["width"] = dockingWindow.Width,
                     ["height"] = dockingWindow.Height,
+                    ["windowHandle"] = windowHandle.ToString(),
                     ["windowAction"] = "open"
                 };
 
@@ -743,7 +746,7 @@ namespace ChartIQ.Finsemble
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (sendCloseToFinsemble)
+            if (!e.Cancel && sendCloseToFinsemble)
             {
                 this.Close();
             }

@@ -166,7 +166,19 @@ namespace ChartIQ.Finsemble
             if (window != null)
             {
                 window.Loaded += Window_Loaded;
+                window.Closed += Window_Closed;
             }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            // Put to closed event
+            RouterClient.Transmit("Assimilation.windowClosed", new JObject
+            {
+                ["windowName"] = windowName,
+                ["removeFromDocking"] = true,
+                ["removeFromLauncher"] = true
+            });
         }
 
         private void Window_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -296,7 +308,8 @@ namespace ChartIQ.Finsemble
                 ["field"] = "finsemble.components." + this.componentType
             }, (s, a) =>
             {
-                this.componentConfig = (JObject)a.response["data"];
+                if (a.response?["data"] == null) return;
+                this.componentConfig = a.response["data"] as JObject;
                 if (this.componentConfig == null) this.componentConfig = new JObject();
                 windowClient = new WindowClient(this);
                 launcherClient = new LauncherClient(this);
