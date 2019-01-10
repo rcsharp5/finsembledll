@@ -349,6 +349,11 @@ namespace ChartIQ.Finsemble
                 RouterClient.Init();
             };
 
+            socket.Error += (sender, args) =>
+            {
+                throw (args.Exception);
+            };
+
             socket.Open();
 
             /*socket.On(Socket.EVENT_ERROR, (e) =>
@@ -602,7 +607,7 @@ namespace ChartIQ.Finsemble
 				
 				routerMessage["clientMessage"] = message;
                 messageToSend["dest"] = topic;
-                messageToSend["mesage"] = routerMessage;
+                messageToSend["message"] = routerMessage;
 
                 socket.Send(messageToSend.ToString());
 				//socket.Emit(topic, routerMessage);
