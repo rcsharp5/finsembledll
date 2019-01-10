@@ -339,6 +339,7 @@ namespace ChartIQ.Finsemble
 			}
 
             socket = new WebSocket(serverAddress + "/router");
+            
             socket.Opened += (sender, args) =>
             {
                 Logger.Info("Web socket connection opened");
@@ -348,7 +349,9 @@ namespace ChartIQ.Finsemble
                 RouterClient.Init();
             };
 
-			/*socket.On(Socket.EVENT_ERROR, (e) =>
+            socket.Open();
+
+            /*socket.On(Socket.EVENT_ERROR, (e) =>
 			{
 				var exception = (Quobject.EngineIoClientDotNet.Client.EngineIOException)e;
 				Logger.Error("Error from Electron web socket", exception);
@@ -375,7 +378,7 @@ namespace ChartIQ.Finsemble
 				// Notify listeners bridge is disconnected from OpenFin
 				Disconnected?.Invoke(this, EventArgs.Empty);
 			});*/
-		}
+        }
 
 		public void HandleClose(Action<Action> callOnClose)
 		{
