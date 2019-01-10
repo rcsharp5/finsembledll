@@ -4,7 +4,7 @@ using System.Reflection;
 using log4net;
 using Newtonsoft.Json.Linq;
 using Openfin.Desktop;
-using Quobject.SocketIoClientDotNet.Client;
+using WebSocket4Net;
 
 namespace ChartIQ.Finsemble
 {
@@ -57,7 +57,7 @@ namespace ChartIQ.Finsemble
 		/// <summary>
 		/// The web socket connection used when IAC is enabled.
 		/// </summary>
-		private Socket socket;
+		private WebSocket socket;
 
 		#region Instance constants
 		/// <summary>
@@ -338,10 +338,17 @@ namespace ChartIQ.Finsemble
 				throw new ArgumentException("IAC is enabled, but no server address was specified.");
 			}
 
-			var manager = new Manager(new Uri(serverAddress), new IO.Options());
-			socket = manager.Socket("/router");
+            socket = new WebSocket(serverAddress + "/router");
+            socket.Opened += (sender, args) =>
+            {
+                Logger.Info("Web socket connection opened");
 
-			socket.On(Socket.EVENT_ERROR, (e) =>
+                RouterClient = new RouterClient(this, Connect);
+
+                RouterClient.Init();
+            };
+
+			/*socket.On(Socket.EVENT_ERROR, (e) =>
 			{
 				var exception = (Quobject.EngineIoClientDotNet.Client.EngineIOException)e;
 				Logger.Error("Error from Electron web socket", exception);
@@ -367,7 +374,7 @@ namespace ChartIQ.Finsemble
 
 				// Notify listeners bridge is disconnected from OpenFin
 				Disconnected?.Invoke(this, EventArgs.Empty);
-			});
+			});*/
 		}
 
 		public void HandleClose(Action<Action> callOnClose)
@@ -576,16 +583,26 @@ namespace ChartIQ.Finsemble
 					throw new InvalidOperationException("Calling socket connection for publish before it is initialized.");
 				}
 
-				if ("RouterService".Equals(topic))
+                var routerMessage = new JObject();
+                var messageToSend = new JObject();
+                if ("RouterService".Equals(topic))
 				{
 					// Change topic for IAC
 					topic = "ROUTER_SERVICE";
-				}
+				} else
+                {
+                    topic = "ROUTER_CLIENT";
+                    routerMessage["client"] = "RouterClient." + this.windowName;
+                }
 
 				// Modifying to meet format expected by the router.
-				var routerMessage = new JObject();
+				
 				routerMessage["clientMessage"] = message;
-				socket.Emit(topic, routerMessage);
+                messageToSend["dest"] = topic;
+                messageToSend["mesage"] = routerMessage;
+
+                socket.Send(messageToSend.ToString());
+				//socket.Emit(topic, routerMessage);
 			}
 			else
 			{
@@ -607,12 +624,16 @@ namespace ChartIQ.Finsemble
 					throw new InvalidOperationException("Calling socket connection for subscribe before it is initialized.");
 				}
 
-				socket.On(topic, (data) =>
-				{
-					JObject joMessage = (JObject)data;
-					JObject clientMessage = (JObject)joMessage["clientMessage"];
-					listener(topic, clientMessage);
-				});
+                socket.MessageReceived += (sender, args) =>
+                {
+                    JObject data = JObject.Parse(args.Message);
+                    JObject message = (JObject)data["message"];
+                    if (this.windowName == message["client"].ToString())
+                    {
+                        JObject clientMessage = (JObject)message["clientMessage"];
+                        listener(topic, clientMessage);
+                    }
+                };
 			}
 			else
 			{
