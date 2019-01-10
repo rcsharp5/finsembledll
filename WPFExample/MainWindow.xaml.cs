@@ -174,24 +174,25 @@ namespace WPFExample
 
 		}
 
-		/// <summary>
-		/// Example window close handler
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			/*if (MessageBox.Show("Close Application?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+        /// <summary>
+        /// Example window close handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            /*if (MessageBox.Show("Close Application?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
             {
                 // Cancel Closing
                 e.Cancel = true;
+                return;
             }*/
-		}
+        }
 
-		private void LinkToGroup_Click(object sender, RoutedEventArgs e)
-		{
-			FSBL.LinkerClient.LinkToChannel("group1", null, (s, r) => { });
-		}
+        private void LinkToGroup_Click(object sender, RoutedEventArgs e)
+        {
+            FSBL.LinkerClient.LinkToChannel("group1", null, (s, r) => { });
+        }
 
-	}
+    }
 }
