@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 using Timer = System.Timers.Timer;
 
 namespace ChartIQ.Finsemble
@@ -168,6 +169,21 @@ namespace ChartIQ.Finsemble
 					//  if (connected) break;
 					Debug.WriteLine("Router Connected");
 					connected = true;
+					Application.Current.Dispatcher.Invoke(delegate //main thread
+                    {
+                        if (this.bridge.window != null)
+                        {
+                            this.bridge.window.Loaded += (s, a) =>
+                            {
+                                var handle = (new WindowInteropHelper(this.bridge.window).Handle).ToString("X");
+                                this.Transmit("Finsemble.Assimilation.register", new JObject
+                                {
+                                    ["windowName"] = this.bridge.windowName,
+                                    ["windowHandle"] = handle
+                                });
+                            };
+                        }
+                    });
 
 					connectHandler(this, true);
 					break;
