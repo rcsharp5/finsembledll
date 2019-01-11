@@ -635,11 +635,14 @@ namespace ChartIQ.Finsemble
                 socket.MessageReceived += (sender, args) =>
                 {
                     JObject data = JObject.Parse(args.Message);
-                    JObject message = (JObject)data["message"];
-                    if (this.windowName == message["client"].ToString())
+                    if (data["dest"].ToString() != "ROUTER_SERVICE")
                     {
-                        JObject clientMessage = (JObject)message["clientMessage"];
-                        listener(topic, clientMessage);
+                        JObject message = (JObject)data["message"];
+                        if ("RouterClient." + this.windowName == message["client"].ToString())
+                        {
+                            JObject clientMessage = (JObject)message["clientMessage"];
+                            listener(topic, clientMessage);
+                        }
                     }
                 };
 			}

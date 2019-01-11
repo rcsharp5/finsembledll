@@ -299,7 +299,8 @@ namespace ChartIQ.Finsemble
 
 		private void Got_Docking_Message(string topic, JObject message)
 		{
-			var action = message.GetValue("action").ToString();
+            if (message["action"] == null) return;
+			var action = message["action"].ToString();
 
 			switch (action)
 			{
