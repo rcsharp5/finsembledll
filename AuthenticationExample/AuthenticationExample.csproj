@@ -37,8 +37,8 @@
     <StartupObject>AuthenticationExample.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetZip, Version=1.12.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.12.0\lib\net20\DotNetZip.dll</HintPath>
+    <Reference Include="DotNetZip, Version=1.13.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.13.0\lib\net40\DotNetZip.dll</HintPath>
     </Reference>
     <Reference Include="Finsemble">
       <HintPath>..\Finsemble\bin\Debug\Finsemble.dll</HintPath>
@@ -118,6 +118,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Finsemble\Finsemble.csproj">
+      <Project>{dd9676c0-71ab-4ca2-9ccf-930d3c047258}</Project>
+      <Name>Finsemble</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

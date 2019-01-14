@@ -16,13 +16,20 @@ namespace WindowlessExample
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            Debugger.Launch(); // uncomment to launch debugger when executing externally.
-            var mainWindow = new MyClass(e.Args); // send command line arguments to main window.
+#if DEBUG
+			Debugger.Launch();
+#endif
+
+			var mainWindow = new MyClass(e.Args); // send command line arguments to main window.
         }
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            MessageBox.Show("An Unhandled Exception has occured. Please Check your event Logs.");
-        }
-    }
+#if DEBUG
+			Debugger.Launch();
+#endif
+
+			MessageBox.Show("An Unhandled Exception has occured. Please Check your event Logs.");
+		}
+	}
 }
