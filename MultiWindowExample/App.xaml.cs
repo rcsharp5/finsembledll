@@ -27,7 +27,7 @@ namespace MultiWindowExample
 		/// 
 		/// </summary>
 		[STAThread]
-		public static void Main()
+		public static void Main(string[] args)
 		{
 #if DEBUG
 			Debugger.Launch();
