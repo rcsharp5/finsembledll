@@ -43,11 +43,14 @@ namespace ChartIQ.Finsemble
 			);
 			bridge.Publish("RouterService", Handshake); //TODO: wait for handshake response
 			bridge.Subscribe(clientName, MessageHandler);
-			Application.Current.Dispatcher.Invoke(delegate //main thread
-			{
-				if (bridge.window != null) bridge.window.Closing += Window_Closing;
-			});
-			var timer = new Timer(100);
+            if (bridge.window != null)
+            {
+                Application.Current.Dispatcher.Invoke(delegate //main thread
+                {
+                    bridge.window.Closing += Window_Closing;
+                });
+            }
+            var timer = new Timer(100);
 			timer.Elapsed += (s, e) =>
 			{
 				if (!connected) //retry handshake until connected
@@ -169,9 +172,10 @@ namespace ChartIQ.Finsemble
 					//  if (connected) break;
 					Debug.WriteLine("Router Connected");
 					connected = true;
-					Application.Current.Dispatcher.Invoke(delegate //main thread
+                    if (bridge.window != null)
                     {
-                        if (this.bridge.window != null)
+
+                        Application.Current.Dispatcher.Invoke(delegate //main thread
                         {
                             this.bridge.window.Loaded += (s, a) =>
                             {
@@ -182,8 +186,8 @@ namespace ChartIQ.Finsemble
                                     ["windowHandle"] = handle
                                 });
                             };
-                        }
-                    });
+                        });
+                    }
 
 					connectHandler(this, true);
 					break;
