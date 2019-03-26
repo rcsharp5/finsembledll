@@ -348,7 +348,12 @@ namespace ChartIQ.Finsemble
                 dragging = false;
                 return;
             }
-            bridge.window.DragMove(); // this does the work
+
+            // DragMove only for left mouse button
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                bridge.window.DragMove();
+            }
             //bridge.docking.StartMove(sender, e);
         }
 
