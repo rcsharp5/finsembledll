@@ -150,7 +150,7 @@ namespace ChartIQ.Finsemble
         /// <param name="fontWeight"></param>
         public void SetTitleFont(FontFamily fontFamily, double fontSize, FontStyle fontStyle, FontWeight fontWeight)
         {
-            if (fontFamily != null) Title.FontFamily = fontFamily;
+			if (fontFamily != null) Title.FontFamily = fontFamily;
             if (fontSize != 0) Title.FontSize = fontSize;
             if (fontStyle != null) Title.FontStyle = fontStyle;
             if (fontWeight != null) Title.FontWeight = fontWeight;
@@ -298,8 +298,14 @@ namespace ChartIQ.Finsemble
         }
 
         private void Docking_GroupUpdate(object sender, dynamic groups)
-        {
-            Application.Current.Dispatcher.Invoke(delegate //main thread
+		{
+			// When shutting down, Application.Current can be null. Check here to prevent NRE
+			if (Application.Current == null)
+			{
+				return;
+			}
+
+			Application.Current.Dispatcher.Invoke(delegate //main thread
             {
                 this.dockingGroup = groups.dockingGroup;
                 this.snappingGroup = groups.snappingGroup;
@@ -569,5 +575,5 @@ namespace ChartIQ.Finsemble
         {
 
         }
-    }
+	}
 }

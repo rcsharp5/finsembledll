@@ -59,8 +59,6 @@ namespace ChartIQ.Finsemble
 		private WIN32Rectangle windowRect;
 		private WIN32Rectangle newWindowRect;
 
-		internal Action<Action> closeAction;
-
 		[DllImport("user32.dll")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool GetWindowRect(IntPtr hWnd, out WIN32Rectangle lpRect);
@@ -212,48 +210,13 @@ namespace ChartIQ.Finsemble
 																														  /*routerClient.AddListener("LauncherService.shutdownRequest", (s, e) =>
 																														  {
 																															  sendCloseToFinsemble = false;
-																														  });*/
-				routerClient.AddResponder(dockingWindowName + ".closeRequested", (s, e) =>
-				{
-					sendCloseToFinsemble = false;
-
-					if (closeAction != null && e.response["data"]["shuttingDown"] != null) // only call close handler while shutting down. doing on workspace switch does not work yet
-					{
-						closeAction(() => CloseWindow(e));
-					}
-					else
-					{
-						CloseWindow(e);
-					}
-				});
+																														  });*/				
 			});
 		}
 
-		private void CloseWindow(FinsembleQueryArgs e)
+		public void SetSendCloseToFinemble(bool value)
 		{
-			HandleWindowActuallyClosed(e);
-			RequestWindowToClose();
-		}
-
-		private void HandleWindowActuallyClosed(FinsembleQueryArgs fqa)
-		{
-			dockingWindow.Closed += (s, e) =>
-			{
-				ReportWindowClosed(fqa);
-			};
-		}
-
-		private void RequestWindowToClose()
-		{
-			Application.Current.Dispatcher.Invoke(delegate //main thread
-			{
-				dockingWindow.Close();// this is and may cause user interaction in Application in response to 'Closing' event
-			});
-		}
-
-		private void ReportWindowClosed(FinsembleQueryArgs fqa)
-		{
-			fqa.sendQueryMessage(new JObject { ["close"] = true });
+			sendCloseToFinsemble = value;
 		}
 
 		private void Got_Docking_Message_Over_Router(object sender, FinsembleEventArgs e)
