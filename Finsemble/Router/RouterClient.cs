@@ -1,15 +1,10 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Timer = System.Timers.Timer;
 
 namespace ChartIQ.Finsemble
@@ -18,7 +13,7 @@ namespace ChartIQ.Finsemble
 	/// This module contains the RouterClient for sending and receiving events between Finsemble components and services.
 	/// Currently AddPubSubResponder, AddResponder, RemovePubSubResponder, RemoveResponder are not supported.
 	/// </summary>
-	public class RouterClient
+	public class RouterClient : IDisposable
 	{
 		private Finsemble bridge;
 		private string clientName;
@@ -43,14 +38,8 @@ namespace ChartIQ.Finsemble
 			);
 			bridge.Publish("RouterService", Handshake); //TODO: wait for handshake response
 			bridge.Subscribe(clientName, MessageHandler);
-            if (bridge.window != null)
-            {
-                Application.Current.Dispatcher.Invoke(delegate //main thread
-                {
-                    bridge.window.Closing += Window_Closing;
-                });
-            }
-            var timer = new Timer(100);
+
+			var timer = new Timer(100);
 			timer.Elapsed += (s, e) =>
 			{
 				if (!connected) //retry handshake until connected
@@ -71,48 +60,6 @@ namespace ChartIQ.Finsemble
 		{
 			this.bridge = bridge;
 			this.connectHandler = connectHandler;
-		}
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (e.Cancel)
-            {
-                return;
-            }
-
-            foreach (var item in transmitListeners)
-            {
-                var RemoveListenerMessage = new JObject(
-                   new JProperty("header",
-                       new JObject(
-                           new JProperty("origin", clientName),
-                           new JProperty("type", "removeListener"),
-                           new JProperty("channel", item.Key)
-                       )
-                   )
-                );
-                bridge.Publish("RouterService", RemoveListenerMessage);
-            }
-
-			foreach (var item in publishListeners)
-			{
-				var RemoveListenerMessage = new JObject(
-				   new JProperty("header",
-					   new JObject(
-						   new JProperty("origin", clientName),
-						   new JProperty("type", "unsubscribe"),
-						   new JProperty("topic", item.Key),
-						   new JProperty("subscribeID", subscribeIDTopicMap[item.Key])
-					   )
-				   )
-				);
-				bridge.Publish("RouterService", RemoveListenerMessage);
-			}
-
-			foreach (var item in responderMap)
-			{
-				RemoveResponder(item.Key, false);
-			}
 		}
 
 		// All messages from Finsemble are handled by this.
@@ -169,23 +116,35 @@ namespace ChartIQ.Finsemble
 					}
 					break;
 				case "initialHandshakeResponse":
-					//  if (connected) break;
+					if (connected) break;
 					Debug.WriteLine("Router Connected");
 					connected = true;
-                    if (bridge.window != null)
-                    {
+					if (bridge.window != null)
+					{
 
-                        Application.Current.Dispatcher.Invoke(delegate //main thread
+						Application.Current.Dispatcher.Invoke(delegate //main thread
+						{
+							this.bridge.window.Loaded += (s, a) =>
+							{
+								var handle = (new WindowInteropHelper(this.bridge.window).Handle).ToString("X");
+								this.Transmit("Finsemble.Assimilation.register", new JObject
+								{
+									["windowName"] = this.bridge.windowName,
+									["windowHandle"] = handle
+								});
+							};
+						});
+					} else
+                    {
+                        this.Transmit("Finsemble.Assimilation.register", new JObject
                         {
-                            this.bridge.window.Loaded += (s, a) =>
-                            {
-                                var handle = (new WindowInteropHelper(this.bridge.window).Handle).ToString("X");
-                                this.Transmit("Finsemble.Assimilation.register", new JObject
-                                {
-                                    ["windowName"] = this.bridge.windowName,
-                                    ["windowHandle"] = handle
-                                });
-                            };
+                            ["windowName"] = this.bridge.windowName,
+                            ["windowHandle"] = null
+                        });
+                        // Quit WindowLess Application
+                        this.AddListener("Finsemble.Assimilation.close." + this.bridge.windowName, (s, a) =>
+                        {
+                            Environment.Exit(0);
                         });
                     }
 
@@ -407,6 +366,76 @@ namespace ChartIQ.Finsemble
 				bridge.Publish("RouterService", removeResponderMessage);
 			}
 		}
+
+		#region IDisposable Support
+		private bool disposedValue = false; // To detect redundant calls
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposedValue)
+			{
+				if (disposing)
+				{
+					// TODO: dispose managed state (managed objects).
+				}
+
+				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+				// TODO: set large fields to null.
+				foreach (var item in transmitListeners)
+				{
+					var RemoveListenerMessage = new JObject(
+					   new JProperty("header",
+						   new JObject(
+							   new JProperty("origin", clientName),
+							   new JProperty("type", "removeListener"),
+							   new JProperty("channel", item.Key)
+						   )
+					   )
+					);
+					bridge.Publish("RouterService", RemoveListenerMessage);
+				}
+
+				foreach (var item in publishListeners)
+				{
+					var RemoveListenerMessage = new JObject(
+					   new JProperty("header",
+						   new JObject(
+							   new JProperty("origin", clientName),
+							   new JProperty("type", "unsubscribe"),
+							   new JProperty("topic", item.Key),
+							   new JProperty("subscribeID", subscribeIDTopicMap[item.Key])
+						   )
+					   )
+					);
+					bridge.Publish("RouterService", RemoveListenerMessage);
+				}
+
+				foreach (var item in responderMap)
+				{
+					RemoveResponder(item.Key, false);
+				}
+
+
+				disposedValue = true;
+			}
+		}
+
+		// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+		~RouterClient()
+		{
+			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+			Dispose(false);
+		}
+
+		// This code added to correctly implement the disposable pattern.
+		public void Dispose()
+		{
+			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+			Dispose(true);
+			// TODO: uncomment the following line if the finalizer is overridden above.
+			// GC.SuppressFinalize(this);
+		}
+		#endregion
 
 	}
 }

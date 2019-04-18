@@ -92,7 +92,6 @@ namespace ChartIQ.Finsemble
 		public bool useIAC { get; private set; } = false;
 		public string serverAddress { get; private set; } = "";
 
-
 		public RouterClient RouterClient { private set; get; }
 		internal Logger logger { private set; get; }
 		internal AuthenticationClient authenticationClient { private set; get; }
@@ -338,25 +337,25 @@ namespace ChartIQ.Finsemble
 				throw new ArgumentException("IAC is enabled, but no server address was specified.");
 			}
 
-            socket = new WebSocket(serverAddress + "/router");
-            
-            socket.Opened += (sender, args) =>
-            {
-                Logger.Info("Web socket connection opened");
+			socket = new WebSocket(serverAddress + "/router");
 
-                RouterClient = new RouterClient(this, Connect);
+			socket.Opened += (sender, args) =>
+			{
+				Logger.Info("Web socket connection opened");
 
-                RouterClient.Init();
-            };
+				RouterClient = new RouterClient(this, Connect);
 
-            socket.Error += (sender, args) =>
-            {
-                throw (args.Exception);
-            };
+				RouterClient.Init();
+			};
 
-            socket.Open();
+			socket.Error += (sender, args) =>
+			{
+				throw (args.Exception);
+			};
 
-            /*socket.On(Socket.EVENT_ERROR, (e) =>
+			socket.Open();
+
+			/*socket.On(Socket.EVENT_ERROR, (e) =>
 			{
 				var exception = (Quobject.EngineIoClientDotNet.Client.EngineIOException)e;
 				Logger.Error("Error from Electron web socket", exception);
@@ -383,11 +382,19 @@ namespace ChartIQ.Finsemble
 				// Notify listeners bridge is disconnected from OpenFin
 				Disconnected?.Invoke(this, EventArgs.Empty);
 			});*/
-        }
+		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="callOnClose"></param>
+		/// [Obsolete("HandleClose is deprecated, please use window.Closing instead.")]
 		public void HandleClose(Action<Action> callOnClose)
 		{
-			docking.closeAction = callOnClose;
+			if (window != null)
+			{
+				window.Closing += (s, e) => { callOnClose(() => { }); };
+			}
 		}
 
 		private void Connect(object sender, bool connected)
@@ -404,7 +411,16 @@ namespace ChartIQ.Finsemble
 				["field"] = "finsemble.components." + this.componentType
 			}, (s, a) =>
 			{
-				this.componentConfig = (JObject)a.response["data"];
+				if (!(a.response["data"] is JObject))
+				{
+					// Data isn't a JObject
+					logger.Warn(string.Format(
+						"Response data object does not have the correct type. Type: \"{0}\", Value: \"{1}\"",
+						a.response["data"].GetType().ToString(),
+						a.response["data"].ToString()));
+				}
+
+				this.componentConfig = a.response["data"] as JObject;
 				if (this.componentConfig == null) this.componentConfig = new JObject();
 				windowClient = new WindowClient(this);
 				launcherClient = new LauncherClient(this);
@@ -573,13 +589,48 @@ namespace ChartIQ.Finsemble
 		private void Disconnect()
 		{
 			Logger.Info("Disconnect called");
-			if (Runtime == null)
+
+			// Clean up clients that require disposing
+			try
 			{
-				// Already disconnected
-				return;
+				if (logger != null)
+				{
+					logger.Dispose();
+				}
+			}
+			catch
+			{ }
+			finally
+			{
+				logger = null;
 			}
 
-			Runtime.Disconnect(() => { });
+			try
+			{
+
+				if (RouterClient != null)
+				{
+                    RouterClient.Transmit("Finsemble.Assimilation.closed." + this.windowName, true);
+					RouterClient.Dispose();
+				}
+			}
+			catch { }
+			finally
+			{
+				RouterClient = null;
+			}
+
+			// Close appropriate connection
+			if (Runtime != null)
+			{
+				Runtime.Disconnect(() => { });
+			}
+
+			if (socket != null)
+			{
+				socket.Close();
+				socket = null;
+			}
 		}
 
 		internal void Publish(string topic, JObject message)
@@ -591,25 +642,26 @@ namespace ChartIQ.Finsemble
 					throw new InvalidOperationException("Calling socket connection for publish before it is initialized.");
 				}
 
-                var routerMessage = new JObject();
-                var messageToSend = new JObject();
-                if ("RouterService".Equals(topic))
+				var routerMessage = new JObject();
+				var messageToSend = new JObject();
+				if ("RouterService".Equals(topic))
 				{
 					// Change topic for IAC
 					topic = "ROUTER_SERVICE";
-				} else
-                {
-                    topic = "ROUTER_CLIENT";
-                    routerMessage["client"] = "RouterClient." + this.windowName;
-                }
+				}
+				else
+				{
+					topic = "ROUTER_CLIENT";
+					routerMessage["client"] = "RouterClient." + this.windowName;
+				}
 
 				// Modifying to meet format expected by the router.
-				
-				routerMessage["clientMessage"] = message;
-                messageToSend["dest"] = topic;
-                messageToSend["message"] = routerMessage;
 
-                socket.Send(messageToSend.ToString());
+				routerMessage["clientMessage"] = message;
+				messageToSend["dest"] = topic;
+				messageToSend["message"] = routerMessage;
+
+				socket.Send(messageToSend.ToString());
 				//socket.Emit(topic, routerMessage);
 			}
 			else
@@ -632,19 +684,19 @@ namespace ChartIQ.Finsemble
 					throw new InvalidOperationException("Calling socket connection for subscribe before it is initialized.");
 				}
 
-                socket.MessageReceived += (sender, args) =>
-                {
-                    JObject data = JObject.Parse(args.Message);
-                    if (data["dest"].ToString() != "ROUTER_SERVICE")
-                    {
-                        JObject message = (JObject)data["message"];
-                        if ("RouterClient." + this.windowName == message["client"].ToString())
-                        {
-                            JObject clientMessage = (JObject)message["clientMessage"];
-                            listener(topic, clientMessage);
-                        }
-                    }
-                };
+				socket.MessageReceived += (sender, args) =>
+				{
+					JObject data = JObject.Parse(args.Message);
+					if (data["dest"].ToString() != "ROUTER_SERVICE")
+					{
+						JObject message = (JObject)data["message"];
+						if ("RouterClient." + this.windowName == message["client"].ToString())
+						{
+							JObject clientMessage = (JObject)message["clientMessage"];
+							listener(topic, clientMessage);
+						}
+					}
+				};
 			}
 			else
 			{
@@ -687,10 +739,11 @@ namespace ChartIQ.Finsemble
 		}
 
 		// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-		// ~FinsembleBridge() {
-		//   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-		//   Dispose(false);
-		// }
+		~Finsemble()
+		{
+			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+			Dispose(false);
+		}
 
 		// This code added to correctly implement the disposable pattern.
 		public void Dispose()

@@ -21,6 +21,8 @@ namespace WindowlessExample
 #endif
 
 			var mainWindow = new MyClass(e.Args); // send command line arguments to main window.
+
+			this.Exit += (s, e0) => mainWindow.Dispose();
         }
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
