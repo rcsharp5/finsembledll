@@ -121,11 +121,11 @@ namespace ChartIQ.Finsemble
 					connected = true;
 					if (bridge.window != null)
 					{
-
 						Application.Current.Dispatcher.Invoke(delegate //main thread
 						{
 							this.bridge.window.Loaded += (s, a) =>
 							{
+								Debug.WriteLine("Window loaded, sending registration message");
 								var handle = (new WindowInteropHelper(this.bridge.window).Handle).ToString("X");
 								this.Transmit("Finsemble.Assimilation.register", new JObject
 								{
