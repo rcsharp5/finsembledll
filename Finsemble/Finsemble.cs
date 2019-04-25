@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
 using log4net;
 using Newtonsoft.Json.Linq;
 using Openfin.Desktop;
@@ -118,6 +119,7 @@ namespace ChartIQ.Finsemble
 		private bool isFinsembleConnected = false;
 
 		string top = null, left = null, height = null, width = null;
+        int socketRetryAttempts = 0;
 		/// <summary>
 		/// Initializes a new instance of the FinsembleBridge class. This is how you interact with Finsemble. All the clients will be part of the bridge.
 		/// </summary>
@@ -212,28 +214,38 @@ namespace ChartIQ.Finsemble
 
 		private void Window_Loaded(object sender, System.Windows.RoutedEventArgs e)
 		{
-			if (!string.IsNullOrEmpty(top))
-			{
-				window.Top = Double.Parse(top);
-			}
+            try
+            {
+                if (!string.IsNullOrEmpty(top))
+                {
+                    window.Top = Double.Parse(top);
+                }
 
-			if (!string.IsNullOrEmpty(left))
-			{
-				window.Left = Double.Parse(left);
-			}
+                if (!string.IsNullOrEmpty(left))
+                {
+                    window.Left = Double.Parse(left);
+                }
 
-			if (!string.IsNullOrEmpty(height))
-			{
-				window.Height = Double.Parse(height);
-			}
+                if (!string.IsNullOrEmpty(height))
+                {
+                    window.Height = Double.Parse(height);
+                }
 
-			if (!string.IsNullOrEmpty(width))
-			{
-				window.Width = Double.Parse(width);
-			}
+                if (!string.IsNullOrEmpty(width))
+                {
+                    window.Width = Double.Parse(width);
+                }
+            } catch (Exception ex)
+            {
+                this.Connected += (s, e2) =>
+                {
+                    this.logger.Error(new JToken[] { "Invalid Bounds", ex.Message, top, left, height, width });
+                };
+                
+            }
 		}
 
-		private void OFConnect()
+        private void OFConnect()
 		{
 			Logger.Debug("Connect called");
 			if (Runtime != null)
@@ -350,8 +362,17 @@ namespace ChartIQ.Finsemble
 
 			socket.Error += (sender, args) =>
 			{
-				throw (args.Exception);
-			};
+                var retryAfter = 100;
+                if (socketRetryAttempts >= 20)
+                {
+                    Logger.Warn("Socket Connection Still Failing after 20 attempts");
+                    retryAfter = 500;
+                }
+                // Keep trying to connect. When large numbers of socket connections are made simultaneoulsly, the connection fails and we get here.
+                socketRetryAttempts++;
+                Thread.Sleep(retryAfter);
+                ElectronConnect();
+            };
 
 			socket.Open();
 
