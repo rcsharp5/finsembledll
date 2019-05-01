@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
 using log4net;
 using Newtonsoft.Json.Linq;
 using Openfin.Desktop;
@@ -118,6 +119,7 @@ namespace ChartIQ.Finsemble
 		private bool isFinsembleConnected = false;
 
 		string top = null, left = null, height = null, width = null;
+        int socketRetryAttempts = 0;
 		/// <summary>
 		/// Initializes a new instance of the FinsembleBridge class. This is how you interact with Finsemble. All the clients will be part of the bridge.
 		/// </summary>
@@ -212,28 +214,38 @@ namespace ChartIQ.Finsemble
 
 		private void Window_Loaded(object sender, System.Windows.RoutedEventArgs e)
 		{
-			if (!string.IsNullOrEmpty(top))
-			{
-				window.Top = Double.Parse(top);
-			}
+            try
+            {
+                if (!string.IsNullOrEmpty(top))
+                {
+                    window.Top = Double.Parse(top);
+                }
 
-			if (!string.IsNullOrEmpty(left))
-			{
-				window.Left = Double.Parse(left);
-			}
+                if (!string.IsNullOrEmpty(left))
+                {
+                    window.Left = Double.Parse(left);
+                }
 
-			if (!string.IsNullOrEmpty(height))
-			{
-				window.Height = Double.Parse(height);
-			}
+                if (!string.IsNullOrEmpty(height))
+                {
+                    window.Height = Double.Parse(height);
+                }
 
-			if (!string.IsNullOrEmpty(width))
-			{
-				window.Width = Double.Parse(width);
-			}
+                if (!string.IsNullOrEmpty(width))
+                {
+                    window.Width = Double.Parse(width);
+                }
+            } catch (Exception ex)
+            {
+                this.Connected += (s, e2) =>
+                {
+                    this.logger.Error(new JToken[] { "Invalid Bounds", ex.Message, top, left, height, width });
+                };
+
+            }
 		}
 
-		private void OFConnect()
+        private void OFConnect()
 		{
 			Logger.Debug("Connect called");
 			if (Runtime != null)
@@ -291,6 +303,9 @@ namespace ChartIQ.Finsemble
 					RouterClient = new RouterClient(this, Connect);
 
 					RouterClient.Init();
+
+					// OpenFin doesn't fire the Disconnected event when Finsemble shuts down. Listen for Application.shutdown event and trigger Disconnect.
+					RouterClient.AddListener("Application.shutdown", (s, e) => Disconnect());
 				});
 				retryAttempts++;
 			}
@@ -350,42 +365,31 @@ namespace ChartIQ.Finsemble
 
 			socket.Error += (sender, args) =>
 			{
-				throw (args.Exception);
-			};
+                var retryAfter = 100;
+                if (socketRetryAttempts >= 20)
+                {
+                    Logger.Warn("Socket Connection Still Failing after 20 attempts");
+                    retryAfter = 500;
+                }
+                // Keep trying to connect. When large numbers of socket connections are made simultaneously, the connection fails and we get here.
+                socketRetryAttempts++;
+                Thread.Sleep(retryAfter);
+                ElectronConnect();
+            };
 
 			socket.Open();
 
-			/*socket.On(Socket.EVENT_ERROR, (e) =>
+			socket.Closed += (s, e) =>
 			{
-				var exception = (Quobject.EngineIoClientDotNet.Client.EngineIOException)e;
-				Logger.Error("Error from Electron web socket", exception);
-
-				// Notify listeners there was an error
-				Error?.Invoke(this, new UnhandledExceptionEventArgs(exception, false));
-			});
-
-			socket.On(Socket.EVENT_CONNECT, () =>
-			{
-				Logger.Info("Web socket connection opened");
-
-				RouterClient = new RouterClient(this, Connect);
-
-				RouterClient.Init();
-			});
-
-			socket.On(Socket.EVENT_DISCONNECT, (data) =>
-			{
-				string message = data as string;
-
-				Logger.Info($"Web socket connection disconnected. Message: {message}");
+				Console.WriteLine("Web socket connection disconnected.");
 
 				// Notify listeners bridge is disconnected from OpenFin
 				Disconnected?.Invoke(this, EventArgs.Empty);
-			});*/
+			};
 		}
 
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		/// <param name="callOnClose"></param>
 		/// [Obsolete("HandleClose is deprecated, please use window.Closing instead.")]
@@ -402,6 +406,15 @@ namespace ChartIQ.Finsemble
 			// Do not attempt to connect more than once. This causes the Window to close prematurely from responders firing because of errors.
 			if (isFinsembleConnected) return;
 			isFinsembleConnected = true;
+
+			if (window == null)
+			{
+				RouterClient.AddListener(string.Format("WindowService-Event-{0}-close-requested", windowName), (s, e) =>
+				{
+					Disconnected?.Invoke(this, e);
+				});
+			}
+
 			logger = new Logger(this);
 			storageClient = new StorageClient(this);
 			authenticationClient = new AuthenticationClient(this);
@@ -588,6 +601,12 @@ namespace ChartIQ.Finsemble
 
 		private void Disconnect()
 		{
+			if (disconnecting)
+			{
+				return;
+			}
+
+			disconnecting = true;
 			Logger.Info("Disconnect called");
 
 			// Clean up clients that require disposing
@@ -624,6 +643,7 @@ namespace ChartIQ.Finsemble
 			if (Runtime != null)
 			{
 				Runtime.Disconnect(() => { });
+				Runtime = null;
 			}
 
 			if (socket != null)
@@ -715,6 +735,7 @@ namespace ChartIQ.Finsemble
 
 		#region IDisposable Support
 		private bool disposedValue = false; // To detect redundant calls
+		private bool disconnecting = false;
 
 		internal virtual void Dispose(bool disposing)
 		{

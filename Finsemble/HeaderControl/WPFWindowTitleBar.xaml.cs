@@ -46,7 +46,12 @@ namespace ChartIQ.Finsemble
 
         private void Linker_StateChange(object sender2, FinsembleEventArgs args)
         {
-            Application.Current.Dispatcher.Invoke(delegate //main thread
+            /** DH 4/25/2019
+            * The below block was throwing exceptions occasionally as the app was shutting down
+            * we admittedly don't fully understand, so we're adding this null operator as a quick
+            * fix.
+            */
+            Application.Current?.Dispatcher?.Invoke(delegate //main thread
             {
                 try
                 {
@@ -304,39 +309,52 @@ namespace ChartIQ.Finsemble
 			{
 				return;
 			}
-
-			Application.Current.Dispatcher.Invoke(delegate //main thread
+            
+            /** DH 4/25/2019
+             * The below block was throwing exceptions occasionally as the app was shutting down
+             * we admittedly don't fully understand, so we're wrapping it in a a try/catch as 
+             * a quick fix.
+             */
+            try
             {
-                this.dockingGroup = groups.dockingGroup;
-                this.snappingGroup = groups.snappingGroup;
-                Minimize.Visibility = Visibility.Visible;
-                if (groups.dockingGroup != "")
+                Application.Current.Dispatcher.Invoke(delegate //main thread
                 {
-                    DockingButton.Content = "@";
-                    DockingButton.ToolTip = "Detach Window";
-                    DockingButton.Visibility = Visibility.Visible;
-                    Minimize.SetValue(Canvas.RightProperty, buttonWidth * 3);
-                    DockingButton.Background = dockingButtonDockedBackground;
-                    if (!groups.topRight)
+                    this.dockingGroup = groups.dockingGroup;
+                    this.snappingGroup = groups.snappingGroup;
+                    Minimize.Visibility = Visibility.Visible;
+                    if (groups.dockingGroup != "")
                     {
-                        Minimize.Visibility = Visibility.Hidden;
+                        DockingButton.Content = "@";
+                        DockingButton.ToolTip = "Detach Window";
+                        DockingButton.Visibility = Visibility.Visible;
+                        Minimize.SetValue(Canvas.RightProperty, buttonWidth * 3);
+                        DockingButton.Background = dockingButtonDockedBackground;
+                        if (!groups.topRight)
+                        {
+                            Minimize.Visibility = Visibility.Hidden;
+                        }
                     }
-                }
-                else if (groups.snappingGroup != "")
-                {
-                    DockingButton.Content = ">";
-                    DockingButton.ToolTip = "Attach Windows";
-                    DockingButton.Visibility = Visibility.Visible;
-                    Minimize.SetValue(Canvas.RightProperty, buttonWidth * 3);
-                    DockingButton.Background = Brushes.Transparent;
-                }
-                else
-                {
-                    DockingButton.Visibility = Visibility.Hidden;
-                    Minimize.SetValue(Canvas.RightProperty, buttonWidth * 2);
-                }
-                Window_Size_Changed();
-            });
+                    else if (groups.snappingGroup != "")
+                    {
+                        DockingButton.Content = ">";
+                        DockingButton.ToolTip = "Attach Windows";
+                        DockingButton.Visibility = Visibility.Visible;
+                        Minimize.SetValue(Canvas.RightProperty, buttonWidth * 3);
+                        DockingButton.Background = Brushes.Transparent;
+                    }
+                    else
+                    {
+                        DockingButton.Visibility = Visibility.Hidden;
+                        Minimize.SetValue(Canvas.RightProperty, buttonWidth * 2);
+                    }
+                    Window_Size_Changed();
+                });
+            }
+            catch (Exception)
+            {
+
+            }
+			
         }
 
         private void Minimize_Click(object sender, RoutedEventArgs e)
