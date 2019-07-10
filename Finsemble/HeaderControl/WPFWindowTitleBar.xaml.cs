@@ -263,6 +263,7 @@ namespace ChartIQ.Finsemble
             {
                 bridge.window.Activated += Window_Activated;
                 bridge.window.Deactivated += Window_Deactivated;
+                bridge.window.MouseDown += Window_MouseDown;
             });
             bridge.DragAndDropClient.AddEmitterChangeListener((s, e) =>
             {
@@ -278,6 +279,18 @@ namespace ChartIQ.Finsemble
                     }
                 });
             });
+        }
+        private void Window_MouseDown(object sender, RoutedEventArgs e)
+        {
+						/** DH 6/15/2019
+						 * For some reason, once the Linker Window is shown, successive
+						 * clicks to the main WPF window never trigger another focus event
+						 * until you click some other window, causing the Linker Window to
+						 * hang around when it shouldn't. This transmit manually triggers
+						 * a focus in Finsemble.
+						 */
+            bridge.RouterClient.Transmit("WindowService.remoteFocus",
+                new JObject(new JProperty("name",bridge.windowName)));
         }
 
         private void Window_Deactivated(object sender, EventArgs e)
@@ -376,6 +389,8 @@ namespace ChartIQ.Finsemble
             // DragMove only for left mouse button
             if (e.ChangedButton == MouseButton.Left)
             {
+                bridge.RouterClient.Transmit("WindowService.remoteFocus",
+                    new JObject(new JProperty("name", bridge.windowName)));
                 bridge.window.DragMove();
             }
             //bridge.docking.StartMove(sender, e);

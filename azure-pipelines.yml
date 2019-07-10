@@ -28,7 +28,7 @@ steps:
     platform: 'x86'
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
-    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
+    msbuildArgs: '/p:Configuration=Release /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m'
 
 - task: NuGetCommand@2
   inputs:
@@ -39,9 +39,9 @@ steps:
     #includeNuGetOrg: true # Required when feedsToUse == Select
     #nugetConfigPath: # Required when feedsToUse == Config
     #externalFeedCredentials: # Optional
-    #noCache: false 
-    #disableParallelProcessing: false 
-    restoreDirectory: 
+    #noCache: false
+    #disableParallelProcessing: false
+    restoreDirectory:
     #verbosityRestore: 'Detailed' # Options: quiet, normal, detailed
     #packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg' # Required when command == Push
     #nuGetFeedType: 'external' # Required when command == Push# Options: internal, external
@@ -78,9 +78,9 @@ steps:
     #includeNuGetOrg: true # Required when feedsToUse == Select
     #nugetConfigPath: # Required when feedsToUse == Config
     #externalFeedCredentials: # Optional
-    #noCache: false 
-    #disableParallelProcessing: false 
-    restoreDirectory: 
+    #noCache: false
+    #disableParallelProcessing: false
+    restoreDirectory:
     #verbosityRestore: 'Detailed' # Options: quiet, normal, detailed
     packagesToPush: '$(Build.ArtifactStagingDirectory)\Finsemble*.nupkg' # Required when command == Push
     nuGetFeedType: 'external' # Required when command == Push# Options: internal, external

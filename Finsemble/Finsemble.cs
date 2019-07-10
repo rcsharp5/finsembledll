@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using log4net;
@@ -289,9 +290,6 @@ namespace ChartIQ.Finsemble
 			Runtime.Disconnected += (s, e) =>
 			{
 				Logger.Info("Disconnected from OpenFin runtime.");
-
-				// Notify listeners bridge is disconnected from OpenFin
-				Disconnected?.Invoke(this, e);
 			};
 
 			try
@@ -382,9 +380,6 @@ namespace ChartIQ.Finsemble
 			socket.Closed += (s, e) =>
 			{
 				Console.WriteLine("Web socket connection disconnected.");
-
-				// Notify listeners bridge is disconnected from OpenFin
-				Disconnected?.Invoke(this, EventArgs.Empty);
 			};
 		}
 
@@ -406,14 +401,6 @@ namespace ChartIQ.Finsemble
 			// Do not attempt to connect more than once. This causes the Window to close prematurely from responders firing because of errors.
 			if (isFinsembleConnected) return;
 			isFinsembleConnected = true;
-
-			if (window == null)
-			{
-				RouterClient.AddListener(string.Format("WindowService-Event-{0}-close-requested", windowName), (s, e) =>
-				{
-					Disconnected?.Invoke(this, e);
-				});
-			}
 
 			logger = new Logger(this);
 			storageClient = new StorageClient(this);
@@ -626,6 +613,20 @@ namespace ChartIQ.Finsemble
 
 			try
 			{
+				if (launcherClient != null)
+				{
+					launcherClient.Dispose();
+				}
+			}
+			catch
+			{ }
+			finally
+			{
+				launcherClient = null;
+			}
+
+			try
+			{
 
 				if (RouterClient != null)
 				{
@@ -651,6 +652,9 @@ namespace ChartIQ.Finsemble
 				socket.Close();
 				socket = null;
 			}
+
+			// Notify listeners bridge is disconnected from OpenFin
+			Disconnected?.Invoke(this, EventArgs.Empty);
 		}
 
 		internal void Publish(string topic, JObject message)
@@ -739,7 +743,9 @@ namespace ChartIQ.Finsemble
 
 		internal virtual void Dispose(bool disposing)
 		{
-			if (!disposedValue)
+            Debug.WriteLine("dispose called");
+
+            if (!disposedValue)
 			{
 				if (disposing)
 				{
