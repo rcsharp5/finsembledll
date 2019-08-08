@@ -11,7 +11,7 @@ namespace ChartIQ.Finsemble
     /// <summary>
     /// The Window Client Manages Window State in the Workspace
     /// </summary>
-    internal class WindowClient
+    public class WindowClient
     {
         private Finsemble bridge;
         public JObject windowIdentifier { private set; get; }
@@ -83,17 +83,18 @@ namespace ChartIQ.Finsemble
                         ["value"] = parameters["value"]
                     });
                 }
+
                 JObject storageValue = new JObject { };
+                storageValue["state"] = new JObject { };
+                storageValue["state"]["componentState"] = new JObject { };
+                storageValue["windowName"] = bridge.windowName;
+
                 foreach (var item in fields)
                 {
-                    storageValue[(string)item["field"]] = item["value"];
+                    storageValue["state"]["componentState"][(string)item["field"]] = item["value"];
                 }
-                storageClient.Save(new JObject
-                {
-                    ["topic"] = WORKSPACE_CACHE_TOPIC,
-                    ["key"] = containerHash,
-                    ["value"] = storageValue
-                }, delegate (object s, FinsembleEventArgs e) { });
+
+                bridge.RouterClient.Query("Finsemble.Workspace.SetWindowData", storageValue, new JObject { }, callback);
             } catch(Exception e)
             {
                 MessageBox.Show(e.Message);

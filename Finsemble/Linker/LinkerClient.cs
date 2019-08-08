@@ -35,7 +35,7 @@ namespace ChartIQ.Finsemble
         internal LinkerClient(Finsemble bridge, EventHandler<bool> readyCallback)
         {
             this.bridge = bridge;
-            windowClient = bridge.windowClient;
+            windowClient = bridge.WindowClient;
             routerClient = bridge.RouterClient;
             launcherClient = bridge.launcherClient;
             key = (bridge.windowName + "::" + bridge.uuid).Replace('.', '_');
@@ -88,7 +88,7 @@ namespace ChartIQ.Finsemble
                         readyCallback(this, true);
 
                     };
-                    bridge.windowClient.GetComponentState(new JObject { ["field"] = "Finsemble_Linker" }, linkerStateHandler);
+                    bridge.WindowClient.GetComponentState(new JObject { ["field"] = "Finsemble_Linker" }, linkerStateHandler);
                 });
 
                 linkerStore.AddListener(new JObject

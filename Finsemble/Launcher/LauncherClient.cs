@@ -24,7 +24,7 @@ namespace ChartIQ.Finsemble
         {
             this.bridge = bridge;
             routerClient = bridge.RouterClient;
-            windowClient = bridge.windowClient;
+            windowClient = bridge.WindowClient;
             // Window Groups
             windowClient.GetComponentState(new JObject
             {

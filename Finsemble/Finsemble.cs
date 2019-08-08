@@ -99,7 +99,7 @@ namespace ChartIQ.Finsemble
 		internal AuthenticationClient authenticationClient { private set; get; }
 		internal DistributedStoreClient distributedStoreClient { private set; get; }
 		internal StorageClient storageClient { private set; get; }
-		internal WindowClient windowClient { private set; get; }
+		public WindowClient WindowClient { private set; get; }
 		internal LauncherClient launcherClient { private set; get; }
 		public LinkerClient LinkerClient { set; get; }
 		public ConfigClient ConfigClient { private set; get; }
@@ -422,7 +422,7 @@ namespace ChartIQ.Finsemble
 
 				this.componentConfig = a.response["data"] as JObject;
 				if (this.componentConfig == null) this.componentConfig = new JObject();
-				windowClient = new WindowClient(this);
+				WindowClient = new WindowClient(this);
 				launcherClient = new LauncherClient(this);
 				distributedStoreClient = new DistributedStoreClient(this);
 				if (window != null) DragAndDropClient = new DragAndDropClient(this);
