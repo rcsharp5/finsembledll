@@ -635,10 +635,7 @@ namespace ChartIQ.Finsemble
 				}
 			}
 			catch { }
-			finally
-			{
-				RouterClient = null;
-			}
+			finally { }
 
 			// Close appropriate connection
 			if (Runtime != null)
@@ -659,7 +656,12 @@ namespace ChartIQ.Finsemble
 
 		internal void Publish(string topic, JObject message)
 		{
-			if (useIAC)
+            if (disconnecting)	// The objects could be disposed already, so method call will cause exception
+            {
+                return;
+            }
+
+            if (useIAC)
 			{
 				if (socket == null)
 				{

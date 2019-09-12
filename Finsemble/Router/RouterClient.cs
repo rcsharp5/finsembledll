@@ -230,7 +230,21 @@ namespace ChartIQ.Finsemble
 		/// <param name="data"></param>
 		/// <param name="parameters"></param>
 		/// <param name="responseHandler"></param>
+
+        [Obsolete("This overload is deprecated. The third 'parameters' argument is not used or required.")]
 		public void Query(string channel, JToken data, JObject parameters, EventHandler<FinsembleEventArgs> responseHandler)
+        {
+            Query(channel, data, responseHandler);
+        }
+
+        /// <summary>
+		/// Send a query to responder listening on specified channel. The responder may be in this Finsemble window or another Finsemble window.
+		/// </summary>
+		/// <param name="channel"></param>
+		/// <param name="data"></param>
+		/// <param name="parameters"></param>
+		/// <param name="responseHandler"></param>
+		public void Query(string channel, JToken data, EventHandler<FinsembleEventArgs> responseHandler)
 		{
 			var queryID = Guid.NewGuid().ToString();
 			var QueryMessage = new JObject(

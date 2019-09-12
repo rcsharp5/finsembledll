@@ -418,7 +418,18 @@ namespace ChartIQ.Finsemble
 				dynamic props = new ExpandoObject();
 				props.windowName = dockingWindowName;
 				props.windowAction = "maximize";
-				bridge.RouterClient.Transmit("NativeWindow", JObject.FromObject(props));
+				/*DH 07/22/19
+				We have found that WPF windows are not maximized via the normal
+				system event, and thus the maximize event isn't detected by Assimilation.
+				Therefore, we must inform the Window Service ourselves, using the same
+				message that AssimilationService does.*/
+                routerClient.Query("WindowService-Request-maximize",
+                    new JObject {
+                        ["fromAssimilation"] = true,
+                        ["windowIdentifier"] = new JObject { ["name"] = dockingWindowName }
+                    },
+                    (sender, args) =>{ });
+
 			});
 		}
 
