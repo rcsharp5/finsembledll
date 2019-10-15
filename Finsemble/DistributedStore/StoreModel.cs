@@ -22,10 +22,14 @@ namespace ChartIQ.Finsemble
         internal StoreModel(JObject parameters, Finsemble bridge)
         {
             //store, name, global, values, clients
-            this.name = (string)parameters["name"];
-            this.global = (bool)parameters["global"];
-            this.values = parameters["values"] as JObject; // these come back but are currently not used for global stores.
-            this.clients = parameters["clients"] as JObject;
+            if(parameters != null)
+            {
+                this.name = (string)parameters["name"];
+                this.global = (bool)parameters["global"];
+                this.values = parameters["values"] as JObject; // these come back but are currently not used for global stores.
+                this.clients = parameters["clients"] as JObject;
+            }
+
             routerClient = bridge.RouterClient;
         }
 

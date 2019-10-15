@@ -5,9 +5,7 @@ using System.Reflection;
 using System.Threading;
 using log4net;
 using Newtonsoft.Json.Linq;
-using Openfin.Desktop;
 using WebSocket4Net;
-
 namespace ChartIQ.Finsemble
 {
 	/// <summary>
@@ -54,7 +52,7 @@ namespace ChartIQ.Finsemble
 		/// <summary>
 		/// The instance of the OpenFin used by this example.
 		/// </summary>
-		private Runtime Runtime;
+		//private Runtime Runtime;
 
 		/// <summary>
 		/// The web socket connection used when IAC is enabled.
@@ -100,9 +98,11 @@ namespace ChartIQ.Finsemble
 		internal DistributedStoreClient distributedStoreClient { private set; get; }
 		internal StorageClient storageClient { private set; get; }
 		public WindowClient WindowClient { private set; get; }
-		internal LauncherClient launcherClient { private set; get; }
+		public LauncherClient LauncherClient { set ; get; }
 		public LinkerClient LinkerClient { set; get; }
-		public ConfigClient ConfigClient { private set; get; }
+        public Share ShareClient { set; get; }
+
+        public ConfigClient ConfigClient { private set; get; }
 		public DragAndDropClient DragAndDropClient { private set; get; }
 		public JObject componentConfig { internal set; get; }
 		private int retryAttempts = 0;
@@ -114,8 +114,9 @@ namespace ChartIQ.Finsemble
 			{"distributedStoreClient", new List<string>() {"dataStoreService"}  },
 			{"launcherClient", new List<string> {"launcherService"} },
 			{"linkerClient", new List<string> {"linkerService"} },
-			{"windowClient", new List<string> {"storageService"} }
-		};
+            {"windowClient", new List<string> {"storageService"} },
+             {"shareClient", new List<string> { "MonitoringService" } }
+        };
 
 		private bool isFinsembleConnected = false;
 
@@ -248,76 +249,7 @@ namespace ChartIQ.Finsemble
 
         private void OFConnect()
 		{
-			Logger.Debug("Connect called");
-			if (Runtime != null)
-			{
-				// Already connected
-				return;
-			}
-
-			var runtimeOptions = new RuntimeOptions
-			{
-				Version = openFinVersion,
-			};
-
-			if (!String.IsNullOrEmpty(securityRealm))
-			{
-				runtimeOptions.SecurityRealm = securityRealm;
-			}
-
-			Runtime = Runtime.GetRuntimeInstance(runtimeOptions);
-
-			// Set up error handler.
-			Runtime.Error += (s, e) =>
-			{
-				try
-				{
-					Exception ex = (Exception)e.ExceptionObject;
-					Logger.Error("Error from OpenFin runtime", ex);
-				}
-				catch (Exception ex)
-				{
-					Logger.Error(
-						$"Error from OpenFin runtime not an exception:\n {e.ExceptionObject.ToString()}",
-						ex);
-				}
-
-				// Notify listeners there was an error
-				Error?.Invoke(this, e);
-			};
-
-			// Set up disconnected handler
-			Runtime.Disconnected += (s, e) =>
-			{
-				Logger.Info("Disconnected from OpenFin runtime.");
-			};
-
-			try
-			{
-				Runtime.Connect(() =>
-				{
-					Logger.Info("Connected to OpenFin Runtime.");
-
-					RouterClient = new RouterClient(this, Connect);
-
-					RouterClient.Init();
-
-					// OpenFin doesn't fire the Disconnected event when Finsemble shuts down. Listen for Application.shutdown event and trigger Disconnect.
-					RouterClient.AddListener("Application.shutdown", (s, e) => Disconnect());
-				});
-				retryAttempts++;
-			}
-			catch (Exception e)
-			{
-				if (retryAttempts < 5)
-				{
-					OFConnect();
-				}
-				else
-				{
-					throw e;
-				}
-			}
+			
 		}
 
 		/// <summary>
@@ -333,17 +265,18 @@ namespace ChartIQ.Finsemble
 			else
 			{
 				// Connect to the OpenFin runtime.
-				OFConnect();
+				//OFConnect();
 			}
 		}
 
 		private void ElectronConnect()
 		{
-			if (socket != null)
+			if (socket != null && socket.State != WebSocketState.Closed)
 			{
 				Logger.Warn("Multiple attempts to connect web socket");
 				return;
 			}
+            if (socket != null && socket.State == WebSocketState.Connecting) return;
 
 			if (string.IsNullOrWhiteSpace(serverAddress))
 			{
@@ -371,15 +304,31 @@ namespace ChartIQ.Finsemble
                 }
                 // Keep trying to connect. When large numbers of socket connections are made simultaneously, the connection fails and we get here.
                 socketRetryAttempts++;
+                isFinsembleConnected = false;
+                Disconnected?.Invoke(this, EventArgs.Empty);
                 Thread.Sleep(retryAfter);
                 ElectronConnect();
             };
 
-			socket.Open();
+            if (socket.State == WebSocketState.Connecting) return;
+
+            socket.Open();
 
 			socket.Closed += (s, e) =>
 			{
-				Console.WriteLine("Web socket connection disconnected.");
+                var retryAfter = 100;
+                if (socketRetryAttempts >= 20)
+                {
+                    Logger.Warn("Socket Connection Still Failing after 20 attempts");
+                    retryAfter = 500;
+                }
+                // Keep trying to connect. When large numbers of socket connections are made simultaneously, the connection fails and we get here.
+                socketRetryAttempts++;
+                isFinsembleConnected = false;
+                Disconnected?.Invoke(this, EventArgs.Empty);
+                Thread.Sleep(retryAfter);
+                ElectronConnect();
+                Console.WriteLine("Web socket connection disconnected.");
 			};
 		}
 
@@ -406,6 +355,7 @@ namespace ChartIQ.Finsemble
 			storageClient = new StorageClient(this);
 			authenticationClient = new AuthenticationClient(this);
 			ConfigClient = new ConfigClient(this);
+            ShareClient = new Share(this);
 			ConfigClient.GetValue(new JObject
 			{
 				["field"] = "finsemble.components." + this.componentType
@@ -414,16 +364,16 @@ namespace ChartIQ.Finsemble
 				if (!(a.response["data"] is JObject))
 				{
 					// Data isn't a JObject
-					logger.Warn(string.Format(
-						"Response data object does not have the correct type. Type: \"{0}\", Value: \"{1}\"",
-						a.response["data"].GetType().ToString(),
-						a.response["data"].ToString()));
+					//logger.Warn(string.Format(
+						//"Response data object does not have the correct type. Type: \"{0}\", Value: \"{1}\"",
+						////a.response["data"].GetType().ToString(),
+						//a.response["data"].ToString()));
 				}
 
 				this.componentConfig = a.response["data"] as JObject;
 				if (this.componentConfig == null) this.componentConfig = new JObject();
 				WindowClient = new WindowClient(this);
-				launcherClient = new LauncherClient(this);
+                LauncherClient = new LauncherClient(this);
 				distributedStoreClient = new DistributedStoreClient(this);
 				if (window != null) DragAndDropClient = new DragAndDropClient(this);
 				if (window != null) docking = new Docking(this, windowName + "-channel");
@@ -545,10 +495,10 @@ namespace ChartIQ.Finsemble
 					LinkerClient.Subscribe((string)args[0], cb);
 					break;
 				case "LauncherClient.spawn":
-					launcherClient.Spawn((string)args[0], args[1] as JObject, cb);
+                    LauncherClient.Spawn((string)args[0], args[1] as JObject, cb);
 					break;
 				case "LauncherClient.showWindow":
-					launcherClient.ShowWindow(args[0] as JObject, args[1] as JObject, cb);
+                    LauncherClient.ShowWindow(args[0] as JObject, args[1] as JObject, cb);
 					break;
 				case "ConfigClient.getValue":
 					ConfigClient.GetValue(args[0] as JObject, cb);
@@ -613,16 +563,16 @@ namespace ChartIQ.Finsemble
 
 			try
 			{
-				if (launcherClient != null)
+				if (LauncherClient != null)
 				{
-					launcherClient.Dispose();
+                    LauncherClient.Dispose();
 				}
 			}
 			catch
 			{ }
 			finally
 			{
-				launcherClient = null;
+                LauncherClient = null;
 			}
 
 			try
@@ -638,11 +588,7 @@ namespace ChartIQ.Finsemble
 			finally { }
 
 			// Close appropriate connection
-			if (Runtime != null)
-			{
-				Runtime.Disconnect(() => { });
-				Runtime = null;
-			}
+			
 
 			if (socket != null)
 			{
@@ -692,12 +638,7 @@ namespace ChartIQ.Finsemble
 			}
 			else
 			{
-				if (Runtime == null)
-				{
-					throw new InvalidOperationException("Calling OpenFin runtime for publish before it is initialized.");
-				}
-
-				Runtime.InterApplicationBus.Publish(topic, message);
+				
 			}
 		}
 
@@ -726,16 +667,7 @@ namespace ChartIQ.Finsemble
 			}
 			else
 			{
-				if (Runtime == null)
-				{
-					throw new InvalidOperationException("Calling OpenFin runtime for subscribe before it is initialized.");
-				}
-
-				Runtime.InterApplicationBus.subscribe("*", topic, (s, t, m) =>
-				{
-					var joMessage = m as JObject;
-					listener(t, joMessage);
-				});
+				
 			}
 		}
 
@@ -756,7 +688,7 @@ namespace ChartIQ.Finsemble
 
 				Disconnect();
 
-				Runtime = null;
+				
 
 				disposedValue = true;
 			}

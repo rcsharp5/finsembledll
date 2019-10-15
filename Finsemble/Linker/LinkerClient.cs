@@ -37,7 +37,7 @@ namespace ChartIQ.Finsemble
             this.bridge = bridge;
             windowClient = bridge.WindowClient;
             routerClient = bridge.RouterClient;
-            launcherClient = bridge.launcherClient;
+            launcherClient = bridge.LauncherClient;
             key = (bridge.windowName + "::" + bridge.uuid).Replace('.', '_');
 
             var storehandler = (EventHandler<StoreModel>)delegate (object sender, StoreModel store)

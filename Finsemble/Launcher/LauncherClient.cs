@@ -11,7 +11,7 @@ namespace ChartIQ.Finsemble
     /// <summary>
     /// The Launcher client handles spawning windows and window groups.
     /// </summary>
-    internal class LauncherClient : IDisposable
+    public class LauncherClient : IDisposable
     {
 		private readonly Timer timer = new Timer();
 

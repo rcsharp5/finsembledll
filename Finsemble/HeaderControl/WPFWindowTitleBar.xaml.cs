@@ -463,13 +463,13 @@ namespace ChartIQ.Finsemble
                 var appSuitesTask = appSuitesTaskCompletionSource.Task;
                 int numberOfGroups = 0;
                 var appSuitesList = new List<string>();
-                bridge.launcherClient.GetGroupsForWindow((s, args) =>
+                bridge.LauncherClient.GetGroupsForWindow((s, args) =>
                 {
                     var groups = args.response as JObject;
                     numberOfGroups = groups.Properties().Count();
                     foreach (var g in groups)
                     {
-                        bridge.launcherClient.GetWindowsInGroup(new JObject
+                        bridge.LauncherClient.GetWindowsInGroup(new JObject
                         {
                             ["groupName"] = g.Value
                         }, (s2, args2) =>
@@ -517,7 +517,7 @@ namespace ChartIQ.Finsemble
         private void hyperFocus(string linkerChannel, bool includeAppSuites, bool includeDockingGroups)
         {
             var windowList = getWindowList(linkerChannel, includeAppSuites, includeDockingGroups);
-            bridge.launcherClient.HyperFocus(new JObject
+            bridge.LauncherClient.HyperFocus(new JObject
             {
                 ["windowList"] = JArray.FromObject(windowList)
             }, (s, args) => { });
@@ -526,7 +526,7 @@ namespace ChartIQ.Finsemble
         private void bringToFront(string linkerChannel, bool includeAppSuites, bool includeDockingGroups)
         {
             var windowList = getWindowList(linkerChannel, includeAppSuites, includeDockingGroups);
-            bridge.launcherClient.BringWindowsToFront(new JObject
+            bridge.LauncherClient.BringWindowsToFront(new JObject
             {
                 ["windowList"] = JArray.FromObject(windowList)
             }, (s, args) => { });
